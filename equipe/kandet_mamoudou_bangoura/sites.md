@@ -15,14 +15,6 @@
 | [Indeed Canada](https://ca.indeed.com/) | Agrégateur généraliste avec des offres de stages et de postes juniors. | Mots-clés, lieu, date, type d'emploi et autres filtres proposés dans l'interface. | À consulter manuellement. La page de recherche n'était pas accessible pendant cette vérification (HTTP 403); ne pas contourner le blocage ni automatiser sans autorisation claire. |
 
 
-## Sources et limites de la recherche
-
-- [Filtres de recherche du Guichet-Emplois](https://www.jobbank.gc.ca/jobsearch/jobsearch?searchstring=developpeur&locationstring=Quebec) et [robots.txt](https://www.jobbank.gc.ca/robots.txt).
-- [Québec emploi — consulter les offres](https://www.quebec.ca/emploi/trouver-emploi-stage/consulter-offres-emplois).
-- [Jobillico — robots.txt](https://www.jobillico.com/robots.txt).
-- [LinkedIn — robots.txt](https://www.linkedin.com/robots.txt).
-- [Indeed Canada — robots.txt](https://ca.indeed.com/robots.txt).
-
 ## Plan d’évolution du POC
 
 ## 1 Explorer les possibilités de la source
