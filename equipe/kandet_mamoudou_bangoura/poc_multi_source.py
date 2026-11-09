@@ -31,7 +31,20 @@ STAGE_PATTERN = re.compile(
     r"\b(?:stages?|stagiaires?|interns?|internships?|co[\s-]?op|work[\s-]?terms?)\b",
     flags=re.IGNORECASE,
 )
-STUDENT_PATTERN = re.compile(r"\b(?:student|étudiant|etudiante|étudiante)\b", flags=re.IGNORECASE)
+STAGE_DESCRIPTION_PATTERN = re.compile(
+    r"\b(?:internship|intern|co[\s-]?op|work[\s-]?term)\s+"
+    r"(?:position|role|program|opportunity|placement)\b"
+    r"|\b(?:student|students)\s+(?:intern|position|role|placement)\b"
+    r"|\b(?:stage|stagiaire)\s+(?:en|de|du|d['’]|remunere)\b",
+    flags=re.IGNORECASE,
+)
+STUDENT_ELIGIBILITY_PATTERN = re.compile(
+    r"\b(?:currently\s+enrolled|enrolled\s+(?:in|at)|"
+    r"must\s+be\s+(?:a\s+)?student|student\s+status|required\s+to\s+be\s+enrolled|"
+    r"etre\s+(?:inscrit|inscrite|etudiant|etudiante)|"
+    r"doit\s+etre\s+(?:inscrit|inscrite|etudiant|etudiante))\b",
+    flags=re.IGNORECASE,
+)
 
 
 @dataclass
@@ -50,6 +63,7 @@ class SourceRecord:
     description: str = ""
     stage_status: str = "not_indicated"
     stage_signals: list[str] = field(default_factory=list)
+    search_terms: list[str] = field(default_factory=list)
     source_data: dict[str, object] = field(default_factory=dict)
 
 
@@ -66,6 +80,7 @@ class AggregatedOffer:
     description: str
     stage_status: str
     stage_signals: list[str]
+    search_terms: list[str]
     source_records: list[SourceRecord]
 
 
@@ -96,18 +111,17 @@ def _normalize(value: str) -> str:
 
 
 def classify_stage(title: str, job_type: str, description: str) -> tuple[str, list[str]]:
-    title_type = f"{title} {job_type}"
-    signals = []
-    if STAGE_PATTERN.search(title_type):
-        signals.append("stage_term_in_title_or_job_type")
-        return "likely_stage", signals
-    if STAGE_PATTERN.search(description):
-        signals.append("stage_term_in_description")
-        return "possible_stage", signals
-    if STUDENT_PATTERN.search(f"{title} {job_type} {description}"):
-        signals.append("student_term")
-        return "possible_stage", signals
-    return "not_indicated", signals
+    normalized_job_type = _normalize(job_type).replace("_", " ")
+    if normalized_job_type in {"internship", "intern", "co op", "stage", "stagiaire"}:
+        return "confirmed_stage", ["explicit_internship_job_type"]
+    if STAGE_PATTERN.search(_normalize(title)):
+        return "confirmed_stage", ["stage_term_in_title"]
+    normalized_description = _normalize(description)
+    if STAGE_DESCRIPTION_PATTERN.search(normalized_description):
+        return "possible_stage", ["stage_role_in_description"]
+    if STUDENT_ELIGIBILITY_PATTERN.search(normalized_description):
+        return "possible_stage", ["student_eligibility_in_description"]
+    return "not_indicated", []
 
 
 def build_feed_url(term: str, rows: int) -> str:
@@ -119,6 +133,7 @@ def build_feed_url(term: str, rows: int) -> str:
 def parse_feed(
     xml_content: bytes,
     location: str | None = "QC",
+    search_term: str = "",
 ) -> list[SourceRecord]:
     """Parse Job Bank's Atom feed into normalized source records."""
     root = ET.fromstring(xml_content)
@@ -160,6 +175,7 @@ def parse_feed(
                 description=summary,
                 stage_status=stage_status,
                 stage_signals=stage_signals,
+                search_terms=[search_term] if search_term else [],
                 source_data={
                     "job_number": job_number,
                     "summary": summary,
@@ -188,6 +204,7 @@ def fetch_job_bank(term: str, rows: int, location: str | None) -> list[SourceRec
     return parse_feed(
         fetch_url(build_feed_url(term, rows), "application/atom+xml"),
         location=location,
+        search_term=term,
     )
 
 
@@ -294,72 +311,119 @@ def fetch_remotive(
     return parse_remotive_payload(payload, location_filter=location_filter)
 
 
-def _offer_key(record: SourceRecord) -> tuple[str, ...]:
-    normalized_title = _normalize(record.title)
-    normalized_employer = _normalize(record.employer)
-    normalized_location = _normalize(record.location)
-    if normalized_title and normalized_employer and normalized_location:
-        return normalized_title, normalized_employer, normalized_location
-    if record.url:
-        return ("url", record.url.casefold())
-    return ("source_id", record.source, record.source_id or str(id(record)))
+def _same_source_record(left: SourceRecord, right: SourceRecord) -> bool:
+    if left.source != right.source:
+        return False
+    if left.source_id and right.source_id and left.source_id == right.source_id:
+        return True
+    return bool(left.url and right.url and left.url.casefold() == right.url.casefold())
+
+
+def _cross_source_match(left: SourceRecord, right: SourceRecord) -> bool:
+    if left.source == right.source:
+        return False
+    identity = (
+        _normalize(left.title),
+        _normalize(left.employer),
+        _normalize(left.location),
+    )
+    other_identity = (
+        _normalize(right.title),
+        _normalize(right.employer),
+        _normalize(right.location),
+    )
+    return all(identity) and identity == other_identity
+
+
+def _new_aggregated_offer(record: SourceRecord) -> AggregatedOffer:
+    return AggregatedOffer(
+        title=record.title,
+        employer=record.employer,
+        location=record.location,
+        salary=record.salary,
+        published_at=record.published_at,
+        job_type=record.job_type,
+        category=record.category,
+        tags=list(record.tags),
+        description=record.description,
+        stage_status=record.stage_status,
+        stage_signals=list(record.stage_signals),
+        search_terms=list(record.search_terms),
+        source_records=[record],
+    )
+
+
+def _merge_record(offer: AggregatedOffer, record: SourceRecord) -> None:
+    for field_name in (
+        "title",
+        "employer",
+        "location",
+        "salary",
+        "published_at",
+        "job_type",
+        "category",
+        "description",
+    ):
+        if not getattr(offer, field_name) and getattr(record, field_name):
+            setattr(offer, field_name, getattr(record, field_name))
+    offer.tags = list(dict.fromkeys(offer.tags + record.tags))
+    offer.stage_signals = list(dict.fromkeys(offer.stage_signals + record.stage_signals))
+    offer.search_terms = list(dict.fromkeys(offer.search_terms + record.search_terms))
+    stage_priority = {
+        "not_indicated": 0,
+        "possible_stage": 1,
+        "likely_stage": 2,
+        "confirmed_stage": 3,
+    }
+    if stage_priority.get(record.stage_status, 0) > stage_priority.get(offer.stage_status, 0):
+        offer.stage_status = record.stage_status
+    offer.source_records.append(record)
+
+
+def _unique_record_count(records: list[SourceRecord]) -> int:
+    seen: set[tuple[str, str]] = set()
+    for record in records:
+        identity = (
+            record.source,
+            record.source_id or record.url.casefold() or repr(sorted(record.source_data.items())),
+        )
+        seen.add(identity)
+    return len(seen)
 
 
 def aggregate_records(records: list[SourceRecord]) -> list[AggregatedOffer]:
-    grouped: dict[tuple[str, ...], AggregatedOffer] = {}
+    grouped: list[AggregatedOffer] = []
     for record in records:
-        key = _offer_key(record)
-        existing = grouped.get(key)
-        if existing is None:
-            grouped[key] = AggregatedOffer(
-                title=record.title,
-                employer=record.employer,
-                location=record.location,
-                salary=record.salary,
-                published_at=record.published_at,
-                job_type=record.job_type,
-                category=record.category,
-                tags=list(record.tags),
-                description=record.description,
-                stage_status=record.stage_status,
-                stage_signals=list(record.stage_signals),
-                source_records=[record],
-            )
-            continue
-
-        if any(
-            prior.source == record.source
-            and (
-                (prior.source_id and prior.source_id == record.source_id)
-                or (prior.url and prior.url == record.url)
-            )
-            for prior in existing.source_records
-        ):
-            continue
-
-        for field_name in (
-            "title",
-            "employer",
-            "location",
-            "salary",
-            "published_at",
-            "job_type",
-            "category",
-            "description",
-        ):
-            if not getattr(existing, field_name) and getattr(record, field_name):
-                setattr(existing, field_name, getattr(record, field_name))
-        existing.tags = list(dict.fromkeys(existing.tags + record.tags))
-        existing.stage_signals = list(
-            dict.fromkeys(existing.stage_signals + record.stage_signals)
+        duplicate = next(
+            (
+                prior
+                for offer in grouped
+                for prior in offer.source_records
+                if _same_source_record(prior, record)
+            ),
+            None,
         )
-        if record.stage_status == "likely_stage":
-            existing.stage_status = "likely_stage"
-        elif record.stage_status == "possible_stage" and existing.stage_status == "not_indicated":
-            existing.stage_status = "possible_stage"
-        existing.source_records.append(record)
+        if duplicate is not None:
+            duplicate.search_terms = list(
+                dict.fromkeys(duplicate.search_terms + record.search_terms)
+            )
+            continue
 
-    return list(grouped.values())
+        cross_source_offer = next(
+            (
+                offer
+                for offer in grouped
+                if all(prior.source != record.source for prior in offer.source_records)
+                and any(_cross_source_match(prior, record) for prior in offer.source_records)
+            ),
+            None,
+        )
+        if cross_source_offer is None:
+            grouped.append(_new_aggregated_offer(record))
+        else:
+            _merge_record(cross_source_offer, record)
+
+    return grouped
 
 
 def print_offer(offer: AggregatedOffer) -> None:
@@ -427,6 +491,7 @@ def main() -> None:
     jobbank_terms = args.jobbank_term or list(JOB_BANK_TERMS)
     source_records: list[SourceRecord] = []
     errors: list[str] = []
+    jobbank_term_counts: dict[str, int] = {}
     previous_request = 0.0
 
     for term in jobbank_terms:
@@ -434,9 +499,12 @@ def main() -> None:
         if elapsed < JOB_BANK_CRAWL_DELAY_SECONDS:
             time.sleep(JOB_BANK_CRAWL_DELAY_SECONDS - elapsed)
         try:
-            source_records.extend(fetch_job_bank(term, args.rows, jobbank_location))
+            term_records = fetch_job_bank(term, args.rows, jobbank_location)
+            jobbank_term_counts[term] = _unique_record_count(term_records)
+            source_records.extend(term_records)
         except (OSError, ET.ParseError, ValueError) as error:
             errors.append(f"Guichet-Emplois ({term}) : {error}")
+            jobbank_term_counts[term] = 0
         previous_request = time.monotonic()
 
     try:
@@ -460,10 +528,21 @@ def main() -> None:
         return
 
     offers = aggregate_records(source_records)
-    print(
-        f"{len(offers)} offres uniques; "
-        f"{sum(offer.stage_status != 'not_indicated' for offer in offers)} stage(s) probable(s) ou à vérifier."
-    )
+    stage_counts = {
+        status: sum(offer.stage_status == status for offer in offers)
+        for status in ("confirmed_stage", "likely_stage", "possible_stage", "not_indicated")
+    }
+    source_counts = {
+        source: sum(
+            any(record.source == source for record in offer.source_records)
+            for offer in offers
+        )
+        for source in sorted({record.source for record in source_records})
+    }
+    print(f"{len(offers)} offres uniques après déduplication.")
+    print(f"Résultats Guichet-Emplois par terme : {jobbank_term_counts}")
+    print(f"Offres par source : {source_counts}")
+    print(f"Classification des stages : {stage_counts}")
     for offer in offers[: args.limit]:
         print_offer(offer)
 
@@ -481,6 +560,12 @@ def main() -> None:
             ),
             "errors": errors,
             "offer_count": len(offers),
+            "collection_summary": {
+                "jobbank_terms": jobbank_term_counts,
+                "unique_source_records": _unique_record_count(source_records),
+                "offers_by_source": source_counts,
+                "stage_classification": stage_counts,
+            },
             "offers": [asdict(offer) for offer in offers],
         }
         args.output.parent.mkdir(parents=True, exist_ok=True)

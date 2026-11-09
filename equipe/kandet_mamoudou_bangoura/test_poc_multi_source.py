@@ -41,7 +41,7 @@ ATOM_FIXTURE = """<?xml version="1.0" encoding="UTF-8"?>
 
 class ParseFeedTests(unittest.TestCase):
     def test_extracts_all_feed_entries_and_fields(self) -> None:
-        jobs = parse_feed(ATOM_FIXTURE)
+        jobs = parse_feed(ATOM_FIXTURE, search_term="developpeur")
 
         self.assertEqual(len(jobs), 1)
         self.assertEqual(jobs[0].title, "Développeur logiciel")
@@ -50,6 +50,7 @@ class ParseFeedTests(unittest.TestCase):
         self.assertEqual(jobs[0].salary, "$30.00 hourly")
         self.assertEqual(jobs[0].url, "https://example.test/job/1")
         self.assertEqual(jobs[0].source_id, "123")
+        self.assertEqual(jobs[0].search_terms, ["developpeur"])
 
     def test_location_filter_ignores_accents(self) -> None:
         jobs = parse_feed(ATOM_FIXTURE, location="Montreal")
@@ -110,7 +111,7 @@ class RemotiveTests(unittest.TestCase):
         self.assertEqual(jobs[0].source, "Remotive")
         self.assertEqual(jobs[0].source_id, "42")
         self.assertEqual(jobs[0].description, "Build tools with Python .")
-        self.assertEqual(jobs[0].stage_status, "likely_stage")
+        self.assertEqual(jobs[0].stage_status, "confirmed_stage")
         self.assertIn("Python", jobs[0].tags)
 
     def test_can_include_remotive_jobs_for_other_locations(self) -> None:
@@ -154,18 +155,44 @@ class StageDetectionTests(unittest.TestCase):
     def test_detects_stage_in_title_or_job_type(self) -> None:
         status, signals = classify_stage("Stagiaire développeur", "", "")
 
-        self.assertEqual(status, "likely_stage")
-        self.assertEqual(signals, ["stage_term_in_title_or_job_type"])
+        self.assertEqual(status, "confirmed_stage")
+        self.assertEqual(signals, ["stage_term_in_title"])
 
-    def test_detects_stage_only_mentioned_in_description_as_possible(self) -> None:
+    def test_explicit_internship_job_type_is_confirmed(self) -> None:
+        self.assertEqual(
+            classify_stage("Software engineer", "internship", "Build APIs."),
+            ("confirmed_stage", ["explicit_internship_job_type"]),
+        )
+
+    def test_detects_internship_role_in_description_as_possible(self) -> None:
         status, signals = classify_stage(
             "Junior developer",
             "full_time",
-            "Must be enrolled as a student; internship experience is an asset.",
+            "This internship position is for a junior developer.",
         )
 
         self.assertEqual(status, "possible_stage")
-        self.assertEqual(signals, ["stage_term_in_description"])
+        self.assertEqual(signals, ["stage_role_in_description"])
+
+    def test_does_not_mark_prior_internship_experience_as_a_stage(self) -> None:
+        self.assertEqual(
+            classify_stage(
+                "Junior developer",
+                "full_time",
+                "Previous internship experience is an asset.",
+            ),
+            ("not_indicated", []),
+        )
+
+    def test_detects_french_student_eligibility_without_accent_dependency(self) -> None:
+        self.assertEqual(
+            classify_stage(
+                "Développeur junior",
+                "temps plein",
+                "Le candidat doit être inscrit à un programme universitaire.",
+            ),
+            ("possible_stage", ["student_eligibility_in_description"]),
+        )
 
     def test_non_stage_has_no_stage_signals(self) -> None:
         self.assertEqual(
@@ -198,12 +225,33 @@ class AggregationTests(unittest.TestCase):
         )
         self.assertEqual(offers[0].stage_status, "possible_stage")
 
-    def test_removes_duplicate_results_from_the_same_source(self) -> None:
-        job = parse_feed(ATOM_FIXTURE)[0]
-        offers = aggregate_records([job, job])
+    def test_merges_repeat_search_hits_and_keeps_all_query_terms(self) -> None:
+        first = parse_feed(ATOM_FIXTURE, search_term="developpeur")[0]
+        second = parse_feed(ATOM_FIXTURE, search_term="programmeur")[0]
+
+        offers = aggregate_records([first, second])
 
         self.assertEqual(len(offers), 1)
         self.assertEqual(len(offers[0].source_records), 1)
+        self.assertEqual(
+            offers[0].source_records[0].search_terms,
+            ["developpeur", "programmeur"],
+        )
+
+    def test_keeps_distinct_same_source_job_ids_with_same_employer_and_title(self) -> None:
+        first = parse_feed(ATOM_FIXTURE)[0]
+        second = type(first)(
+            source=first.source,
+            source_id="another-job-number",
+            url="https://example.test/job/another",
+            title=first.title,
+            employer=first.employer,
+            location=first.location,
+        )
+
+        offers = aggregate_records([first, second])
+
+        self.assertEqual(len(offers), 2)
 
 
 if __name__ == "__main__":
