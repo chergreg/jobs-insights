@@ -26,7 +26,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50691239?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "JobsMedia.ca",
-    "date_extraction": "2026-11-10T18:18:17.859697"
+    "date_extraction": "2026-11-11T07:00:17.255845"
   },
   {
     "id": "gc-50684844",
@@ -53,7 +53,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50684844?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:17.860689"
+    "date_extraction": "2026-11-11T07:00:17.256352"
   },
   {
     "id": "gc-50684542",
@@ -76,7 +76,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50684542?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "JobsMedia.ca",
-    "date_extraction": "2026-11-10T18:18:17.861582"
+    "date_extraction": "2026-11-11T07:00:17.256804"
   },
   {
     "id": "gc-50678397",
@@ -94,7 +94,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50678397?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:17.862472"
+    "date_extraction": "2026-11-11T07:00:17.257241"
   },
   {
     "id": "gc-50677533",
@@ -112,7 +112,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50677533?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:17.863247"
+    "date_extraction": "2026-11-11T07:00:17.257654"
   },
   {
     "id": "gc-50674591",
@@ -130,7 +130,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50674591?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:17.864176"
+    "date_extraction": "2026-11-11T07:00:17.258063"
   },
   {
     "id": "gc-50681640",
@@ -155,7 +155,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50681640?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:17.864974"
+    "date_extraction": "2026-11-11T07:00:17.258434"
   },
   {
     "id": "gc-50665724",
@@ -175,7 +175,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50665724?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:17.865770"
+    "date_extraction": "2026-11-11T07:00:17.258802"
   },
   {
     "id": "gc-50665759",
@@ -195,7 +195,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50665759?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:17.866620"
+    "date_extraction": "2026-11-11T07:00:17.259196"
   },
   {
     "id": "gc-50665342",
@@ -215,25 +215,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50665342?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:17.867467"
-  },
-  {
-    "id": "gc-50663650",
-    "titre": "développeur/développeuse de logiciels",
-    "entreprise": "Maarut",
-    "lieu": "Montréal-Est (QC)",
-    "province": "QC",
-    "pays": "Canada",
-    "salaire": "60,00 $ de l'heure",
-    "date_publication": "04 novembre 2026",
-    "modalite": "Sur place",
-    "type_poste": "Temps plein",
-    "competences_cles": [],
-    "description": null,
-    "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50663650?source=searchresults",
-    "source": "Guichet-Emplois",
-    "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:17.869172"
+    "date_extraction": "2026-11-11T07:00:17.259575"
   },
   {
     "id": "gc-50663008",
@@ -258,7 +240,25 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50663008?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:17.870027"
+    "date_extraction": "2026-11-11T07:00:17.259973"
+  },
+  {
+    "id": "gc-50704642",
+    "titre": "développeur/développeuse de logiciels",
+    "entreprise": "Maarut",
+    "lieu": "Montréal-Est (QC)",
+    "province": "QC",
+    "pays": "Canada",
+    "salaire": "60,00 $ de l'heure",
+    "date_publication": "04 novembre 2026",
+    "modalite": "Sur place",
+    "type_poste": "Temps plein",
+    "competences_cles": [],
+    "description": null,
+    "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50704642?source=searchresults",
+    "source": "Guichet-Emplois",
+    "partenaire": "Talent.com",
+    "date_extraction": "2026-11-11T07:00:17.260335"
   },
   {
     "id": "gc-50651088",
@@ -276,7 +276,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50651088?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:17.870873"
+    "date_extraction": "2026-11-11T07:00:17.260708"
   },
   {
     "id": "gc-50650983",
@@ -294,7 +294,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50650983?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:17.871930"
+    "date_extraction": "2026-11-11T07:00:17.261091"
   },
   {
     "id": "gc-50650911",
@@ -323,7 +323,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50650911?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:17.873663"
+    "date_extraction": "2026-11-11T07:00:17.261522"
   },
   {
     "id": "gc-50703132",
@@ -343,7 +343,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50703132?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:17.874516"
+    "date_extraction": "2026-11-11T07:00:17.261989"
   },
   {
     "id": "gc-50635072",
@@ -372,7 +372,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50635072?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:17.875241"
+    "date_extraction": "2026-11-11T07:00:17.262657"
   },
   {
     "id": "gc-50626462",
@@ -392,7 +392,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50626462?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:17.875805"
+    "date_extraction": "2026-11-11T07:00:17.263238"
   },
   {
     "id": "gc-50617193",
@@ -420,7 +420,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50617193?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:17.876421"
+    "date_extraction": "2026-11-11T07:00:17.264063"
   },
   {
     "id": "gc-50615937",
@@ -443,7 +443,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50615937?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:17.877058"
+    "date_extraction": "2026-11-11T07:00:17.264750"
   },
   {
     "id": "gc-50615783",
@@ -471,7 +471,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50615783?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:17.877643"
+    "date_extraction": "2026-11-11T07:00:17.265299"
   },
   {
     "id": "gc-50609545",
@@ -498,7 +498,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50609545?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:17.878431"
+    "date_extraction": "2026-11-11T07:00:17.265867"
   },
   {
     "id": "gc-50609307",
@@ -525,7 +525,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50609307?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:17.879430"
+    "date_extraction": "2026-11-11T07:00:17.266574"
   },
   {
     "id": "gc-50608622",
@@ -558,7 +558,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50608622?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:17.880373"
+    "date_extraction": "2026-11-11T07:00:17.267425"
   },
   {
     "id": "gc-50608619",
@@ -601,7 +601,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50608619?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:17.881017"
+    "date_extraction": "2026-11-11T07:00:17.267983"
   },
   {
     "id": "gc-50595189",
@@ -621,7 +621,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50595189?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "indeed.com",
-    "date_extraction": "2026-11-10T18:18:19.257059"
+    "date_extraction": "2026-11-11T07:00:18.839180"
   },
   {
     "id": "gc-50585958",
@@ -650,7 +650,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50585958?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:19.258636"
+    "date_extraction": "2026-11-11T07:00:18.839684"
   },
   {
     "id": "gc-50565641",
@@ -678,7 +678,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50565641?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:19.259450"
+    "date_extraction": "2026-11-11T07:00:18.840104"
   },
   {
     "id": "gc-50555962",
@@ -701,7 +701,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50555962?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "JobsMedia.ca",
-    "date_extraction": "2026-11-10T18:18:19.260270"
+    "date_extraction": "2026-11-11T07:00:18.840572"
   },
   {
     "id": "gc-50553212",
@@ -722,7 +722,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50553212?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:19.261074"
+    "date_extraction": "2026-11-11T07:00:18.840950"
   },
   {
     "id": "gc-50553604",
@@ -750,7 +750,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50553604?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:19.261838"
+    "date_extraction": "2026-11-11T07:00:18.841303"
   },
   {
     "id": "gc-50553623",
@@ -768,7 +768,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50553623?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:19.262637"
+    "date_extraction": "2026-11-11T07:00:18.841660"
   },
   {
     "id": "gc-50553257",
@@ -788,7 +788,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50553257?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:19.263500"
+    "date_extraction": "2026-11-11T07:00:18.842023"
   },
   {
     "id": "gc-50547585",
@@ -826,7 +826,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50547585?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:19.264456"
+    "date_extraction": "2026-11-11T07:00:18.842384"
   },
   {
     "id": "gc-50521476",
@@ -857,64 +857,10 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50521476?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:19.265307"
+    "date_extraction": "2026-11-11T07:00:18.842834"
   },
   {
-    "id": "gc-50512080",
-    "titre": "développeur/développeuse de logiciels",
-    "entreprise": "YO AI Labs",
-    "lieu": "Montréal (QC)",
-    "province": "QC",
-    "pays": "Canada",
-    "salaire": "50,00 $ à 100,00 $ de l'heure",
-    "date_publication": "16 octobre 2026",
-    "modalite": "Sur place",
-    "type_poste": "Temps plein",
-    "competences_cles": [],
-    "description": null,
-    "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50512080?source=searchresults",
-    "source": "Guichet-Emplois",
-    "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:19.266246"
-  },
-  {
-    "id": "gc-50511945",
-    "titre": "développeur Web/développeuse Web",
-    "entreprise": "YO AI Labs",
-    "lieu": "Montréal (QC)",
-    "province": "QC",
-    "pays": "Canada",
-    "salaire": "80,00 $ à 120,00 $ de l'heure",
-    "date_publication": "16 octobre 2026",
-    "modalite": "Sur place",
-    "type_poste": "Temps plein",
-    "competences_cles": [],
-    "description": null,
-    "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50511945?source=searchresults",
-    "source": "Guichet-Emplois",
-    "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:19.266961"
-  },
-  {
-    "id": "gc-50511964",
-    "titre": "développeur/développeuse de logiciels",
-    "entreprise": "YO AI Labs",
-    "lieu": "Montréal (QC)",
-    "province": "QC",
-    "pays": "Canada",
-    "salaire": "80,00 $ à 120,00 $ de l'heure",
-    "date_publication": "16 octobre 2026",
-    "modalite": "Sur place",
-    "type_poste": "Temps plein",
-    "competences_cles": [],
-    "description": null,
-    "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50511964?source=searchresults",
-    "source": "Guichet-Emplois",
-    "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:19.267668"
-  },
-  {
-    "id": "gc-50659081",
+    "id": "gc-50704841",
     "titre": "développeur/développeuse de logiciels",
     "entreprise": "Agropur",
     "lieu": "Notre-Dame-du-Bon-Conseil (QC)",
@@ -929,10 +875,10 @@
       "VUE"
     ],
     "description": null,
-    "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50659081?source=searchresults",
+    "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50704841?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Talent.com",
-    "date_extraction": "2026-11-10T18:18:19.268610"
+    "date_extraction": "2026-11-11T07:00:18.843258"
   },
   {
     "id": "gc-50459336",
@@ -955,7 +901,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50459336?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:19.270054"
+    "date_extraction": "2026-11-11T07:00:18.843673"
   },
   {
     "id": "gc-50401772",
@@ -981,7 +927,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50401772?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:19.271000"
+    "date_extraction": "2026-11-11T07:00:18.844108"
   },
   {
     "id": "gc-50357103",
@@ -1001,7 +947,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50357103?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:19.271979"
+    "date_extraction": "2026-11-11T07:00:18.844579"
   },
   {
     "id": "gc-50265243",
@@ -1021,7 +967,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50265243?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:19.272702"
+    "date_extraction": "2026-11-11T07:00:18.845160"
   },
   {
     "id": "gc-50257747",
@@ -1041,7 +987,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50257747?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:19.273319"
+    "date_extraction": "2026-11-11T07:00:18.845820"
   },
   {
     "id": "gc-50175633",
@@ -1061,7 +1007,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50175633?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:19.273943"
+    "date_extraction": "2026-11-11T07:00:18.846443"
   },
   {
     "id": "gc-50144483",
@@ -1087,7 +1033,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50144483?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:19.274565"
+    "date_extraction": "2026-11-11T07:00:18.846892"
   },
   {
     "id": "gc-50085537",
@@ -1110,7 +1056,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50085537?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:19.275608"
+    "date_extraction": "2026-11-11T07:00:18.847547"
   },
   {
     "id": "gc-49955834",
@@ -1131,7 +1077,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/49955834?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:19.276511"
+    "date_extraction": "2026-11-11T07:00:18.848016"
   },
   {
     "id": "gc-50681102",
@@ -1155,7 +1101,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50681102?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "JobsMedia.ca",
-    "date_extraction": "2026-11-10T18:18:21.162084"
+    "date_extraction": "2026-11-11T07:00:20.494096"
   },
   {
     "id": "gc-50592876",
@@ -1179,7 +1125,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50592876?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "JobsMedia.ca",
-    "date_extraction": "2026-11-10T18:18:21.165028"
+    "date_extraction": "2026-11-11T07:00:20.496039"
   },
   {
     "id": "gc-50542802",
@@ -1203,7 +1149,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50542802?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "JobsMedia.ca",
-    "date_extraction": "2026-11-10T18:18:21.165789"
+    "date_extraction": "2026-11-11T07:00:20.496492"
   },
   {
     "id": "gc-50669349",
@@ -1229,7 +1175,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50669349?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:40.939881"
+    "date_extraction": "2026-11-11T07:00:41.431504"
   },
   {
     "id": "gc-50669095",
@@ -1247,7 +1193,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50669095?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:40.941740"
+    "date_extraction": "2026-11-11T07:00:41.432023"
   },
   {
     "id": "gc-50669181",
@@ -1265,7 +1211,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50669181?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:40.942830"
+    "date_extraction": "2026-11-11T07:00:41.432532"
   },
   {
     "id": "gc-50650938",
@@ -1283,7 +1229,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50650938?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:40.943746"
+    "date_extraction": "2026-11-11T07:00:41.433069"
   },
   {
     "id": "gc-50650991",
@@ -1301,7 +1247,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50650991?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:40.944725"
+    "date_extraction": "2026-11-11T07:00:41.433504"
   },
   {
     "id": "gc-50651229",
@@ -1319,7 +1265,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50651229?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:40.945667"
+    "date_extraction": "2026-11-11T07:00:41.433915"
   },
   {
     "id": "gc-50651391",
@@ -1337,7 +1283,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50651391?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:40.946915"
+    "date_extraction": "2026-11-11T07:00:41.434321"
   },
   {
     "id": "gc-50651326",
@@ -1355,7 +1301,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50651326?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:40.947883"
+    "date_extraction": "2026-11-11T07:00:41.434737"
   },
   {
     "id": "gc-50621998",
@@ -1375,7 +1321,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50621998?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:40.948741"
+    "date_extraction": "2026-11-11T07:00:41.435207"
   },
   {
     "id": "gc-50315520",
@@ -1397,7 +1343,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50315520?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:40.949549"
+    "date_extraction": "2026-11-11T07:00:41.435659"
   },
   {
     "id": "gc-50249191",
@@ -1419,7 +1365,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50249191?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:40.950326"
+    "date_extraction": "2026-11-11T07:00:41.436156"
   },
   {
     "id": "gc-50701948",
@@ -1439,7 +1385,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50701948?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:42.699135"
+    "date_extraction": "2026-11-11T07:00:43.311072"
   },
   {
     "id": "gc-50650969",
@@ -1457,7 +1403,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50650969?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:42.700532"
+    "date_extraction": "2026-11-11T07:00:43.311539"
   },
   {
     "id": "gc-50609588",
@@ -1480,7 +1426,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50609588?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:44.812470"
+    "date_extraction": "2026-11-11T07:00:45.121179"
   },
   {
     "id": "gc-50609250",
@@ -1503,7 +1449,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50609250?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:44.813750"
+    "date_extraction": "2026-11-11T07:00:45.121646"
   },
   {
     "id": "gc-50571004",
@@ -1523,7 +1469,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50571004?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:44.814329"
+    "date_extraction": "2026-11-11T07:00:45.122113"
   },
   {
     "id": "gc-50525887",
@@ -1543,7 +1489,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50525887?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:44.815266"
+    "date_extraction": "2026-11-11T07:00:45.122579"
   },
   {
     "id": "gc-50515789",
@@ -1561,7 +1507,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50515789?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "indeed.com",
-    "date_extraction": "2026-11-10T18:18:44.816190"
+    "date_extraction": "2026-11-11T07:00:45.122994"
   },
   {
     "id": "gc-50502773",
@@ -1581,7 +1527,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50502773?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:44.816961"
+    "date_extraction": "2026-11-11T07:00:45.123337"
   },
   {
     "id": "gc-50597261",
@@ -1603,27 +1549,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50597261?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "CareerBeacon",
-    "date_extraction": "2026-11-10T18:18:44.817754"
-  },
-  {
-    "id": "gc-50482439",
-    "titre": "architecte d'applications",
-    "entreprise": "Nord Quantique",
-    "lieu": "Sherbrooke (QC)",
-    "province": "QC",
-    "pays": "Canada",
-    "salaire": "149 380,00 $ à 175 000,00 $ par année",
-    "date_publication": "13 octobre 2026",
-    "modalite": "Sur place",
-    "type_poste": "Temps plein",
-    "competences_cles": [
-      "C"
-    ],
-    "description": null,
-    "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50482439?source=searchresults",
-    "source": "Guichet-Emplois",
-    "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:44.818685"
+    "date_extraction": "2026-11-11T07:00:45.123692"
   },
   {
     "id": "gc-50046521",
@@ -1641,7 +1567,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50046521?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:44.819908"
+    "date_extraction": "2026-11-11T07:00:45.124153"
   },
   {
     "id": "gc-50046202",
@@ -1661,7 +1587,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50046202?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:44.820982"
+    "date_extraction": "2026-11-11T07:00:45.124568"
   },
   {
     "id": "gc-49942388",
@@ -1684,7 +1610,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/49942388?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:44.822146"
+    "date_extraction": "2026-11-11T07:00:45.125009"
   },
   {
     "id": "gc-50684913",
@@ -1704,7 +1630,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50684913?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:48.193015"
+    "date_extraction": "2026-11-11T07:00:49.309339"
   },
   {
     "id": "gc-50677007",
@@ -1722,7 +1648,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50677007?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:48.194120"
+    "date_extraction": "2026-11-11T07:00:49.309865"
   },
   {
     "id": "gc-50667748",
@@ -1740,7 +1666,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50667748?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:48.195068"
+    "date_extraction": "2026-11-11T07:00:49.310262"
   },
   {
     "id": "gc-50630138",
@@ -1758,7 +1684,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50630138?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:48.195936"
+    "date_extraction": "2026-11-11T07:00:49.310630"
   },
   {
     "id": "gc-50630196",
@@ -1776,7 +1702,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50630196?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Jobillico",
-    "date_extraction": "2026-11-10T18:18:48.196772"
+    "date_extraction": "2026-11-11T07:00:49.310992"
   },
   {
     "id": "gc-50565457",
@@ -1794,7 +1720,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50565457?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:48.197723"
+    "date_extraction": "2026-11-11T07:00:49.311409"
   },
   {
     "id": "gc-50404729",
@@ -1812,7 +1738,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50404729?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:48.198698"
+    "date_extraction": "2026-11-11T07:00:49.311820"
   },
   {
     "id": "gc-50401790",
@@ -1832,7 +1758,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50401790?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:48.200243"
+    "date_extraction": "2026-11-11T07:00:49.312278"
   },
   {
     "id": "gc-50700084",
@@ -1850,7 +1776,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50700084?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:49.805749"
+    "date_extraction": "2026-11-11T07:00:51.443381"
   },
   {
     "id": "gc-50694102",
@@ -1870,7 +1796,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50694102?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:49.806824"
+    "date_extraction": "2026-11-11T07:00:51.443948"
   },
   {
     "id": "gc-50651357",
@@ -1888,7 +1814,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50651357?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:51.586560"
+    "date_extraction": "2026-11-11T07:00:53.506233"
   },
   {
     "id": "gc-50651410",
@@ -1906,7 +1832,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50651410?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:51.587543"
+    "date_extraction": "2026-11-11T07:00:53.506945"
   },
   {
     "id": "gc-50651431",
@@ -1924,7 +1850,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50651431?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:51.588481"
+    "date_extraction": "2026-11-11T07:00:53.507413"
   },
   {
     "id": "gc-50651568",
@@ -1942,7 +1868,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50651568?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:51.589351"
+    "date_extraction": "2026-11-11T07:00:53.507821"
   },
   {
     "id": "gc-50651418",
@@ -1960,7 +1886,7 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50651418?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Québec emploi",
-    "date_extraction": "2026-11-10T18:18:51.590233"
+    "date_extraction": "2026-11-11T07:00:53.508213"
   },
   {
     "id": "gc-50391134",
@@ -1978,6 +1904,6 @@
     "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50391134?source=searchresults",
     "source": "Guichet-Emplois",
     "partenaire": "Guichet-Emplois",
-    "date_extraction": "2026-11-10T18:18:52.905157"
+    "date_extraction": "2026-11-11T07:00:55.222038"
   }
 ]
