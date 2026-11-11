@@ -83,7 +83,4 @@ Les 7 enregistrements Remotive de cet instantané ont été comparés hors ligne
 - **Détection des stages :** `confirmed_stage`, `possible_stage` et `not_indicated` reposent sur des termes et indices textuels. Des formulations inhabituelles peuvent être manquées; `not_indicated` ne prouve pas qu'un poste n'est pas un stage.
 - **Conditions d'utilisation :** le cache Remotive de 24 heures limite les requêtes. Préserver l'attribution et le lien d'origine; ne pas republier ces annonces sur un site tiers. Le prototype ne contourne ni blocage, ni connexion, ni protection.
 - **Pistes suivantes :** élargir les termes et catégories avec des tests; étudier une source supplémentaire uniquement si elle offre un moyen d'accès autorisé; améliorer la détection des stages; vérifier manuellement un échantillon de fiches.
-
-Le prototype comporte 23 tests unitaires hors ligne couvrant notamment le parsing Atom, la pagination, les doublons, le cache et la classification des stages. Les mêmes fichiers de code et de tests ont passé les 23 tests dans `recherche`. La relance depuis ce dossier a été empêchée par une permission de l'environnement; les fichiers ici sont identiques à ceux testés.
-
 Les fichiers `offres.json` et `remotive-cache.json` sont des données de travail locales; ils ne sont pas requis pour les tests et ne sont pas inclus dans ce compte rendu.
