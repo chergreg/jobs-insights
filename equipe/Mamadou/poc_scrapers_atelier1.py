@@ -1,6 +1,6 @@
 """
 POC Atelier 1 — Projet `jobs-insights`
-Auteur : El Hadji Konaté
+Auteur : Mamadou
 
 Script de preuve de concept (POC) pour scraper les sites d'offres d'emploi et de stages identifiés dans sites.md :
 1. Talent.com Canada (Extraction JSON-LD ItemList -> JobPosting + coordonnées GPS)
@@ -166,7 +166,7 @@ def poc_scrape_guichet_emplois(keyword: str = "développeur", mid: str = "22447"
 
     results: List[Dict[str, Any]] = []
     for job_id in ids[:max_items]:
-        posting_url = f"https://www.guichetemplois.gc.ca/jobsearch/pers/offredemploi/{job_id}"
+        posting_url = f"https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/{job_id}"
         try:
             job_html = fetch_html(posting_url)
             title_m = re.search(r'property=["\']title["\'][^>]*>(.*?)</', job_html, re.S)

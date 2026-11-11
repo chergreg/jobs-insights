@@ -1,4 +1,4 @@
-# Dossier Personnel — El Hadji Konaté (`jobs-insights` - Atelier 1)
+# Dossier Personnel — Mamadou (`jobs-insights` - Atelier 1)
 
 Ce dossier contient mes livrables pour l'**Atelier 1** du projet **`jobs-insights`** :
 
