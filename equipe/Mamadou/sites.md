@@ -1,6 +1,6 @@
 # Sites d'offres d'emploi et de stages — Atelier 1 (`jobs-insights`)
 
-**Auteur** : El Hadji Konaté  
+**Auteur** : Mamadou  
 **Profil et cibles de recherche** : Stages (Informatique / Développement logiciel / Réseaux), emplois étudiants à temps partiel et postes juniors au Québec et au Canada.
 
 ---
@@ -31,7 +31,7 @@
     * `fper` : horaire de travail (`F` = Temps plein, `P` = Temps partiel / étudiant).
     * `fsrc=16` : filtre ciblant spécifiquement les **emplois étudiants et stages**.
 * **Ce qui est à scraper** :
-  1. **Dans la page de résultats** : les identifiants d'offres dans les liens `/offredemploi/{id}`.
+  1. **Dans la page de résultats** : les identifiants d'offres dans les liens `/rechercheemplois/offredemploi/{id}`.
   2. **Dans la page d'une offre** : les attributs sémantiques **RDFa (`property="..."`)** :
      * `property="title"` : titre du poste
      * `property="hiringOrganization"` ➔ `property="name"` : nom de l'entreprise
