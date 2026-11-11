@@ -1,65 +1,110 @@
 # Synthèse — Livrable 1 : Inventaire des sites
 
-Bilan établi après lecture des remises déposées par l’équipe (voir la liste consolidée des sources dans [`inventaire.md`](inventaire.md)).
+Bilan établi après lecture des remises déposées par l’équipe (voir le référentiel consolidé dans [`inventaire.md`](inventaire.md)).
 
 ---
 
-## 1. État des remises
+## 1. Tableau synthèse des remises
 
-Sur les **11 étudiants** inscrits dans [`equipe/equipe.md`](../../equipe/equipe.md) :
+Sur les **11 étudiants** inscrits dans [`equipe/equipe.md`](../../equipe/equipe.md) (7 remises complètes, 2 partielles, 2 non faites) :
 
-| Statut | Nb | Étudiants | Observations principales |
-| --- | :-: | --- | --- |
-| **Fait (multi-sites)** | 7 | Rayan, Kandet, Mamadou, Elvira, Hugo, Aymerou, Nonga | Inventaires exploitables allant de 3 à ~27 sources distinctes, avec niveaux d’analyse variés. |
-| **Partiel (1 site)** | 2 | Dan, Ferdinand | Dan ne documente que Guichet-Emplois (ciblé Moncton / N.-B.) ; Ferdinand ne documente que Welcome to the Jungle. |
-| **Non fait** | 2 | Hendrix, Mike | Hendrix a déposé un cahier des charges (`info.md`, ex-`Sites.md`) sans liste de sites ; Mike n’a ni dossier ni contribution. |
+| Étudiant | Statut | Volume recensé | Remise |
+| --- | --- | --- | --- |
+| **Rayan** | ✅ Fait | 4 retenues (dont 4 ATS), 1 à vérifier, 10 exclues | [`sites.md`](../../equipe/rayan/01-inventaire-des-sites/sites.md) |
+| **Kandet** | ✅ Fait | 7 entrées (8 liens) | [`sites.md`](../../equipe/kandet/01-inventaire-des-sites/sites.md) |
+| **Mamadou** | ✅ Fait | 7 entrées (8 sites) | [`sites.md`](../../equipe/mamadou/01-inventaire-des-sites/sites.md) |
+| **Elvira** | ✅ Fait | 8 sites | [`sites.md`](../../equipe/elvira/01-inventaire-des-sites/sites.md) |
+| **Hugo** | ✅ Fait | 10 manuels + 20 pistes IA | [`sites.md`](../../equipe/hugo/01-inventaire-des-sites/sites.md) |
+| **Aymerou** | ✅ Fait | 3 sites | [`sites.md`](../../equipe/aymerou/01-inventaire-des-sites/sites.md) |
+| **Nonga** | ✅ Fait | 4 entrées (3 sources distinctes) | [`sites.md`](../../equipe/nonga/01-inventaire-des-sites/sites.md) |
+| **Dan** | ⚠️ Partiel | 1 site détaillé + 6 noms en attente | [`sites.md`](../../equipe/dan/01-inventaire-des-sites/sites.md) |
+| **Ferdinand** | ⚠️ Partiel | 1 site | [`sites.md`](../../equipe/ferdinand/01-inventaire-des-sites/sites.md) |
+| **Hendrix** | ❌ Non fait | 0 site (cahier des charges) | [`info.md`](../../equipe/hendrix/info.md) |
+| **Mike** | ❌ Non fait | 0 site (aucun dossier) | — |
 
 Toutes les remises du Livrable 1 ont été normalisées sous `equipe/<membre>/01-inventaire-des-sites/sites.md` (voir [`enonce.md`](enonce.md)).
 
 ---
 
-## 2. Constats après lecture des remises
+## 2. Fiches par remise
 
-### Convergence sur un socle québécois et canadien
-- Les plateformes les plus fréquemment identifiées sont **Guichet-Emplois / Job Bank** (7 remises sur 9), **Indeed** (7/9), **Jobillico** (6/9), **Québec emploi** (5/9, ou 6/9 en incluant le portail **Québec.ca** cité par Elvira), **LinkedIn** (5/9), **Jobboom** (3/9), **Remotive** (3/9) et **Talent.com** (2/9).
-- Plusieurs étudiants ont déjà repéré des formats d’extraction fiables sans scraping HTML fragile : **flux Atom/RSS** (Guichet-Emplois), **JSON-LD `JobPosting`** (Jobboom, Jobillico, Talent.com), **RDFa** (Guichet-Emplois), **API JSON publiques** (Remotive, Adzuna, Jooble, Algolia sur WTTJ) et **données ouvertes CSV** (Canada ouvert).
+### Rayan (`✅ Fait`)
+- **Couverture :** Québec / Canada (sources généralistes, APIs, données ouvertes et ATS).
+- **Points forts :** Classement rigoureux (*Retenu / À vérifier / Exclu* avec motifs juridiques et techniques). Seul à documenter les **APIs officielles** (Adzuna, Jooble, Données ouvertes Canada) et les **pages carrières / ATS d’entreprises** (Workday, Greenhouse, Lever, Ashby).
+- **À noter :** Seule remise à avoir respecté d’emblée le nom de fichier singulier demandé initialement (`site.md`).
 
-### Complémentarité des apports individuels
-- **Conformité et APIs :** **Rayan** propose le tri le plus rigoureux (*Retenu / À vérifier / Exclu*) et est le seul à couvrir les **API officielles** (Adzuna, Jooble, Données ouvertes Canada) ainsi que les **pages carrières / ATS d’entreprises** (Workday, Greenhouse, Lever, Ashby), comme suggéré dans l’énoncé.
-- **Vérification technique :** **Kandet** et **Mamadou** combinent l’analyse des filtres URL, la vérification des `robots.txt` / codes HTTP et le repérage précis des structures de données.
-- **Sources locales originales :** **Elvira** apporte des plateformes québécoises moins connues (**KebekJobs**, **MonTravail.ca**, **RIMQ** pour les municipalités) et une analyse détaillée de Jobboom.
-- **Ouverture à vérifier :** **Hugo** fournit la liste la plus large (10 recherches manuelles + 20 pistes générées par IA au Canada et à l’international), mais plusieurs entrées issues de l’IA restent à vérifier en ouvrant réellement les sites (ex. erreur de lien sur `CarrerBuilder`, couverture réelle d’Eluta/WowJobs/WorkBC).
+### Kandet (`✅ Fait`)
+- **Couverture :** Québec, Canada et télétravail tech (7 entrées).
+- **Points forts :** Vérification réelle des `robots.txt` (délai de 5 s sur Guichet-Emplois, restrictions sur Jobillico, interdiction sur LinkedIn), observation concrète d’un `HTTP 403` sur Indeed, analyse précise des filtres et paramètres du flux Atom et de l’API Remotive.
+- **À noter :** Recommande explicitement la consultation manuelle pour les sites restrictifs.
 
-### Points de vigilance relevés
-- **Conformité juridique et anti-bot :** Si Rayan, Kandet et Mamadou écartent explicitement **Indeed**, **LinkedIn**, **Glassdoor** et **Québec emploi** de la collecte automatisée (conditions d’utilisation restrictives, `robots.txt`, Cloudflare / HTTP 403), d’autres remises listent encore ces sites comme cibles de scraping (Aymerou prévoit même de commencer son prototype sur Indeed).
-- **Recoupement entre sources :** Dan et Rayan soulignent que **Guichet-Emplois** republie des annonces provenant de sites partenaires (dont **Jobillico**), ce qui imposera une stratégie de déduplication dès les premiers prototypes multi-sources.
-- **Qualité formelle et alignement :**
-  - Quelques traces de brouillon ou de modèle subsistent (conflit Git dans [`equipe/dan/README.md`](../../equipe/dan/README.md), caractères Markdown échappés dans [`equipe/elvira/01-inventaire-des-sites/sites.md`](../../equipe/elvira/01-inventaire-des-sites/sites.md), champs `oui / non` ou `🔍` non tranchés chez Ferdinand et Dan).
-  - La remise de **Dan** cible le Nouveau-Brunswick (Université de Moncton) plutôt que le Québec, et celles de **Hugo** / **Ferdinand** incluent des sources internationales. Le périmètre géographique commun doit donc être fixé clairement.
+### Mamadou (`✅ Fait`)
+- **Couverture :** Québec / Canada et télétravail tech (7 entrées couvrant 8 sites).
+- **Points forts :** Repérage technique très précis des paramètres GET, des catégories TI (`_i10lfr` sur Jobboom), des filtres stages (`fsrc=16` sur Guichet-Emplois) et des métadonnées structurées (RDFa, JSON-LD `JobPosting` / `ItemList`).
+- **À noter :** Distingue bien les sources accessibles en HTTP standard des plateformes bloquées (Québec emploi en SPA, Indeed/LinkedIn protégés).
+
+### Elvira (`✅ Fait`)
+- **Couverture :** Québec / TI et développement web (8 sites).
+- **Points forts :** Apporte des sources québécoises originales absentes des autres remises (**KebekJobs**, **MonTravail.ca**, **RIMQ** pour les emplois municipaux) et une analyse détaillée de Jobboom.
+- **À noter :** Caractères Markdown échappés (`\#`, `\*`, `\-`) dans le fichier ; signale la protection Cloudflare d’Indeed.
+
+### Hugo (`✅ Fait`)
+- **Couverture :** Canada et international (10 sites recherchés à la main + 20 pistes générées par IA, avec quelques recoupements).
+- **Points forts :** Inventaire le plus large en volume, ouvrant sur de nombreuses APIs gratuites et sources spécialisées.
+- **Points de vigilance :** Pistes issues de l’IA à vérifier manuellement selon l’énoncé ; lien erroné sur `CarrerBuilder` (copie du lien Talent.com) ; inclut des sites bloqués sans tri de conformité.
+
+### Aymerou (`✅ Fait`)
+- **Couverture :** Québec (3 sites : Indeed, Jobillico, Québec emploi).
+- **Points forts :** Chaque site est appuyé par une recherche concrète et un exemple d’offre vérifiée (titre, entreprise, ville, champs à extraire).
+- **Points de vigilance :** Liste courte et orientée vers un premier essai Python sur Indeed (à réorienter vers une source autorisée).
+
+### Nonga (`✅ Fait`)
+- **Couverture :** Canada (Guichet-Emplois / Job Bank, Indeed Canada, LinkedIn Jobs).
+- **Points forts :** Note justement que Job Bank et Guichet-Emplois sont les versions anglaise et française d’une même source ; prévoit la vérification des `robots.txt` et conditions d’utilisation.
+- **Points de vigilance :** Inventaire limité à 3 sources distinctes, dont 2 sont interdites au scraping.
+
+### Dan (`⚠️ Partiel`)
+- **Couverture :** Guichet-Emplois uniquement, ciblé sur **Moncton / Nouveau-Brunswick** (Université de Moncton), avec 6 noms simplement listés en attente sans liens.
+- **Points forts :** Analyse détaillée des filtres, URLs et règles (`time.sleep(2)`, `robots.txt` à lire).
+- **Points de vigilance :** Contient des cases non vérifiées (`🔍`), est hors cible géographique Québec, et laisse un conflit Git non résolu dans [`equipe/dan/README.md`](../../equipe/dan/README.md).
+
+### Ferdinand (`⚠️ Partiel`)
+- **Couverture :** Welcome to the Jungle uniquement.
+- **Points forts :** Repérage de l’API JSON (Algolia) derrière le rendu JavaScript.
+- **Points de vigilance :** Inventaire limité à une seule plateforme plutôt européenne ; deux lignes de modèle restent non tranchées (`oui / non`, `facile / moyenne / difficile`).
+
+### Hendrix & Mike (`❌ Non fait`)
+- **Hendrix :** [`equipe/hendrix/info.md`](../../equipe/hendrix/info.md) (ex-`Sites.md`) contient un cahier des charges complet (429 lignes) et aucune liste de sites.
+- **Mike :** Aucun dossier ni commit dans le dépôt.
 
 ---
 
-## 3. Sources à explorer pour la suite
+## 3. Constats transversaux
 
-1. **Priorité 1 — Socle officiel et structuré (Québec / Canada) :**
-   - **Guichet-Emplois / Job Bank** : flux Atom/RSS et fiches RDFa/JSON-LD (avec délai de 5 s par requête selon `robots.txt`), complétés au besoin par les jeux CSV mensuels de **Données ouvertes Canada** pour des analyses de volume.
-   - **APIs gratuites avec clé (Adzuna, Jooble)** : tester la qualité et la couverture réelle des offres TI et stages au Québec.
-   - **Pages carrières d’employeurs via ATS (Greenhouse, Lever, Ashby, Workday)** : constituer une première liste d’employeurs TI du Québec/Canada publiant des stages et postes juniors.
-2. **Priorité 2 — Portails québécois avec métadonnées structurées :**
-   - **Jobboom**, **Jobillico** et **Talent.com Canada** : vérifier systématiquement leurs `robots.txt` et conditions d’utilisation (notamment les restrictions de recherche/pagination signalées sur Jobillico) avant d’étendre la collecte sur leurs balises JSON-LD `JobPosting`.
-   - **Emplois et stages du gouvernement du Québec (`carrieres.gouv.qc.ca`)** : distinguer ce portail de `quebecemploi.gouv.qc.ca` et vérifier s’il existe un flux ou une autorisation d’accès pour les stages de la fonction publique.
-3. **Priorité 3 — Compléments à évaluer selon le périmètre :**
-   - **Remotive** (API publique, télétravail tech, cache 24 h / max 4 requêtes par jour) si les postes à distance accessibles depuis le Canada sont retenus.
-   - **KebekJobs**, **MonTravail.ca**, **RIMQ**, **Welcome to the Jungle** et les pistes canadiennes de la liste IA (**Eluta.ca**, **WowJobs.ca**, **CharityVillage**) : vérifier manuellement le volume d’offres TI/stages au Québec et les règles d’accès.
+- **Socle commun identifié :** **Guichet-Emplois / Job Bank** (7/9), **Indeed** (7/9), **Jobillico** (6/9), **Québec emploi** (5/9, ou 6/9 avec **Québec.ca**), **LinkedIn** (5/9), **Jobboom** (3/9), **Remotive** (3/9) et **Talent.com** (2/9).
+- **Formats structurés déjà repérés :** flux Atom/RSS (Guichet-Emplois), JSON-LD `JobPosting` (Jobboom, Jobillico, Talent.com), RDFa (Guichet-Emplois), APIs JSON (Remotive, Adzuna, Jooble, Algolia sur WTTJ) et données ouvertes CSV (Canada ouvert).
+- **Maturité inégale sur la conformité :** Rayan, Kandet et Mamadou écartent explicitement les sites protégés ou interdits, alors que d’autres envisagent encore de scraper Indeed ou LinkedIn.
+- **Doublons inter-sources :** Dan et Rayan constatent que Guichet-Emplois reprend des offres de sites partenaires (dont Jobillico), ce qui rend la déduplication indispensable dès les essais multi-sources.
 
 ---
 
-## 4. Décisions qui orientent la suite
+## 4. Sources à explorer et décisions pour la suite
 
-1. **Périmètre cible du projet :** prioriser les **stages et postes TI début de carrière au Québec** (avec ouverture possible aux offres canadiennes et au télétravail accessible depuis le Canada selon la richesse des sources).
-2. **Exclusion stricte des sites interdits ou verrouillés :** **Indeed**, **LinkedIn**, **Glassdoor** et **Québec emploi** (`quebecemploi.gouv.qc.ca`) restent **exclus de toute collecte automatisée** (consultation manuelle uniquement). Aucun contournement technique ne sera tenté.
-3. **Hiérarchie des méthodes de collecte (Livrable 2) :** privilégier dans l’ordre (1) APIs officielles et données ouvertes, (2) flux RSS/Atom, (3) HTML avec JSON-LD `JobPosting` ou RDFa, plutôt que le parsing fragile de sélecteurs CSS ou de pages SPA.
-4. **Préparation de l’étape de normalisation et déduplication :** concevoir un modèle commun d’offre dès le passage en commun des prototypes du Livrable 2 (champs absents laissés vides / `None`, conservation de la source et de l’identifiant d’origine pour repérer les reprises entre agrégateurs).
-5. **Suivi des remises :**
-   - Demander à **Mike** et **Hendrix** de déposer leur inventaire sous `equipe/<nom>/01-inventaire-des-sites/sites.md`.
-   - Inviter **Dan** (recentrage Québec/Canada), **Ferdinand** (ajout d’autres sources locales) et **Aymerou** (abandon d’Indeed au profit d’une source autorisée pour son POC) à ajuster leur sélection pour le Livrable 2.
+### Sources à prioriser
+1. **Socle officiel et APIs (Priorité 1) :**
+   - **Guichet-Emplois / Job Bank** (flux Atom/RSS, RDFa/JSON-LD avec délai de 5 s, et CSV Données ouvertes Canada pour les statistiques).
+   - **Adzuna** et **Jooble** (tester la couverture réelle au Québec et sur les stages TI avec clés API gratuites).
+   - **Pages carrières via ATS** (Greenhouse, Lever, Ashby, Workday) en constituant une liste d’entreprises TI cibles au Québec et au Canada.
+2. **Portails québécois structurés (Priorité 2 — après vérification `robots.txt` / CGU) :**
+   - **Jobboom**, **Jobillico** (vérifier les restrictions de pagination/recherche) et **Talent.com Canada** pour leurs balises JSON-LD `JobPosting`.
+   - **Carrières Gouv. du Québec (`carrieres.gouv.qc.ca`)** pour les stages de la fonction publique, distinct de `quebecemploi.gouv.qc.ca`.
+3. **Compléments à évaluer (Priorité 3) :**
+   - **Remotive** (API JSON publique, télétravail tech) si le périmètre inclut le télétravail accessible depuis le Canada.
+   - **KebekJobs**, **MonTravail.ca**, **RIMQ**, **Welcome to the Jungle** et pistes canadiennes issues de l’IA (Eluta, WowJobs, CharityVillage) après vérification manuelle.
+
+### Décisions structurantes
+- **Périmètre cible :** prioriser les **stages et postes TI début de carrière au Québec**, avec ouverture possible au Canada et au télétravail accessible depuis le Canada.
+- **Exclusion stricte :** **Indeed**, **LinkedIn**, **Glassdoor** et **Québec emploi** (`quebecemploi.gouv.qc.ca`) restent **exclus de toute collecte automatisée** (consultation manuelle uniquement ; aucun contournement).
+- **Ordre de préférence technique (Livrable 2) :** (1) APIs officielles / données ouvertes, (2) flux RSS/Atom, (3) HTML avec JSON-LD ou RDFa, plutôt que le parsing fragile de sélecteurs CSS ou de SPA.
+- **Normalisation et déduplication :** prévoir dès la mise en commun du Livrable 2 un schéma uniforme conservant la source, l’identifiant externe et laissant vides (`None`) les champs absents.
+- **Suivi de l’équipe :** relancer **Mike** et **Hendrix** pour le Livrable 1 ; inviter **Dan** (recentrage Québec/Canada), **Ferdinand** (ajout de sources locales) et **Aymerou** (abandon d’Indeed pour son POC) à ajuster leur choix pour le Livrable 2.

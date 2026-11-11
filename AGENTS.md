@@ -74,6 +74,7 @@ La collecte de données est au cœur du projet et doit rester responsable :
 - **Modularité** : séparer clairement la collecte réseau (HTTP/API), le parsing/nettoyage, la structure de données (modèle typé) et l’export/stockage.
 - **Compatibilité Windows & encodage** : l’équipe travaille notamment sous Windows (`powershell`). Toujours ouvrir les fichiers texte/JSON/CSV avec `encoding="utf-8"` (ou `utf-8-sig` si export CSV destiné à Excel) et gérer proprement l’encodage de la sortie console si nécessaire.
 - **Simplicité pédagogique** : éviter la sur-ingénierie prématurée. Produire un code clair, lisible, typé et bien commenté sur le *pourquoi* des choix non évidents.
+- **Documentation Markdown (tableaux et fiches)** : éviter les tableaux contenant de longues descriptions (dans les fichiers comme dans les réponses). Utiliser des tableaux synthèse concis à cellules courtes, suivis de fiches structurées (titres et listes à puces) pour les détails complets.
 - **Hygiène Git** :
   - Vérifier `git status` et `git diff` avant de conclure.
   - Éviter de commiter des caches temporaires, des journaux d’exécution (`logs/`) ou de volumineux fichiers de données générés par des tests ad hoc, sauf s’il s’agit d’un échantillon volontairement documenté.
