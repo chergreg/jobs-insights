@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from collections.abc import Callable
 from dataclasses import asdict, dataclass, field
 from datetime import datetime, timezone
 from html.parser import HTMLParser
@@ -20,13 +21,25 @@ import xml.etree.ElementTree as ET
 JOB_BANK_FEED_URL = "https://www.jobbank.gc.ca/jobsearch/feed/jobSearchRSSfeed"
 REMOTIVE_API_URL = "https://remotive.com/api/remote-jobs"
 SEARCH_CATEGORY_CODES = ("21230", "21232", "21234")
-REMOTIVE_ALLOWED_CATEGORIES = {"software development", "information technology"}
+JOB_BANK_PAGE_SIZE = 100
+REMOTIVE_ALLOWED_CATEGORIES = {
+    "software development",
+    "information technology",
+    "artificial intelligence",
+    "data and analytics",
+    "devops",
+    "quality assurance",
+    "engineering",
+    "product management",
+    "design",
+    "research",
+}
 JOB_BANK_TERMS = ("developpeur", "programmeur", "stage informatique", "internship")
 JOB_BANK_CRAWL_DELAY_SECONDS = 5
 REMOTIVE_MAX_REQUESTS_PER_DAY = 4
 ATOM = "{http://www.w3.org/2005/Atom}"
 USER_AGENT = "jobs-insights-atelier/1.0 (educational project)"
-MAX_RESPONSE_BYTES = 10_000_000
+MAX_RESPONSE_BYTES = 100_000_000
 STAGE_PATTERN = re.compile(
     r"\b(?:stages?|stagiaires?|interns?|internships?|co[\s-]?op|work[\s-]?terms?)\b",
     flags=re.IGNORECASE,
@@ -124,9 +137,17 @@ def classify_stage(title: str, job_type: str, description: str) -> tuple[str, li
     return "not_indicated", []
 
 
-def build_feed_url(term: str, rows: int) -> str:
+def build_feed_url(term: str, page: int = 1) -> str:
     params = [("fn21", code) for code in SEARCH_CATEGORY_CODES]
-    params.extend((("term", term), ("sort", "D"), ("rows", str(rows))))
+    params.extend(
+        (
+            ("term", term),
+            ("sort", "D"),
+            ("rows", str(JOB_BANK_PAGE_SIZE)),
+        )
+    )
+    if page > 1:
+        params.append(("page", str(page)))
     return f"{JOB_BANK_FEED_URL}?{urlencode(params)}"
 
 
@@ -151,6 +172,8 @@ def parse_feed(
         job_location = _field(summary, "Location")
         job_number = _field(summary, "Job number")
 
+        if not title and not link and not job_number:
+            continue
         if location and _normalize(location) not in _normalize(job_location):
             continue
 
@@ -200,17 +223,58 @@ def fetch_url(url: str, accept: str) -> bytes:
     return content
 
 
-def fetch_job_bank(term: str, rows: int, location: str | None) -> list[SourceRecord]:
-    return parse_feed(
-        fetch_url(build_feed_url(term, rows), "application/atom+xml"),
-        location=location,
-        search_term=term,
-    )
+def fetch_job_bank(
+    term: str,
+    location: str | None,
+    progress: Callable[[int, int], None] | None = None,
+) -> tuple[list[SourceRecord], int]:
+    records: list[SourceRecord] = []
+    seen_page_fingerprints: set[tuple[str, ...]] = set()
+    page = 1
+
+    while True:
+        if page > 1:
+            time.sleep(JOB_BANK_CRAWL_DELAY_SECONDS)
+        feed = fetch_url(
+            build_feed_url(term, page),
+            "application/atom+xml",
+        )
+        page_records = parse_feed(feed, location=None, search_term=term)
+        if not page_records:
+            break
+
+        page_fingerprint = tuple(sorted(record.source_id or record.url for record in page_records))
+        if page_fingerprint in seen_page_fingerprints:
+            break
+        seen_page_fingerprints.add(page_fingerprint)
+
+        new_records = [
+            record
+            for record in page_records
+            if not any(
+                previous.source_id == record.source_id and record.source_id
+                or previous.url == record.url and record.url
+                for previous in records
+            )
+        ]
+        if location:
+            new_records = [
+                record
+                for record in new_records
+                if _normalize(location) in _normalize(record.location)
+            ]
+        records.extend(new_records)
+
+        if progress is not None:
+            progress(page, len(page_records))
+        page += 1
+
+    return records, page
 
 
 def parse_remotive_payload(
     payload: dict[str, object],
-    location_filter: bool = True,
+    location_filter: bool = False,
 ) -> list[SourceRecord]:
     raw_jobs = payload.get("jobs")
     if not isinstance(raw_jobs, list):
@@ -268,16 +332,19 @@ def parse_remotive_payload(
 def load_remotive_payload(cache_path: Path, refresh: bool = False) -> dict[str, object]:
     if not refresh and cache_path.exists():
         cached = json.loads(cache_path.read_text(encoding="utf-8"))
-        if not isinstance(cached, dict) or not isinstance(cached.get("payload"), dict):
+        if (
+            not isinstance(cached, dict)
+            or not isinstance(cached.get("payload"), dict)
+        ):
             raise ValueError(f"Le cache Remotive est invalide : {cache_path}")
-        fetched_at = datetime.fromisoformat(str(cached.get("fetched_at", "")))
-        age_seconds = (datetime.now(timezone.utc) - fetched_at).total_seconds()
-        if 0 <= age_seconds < 24 * 60 * 60:
-            return cached["payload"]
+        if cached.get("request_url") == REMOTIVE_API_URL:
+            fetched_at = datetime.fromisoformat(str(cached.get("fetched_at", "")))
+            age_seconds = (datetime.now(timezone.utc) - fetched_at).total_seconds()
+            if 0 <= age_seconds < 24 * 60 * 60:
+                return cached["payload"]
 
-    query = urlencode({"category": "software-dev", "limit": 100})
     payload_bytes = fetch_url(
-        f"{REMOTIVE_API_URL}?{query}",
+        REMOTIVE_API_URL,
         "application/json",
     )
     try:
@@ -291,6 +358,7 @@ def load_remotive_payload(cache_path: Path, refresh: bool = False) -> dict[str, 
         json.dumps(
             {
                 "fetched_at": datetime.now(timezone.utc).isoformat(),
+                "request_url": REMOTIVE_API_URL,
                 "payload": payload,
             },
             ensure_ascii=False,
@@ -304,7 +372,7 @@ def load_remotive_payload(cache_path: Path, refresh: bool = False) -> dict[str, 
 
 def fetch_remotive(
     cache_path: Path,
-    location_filter: bool = True,
+    location_filter: bool = False,
     refresh: bool = False,
 ) -> list[SourceRecord]:
     payload = load_remotive_payload(cache_path, refresh=refresh)
@@ -372,8 +440,7 @@ def _merge_record(offer: AggregatedOffer, record: SourceRecord) -> None:
     stage_priority = {
         "not_indicated": 0,
         "possible_stage": 1,
-        "likely_stage": 2,
-        "confirmed_stage": 3,
+        "confirmed_stage": 2,
     }
     if stage_priority.get(record.stage_status, 0) > stage_priority.get(offer.stage_status, 0):
         offer.stage_status = record.stage_status
@@ -457,10 +524,13 @@ def main() -> None:
     parser.add_argument(
         "--all-remotive-locations",
         action="store_true",
-        help="Inclure aussi les offres Remotive qui ne ciblent pas le Canada ou le monde entier.",
+        help=argparse.SUPPRESS,
     )
-    parser.add_argument("--limit", type=int, default=20, help="Offres maximum affichées (défaut : 20).")
-    parser.add_argument("--rows", type=int, default=100, help="Résultats demandés par flux (1 à 100).")
+    parser.add_argument(
+        "--canada-remotive-only",
+        action="store_true",
+        help="Filtrer les offres Remotive aux lieux Canada, Québec, Amérique du Nord ou monde entier.",
+    )
     parser.add_argument(
         "--output",
         type=Path,
@@ -479,19 +549,16 @@ def main() -> None:
     )
     args = parser.parse_args()
 
-    if args.limit < 1:
-        parser.error("--limit doit être supérieur ou égal à 1.")
-    if not 1 <= args.rows <= 100:
-        parser.error("--rows doit être compris entre 1 et 100.")
-
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
 
     jobbank_location = None if args.all_jobbank_locations else args.location
+    remotive_location_filter = args.canada_remotive_only and not args.all_remotive_locations
     jobbank_terms = args.jobbank_term or list(JOB_BANK_TERMS)
     source_records: list[SourceRecord] = []
     errors: list[str] = []
     jobbank_term_counts: dict[str, int] = {}
+    jobbank_page_counts: dict[str, int] = {}
     previous_request = 0.0
 
     for term in jobbank_terms:
@@ -499,19 +566,33 @@ def main() -> None:
         if elapsed < JOB_BANK_CRAWL_DELAY_SECONDS:
             time.sleep(JOB_BANK_CRAWL_DELAY_SECONDS - elapsed)
         try:
-            term_records = fetch_job_bank(term, args.rows, jobbank_location)
+            term_records, page_count = fetch_job_bank(
+                term,
+                jobbank_location,
+                progress=lambda page, count: print(
+                    f"Guichet-Emplois « {term} » — page {page} : {count} annonces",
+                    file=sys.stderr,
+                ),
+            )
             jobbank_term_counts[term] = _unique_record_count(term_records)
+            jobbank_page_counts[term] = page_count
             source_records.extend(term_records)
+            print(
+                f"Guichet-Emplois « {term} » : "
+                f"{jobbank_term_counts[term]} annonces locales sur {page_count} page(s)",
+                file=sys.stderr,
+            )
         except (OSError, ET.ParseError, ValueError) as error:
             errors.append(f"Guichet-Emplois ({term}) : {error}")
             jobbank_term_counts[term] = 0
+            jobbank_page_counts[term] = 0
         previous_request = time.monotonic()
 
     try:
         source_records.extend(
             fetch_remotive(
                 Path(__file__).with_name("remotive-cache.json"),
-                location_filter=not args.all_remotive_locations,
+                location_filter=remotive_location_filter,
                 refresh=args.refresh_remotive,
             )
         )
@@ -530,7 +611,7 @@ def main() -> None:
     offers = aggregate_records(source_records)
     stage_counts = {
         status: sum(offer.stage_status == status for offer in offers)
-        for status in ("confirmed_stage", "likely_stage", "possible_stage", "not_indicated")
+        for status in ("confirmed_stage", "possible_stage", "not_indicated")
     }
     source_counts = {
         source: sum(
@@ -541,9 +622,10 @@ def main() -> None:
     }
     print(f"{len(offers)} offres uniques après déduplication.")
     print(f"Résultats Guichet-Emplois par terme : {jobbank_term_counts}")
+    print(f"Pages Guichet-Emplois parcourues par terme : {jobbank_page_counts}")
     print(f"Offres par source : {source_counts}")
     print(f"Classification des stages : {stage_counts}")
-    for offer in offers[: args.limit]:
+    for offer in offers:
         print_offer(offer)
 
     if not args.no_save:
@@ -562,6 +644,7 @@ def main() -> None:
             "offer_count": len(offers),
             "collection_summary": {
                 "jobbank_terms": jobbank_term_counts,
+                "jobbank_pages": jobbank_page_counts,
                 "unique_source_records": _unique_record_count(source_records),
                 "offers_by_source": source_counts,
                 "stage_classification": stage_counts,
