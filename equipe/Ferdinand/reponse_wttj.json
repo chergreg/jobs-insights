@@ -1,0 +1,100 @@
+{
+  "data": [
+    {
+      "name": "Stage fin d'études - Consultant.e IA/DATA",
+      "status": "published",
+      "remote": "no",
+      "reference": "33e7a622-7ec4-4434-b386-7151ae990688",
+      "search_result": {
+        "score": 2.119868
+      },
+      "updated_at": "2026-11-03T15:30:11.956574Z",
+      "slug": "stage-fin-d-etudes-consultant-e-ia-data_VONA_k4RDq5l",
+      "wk_reference": "VONA_k4RDq5l",
+      "organization": {
+        "name": "VONA",
+        "reference": "ywzggQO",
+        "labels": [
+          "ecovadis-gold"
+        ],
+        "logo": {
+          "url": "https://cdn-images.welcometothejungle.com/AOJ1MeYgvoH5TXaxZUIkP0koAIPB2tGpRrdycd_7hIs/rs:auto:400/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby8xMzgxLzE2MDYxNS80NGQ4OTY3MC04YjljLTRjYmEtOWQ4OC03ODhmNmFkNzkwZTEucG5n",
+          "thumb": {
+            "url": "https://cdn-images.welcometothejungle.com/o_iR0K4n0gWDhaGgbK6hnEoXVmNOtkMVPax9w_dob0Q/rs:auto:70/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy9vcmdhbml6YXRpb24vbG9nby8xMzgxLzE2MDYxNS80NGQ4OTY3MC04YjljLTRjYmEtOWQ4OC03ODhmNmFkNzkwZTEucG5n"
+          }
+        },
+        "slug": "vona",
+        "sectors": [
+          {
+            "name": "Strategy",
+            "parent_name": "Consulting / Audit"
+          },
+          {
+            "name": "Change Management",
+            "parent_name": "Consulting / Audit"
+          },
+          {
+            "name": "Cyber Security",
+            "parent_name": "Tech"
+          }
+        ],
+        "website_organization": {
+          "slug": "vona"
+        },
+        "nb_employees": 74,
+        "industry": "Strategy, Change Management, Cyber Security",
+        "cover_image": {
+          "small": {
+            "url": "https://cdn-images.welcometothejungle.com/jDy5_YidSC2futd0DEILRw3Av7iwFzdqOcOO7R3Iv68/rs:auto:640/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLTE2ODI1YjYzLTAwYjItNDhkZS05MmY3LTg5NmM0NTZmNjZiNC5qcGc"
+          },
+          "url": "https://cdn-images.welcometothejungle.com/LVBxZ54v1EuBlLhBbeaZYSX-J4BDcWPYNr6uxlhiw_I/rs:auto:2000:450/g:fp:0:0.5/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLTE2ODI1YjYzLTAwYjItNDhkZS05MmY3LTg5NmM0NTZmNjZiNC5qcGc",
+          "medium": {
+            "url": "https://cdn-images.welcometothejungle.com/X28gSRNrwHZh15clgmZPS1MIegIQa2q0K7h8MkpsjHE/rs:auto:900/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLTE2ODI1YjYzLTAwYjItNDhkZS05MmY3LTg5NmM0NTZmNjZiNC5qcGc"
+          },
+          "large": {
+            "url": "https://cdn-images.welcometothejungle.com/MYZ9LMtKAMdH_A3PWR6GeOmvKvvHhYKbtG0INq_TCro/rs:auto:1500/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLTE2ODI1YjYzLTAwYjItNDhkZS05MmY3LTg5NmM0NTZmNjZiNC5qcGc"
+          },
+          "social": {
+            "url": "https://cdn-images.welcometothejungle.com/RGvGHsMv-_xkV2qIGxEoHpxBYK03qXcIdKnfTkzNWiU/rs:auto:1200:627/q:85/czM6Ly93dHRqLXByb2R1Y3Rpb24vdXBsb2Fkcy93ZWJzaXRlX29yZ2FuaXphdGlvbi9jb3Zlcl9pbWFnZS93dHRqX2ZyL2ZyLTE2ODI1YjYzLTAwYjItNDhkZS05MmY3LTg5NmM0NTZmNjZiNC5qcGc"
+          }
+        }
+      },
+      "published_at": "2026-09-21T14:39:35Z",
+      "office": {
+        "city": "Paris",
+        "latitude": 48.87295,
+        "longitude": 2.3478,
+        "country_code": "FR"
+      },
+      "contract_type": "internship",
+      "salary_period": "monthly",
+      "salary_min": null,
+      "salary_max": 1500.0,
+      "salary_currency": "EUR",
+      "offices": [
+        {
+          "city": "Paris",
+          "latitude": 48.87295,
+          "longitude": 2.3478,
+          "country_code": "FR"
+        },
+        {
+          "city": "Montreal",
+          "latitude": 45.5124,
+          "longitude": -73.55469,
+          "country_code": "CA"
+        }
+      ],
+      "company_summary": "Cabinet de conseil en stratégie digitale et cybergouvernance.",
+      "is_bookmarked": false,
+      "experience_min": 1.0,
+      "experience_max": 2.0
+    }
+  ],
+  "metadata": {
+    "total": 1,
+    "page": 1,
+    "per_page": 10,
+    "page_count": 1
+  }
+}
