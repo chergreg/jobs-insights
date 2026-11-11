@@ -10,7 +10,7 @@ Cherchez des sources variées. Pensez aux plateformes d’emploi généralistes 
 
 Utilisez les moyens de votre choix. Privilégiez la recherche Web. Vous pouvez aussi vous servir de l’intelligence artificielle pour trouver des pistes. Avant d’ajouter un site, ouvrez le lien et vérifiez que le site publie bien des offres d’emploi ou de stage.
 
-## Quoi mettre dans `site.md`
+## Quoi mettre dans `sites.md`
 
 Faites une liste Markdown avec une entrée par site. Indiquez son nom et ajoutez, si possible, un lien direct vers la page où les offres sont affichées.
 
@@ -27,6 +27,6 @@ Voici un modèle à adapter.
 
 ## Où déposer votre fichier
 
-Dans le dossier `equipe` du dépôt du projet, placez `site.md` dans le sous-dossier à votre nom. Le chemin aura la forme `equipe/votre-nom/site.md`.
+Dans le dossier `equipe` du dépôt du projet, placez `sites.md` dans le sous-dossier `01-inventaire-des-sites` de votre dossier personnel. Le chemin aura la forme `equipe/votre-nom/01-inventaire-des-sites/sites.md`.
 
 Publiez votre contribution dans le [dépôt GitHub du projet](https://github.com/chergreg/jobs-insights), puis vérifiez que votre fichier s’affiche au bon endroit sur GitHub.

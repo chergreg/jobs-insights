@@ -25,14 +25,14 @@ Le projet est **en phase de cadrage et d’exploration (Atelier 1 / POCs)**. Auc
 
 - `README.md` : présentation officielle du projet, des pistes et du fonctionnement collaboratif.
 - `.gitignore` : exclusions Python standard.
-- `equipe/` : espaces de travail et de veille individuels des membres de l’équipe (recensements `sites.md` / `Sites.md`, scripts POC, exemples de sorties JSON/CSV). Les dossiers sous `equipe/` suivent le nom du membre en minuscules sans accent, aligné sur [`equipe/equipe.md`](equipe/equipe.md) (`aymerou`, `elvira`, `ferdinand`, `gregory`, `hendrix`, `hugo`, `kandet`, `mamadou`, `nonga`, `rayan`, etc.).
+- `equipe/` : espaces de travail et de veille individuels des membres de l’équipe (recensements `01-inventaire-des-sites/sites.md`, scripts POC, exemples de sorties JSON/CSV). Les dossiers sous `equipe/` suivent le nom du membre en minuscules sans accent, aligné sur [`equipe/equipe.md`](equipe/equipe.md) (`aymerou`, `dan`, `elvira`, `ferdinand`, `gregory`, `hendrix`, `hugo`, `kandet`, `mamadou`, `nonga`, `rayan`, etc.).
   - Exemples de POCs déjà présents :
     - `equipe/hugo/` : collecteur interactif Guichet-Emplois avec modèle Pydantic `JobOffer` (`models.py`, `requirements.txt`).
     - `equipe/kandet/` : POC multi-source (flux Atom Guichet-Emplois + API Remotive) en bibliothèque standard avec déduplication, détection de stages et tests unitaires (`test_poc_multi_source.py`).
     - `equipe/mamadou/` : POCs stdlib sur Talent.com, Jobboom, Guichet-Emplois (RDFa) et Jobillico (JSON-LD).
     - `equipe/elvira/` : scraper Jobboom (`requests` + `BeautifulSoup` + JSON-LD).
     - `equipe/ferdinand/` : collecte via l’API publique Welcome to the Jungle et export CSV.
-    - `equipe/rayan/site.md` : analyse de conformité des sources Québec/Canada (données ouvertes, APIs, ATS, sources exclues).
+    - `equipe/rayan/01-inventaire-des-sites/sites.md` : analyse de conformité des sources Québec/Canada (données ouvertes, APIs, ATS, sources exclues).
     - `equipe/hendrix/README.MD` : proposition d’architecture cible (non implémentée à ce jour).
 
 ### Règles de périmètre
