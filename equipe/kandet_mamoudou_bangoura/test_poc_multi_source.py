@@ -7,9 +7,11 @@ from unittest.mock import patch
 from urllib.parse import parse_qs, urlparse
 
 from poc_multi_source import (
+    JOB_BANK_PAGE_SIZE,
     aggregate_records,
     build_feed_url,
     classify_stage,
+    fetch_job_bank,
     load_remotive_payload,
     parse_feed,
     parse_remotive_payload,
@@ -63,12 +65,116 @@ class ParseFeedTests(unittest.TestCase):
 
         self.assertEqual(len(jobs), 2)
 
+    def test_skips_empty_feed_placeholder_entries(self) -> None:
+        feed = b"""<feed xmlns="http://www.w3.org/2005/Atom">
+          <entry><title></title><summary></summary></entry>
+        </feed>"""
+
+        self.assertEqual(parse_feed(feed, location=None), [])
+
     def test_feed_url_includes_relevant_category_filters(self) -> None:
-        query = parse_qs(urlparse(build_feed_url("developpeur", 100)).query)
+        query = parse_qs(urlparse(build_feed_url("developpeur")).query)
 
         self.assertEqual(query["fn21"], ["21230", "21232", "21234"])
         self.assertEqual(query["term"], ["developpeur"])
-        self.assertEqual(query["rows"], ["100"])
+        self.assertEqual(query["rows"], [str(JOB_BANK_PAGE_SIZE)])
+        self.assertNotIn("page", query)
+
+    def test_feed_url_targets_requested_page(self) -> None:
+        query = parse_qs(urlparse(build_feed_url("developpeur", page=7)).query)
+
+        self.assertEqual(query["page"], ["7"])
+
+    def test_fetch_job_bank_continues_until_feed_pages_are_exhausted(self) -> None:
+        def make_feed(start: int, count: int) -> bytes:
+            entries = "".join(
+                f"""
+                <entry>
+                  <title>Developer {job_id}</title>
+                  <link rel="alternate" href="https://example.test/job/{job_id}"/>
+                  <summary type="html"><![CDATA[
+                    <strong>Job number:</strong> {job_id}<br />
+                    <strong>Location:</strong> Montréal (QC)<br />
+                    <strong>Employer:</strong> Example Inc.<br />
+                    <strong>Salary:</strong> $30 hourly
+                  ]]></summary>
+                </entry>
+                """
+                for job_id in range(start, start + count)
+            )
+            return (
+                f'<feed xmlns="http://www.w3.org/2005/Atom">{entries}</feed>'
+            ).encode()
+
+        full_page_one = make_feed(1, JOB_BANK_PAGE_SIZE)
+        full_page_two = make_feed(JOB_BANK_PAGE_SIZE + 1, JOB_BANK_PAGE_SIZE)
+        empty_page = b'<feed xmlns="http://www.w3.org/2005/Atom"></feed>'
+        with (
+            patch(
+                "poc_multi_source.fetch_url",
+                side_effect=[full_page_one, full_page_two, empty_page],
+            ) as fetch,
+            patch("poc_multi_source.time.sleep") as sleep,
+        ):
+            records, page_count = fetch_job_bank("developer", "QC")
+
+        self.assertEqual(len(records), JOB_BANK_PAGE_SIZE * 2)
+        self.assertEqual(page_count, 3)
+        self.assertEqual(fetch.call_count, 3)
+        self.assertEqual(sleep.call_count, 2)
+        requested_pages = [
+            parse_qs(urlparse(call.args[0]).query).get("page", ["1"])[0]
+            for call in fetch.call_args_list
+        ]
+        self.assertEqual(requested_pages, ["1", "2", "3"])
+
+    def test_fetch_job_bank_does_not_stop_at_a_short_nonempty_page(self) -> None:
+        empty_page = b'<feed xmlns="http://www.w3.org/2005/Atom"></feed>'
+        with (
+            patch(
+                "poc_multi_source.fetch_url",
+                side_effect=[ATOM_FIXTURE, empty_page],
+            ) as fetch,
+            patch("poc_multi_source.time.sleep"),
+        ):
+            records, page_count = fetch_job_bank("developer", "QC")
+
+        self.assertEqual(len(records), 1)
+        self.assertEqual(page_count, 2)
+        self.assertEqual(fetch.call_count, 2)
+
+    def test_fetch_job_bank_stops_if_a_page_repeats(self) -> None:
+        def make_full_page() -> bytes:
+            entries = "".join(
+                f"""
+                <entry>
+                  <title>Developer {job_id}</title>
+                  <link rel="alternate" href="https://example.test/job/{job_id}"/>
+                  <summary type="html"><![CDATA[
+                    <strong>Job number:</strong> {job_id}<br />
+                    <strong>Location:</strong> Montréal (QC)<br />
+                    <strong>Employer:</strong> Example Inc.<br />
+                    <strong>Salary:</strong> $30 hourly
+                  ]]></summary>
+                </entry>
+                """
+                for job_id in range(JOB_BANK_PAGE_SIZE)
+            )
+            return f'<feed xmlns="http://www.w3.org/2005/Atom">{entries}</feed>'.encode()
+
+        repeated_page = make_full_page()
+        with (
+            patch(
+                "poc_multi_source.fetch_url",
+                side_effect=[repeated_page, repeated_page],
+            ) as fetch,
+            patch("poc_multi_source.time.sleep"),
+        ):
+            records, page_count = fetch_job_bank("developer", "QC")
+
+        self.assertEqual(len(records), JOB_BANK_PAGE_SIZE)
+        self.assertEqual(page_count, 2)
+        self.assertEqual(fetch.call_count, 2)
 
 
 class RemotiveTests(unittest.TestCase):
@@ -104,7 +210,8 @@ class RemotiveTests(unittest.TestCase):
                         "category": "Writing",
                     },
                 ]
-            }
+            },
+            location_filter=True,
         )
 
         self.assertEqual(len(jobs), 1)
@@ -131,6 +238,22 @@ class RemotiveTests(unittest.TestCase):
 
         self.assertEqual(len(jobs), 1)
 
+    def test_includes_all_remotive_locations_by_default(self) -> None:
+        jobs = parse_remotive_payload(
+            {
+                "jobs": [
+                    {
+                        "id": 1,
+                        "title": "Developer",
+                        "candidate_required_location": "France",
+                        "category": "Software Development",
+                    }
+                ]
+            }
+        )
+
+        self.assertEqual(len(jobs), 1)
+
     def test_reuses_a_fresh_local_cache_without_calling_the_api(self) -> None:
         payload = {"jobs": [{"id": 42}]}
         with TemporaryDirectory() as temporary_directory:
@@ -139,6 +262,7 @@ class RemotiveTests(unittest.TestCase):
                 json.dumps(
                     {
                         "fetched_at": datetime.now(timezone.utc).isoformat(),
+                        "request_url": "https://remotive.com/api/remote-jobs",
                         "payload": payload,
                     }
                 ),
@@ -149,6 +273,34 @@ class RemotiveTests(unittest.TestCase):
 
         self.assertEqual(cached_payload, payload)
         fetch.assert_not_called()
+
+    def test_refetches_legacy_cache_without_the_unlimited_endpoint_marker(self) -> None:
+        payload = {"jobs": []}
+        with TemporaryDirectory() as temporary_directory:
+            cache_path = Path(temporary_directory) / "remotive-cache.json"
+            cache_path.write_text(
+                json.dumps(
+                    {
+                        "fetched_at": datetime.now(timezone.utc).isoformat(),
+                        "payload": {"jobs": [{"id": "stale-limited-result"}]},
+                    }
+                ),
+                encoding="utf-8",
+            )
+            with patch(
+                "poc_multi_source.fetch_url",
+                return_value=json.dumps(payload).encode(),
+            ) as fetch:
+                refreshed = load_remotive_payload(cache_path)
+
+            stored_cache = json.loads(cache_path.read_text(encoding="utf-8"))
+
+        self.assertEqual(refreshed, payload)
+        fetch.assert_called_once_with(
+            "https://remotive.com/api/remote-jobs",
+            "application/json",
+        )
+        self.assertEqual(stored_cache["request_url"], "https://remotive.com/api/remote-jobs")
 
 
 class StageDetectionTests(unittest.TestCase):
