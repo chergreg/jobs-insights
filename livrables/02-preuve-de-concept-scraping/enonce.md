@@ -23,4 +23,4 @@ Si la collecte ne donne aucun résultat, décrivez ce que vous avez tenté et ce
 
 ## Déposer votre contribution
 
-Publiez le code et le compte rendu dans votre dossier personnel `equipe/votre-nom/` sur le [dépôt GitHub du projet](https://github.com/chergreg/jobs-insights). Nous mettrons ensuite les prototypes et les observations en commun pour comparer les approches.
+Publiez le code et le compte rendu dans votre dossier personnel `equipe/votre-nom/02-preuve-de-concept-scraping/` sur le [dépôt GitHub du projet](https://github.com/chergreg/jobs-insights). Nous mettrons ensuite les prototypes et les observations en commun pour comparer les approches.
