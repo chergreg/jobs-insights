@@ -22,3 +22,8 @@ L’expérimentation permet de mettre en pratique les échanges de données, la 
 ## État du projet
 
 Le projet est en phase de cadrage. Le périmètre des offres, les premières sources à explorer, le contenu de la première version, l’architecture et l’organisation des contributions seront précisés au fil du travail.
+
+## Livrables
+
+- **Livrable en cours :** [Livrable 2 — Preuve de concept de scraping](livrables/02-preuve-de-concept-scraping/enonce.md)
+- [Livrable 1 — Inventaire des sites d’offres d’emploi et de stage](livrables/01-inventaire-des-sites/enonce.md)
