@@ -1,0 +1,197 @@
+[
+  {
+    "titre": "Spécialiste en informatique pour utilisateurs finaux / End User Computing Specialist",
+    "entreprise": "Services de Gestion Quantum Ltée",
+    "date_publication": "2026-07-22",
+    "url": "https://www.jobboom.com/fr/offre-emploi/specialiste-en-informatique-pour-utilisateurs-finaux-end-user-computing-specialist_services-de-gestion-quantum-ltee_p3661921",
+    "raw_json_ld": {
+      "@context": "http://schema.org/",
+      "@type": "JobPosting",
+      "description": "<p><strong>Poste : </strong>spécialiste en informatique pour les utilisateurs finaux<br><strong>Lieu de travail : </strong>Montréal<br><strong>Heures de travail :</strong> heures normales de bureau<br><strong>Type de poste : </strong>contrat de 6 mois pouvant déboucher sur un poste permanent<br><br>Nous recherchons actuellement, pour le compte de notre client situé au centre-ville de Montréal, un <strong>spécialiste en informatique pour les utilisateurs finaux (EUC)</strong> expérimenté et axé sur le service à la clientèle. Il s’agit d’un poste contractuel de 6 mois pouvant déboucher sur un poste permanent.<br><br>Dans ce poste, vous assurerez le soutien technique pour les postes de travail et les utilisateurs finaux au sein d’un environnement d’entreprise. Ce poste exige des compétences pratiques en dépannage technique, associées à un service à la clientèle professionnel et personnalisé.<br><br><strong>Qualifications clés :<br><br></strong>- 3 à 5 ans d’expérience en soutien technique pour les postes de travail ou l’informatique des utilisateurs finaux (EUC), exclusivement au sein de grandes entreprises.<br>- Maîtrise de Microsoft Windows, de la suite MS Office et de MS Teams.<br>- Expérience avec les systèmes de gestion des tickets d’entreprise et le dépannage des réseaux VPN.<br>- Expertise en configuration matérielle, en création d’images, en déploiement et en distribution.<br>- Expérience pratique en matière de provisionnement des utilisateurs et de configuration des comptes pour les nouveaux employés.<br>- Excellentes compétences en communication, un sens aigu du service à la clientèle et une approche proactive et avide d’apprendre.<br>- Maîtrise du français<br><br><strong>Autre exigence linguistique :</strong> anglais<br>- Niveau de maîtrise requis : avancé<br>- Raisons de l’exigence linguistique : communication avec les clients, collaboration au sein de l’équipe interne, relations avec des partenaires ou des intervenants issus de différentes cultures, soutien à la clientèle<br>- Fréquence d’utilisation : quotidienne (pour diverses tâches)<br><br>Si vous répondez aux exigences ci-dessus et que vous souhaitez faire progresser votre carrière dans un environnement informatique d’entreprise, <strong>veuillez soumettre votre candidature à Maria Essaouari à l’adresse maria.essaouari@quantum-qtr.com</strong>.</p><br>RECOMMANDEZ UNE PERSONNE EMBAUCHÉE POUR UN POSTE ET OBTENEZ UNE PRIME ! Pour plus d'informations, cliquez ici.<br><br>Numéro du permis CNESST : AP-2000414 et AR-2000415<br><br>Toutes les candidatures sont examinées par notre équipe de recrutement, et les décisions d’embauche sont prises par des personnes. Nous pouvons également utiliser des outils dotés d’intelligence artificielle pour soutenir certaines étapes du processus d’examen des candidatures.<strong><br><br>........................................................................<br><br><br>Position: </strong>End User Computing Specialist<strong><br>Location: </strong>Montreal<br><strong>Working Hours:</strong> Regular business hours<strong><br>Job Type: </strong>6-month contract to permanent<br><br>We are currently seeking an experienced and customer-focused <strong>End User Computing (EUC) Specialist</strong> on behalf of our client located in downtown Montreal. This is a 6-month contract position with the opportunity to convert into a permanent role.<br><br>In this role, you will provide desktop and end-user support within an enterprise environment. This position requires hands-on technical troubleshooting paired with high-touch, professional customer service.<br><br><strong>Key Qualifications:</strong><br><br>- 3 to 5 years of desktop/EUC support experience strictly within large corporate/enterprise environments.<br>- Proficiency supporting Microsoft Windows, MS Office Suite, and MS Teams.<br>- Experience with enterprise ticketing systems and VPN troubleshooting.<br>- Expertise in hardware setup, imaging, deployment, and distribution.<br>- Hands-on experience with user provisioning and new-hire account setups.<br>- Outstanding communication skills, a strong service orientation, and a proactive, eager-to-learn approach.<br>- Proficiency in French<br><br><strong>Other Language Requirement:</strong> English<br>- Level of Proficiency Required: Advanced<br>- Reasons for Language Requirement: Communication with clients, Internal team collaboration, Rapport with partners or stakeholders from different cultures, Customer support<br>- Frequency of Use: Daily (for various tasks)<br><br>If you meet the requirements above and are looking to advance your career in an enterprise IT environment, <strong>please submit your application to Maria Essaouari at maria.essaouari@quantum-qtr.com</strong>.<br><br>REFER A NEW HIRE AND EARN A CASH BONUS! For details, click here.<br><br>CNESST permit numbers:  AP-2000414 &amp;amp; AR-2000415<br><br><br><p>All applications are reviewed by our recruitment team, and hiring decisions are made by people. We may also use AI-enabled tools to support parts of the application review process.</p><br>",
+      "title": "Spécialiste en informatique pour utilisateurs finaux / End User Computing Specialist",
+      "datePosted": "2026-07-22",
+      "jobLocation": {
+        "@type": "Place",
+        "address": {
+          "addressCountry": "CA",
+          "addressRegion": "QC",
+          "addressLocality": "Montréal",
+          "@type": "PostalAddress"
+        },
+        "geo": {
+          "latitude": "45.53583646",
+          "longitude": "-73.6334285",
+          "@type": "GeoCoordinates"
+        }
+      },
+      "hiringOrganization": {
+        "name": "Services de Gestion Quantum Ltée",
+        "logo": "https://images.jobboom.com/logo/recrutement/fr/G113267.jpg",
+        "@type": "Organization"
+      },
+      "image": "https://images.jobboom.com/logo/recrutement/fr/G113267.jpg",
+      "validThrough": "2027-01-18",
+      "employmentType": [
+        "PERMANENT",
+        "FULL_TIME"
+      ],
+      "url_offre": "https://www.jobboom.com/fr/offre-emploi/specialiste-en-informatique-pour-utilisateurs-finaux-end-user-computing-specialist_services-de-gestion-quantum-ltee_p3661921"
+    }
+  },
+  {
+    "titre": "Technicien (ne) en  informatique en support technique",
+    "entreprise": "Services plus",
+    "date_publication": "2023-10-25",
+    "url": "https://www.jobboom.com/fr/offre-emploi/technicien-ne-en-informatique-en-support-technique_services-plus_p3132854",
+    "raw_json_ld": {
+      "@context": "http://schema.org/",
+      "@type": "JobPosting",
+      "description": "Nous sommes à la recherche de personnel en informatique au niveau du support technique pour faire différents contrats dans différents ministères de la fonction publique fédérale ( Gouvernement du Canada). Les tâches typiques peuvent comprendre ce qui suit : • Coordonner l’élaboration des spécifications d’applications technologiques émergentes. • Agir comme agent de liaison pour le soutien des utilisateurs entre les fournisseurs, les techniciens des systèmes d’information et les ministères des utilisateurs finaux. • Partager son savoir-faire et fournir des directives dans le domaine de la formation sur le soutien pour les nouvelles technologies et les applications spéciales. • Simuler ou reproduire les problèmes techniques rencontrés les utilisateurs. • Fournir des conseils et une formation aux utilisateurs en réponse aux problèmes rencontrés. • Recommander et mettre en œuvre des exigences complexes en matière de sécurité. • Fournir du soutien pour les systèmes administratifs, les réseaux et Internet aux utilisateurs en réponse aux problèmes rencontrés. • Consigner, organiser et tenir à jour les problèmes et les solutions dans un registre qui sera utilisé par des collègues. • Vérifier l’exactitude et l’exhaustivité du travail accompli. • Concevoir, configurer et déployer des systèmes de fichiers et des applications sur serveur. • Identifier, rechercher et résoudre des problèmes techniques complexes. • Recommander de nouveaux produits ou processus qui prennent en charge et améliorent les activités commerciales des groupes d’utilisateurs. • Planifier la mise en œuvre d’une mise à niveau du système à l’échelle du ministère ou participer à sa mise en œuvre. Exigences: Études : • Certificat ou diplôme en science informatique ou dans un autre domaine pertinent décerné par un établissement d’enseignement postsecondaire canadien reconnu. • Expérience : 24 mois d’expérience pertinente. • Avoir une cote de sécurité du Gouvernement du Canada de niveau Secret ou être disposé à effectuer le processus pour l'obtenir. Salaire : Le salaire est variable selon les contrats pour les différents ministères.<br> ",
+      "title": "Technicien (ne) en  informatique en support technique",
+      "datePosted": "2023-10-25",
+      "jobLocation": {
+        "@type": "Place",
+        "address": {
+          "addressCountry": "CA",
+          "addressRegion": "QC",
+          "addressLocality": "Montréal",
+          "postalCode": "H5A1L6",
+          "@type": "PostalAddress"
+        },
+        "geo": {
+          "latitude": "45.627618",
+          "longitude": "-72.981604",
+          "@type": "GeoCoordinates"
+        }
+      },
+      "hiringOrganization": {
+        "name": "Services plus",
+        "logo": "https://images.jobboom.com/logo/recrutement/fr/G115508.jpg",
+        "@type": "Organization"
+      },
+      "image": "https://images.jobboom.com/logo/recrutement/fr/G115508.jpg",
+      "validThrough": "2026-12-09",
+      "employmentType": [
+        "CONTRACTOR",
+        "FULL_TIME"
+      ],
+      "url_offre": "https://www.jobboom.com/fr/offre-emploi/technicien-ne-en-informatique-en-support-technique_services-plus_p3132854"
+    }
+  },
+  {
+    "titre": "Technicien(ne) informatique senior",
+    "entreprise": "Canam",
+    "date_publication": "2026-10-07",
+    "url": "https://www.jobboom.com/fr/offre-emploi/technicienne-informatique-senior_canam_p3701613",
+    "raw_json_ld": {
+      "@context": "http://schema.org/",
+      "@type": "JobPosting",
+      "description": "<br><br>                                        Description du poste<br><br><br><p><strong>Ta vie chez Canam</strong></p><br><p>En tant que technicien·ne senior en informatique, tu agiras à titre de personne-ressource, d’expert·e-conseil et de premier point de contact pour nos usagers. Grâce à ta grande autonomie, ton leadership technique et ton sens aigu des responsabilités, tu assureras le soutien technique lors d’incidents, de bris ou de pannes, tout en exécutant l’installation et l’entretien des équipements informatiques. Prise de décisions éclairées dans l’intérêt de Canam, planification et réalisation de projets TI clés à titre de leader, et imputabilité des mandats confiés feront partie intégrante de ton quotidien pour garantir l’efficacité de nos systèmes. tu seras également appelé.e à dépanner tes collègues occasionnellement à l’usine de Boucherville.</p><br><p>Cela dit, c’est ton équipe qui te donnera le plus de satisfaction, car chez Canam, nous sommes un alliage solide de rigueur et de bienveillance!</p><br><p><strong>Les avantages Canam</strong></p><br><ul><li>On t’offre un salaire à la hauteur de ton talent pour un horaire de 35,5 heures par semaine</li><li>Parce qu’on est toujours à la recherche de nouveaux talents, on te verse une prime de référence de 1 000 $</li><li>Partage de profits selon la performance de l’entreprise parce qu’on aime partager le succès</li><li>Assurances collectives dès ta première journée avec cotisations de l’employeur (vie, invalidité, médicaments, dentaire et voyage) pour avoir l’esprit léger</li><li>Régime de rentes à cotisations déterminées parce qu’on arrive tous à la retraite un jour</li><li>Programme d’aide aux employé.e.s et famille pour les besoins de chacun</li><li>Accès à un service de télémédecine gratuit parce qu’attendre à la clinique, ça ne plait à personne</li><li>Mouvement de carrière parce qu’on grandit tous différemment</li><li>Parce que ton bien-être nous tient à coeur, contribution annuelle de Canam pour t’encourager à prendre soin de toi</li><li>Le café est gratuit pour bien partir ta journée</li><li>Cafétéria sur le site pour les jours où tu n’as pas envie de cuisiner ou de manger ton habituel sandwich</li><li>Parce que ton énergie compte autant que ton savoir-faire, tu trouveras notre gym directement sur place!</li><li>Club social (partys, tournois, sorties) parce qu’on aime se retrouver en gang</li></ul><br><br><br> <br><br>                                        Qualifications<br><br><br><ul><li>DEC en techniques informatique ou DEP en soutien informatique</li><li>7 ans et plus dans un rôle de technicien·ne informatique</li><li>Bonne maîtrise du français et de l’anglais écrit et parlé pour être mesure de communiquer avec tes client·e·s internes francophones et anglophones</li><li>Connaissance de la méthodologie ITIL et Agile ou Lean</li></ul><br><p><br>Tu pourrais être appelée à te déplacer occasionnellement sur différents sites de Groupe Canam pour offrir une prestation de service, participer au déploiement d’équipements ou de solution informatique, installer et/ou configurer du matériel informatique ou pour tout autre besoins déterminé par le département informatique.</p><br><br><br> <br><br>                                        Informations complémentaires<br><br><br><p><strong>Canam, un employeur qui donne envie de rester</strong><br><br>Depuis 1960, Canam se veut un employeur avec une culture forte, rassembleuse et familiale, ralliant ses 5 100 employé.e.s. Établie au Canada, aux États-Unis, en Roumanie, en Inde et aux Philippines, notre entreprise ne cesse de croître grâce à l’innovation et au savoir-faire de chacun.e. D’ailleurs, pour bâtir des structures connues et reconnues pour leur qualité à travers l’Amérique du Nord, tu dois sentir que tu as tout ce qu’il faut pour réussir ces projets d’envergure. Fiers de nos réalisations, nous sommes là pour rester, et c’est avec toi que nous voulons le faire.</p><br><p>Le Service des ressources humaines contactera seulement les candidat.e.s retenu.e.s</p><br><p>Nous respectons l’équité en matière d’emploi.</p><br><p>Utilisation de l’intelligence artificielle pour la sélection des candidatures : notre système de recrutement utilise une fonctionnalité d’intelligence artificielle pour classer les candidatures en fonction des critères de l’offre d’emploi. Cette application ne prend pas de décision finale de sélection, d’évaluation ou de refus des candidats.</p><br><br><br> <br><br>                                                                            Vidéo à regarder<br><br><br><br><br><br>",
+      "title": "Technicien(ne) informatique senior",
+      "datePosted": "2026-10-07",
+      "jobLocation": {
+        "@type": "Place",
+        "address": {
+          "addressCountry": "CA",
+          "addressRegion": "QC",
+          "addressLocality": "Boucherville",
+          "postalCode": "J4B1E6",
+          "@type": "PostalAddress"
+        },
+        "geo": {
+          "latitude": "45.577404",
+          "longitude": "-73.457188",
+          "@type": "GeoCoordinates"
+        }
+      },
+      "hiringOrganization": {
+        "name": "Canam",
+        "logo": "https://images.jobboom.com/logo/recrutement/fr/G229904.jpg",
+        "@type": "Organization"
+      },
+      "image": "https://images.jobboom.com/logo/recrutement/fr/G229904.jpg",
+      "validThrough": "2027-01-05",
+      "employmentType": [
+        "PERMANENT",
+        "FULL_TIME"
+      ],
+      "url_offre": "https://www.jobboom.com/fr/offre-emploi/technicienne-informatique-senior_canam_p3701613"
+    }
+  },
+  {
+    "titre": "Spécialiste en configuration informatique et en documentation technique / IT Configuration & Technical Documentation Specialist",
+    "entreprise": "Services de Gestion Quantum Ltée",
+    "date_publication": "2026-05-22",
+    "url": "https://www.jobboom.com/fr/offre-emploi/specialiste-en-configuration-informatique-et-en-documentation-technique-it-configuration-technical-documentation-specialist_services-de-gestion-quantum-ltee_p3630684",
+    "raw_json_ld": {
+      "@context": "http://schema.org/",
+      "@type": "JobPosting",
+      "description": "<p><strong>Poste : </strong>spécialiste en configuration informatique et en documentation technique<br><strong>Lieu de travail :</strong> Montréal, QC<br><strong>Type de poste :</strong> temps plein<br><br><strong>Qui sommes-nous</strong> :<br><br>Notre client est un chef de file mondial de premier plan dans le domaine des solutions intégrées de formation au tir réel et de simulation destinées aux clients des secteurs militaire, des forces de l’ordre et du secteur privé. Fort de près d’un siècle d’innovation et d’activités s’étendant à l’Amérique du Nord, à l’Europe, à l’Asie et à l’Australie, il s’engage pleinement à améliorer la performance humaine grâce à des solutions de formation réalistes et axées sur les missions.</p><br><p>Depuis son siège social canadien à Montréal, l’entreprise soutient fièrement les Forces armées canadiennes et l’ensemble de la communauté de la défense depuis plus de 30 ans, en fournissant des logiciels de pointe, des capacités de simulation, des services de maintenance et un soutien tout au long du cycle de vie. Guidée par un engagement fondamental envers la sécurité et la préparation opérationnelle, elle tire une immense fierté de soutenir ceux qui servent leur pays.<br><br><strong>Aperçu du poste</strong> :</p><br><br><p>Nous recherchons un <strong>spécialiste en configuration informatique et en documentation technique</strong>, très organisé et à l’aise avec la technologie, pour se joindre à l’équipe d’ingénierie à Montréal. Dans ce rôle, vous ferez le pont entre la documentation d’ingénierie traditionnelle et la gestion moderne de la configuration des logiciels. Vous serez responsable de la gestion de la documentation technique contrôlée, des références de configuration logicielle, des changements d’infrastructure et des livrables numériques destinés aux clients tout au long du cycle de vie du programme.<br><br>En étroite collaboration avec les équipes d’ingénierie logicielle, des opérations TI, de la gestion de programme et les clients finaux, vous garantirez l’intégrité, la traçabilité et la disponibilité des données techniques et logicielles critiques nécessaires au déploiement des systèmes, aux simulations virtuelles et à la gestion de l’infrastructure TI.<br><br><strong>Responsabilités principales</strong> :<br><br><strong>Configuration logicielle et contrôle de l’environnement<br></strong>- Gérer les références de configuration logicielle, les actifs numériques, les paquets de déploiement et la documentation technique associée à l’infrastructure.<br>- Soutenir les pipelines DevOps et CI/CD du point de vue de la configuration, en assurant le suivi des contrôles de version, des versions logicielles et des états de déploiement spécifiques à chaque environnement.<br>- Assurer le suivi des dérogations approuvées, des correctifs logiciels, des mises à jour et des modifications apportées aux systèmes informatiques.<br>- Soutenir les audits de configuration logicielle, les activités de vérification des références et les examens de préparation à la mise en production des logiciels.<br><br><strong>Contrôle des documents et gestion des données techniques<br></strong>- Gérer le cycle de vie numérique des documents contrôlés, y compris le contrôle des versions logicielles, la distribution, la conservation et l’archivage.<br>- Tenir à jour la documentation critique, notamment les dossiers de données techniques (TDP), les plans de gestion de la configuration (CMP), les descriptions de versions logicielles (SVD) et les registres d’intégration des API et des systèmes.<br>- Coordonner les examens techniques, les approbations et les mises en production numériques entre les équipes d’ingénierie, les services informatiques et les intervenants externes.<br>- Assurer un contrôle d’accès rigoureux et la conformité aux normes de cybersécurité pour les renseignements numériques sensibles, exclusifs et soumis à des contrôles à l’exportation.<br><br><strong>Contrôle des changements en ingénierie et en TI<br></strong>- Soutenir les processus de gestion des changements conformes à l’ITIL, y compris les propositions de modification technique (ECP), le suivi des corrections de bogues logiciels et les activités du comité de contrôle de la configuration (CCB).<br>- Veiller à ce que les changements approuvés soient intégrés de manière transparente dans la documentation technique, les topologies de réseau et les versions de référence contrôlées du code et des systèmes.<br>- Tenir à jour des historiques complets des changements et assurer la traçabilité tant au niveau des configurations matérielles que des cycles de vie de déploiement des logiciels.<br><br><strong>Exigences du poste et qualifications</strong> :<br><br>- Baccalauréat, DEC ou diplôme en technologies de l’information, en informatique, en génie informatique, en documentation technique ou dans une discipline technique connexe.<br>- Au moins 5 ans d’expérience en gestion de la configuration, en contrôle des documents, en gestion des versions informatiques ou dans un environnement hautement technique de logiciels ou d’ingénierie.<br>- Solide connaissance pratique des principes de gestion de la configuration, des concepts de contrôle de version et des cadres ITIL ou de gestion des changements informatiques.<br>- Une bonne connaissance des outils modernes de contrôle de version et de suivi informatique (p. ex. Git, Jira, Confluence ou des outils similaires de gestion de contenu d’entreprise ou de gestion du cycle de vie des applications [ALM]) est fortement souhaitable.<br>- Excellentes compétences organisationnelles, grand souci du détail et capacité avérée à gérer des structures de données numériques complexes.<br>- Excellentes compétences en communication écrite et verbale, avec la capacité de faciliter la collaboration entre les développeurs de logiciels, les opérations informatiques et les parties prenantes chez les clients.<br>- Une expérience dans le soutien d’infrastructures informatiques, de logiciels de simulation, ou dans les secteurs de l’aérospatiale ou de la défense est considérée comme un atout majeur.<br><br><strong>Veuillez envoyer votre CV en format Word à Gabriela Pineda-Perez à l’adresse </strong><strong>gabriela.pineda@quantum-qtr.com</strong><strong>.</strong></p><br><p>RECOMMANDEZ UNE PERSONNE EMBAUCHÉE POUR UN POSTE ET OBTENEZ UNE PRIME ! Pour plus d'informations, cliquez ici.<br><br>Numéro du permis CNESST : AP-2000414 et AR-2000415<br><br>Toutes les candidatures sont examinées par notre équipe de recrutement, et les décisions d’embauche sont prises par des personnes. Nous pouvons également utiliser des outils dotés d’intelligence artificielle pour soutenir certaines étapes du processus d’examen des candidatures.<strong><br><br>........................................................<br><br>Position: </strong>IT Configuration &amp;amp; Technical Documentation Specialist<br><strong>Location:</strong> Montreal, QC<br><strong>Position Type:</strong> Full-time<br><br><strong>Who We Are</strong>:<br><br>Our client is a premier global leader in integrated live-fire and virtual training solutions for military, law enforcement, and commercial customers. With nearly a century of innovation and operations spanning North America, Europe, Asia, and Australia, they are deeply committed to advancing human performance through realistic, mission-focused training solutions.</p><br><p>From their Canadian headquarters in Montreal, they have proudly supported the Canadian Armed Forces and the broader defence community for over 30 years—delivering advanced software, simulation capabilities, sustainment services, and lifecycle support. Guided by a core commitment to safety and operational readiness, they take immense pride in supporting those who serve.<br><br><strong>Position Overview</strong>:<br><br>We are seeking a highly organized, tech-savvy <strong>IT Configuration &amp;amp; Technical Documentation Specialist</strong> to join the engineering team in Montreal. In this role, you will bridge the gap between traditional engineering documentation and modern IT software configuration management. You will be responsible for maintaining controlled technical documentation, software configuration baselines, infrastructure changes, and digital customer deliverables throughout the entire program lifecycle.<br><br>Working closely with Software Engineering, IT Operations, Program Management, and end customers, you will ensure the integrity, traceability, and availability of critical technical and software data required to support system deployment, virtual simulations, and IT infrastructure management.<br><br><strong>Core Responsibilities</strong>:<br><br><strong>Software Configuration &amp;amp; Environment Control</strong><br>- Maintain software configuration baselines, digital assets, deployment packages, and associated technical infrastructure documentation.<br>- Support DevOps and CI/CD pipelines from a configuration standpoint, tracking version controls, software builds, and environment-specific deployment states.<br>- Track approved deviations, software patches, updates, and IT system modifications.<br>- Support software configuration audits, baseline verification activities, and software release readiness reviews.<br><br><strong>Document Control &amp;amp; Technical Data Management</strong><br>- Manage the digital lifecycle of controlled documents, including software version control, distribution, retention, and archival.<br>- Maintain critical documentation, including Technical Data Packages (TDPs), Configuration Management Plans (CMPs), Software Version Descriptions (SVDs), and API/system integration registers.<br>- Coordinate technical reviews, approvals, and digital releases across engineering, IT, and external stakeholders.<br>- Enforce strict access control and cybersecurity compliance for sensitive, proprietary, and export-controlled digital information.<br><br><strong>Engineering &amp;amp; IT Change Control</strong><br>- Support ITIL-aligned Change Management processes, including Engineering Change Proposals (ECP), software bug-fix tracking, and Configuration Control Board (CCB) activities.<br>- Ensure approved changes are seamlessly incorporated into technical documentation, network topologies, and controlled code/system baselines.<br>- Maintain comprehensive change histories and traceability across both hardware configurations and software deployment lifecycles.<br><br><strong>Job Specifications &amp;amp; Qualifications</strong>:<br><br>- Bachelor’s Degree, DEC, or Diploma in Information Technology, Computer Science, Computer Engineering Technology, Technical Documentation, or a related technical discipline.<br>- Minimum of 5 years of experience in configuration management, document control, IT release management, or a highly technical software/engineering environment.<br>- Strong working knowledge of configuration management principles, version control concepts, and ITIL/IT Change Management frameworks.<br>- Familiarity with modern IT version control and tracking tools (e.g., Git, Jira, Confluence, or similar Enterprise Content Management / ALM tools) is highly desirable.<br>- Exceptional organizational skills, acute attention to detail, and the proven ability to manage complex digital data structures.<br>- Effective written and verbal communication skills with the ability to bridge collaboration between Software Developers, IT Operations, and customer stakeholders.<br>- Experience supporting IT infrastructure, simulation software, aerospace, or defence environments is considered a major asset.</p><br><p><strong>Please send your resume in Word format to Gabriela Pineda-Perez at gabriela.pineda@quantum-qtr.com.<br></strong><br>REFER A NEW HIRE AND EARN A CASH BONUS! For details, click here.<br><br>CNESST permit numbers:  AP-2000414 &amp;amp; AR-2000415<strong><br><br></strong></p><br><p>All applications are reviewed by our recruitment team, and hiring decisions are made by people. We may also use AI-enabled tools to support parts of the application review process.</p><br><br>",
+      "title": "Spécialiste en configuration informatique et en documentation technique / IT Configuration & Technical Documentation Specialist",
+      "datePosted": "2026-05-22",
+      "jobLocation": {
+        "@type": "Place",
+        "address": {
+          "addressCountry": "CA",
+          "addressRegion": "QC",
+          "addressLocality": "Montréal",
+          "@type": "PostalAddress"
+        },
+        "geo": {
+          "latitude": "45.53583646",
+          "longitude": "-73.6334285",
+          "@type": "GeoCoordinates"
+        }
+      },
+      "hiringOrganization": {
+        "name": "Services de Gestion Quantum Ltée",
+        "logo": "https://images.jobboom.com/logo/recrutement/fr/G113267.jpg",
+        "@type": "Organization"
+      },
+      "image": "https://images.jobboom.com/logo/recrutement/fr/G113267.jpg",
+      "validThrough": "2027-01-24",
+      "employmentType": [
+        "PERMANENT",
+        "FULL_TIME"
+      ],
+      "url_offre": "https://www.jobboom.com/fr/offre-emploi/specialiste-en-configuration-informatique-et-en-documentation-technique-it-configuration-technical-documentation-specialist_services-de-gestion-quantum-ltee_p3630684"
+    }
+  },
+  {
+    "titre": "Développeur fullstack",
+    "entreprise": "Fed IT",
+    "date_publication": "2023-11-25",
+    "url": "https://www.jobboom.com/fr/offre-emploi/developpeur-fullstack_fed-it_p3149892",
+    "raw_json_ld": {
+      "@context": "http://schema.org/",
+      "@type": "JobPosting",
+      "description": "\n\r\n\r\nFed IT, cabinet de recrutement spécialiste du recrutement sur les métiers TI, \r\nNous intervenons sur deux types de recrutement : temporaires et permanents. \r\nTous nos consultants sont des experts TI qui parlent votre langage et évoluent dans votre univers. \r\nNous couvrons les postes ouverts les métiers de l'informatique, développement, décisionnel et infrastructure. \r\nNous sommes présentement à la recherche d'un développeur fullstack pour un de nos clients situés dans l'Ouest de L'ile à Dorval.\r\n\r\nFed IT, cabinet de recrutement spécialiste du recrutement sur les métiers TI,\r\nNous intervenons sur deux types de recrutement : temporaires et permanents.\r\nTous nos consultants sont des experts TI qui parlent votre langage et évoluent dans votre univers.\r\nNous couvrons les postes ouverts les métiers de l'informatique, développement, décisionnel et infrastructure.\r\nNous sommes présentement à la recherche d'un développeur fullstack pour un de nos clients.\r\n\r\n* Participer à l'analyse technique des besoins; \r\n* Participer à l'élaboration du design en proposant des solutions innovantes; \r\n* Créer ou modifier des applications en appliquant les meilleures pratiques de développement; \r\n* Elaborer et réaliser des tests unitaires afin de s'assurer que le système réponde aux exigences; \r\n* Collaborer avec les autres membres de l'équipe ainsi qu'avec les autres services impliqués; \r\n* Participer à la résolution de problèmes sur les environnements de production\r\n\r\n* Baccalauréat universitaire en Sciences informatiques, en Génie, ou une discipline connexe; \r\n* Connaissance appropriée du français et de l'anglais parlé et écrit. \r\n* 2+ ans d'expérience pertinente dans l'utilisation des langages C#, ASP.Net, VBA, JQuery, \r\nJavaScript, AJAX, XML, CSS & JSON. \r\n* Expérience concrète avec le langage SQL, T-SQL, SSIS et SSRS; \r\n* Bonnes capacités d'analyse et de résolution de problèmes; \r\n* Sens des responsabilités, d'initiative, d'autonomie et esprit d'équipe; \r\n* Excellentes aptitudes à travailler au sein d'équipes multidisciplinaires. \r\n* Expérience des systèmes intégrés de gestion (ERP), tel Dynamics GP, est un atout; \r\n* Expérience avec les technologies Java et JSP est un atout.\n",
+      "title": "Développeur fullstack",
+      "datePosted": "2023-11-25",
+      "jobLocation": {
+        "@type": "Place",
+        "address": {
+          "addressCountry": "CA",
+          "addressRegion": "QC",
+          "addressLocality": "Montréal",
+          "postalCode": "H2M2T6",
+          "@type": "PostalAddress"
+        },
+        "geo": {
+          "latitude": "45.545402",
+          "longitude": "-73.63923",
+          "@type": "GeoCoordinates"
+        }
+      },
+      "hiringOrganization": {
+        "name": "Fed IT",
+        "logo": "https://images.jobboom.com/logo/recrutement/fr/G329861.jpg",
+        "@type": "Organization"
+      },
+      "image": "https://images.jobboom.com/logo/recrutement/fr/G329861.jpg",
+      "validThrough": "2027-02-07",
+      "employmentType": "PERMANENT",
+      "url_offre": "https://www.jobboom.com/fr/offre-emploi/developpeur-fullstack_fed-it_p3149892"
+    }
+  }
+]
