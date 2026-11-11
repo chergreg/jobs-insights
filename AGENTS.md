@@ -25,15 +25,15 @@ Le projet est **en phase de cadrage et d’exploration (Atelier 1 / POCs)**. Auc
 
 - `README.md` : présentation officielle du projet, des pistes et du fonctionnement collaboratif.
 - `.gitignore` : exclusions Python standard.
-- `equipe/` : espaces de travail et de veille individuels des membres de l’équipe (recensements `sites.md` / `Sites.md`, scripts POC, exemples de sorties JSON/CSV).
+- `equipe/` : espaces de travail et de veille individuels des membres de l’équipe (recensements `sites.md` / `Sites.md`, scripts POC, exemples de sorties JSON/CSV). Les dossiers sous `equipe/` suivent le nom du membre en minuscules sans accent, aligné sur [`equipe/equipe.md`](equipe/equipe.md) (`aymerou`, `elvira`, `ferdinand`, `gregory`, `hendrix`, `hugo`, `kandet`, `mamadou`, `nonga`, `rayan`, etc.).
   - Exemples de POCs déjà présents :
-    - `equipe/Hugo/` : collecteur interactif Guichet-Emplois avec modèle Pydantic `JobOffer` (`models.py`, `requirements.txt`).
-    - `equipe/kandet_mamoudou_bangoura/` : POC multi-source (flux Atom Guichet-Emplois + API Remotive) en bibliothèque standard avec déduplication, détection de stages et tests unitaires (`test_poc_multi_source.py`).
-    - `equipe/el_hadji_konate/` : POCs stdlib sur Talent.com, Jobboom, Guichet-Emplois (RDFa) et Jobillico (JSON-LD).
-    - `equipe/Elvira/` : scraper Jobboom (`requests` + `BeautifulSoup` + JSON-LD).
-    - `equipe/Ferdinand/` : collecte via l’API publique Welcome to the Jungle et export CSV.
-    - `equipe/Rayan Motchebe/site.md` : analyse de conformité des sources Québec/Canada (données ouvertes, APIs, ATS, sources exclues).
-    - `equipe/Hendrix/README.MD` : proposition d’architecture cible (non implémentée à ce jour).
+    - `equipe/hugo/` : collecteur interactif Guichet-Emplois avec modèle Pydantic `JobOffer` (`models.py`, `requirements.txt`).
+    - `equipe/kandet/` : POC multi-source (flux Atom Guichet-Emplois + API Remotive) en bibliothèque standard avec déduplication, détection de stages et tests unitaires (`test_poc_multi_source.py`).
+    - `equipe/mamadou/` : POCs stdlib sur Talent.com, Jobboom, Guichet-Emplois (RDFa) et Jobillico (JSON-LD).
+    - `equipe/elvira/` : scraper Jobboom (`requests` + `BeautifulSoup` + JSON-LD).
+    - `equipe/ferdinand/` : collecte via l’API publique Welcome to the Jungle et export CSV.
+    - `equipe/rayan/site.md` : analyse de conformité des sources Québec/Canada (données ouvertes, APIs, ATS, sources exclues).
+    - `equipe/hendrix/README.MD` : proposition d’architecture cible (non implémentée à ce jour).
 
 ### Règles de périmètre
 1. **Ne modifiez pas, ne déplacez pas et ne supprimez pas** les fichiers dans le dossier d’un autre membre sous `equipe/<membre>/`, sauf demande explicite de l’utilisateur.
@@ -50,7 +50,7 @@ Le projet est **en phase de cadrage et d’exploration (Atelier 1 / POCs)**. Auc
 - **Tests existants** :
   - Exécuter les tests unitaires hors ligne existants :
     ```powershell
-    python -m unittest discover -s equipe/kandet_mamoudou_bangoura -p "test_*.py" -v
+    python -m unittest discover -s equipe/kandet -p "test_*.py" -v
     ```
 - **Règle de test** : toute nouvelle logique de parsing, normalisation, classification ou déduplication doit être accompagnée de tests unitaires **hors ligne** (fixtures HTML/XML/JSON locales ou mocks), sans effectuer d’appels réseau réels pendant les tests.
 - **Précaution avant d’exécuter un script POC** : inspectez d’abord son code ; certains scripts effectuent des requêtes HTTP en direct, demandent une saisie interactive (`input()`), créent des fichiers de sortie dans le répertoire courant ou appellent `os.startfile(...)` sous Windows.
