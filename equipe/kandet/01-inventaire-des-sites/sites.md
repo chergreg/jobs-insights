@@ -1,47 +1,82 @@
-# Sites d'offres d'emploi et de stages
+# Inventaire des sites d'emplois et de stages
 
-**Profil ciblé :** emplois et stages en développement logiciel / informatique au Québec, avec intérêt pour les possibilités à distance.
+**Profil ciblé :** emplois et stages en développement logiciel et en informatique, en priorité au Québec. Les postes à distance ouverts au Canada ou à l'international complètent les résultats locaux.
 
-**Recherche effectuée le :** 9 novembre 2026.
+**Mise à jour :** 11 novembre 2026.
 
-## Sites à surveiller
+## Sources et état d'intégration
 
-| Site | Pourquoi il est pertinent | Filtres et renseignements à relever | Approche de collecte |
-|---|---|---|---|
-| [Guichet-Emplois (Job Bank)](https://www.jobbank.gc.ca/jobsearch/jobsearch?searchstring=developpeur&locationstring=Quebec) | Site officiel fédéral; offres au Québec et emplois étudiants ou stages. | Mot-clé, province, date de publication, catégorie, étudiant/stage, temps plein ou partiel, langue, salaire, durée, lieu de travail (sur place, hybride ou à distance). Une offre contient notamment le titre, le lieu, l'employeur, le salaire et un lien. | **POC prioritaire :** le site fournit un flux Atom/RSS pour les résultats. Son `robots.txt` indique un délai de crawl de 5 secondes. Faire une requête à la fois, sans boucle de pagination; le script de cette recherche reprend les paramètres de catégorie vus dans le flux et filtre aussi les titres et lieux au Québec. |
-| [Remotive](https://remotive.com/remote-jobs) | Tableau d'offres à distance avec une API publique; peut compléter les offres locales par des postes ouverts au Canada ou partout dans le monde. | Catégorie, recherche dans le titre/description, entreprise, type d'emploi, date, lieu requis, salaire, étiquettes et description complète. L'API distingue notamment les stages avec `job_type=internship`. | **Deuxième source du POC :** lire la liste complète des annonces actives sans paramètre `limit`, puis garder localement les catégories informatiques pertinentes. Les annonces sont retardées de 24 h; la documentation recommande au plus 4 requêtes par jour. Le POC met la réponse complète en cache local pendant 24 h et n'envoie qu'une requête lors du rafraîchissement. |
-| [Québec emploi](https://www.quebecemploi.gouv.qc.ca/plateforme-emploi/?lang=fr) | Portail du gouvernement du Québec; il annonce des postes à temps plein, à temps partiel, saisonniers, étudiants et des stages rémunérés. | Région, type ou durée d'emploi, niveau de formation, domaine d'études et type d'offre (régulier, étudiant ou stage). Certaines fonctions demandent un profil candidat. | À consulter manuellement. Avant tout POC, vérifier les conditions du portail et l'existence d'un flux ou d'une API publique. |
-| [Emplois en ligne du gouvernement du Québec](https://emplois.carrieres.gouv.qc.ca/plateforme-emploi) et [emplois étudiants et stages](https://www.carrieres.gouv.qc.ca/etudiants-et-stagiaires/) | Source directe pour les postes dans les ministères et organismes, y compris les possibilités étudiantes. | Domaine, région, statut étudiant/stage et renseignements propres à chaque offre. | À consulter manuellement; vérifier les conditions d'utilisation et les possibilités de flux avant l'automatisation. |
-| [Jobillico](https://www.jobillico.com/recherche-emploi?sk=developpeur&l=Qu%C3%A9bec) | Site québécois qui peut faire ressortir des employeurs et des postes locaux. | Mot-clé et lieu dans la recherche; les fiches consultées présentent notamment les exigences, le niveau d'études, l'expérience et les langues. | À consulter manuellement pour l'instant. Le `robots.txt` comporte des restrictions sur certaines URL de recherche et de pagination; ne pas automatiser sans vérifier l'URL et les conditions applicables. |
-| [LinkedIn Jobs](https://ca.linkedin.com/jobs/search/?keywords=stage%20d%C3%A9veloppement%20logiciel&location=Quebec) | Utile pour repérer les stages affichés par des entreprises technologiques et suivre leurs offres. | Mot-clé, lieu, date, niveau d'expérience, type d'emploi et modalités de travail selon les résultats de recherche. | **Consultation manuelle seulement.** Le `robots.txt` de LinkedIn indique que l'accès automatisé sans autorisation expresse est interdit. |
-| [Indeed Canada](https://ca.indeed.com/) | Agrégateur généraliste avec des offres de stages et de postes juniors. | Mots-clés, lieu, date, type d'emploi et autres filtres proposés dans l'interface. | À consulter manuellement. La page de recherche n'était pas accessible pendant cette vérification (HTTP 403); ne pas contourner le blocage ni automatiser sans autorisation claire. |
+| Source | Intérêt et renseignements disponibles | État dans le POC et précautions |
+|---|---|---|
+| [Guichet-Emplois (Job Bank)](https://www.jobbank.gc.ca/jobsearch/jobsearch?searchstring=developpeur&locationstring=Quebec) | Source fédérale d'offres au Canada. Le flux fournit le titre, le lieu, l'employeur, le salaire, la date, le numéro d'offre et le lien lorsqu'ils sont présents. Les recherches par catégories peuvent inclure des postes informatiques et des stages. | **Intégré.** Le POC lit le flux Atom, demande 100 résultats par page et suit les pages jusqu'à une page vide ou déjà rencontrée. Il attend au moins cinq secondes entre les requêtes conformément au délai indiqué dans le [`robots.txt`](https://www.jobbank.gc.ca/robots.txt). La recherche cible le Québec par défaut. Le flux fournit un résumé, pas nécessairement la description complète. |
+| [Remotive](https://remotive.com/remote-jobs) | Source d'emplois à distance avec catégorie, entreprise, type d'emploi, lieu requis, salaire, date, étiquettes et description. Le type d'emploi peut indiquer explicitement un stage. | **Intégré.** Le POC appelle l'[API publique](https://github.com/remotive-com/remote-jobs-api) sans paramètre `limit` et filtre localement dix catégories liées à l'informatique, au génie, aux données, à l'IA et aux domaines connexes. Tous les lieux sont conservés par défaut; `--canada-remotive-only` applique un filtre géographique. La réponse est mise en cache 24 heures; la documentation recommande au plus quatre requêtes par jour. Conserver l'attribution et le lien d'origine; ne pas republier les annonces Remotive sur un site tiers. |
+| [Québec emploi](https://www.quebecemploi.gouv.qc.ca/plateforme-emploi/?lang=fr) | Portail québécois proposant des emplois réguliers, étudiants et des stages, avec des filtres par région et domaine. | **Non intégré.** À consulter manuellement en attendant de confirmer une API ou un flux public et les conditions d'utilisation. |
+| [Emplois du gouvernement du Québec](https://emplois.carrieres.gouv.qc.ca/plateforme-emploi) et [emplois étudiants et stages](https://www.carrieres.gouv.qc.ca/etudiants-et-stagiaires/) | Source directe de postes dans les ministères et organismes, y compris les possibilités étudiantes. | **Non intégré.** À consulter manuellement; vérifier les moyens d'accès autorisés avant toute automatisation. |
+| [Jobillico](https://www.jobillico.com/recherche-emploi?sk=developpeur&l=Qu%C3%A9bec) | Site québécois utile pour repérer les employeurs, les exigences, les études, l'expérience et les langues demandées. | **Non intégré.** Consultation manuelle pour l'instant. Vérifier les conditions et les règles de `robots.txt` pour chaque type de page avant toute collecte automatisée. |
+| [LinkedIn Jobs](https://ca.linkedin.com/jobs/search/?keywords=stage%20d%C3%A9veloppement%20logiciel&location=Quebec) | Offre des filtres par mot-clé, lieu, date, niveau d'expérience, type d'emploi et modalités de travail. | **Non intégré.** Consultation manuelle seulement; ne pas automatiser sans autorisation expresse. Voir le [`robots.txt`](https://www.linkedin.com/robots.txt). |
+| [Indeed Canada](https://ca.indeed.com/) | Agrégateur généraliste avec des offres de stages et de postes juniors; filtres par mot-clé, lieu, date et type d'emploi. | **Non intégré.** Consultation manuelle. Une recherche était inaccessible (HTTP 403) lors d'une vérification antérieure; ne pas contourner les blocages. Revalider l'accès et les conditions avant tout projet d'intégration. |
 
-## POC multi-sources
+## Fonctionnement actuel du POC
 
-Le POC est [`poc_multi_source.py`](poc_multi_source.py). Il combine le flux Atom du Guichet-Emplois avec l'API JSON publique de Remotive dans un modèle commun. Il conserve les informations et liens propres à chaque source, fusionne les occurrences d'un même identifiant dans les requêtes répétées sans supprimer les annonces distinctes d'une même source, et classe les stages comme `confirmed_stage`, `possible_stage` ou `not_indicated`.
+Le code, les tests et les résultats locaux se trouvent dans [`02-preuve-de-concept-scraping/`](../02-preuve-de-concept-scraping/). Le collecteur fusionne les occurrences répétées d'une même annonce, conserve les liens et données par source et évite de fusionner deux annonces distinctes d'une source uniquement parce que leur titre et leur employeur se ressemblent.
+
+### Collecte du Guichet-Emplois
+
+- Quatre termes sont recherchés par défaut : `developpeur`, `programmeur`, `stage informatique` et `internship`.
+- Le flux est interrogé avec trois codes de catégories informatiques (`21230`, `21232`, `21234`) et jusqu'à 100 résultats demandés par page.
+- La pagination continue jusqu'à une page vide ou répétée; une page courte ne suffit pas à arrêter la recherche. Il n'y a pas de plafond configuré de pages ou d'offres.
+- Les offres hors du lieu demandé sont filtrées après lecture de la page. Le Québec (`QC`) est le lieu par défaut; `--all-jobbank-locations` retire ce filtre.
+- Le résumé fournit généralement le titre, le lieu, l'employeur, le salaire et le lien. La fiche de chaque annonce n'est pas visitée par le POC; les descriptions et exigences absentes du flux ne sont donc pas récupérées.
+
+### Collecte de Remotive
+
+- L'API est appelée sans paramètre `limit`, puis les annonces sont filtrées localement selon dix catégories pertinentes : développement logiciel, informatique, intelligence artificielle, données et analytique, DevOps, assurance qualité, génie, gestion de produit, design et recherche.
+- Le lieu n'est pas filtré par défaut afin de conserver les postes à distance ouverts dans d'autres régions. `--canada-remotive-only` permet de limiter les résultats au Canada, au Québec, à l'Amérique du Nord et aux offres mondiales.
+- La réponse complète de l'API est gardée dans `remotive-cache.json` pendant 24 heures. `--refresh-remotive` force une nouvelle requête; l'utiliser avec modération conformément à la recommandation de l'API.
+- La description de l'offre est récupérée depuis l'API. Les champs absents restent vides plutôt que d'être devinés.
+
+### Détection des stages et résultats
+
+Le collecteur attribue l'un de ces états :
+
+- `confirmed_stage` : le type de poste indique explicitement un stage, ou le titre contient un terme de stage reconnu;
+- `possible_stage` : la description indique un rôle de stage ou une condition d'inscription étudiante;
+- `not_indicated` : aucun de ces indices n'a été trouvé.
+
+Cette classification repose sur des règles textuelles : une formulation inhabituelle peut ne pas être reconnue. Une offre « non indiquée » n'est donc pas nécessairement un poste sans stage.
+
+Lancer la collecte depuis la racine du dépôt :
 
 ```powershell
-python .\recherche\poc_multi_source.py
-python .\recherche\poc_multi_source.py --jobbank-term developpeur --jobbank-term stage
-python .\equipe\kandet_mamoudou_bangoura\poc_multi_source.py --canada-remotive-only
-python -m unittest discover -s .\recherche -p "test_poc_*.py"
+python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py
 ```
 
-Par défaut, le Guichet-Emplois est interrogé avec quatre termes — `developpeur`, `programmeur`, `stage informatique` et `internship` — en espaçant les requêtes d'au moins cinq secondes conformément au `robots.txt`. Chaque requête demande 100 résultats, mais le flux peut renvoyer une page plus courte; la pagination continue donc jusqu'à une page vide ou répétée. Il n'y a pas de nombre maximal de pages ni de plafond d'offres affichées. Le paramètre `page=2` a été vérifié sur le flux. Les résultats hors du lieu demandé sont filtrés après lecture de chaque page. Les entrées répétées entre les pages ou les termes sont fusionnées par identifiant de l'offre et conservent les termes qui les ont trouvées; des offres différentes d'une même source ne sont pas fusionnées uniquement parce que titre, employeur et lieu sont identiques. Le résumé JSON présente les résultats par terme, nombre de pages et source. Remotive est appelé sans `limit` (la documentation indique que la valeur par défaut renvoie toutes les annonces actives), puis filtré localement aux catégories liées au domaine : développement logiciel, informatique, IA, données, DevOps, assurance qualité, génie, gestion de produit, design et recherche. Le filtrage géographique Remotive est désactivé par défaut pour garder toutes les offres; `--canada-remotive-only` permet de limiter au Canada, au Québec, à l'Amérique du Nord et au monde entier. Remotive est interrogé une seule fois par rafraîchissement, et sa réponse est réutilisée depuis `remotive-cache.json` durant 24 heures. Le cache limité de l'ancienne version est invalidé au prochain appel. Le cache et `offres.json` restent dans le dossier local ignoré par Git.
+Exemples pour élargir les termes, les lieux ou rafraîchir la source distante :
 
 ```powershell
-python .\equipe\kandet_mamoudou_bangoura\poc_multi_source.py --refresh-remotive
+python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --jobbank-term developpeur --jobbank-term stage
+python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --all-jobbank-locations
+python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --canada-remotive-only
+python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --refresh-remotive
 ```
 
-Le rafraîchissement forcé compte comme une requête Remotive; sa documentation recommande au plus quatre requêtes par jour. Le fichier `offres.json` garde les champs normalisés, les détails propres à chaque source, les liens d'origine, les termes ayant trouvé chaque offre et les statistiques de collecte. Un stage est « confirmé » quand le type Remotive est explicitement `internship` ou que le titre nomme clairement un stage; un rôle de stage mentionné dans la description ou une condition d'inscription étudiante est classé « possible ». Une mention d'expérience antérieure en stage ne suffit pas à classer un emploi régulier comme stage. Job Bank fournit surtout un résumé dans son flux, alors que Remotive fournit une description complète; les champs absents d'une source restent vides. Les règles textuelles peuvent manquer des stages formulés autrement. L'absence de limite de collecte ne permet pas de promettre toutes les offres existantes : le nombre dépend des annonces fournies par les sources, des catégories interrogées, de leurs règles et de la pagination disponible.
+Les résultats sont écrits dans `offres.json`, à côté du script. Exécuter les tests depuis le dossier du POC :
 
-## Sources et limites de la recherche
+```powershell
+Set-Location .\equipe\kandet\02-preuve-de-concept-scraping
+python -m unittest -v test_poc_multi_source.py
+```
 
-- [Filtres de recherche du Guichet-Emplois](https://www.jobbank.gc.ca/jobsearch/jobsearch?searchstring=developpeur&locationstring=Quebec) et [robots.txt](https://www.jobbank.gc.ca/robots.txt).
-- [Documentation de l'API Remotive](https://github.com/remotive-com/remote-jobs-api).
-- [Québec emploi — consulter les offres](https://www.quebec.ca/emploi/trouver-emploi-stage/consulter-offres-emplois).
-- [Jobillico — robots.txt](https://www.jobillico.com/robots.txt).
-- [LinkedIn — robots.txt](https://www.linkedin.com/robots.txt).
-- [Indeed Canada — robots.txt](https://ca.indeed.com/robots.txt).
+## Limites et prochaines améliorations
 
-Les filtres affichés, les offres et les règles des sites peuvent changer. Cette liste sert de point de départ pour l'atelier; elle ne constitue pas une autorisation de collecte automatisée. Le dossier `recherche` est volontairement local et exclu de GitHub.
+« Sans limite » signifie qu'aucun plafond arbitraire de résultats n'est imposé par le POC; cela ne garantit pas de récupérer toutes les offres existantes. La couverture dépend des annonces fournies par les sources, des quatre termes et catégories interrogés, des filtres géographiques, des pages disponibles et des conditions d'accès. Les deux sources intégrées ne représentent pas tout le marché de l'emploi.
+
+Priorités proposées :
+
+1. Élargir et tester les mots-clés français et anglais ainsi que les catégories du Guichet-Emplois, tout en gardant la pagination complète et le délai de requête.
+2. Étudier une intégration autorisée pour Québec emploi ou une autre source ayant une API ou un flux public; garder les sites sans accès automatisé autorisé en consultation manuelle.
+3. Enrichir les fiches du Guichet-Emplois avec les descriptions et exigences seulement après vérification des règles d'accès et des limites de requêtes.
+4. Améliorer la détection des stages avec davantage de formulations bilingues et des tests, sans classifier automatiquement un poste régulier sur la seule mention d'une expérience de stage antérieure.
+5. Continuer à vérifier les doublons, les liens d'origine, les champs manquants et les conditions d'utilisation avant de réutiliser ou partager des données.
+
+Les fichiers `offres.json` et `remotive-cache.json` sont des données de travail locales, conservées à côté du POC et exclues de Git localement. Les offres Remotive doivent garder leur attribution et ne doivent pas être republiées sur un site tiers.
