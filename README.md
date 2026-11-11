@@ -25,5 +25,6 @@ Le projet est en phase de cadrage. Le périmètre des offres, les premières sou
 
 ## Livrables
 
-- **Livrable en cours :** [Livrable 2 — Preuve de concept de scraping](livrables/02-preuve-de-concept-scraping/enonce.md)
-- [Livrable 1 — Inventaire des sites d’offres d’emploi et de stage](livrables/01-inventaire-des-sites/enonce.md)
+- **Livrable en cours :** [Livrable 3 — Reprendre et améliorer une preuve de concept](livrables/03-amelioration-preuve-de-concept/enonce.md)
+- [Livrable 2 — Preuve de concept de scraping](livrables/02-preuve-de-concept-scraping/enonce.md) ([synthèse](livrables/02-preuve-de-concept-scraping/synthese.md))
+- [Livrable 1 — Inventaire des sites d’offres d’emploi et de stage](livrables/01-inventaire-des-sites/enonce.md) ([synthèse](livrables/01-inventaire-des-sites/synthese.md), [inventaire commun](livrables/01-inventaire-des-sites/inventaire.md))
