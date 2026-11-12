@@ -1,0 +1,415 @@
+{
+  "generated_at": "2026-11-12T20:14:01.410918+00:00",
+  "offers": [
+    {
+      "title": "gestionnaire du Web",
+      "employer": "MTM International",
+      "location": "Montréal (QC)",
+      "salary": "34,62 $ de l'heure",
+      "published_at": "2026-11-12",
+      "work_mode": "Sur place",
+      "job_type": "",
+      "category": "",
+      "tags": [],
+      "description": "",
+      "stage_status": "not_indicated",
+      "stage_signals": [],
+      "search_terms": [],
+      "source_records": [
+        {
+          "source": "Guichet-Emplois",
+          "source_id": "50711671",
+          "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50711671",
+          "title": "gestionnaire du Web",
+          "origin_site": "Guichet-Emplois",
+          "employer": "MTM International",
+          "location": "Montréal (QC)",
+          "salary": "34,62 $ de l'heure",
+          "published_at": "2026-11-12",
+          "work_mode": "Sur place",
+          "job_type": "",
+          "category": "",
+          "tags": [],
+          "description": "",
+          "stage_status": "not_indicated",
+          "stage_signals": [],
+          "search_terms": [],
+          "source_data": {
+            "job_number": "3717439",
+            "displayed_date": "12 novembre 2026",
+            "posted_on_guichet": true
+          }
+        }
+      ]
+    },
+    {
+      "title": "agent/agente de soutien aux utilisateurs",
+      "employer": "GolfIn - Saint-Georges",
+      "location": "Saint-Georges (QC)",
+      "salary": "52 000,00 $ à 60 000,00 $ par année",
+      "published_at": "2026-11-12",
+      "work_mode": "",
+      "job_type": "",
+      "category": "",
+      "tags": [],
+      "description": "",
+      "stage_status": "not_indicated",
+      "stage_signals": [],
+      "search_terms": [],
+      "source_records": [
+        {
+          "source": "Guichet-Emplois",
+          "source_id": "50711091",
+          "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50711091",
+          "title": "agent/agente de soutien aux utilisateurs",
+          "origin_site": "Jobillico",
+          "employer": "GolfIn - Saint-Georges",
+          "location": "Saint-Georges (QC)",
+          "salary": "52 000,00 $ à 60 000,00 $ par année",
+          "published_at": "2026-11-12",
+          "work_mode": "",
+          "job_type": "",
+          "category": "",
+          "tags": [],
+          "description": "",
+          "stage_status": "not_indicated",
+          "stage_signals": [],
+          "search_terms": [],
+          "source_data": {
+            "job_number": "17086532",
+            "displayed_date": "12 novembre 2026",
+            "posted_on_guichet": false
+          }
+        }
+      ]
+    },
+    {
+      "title": "ingénieur/ingénieure en conception et en application de microprocesseurs",
+      "employer": "Nord Quantique",
+      "location": "Sherbrooke (QC)",
+      "salary": "149 000,00 $ à 173 000,00 $ par année",
+      "published_at": "2026-11-12",
+      "work_mode": "",
+      "job_type": "",
+      "category": "",
+      "tags": [],
+      "description": "",
+      "stage_status": "not_indicated",
+      "stage_signals": [],
+      "search_terms": [],
+      "source_records": [
+        {
+          "source": "Guichet-Emplois",
+          "source_id": "50710279",
+          "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50710279",
+          "title": "ingénieur/ingénieure en conception et en application de microprocesseurs",
+          "origin_site": "Jobillico",
+          "employer": "Nord Quantique",
+          "location": "Sherbrooke (QC)",
+          "salary": "149 000,00 $ à 173 000,00 $ par année",
+          "published_at": "2026-11-12",
+          "work_mode": "",
+          "job_type": "",
+          "category": "",
+          "tags": [],
+          "description": "",
+          "stage_status": "not_indicated",
+          "stage_signals": [],
+          "search_terms": [],
+          "source_data": {
+            "job_number": "17439045",
+            "displayed_date": "12 novembre 2026",
+            "posted_on_guichet": false
+          }
+        }
+      ]
+    },
+    {
+      "title": "architecte d'applications",
+      "employer": "Nord Quantique",
+      "location": "Sherbrooke (QC)",
+      "salary": "149 380,00 $ à 175 000,00 $ par année",
+      "published_at": "2026-11-12",
+      "work_mode": "",
+      "job_type": "",
+      "category": "",
+      "tags": [],
+      "description": "",
+      "stage_status": "not_indicated",
+      "stage_signals": [],
+      "search_terms": [],
+      "source_records": [
+        {
+          "source": "Guichet-Emplois",
+          "source_id": "50710381",
+          "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50710381",
+          "title": "architecte d'applications",
+          "origin_site": "Jobillico",
+          "employer": "Nord Quantique",
+          "location": "Sherbrooke (QC)",
+          "salary": "149 380,00 $ à 175 000,00 $ par année",
+          "published_at": "2026-11-12",
+          "work_mode": "",
+          "job_type": "",
+          "category": "",
+          "tags": [],
+          "description": "",
+          "stage_status": "not_indicated",
+          "stage_signals": [],
+          "search_terms": [],
+          "source_data": {
+            "job_number": "17101040",
+            "displayed_date": "12 novembre 2026",
+            "posted_on_guichet": false
+          }
+        }
+      ]
+    },
+    {
+      "title": "technicien/technicienne de réseau informatique",
+      "employer": "Ville de Québec",
+      "location": "Québec (QC)",
+      "salary": "58 563,00 $ à 86 669,00 $ par année",
+      "published_at": "2026-11-11",
+      "work_mode": "",
+      "job_type": "",
+      "category": "",
+      "tags": [],
+      "description": "",
+      "stage_status": "not_indicated",
+      "stage_signals": [],
+      "search_terms": [],
+      "source_records": [
+        {
+          "source": "Guichet-Emplois",
+          "source_id": "50709055",
+          "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50709055",
+          "title": "technicien/technicienne de réseau informatique",
+          "origin_site": "JobsMedia.ca",
+          "employer": "Ville de Québec",
+          "location": "Québec (QC)",
+          "salary": "58 563,00 $ à 86 669,00 $ par année",
+          "published_at": "2026-11-11",
+          "work_mode": "",
+          "job_type": "",
+          "category": "",
+          "tags": [],
+          "description": "",
+          "stage_status": "not_indicated",
+          "stage_signals": [],
+          "search_terms": [],
+          "source_data": {
+            "job_number": "319032",
+            "displayed_date": "11 novembre 2026",
+            "posted_on_guichet": false
+          }
+        }
+      ]
+    },
+    {
+      "title": "technicien/technicienne de bureau de dépannage",
+      "employer": "Groupe Négotel inc.",
+      "location": "Québec (QC)",
+      "salary": "75 000,00 $ par année",
+      "published_at": "2026-11-11",
+      "work_mode": "",
+      "job_type": "",
+      "category": "",
+      "tags": [],
+      "description": "",
+      "stage_status": "not_indicated",
+      "stage_signals": [],
+      "search_terms": [],
+      "source_records": [
+        {
+          "source": "Guichet-Emplois",
+          "source_id": "50708442",
+          "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50708442",
+          "title": "technicien/technicienne de bureau de dépannage",
+          "origin_site": "Jobillico",
+          "employer": "Groupe Négotel inc.",
+          "location": "Québec (QC)",
+          "salary": "75 000,00 $ par année",
+          "published_at": "2026-11-11",
+          "work_mode": "",
+          "job_type": "",
+          "category": "",
+          "tags": [],
+          "description": "",
+          "stage_status": "not_indicated",
+          "stage_signals": [],
+          "search_terms": [],
+          "source_data": {
+            "job_number": "17695143",
+            "displayed_date": "11 novembre 2026",
+            "posted_on_guichet": false
+          }
+        }
+      ]
+    },
+    {
+      "title": "analyste de données - informatique et systèmes",
+      "employer": "Centre de services scolaire marguerite-bourgeoys",
+      "location": "Saint-Laurent (QC)",
+      "salary": "30,59 $ à 52,43 $ de l'heure",
+      "published_at": "2026-11-11",
+      "work_mode": "",
+      "job_type": "",
+      "category": "",
+      "tags": [],
+      "description": "",
+      "stage_status": "not_indicated",
+      "stage_signals": [],
+      "search_terms": [],
+      "source_records": [
+        {
+          "source": "Guichet-Emplois",
+          "source_id": "50708197",
+          "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50708197",
+          "title": "analyste de données - informatique et systèmes",
+          "origin_site": "Québec emploi",
+          "employer": "Centre de services scolaire marguerite-bourgeoys",
+          "location": "Saint-Laurent (QC)",
+          "salary": "30,59 $ à 52,43 $ de l'heure",
+          "published_at": "2026-11-11",
+          "work_mode": "",
+          "job_type": "",
+          "category": "",
+          "tags": [],
+          "description": "",
+          "stage_status": "not_indicated",
+          "stage_signals": [],
+          "search_terms": [],
+          "source_data": {
+            "job_number": "e1399148-11c6-4764-809e-994058",
+            "displayed_date": "11 novembre 2026",
+            "posted_on_guichet": false
+          }
+        }
+      ]
+    },
+    {
+      "title": "développeur Web/développeuse Web",
+      "employer": "Groupe Abbatiello",
+      "location": "Québec (QC)",
+      "salary": "37,36 $ de l'heure",
+      "published_at": "2026-11-11",
+      "work_mode": "Sur place",
+      "job_type": "",
+      "category": "",
+      "tags": [],
+      "description": "",
+      "stage_status": "not_indicated",
+      "stage_signals": [],
+      "search_terms": [],
+      "source_records": [
+        {
+          "source": "Guichet-Emplois",
+          "source_id": "50706749",
+          "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50706749",
+          "title": "développeur Web/développeuse Web",
+          "origin_site": "Guichet-Emplois",
+          "employer": "Groupe Abbatiello",
+          "location": "Québec (QC)",
+          "salary": "37,36 $ de l'heure",
+          "published_at": "2026-11-11",
+          "work_mode": "Sur place",
+          "job_type": "",
+          "category": "",
+          "tags": [],
+          "description": "",
+          "stage_status": "not_indicated",
+          "stage_signals": [],
+          "search_terms": [],
+          "source_data": {
+            "job_number": "3717397",
+            "displayed_date": "11 novembre 2026",
+            "posted_on_guichet": true
+          }
+        }
+      ]
+    },
+    {
+      "title": "analyste - intelligence artificielle",
+      "employer": "Alt Informatique",
+      "location": "Saint-Jean-sur-Richelieu (QC)",
+      "salary": "65 000,00 $ à 80 000,00 $ par année",
+      "published_at": "2026-11-11",
+      "work_mode": "",
+      "job_type": "",
+      "category": "",
+      "tags": [],
+      "description": "",
+      "stage_status": "not_indicated",
+      "stage_signals": [],
+      "search_terms": [],
+      "source_records": [
+        {
+          "source": "Guichet-Emplois",
+          "source_id": "50706357",
+          "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50706357",
+          "title": "analyste - intelligence artificielle",
+          "origin_site": "Jobillico",
+          "employer": "Alt Informatique",
+          "location": "Saint-Jean-sur-Richelieu (QC)",
+          "salary": "65 000,00 $ à 80 000,00 $ par année",
+          "published_at": "2026-11-11",
+          "work_mode": "",
+          "job_type": "",
+          "category": "",
+          "tags": [],
+          "description": "",
+          "stage_status": "not_indicated",
+          "stage_signals": [],
+          "search_terms": [],
+          "source_data": {
+            "job_number": "17693487",
+            "displayed_date": "11 novembre 2026",
+            "posted_on_guichet": false
+          }
+        }
+      ]
+    },
+    {
+      "title": "architecte de systèmes commerciaux",
+      "employer": "Revenu Québec",
+      "location": "Québec (QC)",
+      "salary": "63 888,00 $ à 108 751,00 $ par année",
+      "published_at": "2026-11-11",
+      "work_mode": "",
+      "job_type": "",
+      "category": "",
+      "tags": [],
+      "description": "",
+      "stage_status": "not_indicated",
+      "stage_signals": [],
+      "search_terms": [],
+      "source_records": [
+        {
+          "source": "Guichet-Emplois",
+          "source_id": "50705500",
+          "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50705500",
+          "title": "architecte de systèmes commerciaux",
+          "origin_site": "JobsMedia.ca",
+          "employer": "Revenu Québec",
+          "location": "Québec (QC)",
+          "salary": "63 888,00 $ à 108 751,00 $ par année",
+          "published_at": "2026-11-11",
+          "work_mode": "",
+          "job_type": "",
+          "category": "",
+          "tags": [],
+          "description": "",
+          "stage_status": "not_indicated",
+          "stage_signals": [],
+          "search_terms": [],
+          "source_data": {
+            "job_number": "279724B1794391203",
+            "displayed_date": "11 novembre 2026",
+            "posted_on_guichet": false
+          }
+        }
+      ]
+    }
+  ]
+}

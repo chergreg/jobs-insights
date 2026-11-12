@@ -1,86 +1,144 @@
 # Compte rendu — Livrable 2 : preuve de concept de scraping
 
-**Auteur :** Kandet  
-**Date :** 11 novembre 2026
+**Kandet** — dernière mise à jour le 12 novembre 2026
 
 ## 1. Sites et pages testés
 
-Le prototype interroge deux sources :
+| Source | Page ou URL utilisée | Rôle |
+|---|---|---|
+| Guichet-Emplois | `https://www.guichetemplois.gc.ca/jobsearch/rechercheemplois` | Source principale |
+| Remotive | `https://remotive.com/api/remote-jobs` | Source secondaire (télétravail) |
 
-- **Guichet-Emplois (Job Bank)** — flux Atom de recherche :  
-  `https://www.jobbank.gc.ca/jobsearch/feed/jobSearchRSSfeed`
-- **Remotive** — API JSON publique :  
-  `https://remotive.com/api/remote-jobs`
+Pour le Guichet-Emplois, je cherche les offres du Québec (`fprov=QC`) dans 14 codes CNP du domaine informatique : développeurs, programmeurs, analystes, soutien technique, réseau, données, cybersécurité, etc. La liste complète des codes est au début du script (`CNP_CODES_TI`).
 
-Le Guichet-Emplois est filtré au Québec par défaut. Remotive conserve les lieux disponibles, puis le prototype filtre localement les catégories liées au domaine informatique. Les autres sources recensées dans [`sites.md`](../01-inventaire-des-sites/sites.md) ne sont pas automatisées par ce prototype.
+Exemple de page testée (première page de résultats) :
+`https://www.guichetemplois.gc.ca/jobsearch/rechercheemplois?fn21=21232&fn21=21234&fprov=QC&sort=D`
 
-## 2. Méthode, outils et exécution
+## 2. Méthode, outils et commande
 
-Le script [`poc_multi_source.py`](poc_multi_source.py) utilise uniquement la bibliothèque standard de Python : `urllib` pour les requêtes HTTP, `xml.etree.ElementTree` pour lire le flux Atom, `json` pour l'API et les fichiers de résultats, et `html.parser` pour convertir les descriptions HTML en texte. Il normalise les champs communs, conserve les liens et renseignements propres à chaque source, déduplique les annonces répétées et classe les indices de stage.
+Le script [`poc_multi_source.py`](poc_multi_source.py) utilise seulement la bibliothèque standard de Python 3.12+, sans `pip install` :
 
-Aucune dépendance externe n'est requise. Depuis la racine du dépôt, lancer le prototype avec :
+- `urllib.request` pour les requêtes HTTP ;
+- `html.parser` pour lire la page de résultats ;
+- `json` pour l'API Remotive et pour le fichier de sortie ;
+- `dataclasses` pour le modèle commun (`SourceRecord`, puis `AggregatedOffer` après déduplication).
+
+**Guichet-Emplois, comment ça marche :**
+
+1. Le script demande la page 1 de la recherche, puis `page=2`, `page=3`, etc. Chaque page contient 25 offres.
+2. Chaque offre est dans une balise `<article id="article-…">`. Je lis les champs selon leur classe CSS : `noctitle` (titre), `business` (employeur), `location`, `salary`, `date`, `telework` (sur place, hybride…) et `source` (numéro d'offre et site d'origine).
+3. Les textes cachés pour les lecteurs d'écran (`wb-inv`), comme « Emplacement » ou « Numéro de l'offre », sont ignorés. Seule exception : le nom du site qui a publié l'offre (Jobillico, Talent.com…).
+4. Je retire le `;jsessionid=…` des liens pour garder une URL propre vers la fiche.
+5. Le script s'arrête quand le nombre d'offres annoncé par le site est atteint, quand une page est vide ou quand une page répète des offres déjà vues. **Il n'y a aucun plafond de pages ni d'offres.**
+
+**Remotive :** un seul appel à l'API, réponse gardée 24 h dans `remotive-cache.json`. Je garde seulement les catégories liées à l'informatique.
+
+**Respect des sites :**
+
+- 5 secondes d'attente entre chaque page, comme le demande le `robots.txt` du Guichet-Emplois (`Crawl-delay: 5`) ;
+- `User-Agent` qui identifie le projet ;
+- un seul nouvel essai après 30 s si le serveur répond 429 ou 503 ;
+- pas plus de 4 appels par jour à Remotive, comme le demande leur API.
+
+**Commandes** (depuis la racine du dépôt) :
 
 ```powershell
+# Collecte complète : Guichet-Emplois (Québec, codes TI) + Remotive
 python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py
+
+# Avec un petit fichier d'exemple de 10 offres
+python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --echantillon .\equipe\kandet\02-preuve-de-concept-scraping\echantillon.json
+
+# Autres options
+python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --toutes-provinces
+python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --remotive-canada
+python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --sans-remotive --sans-sauvegarde
 ```
 
-Exemples d'options :
+Les résultats vont dans `offres.json`, à côté du script. Ce fichier et le cache Remotive ne sont pas mis dans Git.
 
-```powershell
-python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --jobbank-term developpeur --jobbank-term "stage informatique"
-python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --all-jobbank-locations
-python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --canada-remotive-only
-python .\equipe\kandet\02-preuve-de-concept-scraping\poc_multi_source.py --refresh-remotive
-```
-
-Les tests hors ligne sont dans [`test_poc_multi_source.py`](test_poc_multi_source.py). Depuis le dossier du prototype, les lancer avec :
+**Tests** (33 tests, sans connexion Internet, avec des pages HTML et des réponses JSON fictives) :
 
 ```powershell
 Set-Location .\equipe\kandet\02-preuve-de-concept-scraping
 python -m unittest -v test_poc_multi_source.py
 ```
 
-Par défaut, le résultat est écrit dans `offres.json`, à côté du script. La réponse brute Remotive est réutilisée depuis `remotive-cache.json` pendant 24 heures. `--refresh-remotive` force une requête supplémentaire; la documentation de l'API recommande au plus quatre requêtes par jour.
+Les tests couvrent la lecture d'une page de résultats, la pagination sans plafond, l'arrêt sur page vide ou répétée, le délai de 5 s, le nouvel essai sur HTTP 429, les dates françaises, le cache Remotive, la détection des stages et la déduplication.
 
-## 3. Données récupérées et exemple
+## 3. Données récupérées
 
-Le flux du Guichet-Emplois fournit, lorsqu'ils sont présents, le titre, le numéro d'offre, le lien, la date, le lieu, l'employeur et le salaire. Remotive fournit notamment le titre, l'employeur, le lien, le type d'emploi, la catégorie, le lieu, le salaire, les étiquettes et la description. Le programme réunit ces renseignements dans une structure commune et garde les détails par source.
+Essai du **12 novembre 2026** (environ 45 secondes) :
 
-L'instantané local utilisé pour cet essai a été généré le **11 novembre 2026 à 08 h 53 (heure de l'Est)**. Son résumé indique :
+| Résultat | Valeur |
+|---|---|
+| Offres annoncées par le Guichet-Emplois | 191 |
+| Offres récupérées par le script | **191** (8 pages) |
+| Offres Remotive gardées | 8 sur 14 dans l'API |
+| Offres uniques après déduplication | **198** |
+| Offres avec un salaire | 194 |
 
-- **8 offres uniques** : 1 du Guichet-Emplois et 7 de Remotive;
-- 4 termes de recherche du Guichet-Emplois, avec 2 pages parcourues par terme;
-- 0 stage confirmé, 0 stage possible et 8 offres sans indice de stage détecté.
+Le Guichet-Emplois affiche aussi des offres de sites partenaires. Répartition des 191 offres selon le site d'origine :
 
-Exemple anonymisé de la structure produite; le titre, l'employeur, le lieu, le salaire, l'identifiant et le lien réels sont omis :
+| Site d'origine | Offres |
+|---|---|
+| Guichet-Emplois (publiées par l'employeur) | 68 |
+| Jobillico | 44 |
+| Québec emploi | 38 |
+| Talent.com | 19 |
+| JobsMedia.ca | 13 |
+| CareerBeacon | 5 |
+| indeed.com | 3 |
+| Jobboom | 1 |
+
+Une même offre (« architecte de solutions - TI », Fop experts conseils, Brossard) était publiée à la fois par Québec emploi et par Jobillico : le script l'a regroupée en une seule offre qui garde les deux liens.
+
+Les 10 premières offres sont dans [`echantillon.json`](echantillon.json). Exemple d'une offre (champs principaux) :
 
 ```json
 {
-  "title": "[titre omis]",
-  "employer": "[employeur omis]",
-  "location": "[lieu omis]",
-  "salary": "[salaire omis]",
+  "title": "agent/agente de soutien aux utilisateurs",
+  "employer": "GolfIn - Saint-Georges",
+  "location": "Saint-Georges (QC)",
+  "salary": "52 000,00 $ à 60 000,00 $ par année",
+  "published_at": "2026-11-12",
   "stage_status": "not_indicated",
-  "search_terms": ["developpeur"],
   "source_records": [
     {
       "source": "Guichet-Emplois",
-      "source_id": "[identifiant omis]",
-      "url": "[lien d'origine omis]"
+      "source_id": "50711091",
+      "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50711091",
+      "origin_site": "Jobillico",
+      "source_data": { "job_number": "17086532", "displayed_date": "12 novembre 2026" }
     }
   ]
 }
 ```
 
-Les 7 enregistrements Remotive de cet instantané ont été comparés hors ligne à la réponse API en cache : leur identifiant, lien, titre, employeur et catégorie correspondent. Cela vérifie la cohérence avec la réponse sauvegardée, mais pas que les offres sont toujours actives ou visibles sur le site. Une vérification manuelle d'une annonce sur son site source reste à faire.
+**Vérification avec le site.** J'ai ouvert 6 fiches : 4 prises au hasard (toutes publiées directement sur le Guichet-Emplois), plus 1 offre Jobillico et 1 offre Québec emploi. Pour les 6, le titre, l'employeur, la ville et le salaire collectés sont les mêmes que sur la fiche. J'ai aussi vérifié que le total récupéré (191) est égal au nombre de résultats affiché en haut de la page de recherche.
 
 ## 4. Difficultés, limites et pistes essayées
 
-- **Pagination :** le flux du Guichet-Emplois peut renvoyer une page courte mais non vide. Le prototype continue donc jusqu'à une page vide ou déjà rencontrée, au lieu de s'arrêter à la première page courte. Il demande 100 résultats par page, sans garantir que la source en fournisse 100.
-- **Rythme des requêtes :** le `robots.txt` du Guichet-Emplois indique un délai de cinq secondes. Le prototype attend au moins cinq secondes entre les pages et les termes et utilise un `User-Agent` identifiant le projet.
-- **Détails incomplets :** le flux Atom donne un résumé et le prototype ne visite pas les fiches du Guichet-Emplois. Remotive fournit la description via son API. Les champs absents restent vides au lieu d'être devinés.
-- **Couverture :** la recherche par défaut emploie quatre termes et trois catégories du Guichet-Emplois, avec le Québec comme lieu par défaut. Remotive n'est pas limité géographiquement par défaut, mais reste filtré à dix catégories pertinentes. Ces sources et filtres ne couvrent pas toutes les offres existantes.
-- **Détection des stages :** `confirmed_stage`, `possible_stage` et `not_indicated` reposent sur des termes et indices textuels. Des formulations inhabituelles peuvent être manquées; `not_indicated` ne prouve pas qu'un poste n'est pas un stage.
-- **Conditions d'utilisation :** le cache Remotive de 24 heures limite les requêtes. Préserver l'attribution et le lien d'origine; ne pas republier ces annonces sur un site tiers. Le prototype ne contourne ni blocage, ni connexion, ni protection.
-- **Pistes suivantes :** élargir les termes et catégories avec des tests; étudier une source supplémentaire uniquement si elle offre un moyen d'accès autorisé; améliorer la détection des stages; vérifier manuellement un échantillon de fiches.
-Les fichiers `offres.json` et `remotive-cache.json` sont des données de travail locales; ils ne sont pas requis pour les tests et ne sont pas inclus dans ce compte rendu.
+**Première version avec le flux Atom (abandonnée).** Au début, j'utilisais le flux Atom du Guichet-Emplois (`/jobsearch/feed/jobSearchRSSfeed`) avec 4 mots-clés. Mon essai du 11 novembre ne donnait qu'**une seule offre** au Québec. En testant, j'ai compris pourquoi :
+
+- le flux ignore le paramètre `rows=100` et renvoie une dizaine d'offres pour tout le Canada, alors je filtrais le Québec après coup ;
+- même avec le filtre `fprov=QC` et les 14 codes CNP, le flux donne seulement 12 offres ;
+- la page de recherche HTML, avec les mêmes filtres, en annonce 191.
+
+Le flux ne contient que les offres publiées directement sur le Guichet-Emplois, sans celles des partenaires. J'ai donc remplacé le flux par la page de recherche HTML. On passe de 1 à 191 offres pour le Québec.
+
+**Autres limites observées :**
+
+- **Titres CNP.** La liste affiche le titre normalisé de la CNP, pas le titre écrit par l'employeur. Par exemple, une offre Jobillico « Technicien(ne) de service » apparaît comme « agent/agente de soutien aux utilisateurs ». C'est pour ça qu'aucun stage n'est détecté (0 sur 198).
+- **Recherche de stages.** J'ai essayé `--terme stage` et `--terme stagiaire` avec les codes CNP. « stage » donne 0 résultat et « stagiaire » renvoie les mêmes 191 offres que sans mot-clé, donc le site ignore ce mot dans cette combinaison. Pour repérer les stages, il faudrait lire chaque fiche (description, lien vers l'annonce d'origine). Avec 5 s par fiche, ça prendrait environ 16 minutes pour 191 offres. Je le garde pour la suite.
+- **Pas de description complète.** La page de résultats ne donne ni la description ni les exigences. Le champ `description` reste vide plutôt que d'être inventé.
+- **Offres en série.** Une firme de recrutement (Fop experts conseils) publie 42 des 191 offres via Québec emploi, dont 8 fois le même titre. Je ne fusionne pas les offres identiques d'un même site, car rien ne prouve que ce sont des doublons.
+- **Lieux variés.** La plupart des lieux sont au format « Ville (QC) », mais certains sont « Longueuil, QC » ou « Différentes régions ».
+- **Remotive.** L'API publique ne renvoie que 14 offres au total, avec 24 h de retard. Le paramètre `category` ne change rien au résultat. C'est une source d'appoint. Il faut garder le lien et le nom de Remotive, et ne pas republier ces offres ailleurs.
+- **Dépendance au HTML.** Si le Guichet-Emplois change ses classes CSS, le script devra être adapté. Les tests utilisent une copie du balisage observé le 12 novembre 2026.
+
+**Pistes pour la suite :**
+
+- lire les fiches pour avoir la description, le vrai titre et le lien vers l'annonce d'origine, puis détecter les stages ;
+- uniformiser le format des lieux ;
+- comparer avec les essais de Hugo et Mamadou sur le Guichet-Emplois (fiches HTML et RDFa).
