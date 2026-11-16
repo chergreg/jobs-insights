@@ -217,16 +217,18 @@ flowchart TD
 
 ---
 
-### Itération 5 — Pipeline d'unification, déduplication et export
-- [ ] Créer le point d'entrée unifié `equipe/gregory/livrable3/main.py`.
-- [ ] Implémenter le moteur de déduplication multi-sources :
-  - Déduplication intra-source par identifiant unique / URL.
+### Itération 5 — Pipeline d'unification, déduplication et export *(✅ Terminée)*
+- [x] Créer le moteur d'unification et de déduplication dans `equipe/gregory/livrable3/pipeline.py` :
+  - Déduplication intra-source par identifiant unique et URL propre.
   - Déduplication inter-sources par empreinte normalisée (`titre` + `employeur` + `lieu`).
-  - Détection et conservation des sources partenaires (ex: offre Guichet-Emplois provenant de Jobillico).
-- [ ] Fournir deux formats d'export complets :
-  - `data/offres_unifiees.json` (format structuré complet avec descriptions et compétences).
-  - `data/offres_unifiees.csv` (encodé en `utf-8-sig` avec séparateur `;` pour compatibilité Excel).
-- [ ] Écrire les tests unitaires du pipeline de fusion (`test_pipeline.py`).
+  - Fusion intelligente maximisant la richesse : description la plus longue, cumul des compétences, conservation du partenaire d'origine (ex. Jobillico).
+  - Priorisation stricte du signal de stage (`confirmed_stage` > `possible_stage` > `not_indicated`).
+- [x] Créer le point d'entrée unifié et exécutable `equipe/gregory/livrable3/main.py`.
+- [x] Fournir deux formats d'export complets consolidés :
+  - `data/offres_unifiees.json` (format structuré complet indenté, 140 offres, 269,8 Ko).
+  - `data/offres_unifiees.csv` (encodé en `utf-8-sig` avec séparateur `;` pour compatibilité Excel Windows, 213,2 Ko).
+- [x] Écrire la suite de 29 tests unitaires hors ligne du pipeline (`test_pipeline.py`).
+- [x] Valider l'ensemble des 110 tests unitaires du projet en ~0,78 s.
 
 ---
 
@@ -249,8 +251,8 @@ flowchart TD
 | **Connecteur Guichet-Emplois** | Gregory / IA | ✅ Terminé | `scrapers/guichet_emplois.py` | 24 tests (0,03 s) |
 | **Connecteur Jobboom** | Gregory / IA | ✅ Terminé | `scrapers/jobboom.py` | 23 tests (0,03 s) |
 | **Connecteur Remotive** | Gregory / IA | ✅ Terminé | `scrapers/remotive.py` | 34 tests (0,05 s) |
-| **Pipeline & Déduplication** | Gregory / IA | ⏳ À démarrer | `pipeline.py`, `main.py` | 0 test |
-| **Exports JSON / CSV** | Gregory / IA | ⏳ En cours | `data/offres_guichet_emplois.json`, `data/offres_jobboom.json`, `data/offres_remotive.json` | 97 GE + 31 JB + 12 REM |
+| **Pipeline & Déduplication** | Gregory / IA | ✅ Terminé | `pipeline.py`, `main.py` | 29 tests (0,68 s) |
+| **Exports JSON / CSV** | Gregory / IA | ✅ Terminé | `data/offres_unifiees.json`, `data/offres_unifiees.csv` | 140 offres consolidées |
 | **Compte rendu Livrable 3** | Gregory / IA | ⏳ À démarrer | `COMPTE_RENDU.md` | S/O |
 
 ---

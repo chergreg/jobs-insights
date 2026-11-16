@@ -20,6 +20,10 @@ Le livrable fusionne et bonifie les travaux de l'équipe :
   - Politique stricte de cache local 24 h (respectant la limitation de 4 requêtes/jour de Remotive).
   - Moteur de classification géographique multi-niveaux ciblant le Canada, le Québec et le télétravail étudiant.
   - Détection native des stages via `job_type == "internship"` et complétée sémantiquement.
+- **Pipeline d'unification et déduplication multi-sources** (Lot 5) :
+  - Déduplication intra-source (ID / URL nettoyée) et inter-sources (empreinte titre + employeur + lieu).
+  - Fusion intelligente maximisant la richesse (description la plus longue, cumul des compétences, priorisation du signal de stage).
+  - Exports consolidés sous formats JSON complet et CSV compatible Microsoft Excel Windows (`utf-8-sig`, délimiteur `;`).
 - **Modèle commun Pydantic v2 `JobOffer`** (zéro invention de données, conformité `AGENTS.md`).
 
 ---
@@ -221,14 +225,82 @@ Valide l'ensemble des règles de parsing, de classification géographique, de d�
 
 ---
 
+### J. Point d'entrée unifié et exécutable (`main.py`)
+
+Orchestre la collecte ciblée ou complète des trois sources (Guichet-Emplois, Jobboom, Remotive), applique le pipeline de fusion / déduplication et génère les deux exports finaux consolidés.
+
+- **Fichier** : `main.py`
+- **Entrées (Paramètres CLI)** :
+  - `--sources LISTE` : Sources à inclure séparées par virgule (`guichet,jobboom,remotive`, défaut: les trois).
+  - `--scrape` : Active les connecteurs de collecte au lieu de lire les jeux d'essai préexistants.
+  - `--no-cache` : Désactive le cache disque pour forcer des requêtes HTTP réelles (si `--scrape` est actif).
+  - `--limit N` : Limite d'offres extraites par source.
+  - `--output-json CHEMIN` : Destination de l'export JSON (défaut : `data/offres_unifiees.json`).
+  - `--output-csv CHEMIN` : Destination de l'export CSV (défaut : `data/offres_unifiees.csv`).
+  - `--verbose` : Affiche les journaux d'exécution détaillés.
+- **Sorties** :
+  - Fichier JSON unifié : `data/offres_unifiees.json` (140 offres structurées, indentées, 269,8 Ko).
+  - Fichier CSV unifié : `data/offres_unifiees.csv` (140 offres, encodage `utf-8-sig`, délimiteur `;`, 213,2 Ko).
+  - Console : Rapport statistique de synthèse (répartition par source, stages, top technologies).
+- **Exemples de commandes** :
+  ```powershell
+  # 1. Exécution par défaut (unification instantanée des jeux d'essai)
+  python main.py
+
+  # 2. Collecte ciblée sur Guichet-Emplois et Jobboom uniquement
+  python main.py --sources guichet,jobboom
+
+  # 3. Lancer une collecte en direct avec scraping
+  python main.py --scrape --limit 5
+  ```
+
+---
+
+### K. Moteur de déduplication et pipeline d'unification (`pipeline.py`)
+
+Module central assurant l'unification sans perte d'information :
+1. **Déduplication intra-source** : Par identifiant unique normalisé (`id`) et URL canonique sans paramètres de tracking (`clean_url`).
+2. **Déduplication inter-sources** : Par empreinte normalisée `(titre, employeur, lieu)` avec tolérance aux variantes graphiques et corporatives (`Inc.`, `Ltée`, etc.). Les annonces d'un même diffuseur ne sont jamais fusionnées sur le titre seul.
+3. **Fusion intelligente** :
+   - Préservation de la description la plus longue et informative.
+   - Cumul des compétences clés uniques normalisées.
+   - Conservation du partenaire d'origine si l'offre a été agrégée (ex: `source_partenaire="Jobillico"`).
+   - Priorisation stricte du signal de stage (`confirmed_stage` > `possible_stage` > `not_indicated`).
+   - Rétention des modalités de travail (Télétravail, Hybride) et salaires explicites.
+4. **Exports spécialisés** :
+   - `export_to_json` : JSON indenté standardisé UTF-8.
+   - `export_to_csv` : CSV encodé en `utf-8-sig` avec séparateur `;` et nettoyage des sauts de ligne pour un affichage parfait dans Excel sur Windows.
+
+---
+
+### L. Suite de tests unitaires hors ligne du pipeline (`test_pipeline.py`)
+
+Valide l'ensemble des règles de normalisation, de déduplication, de fusion et d'export sans aucun appel réseau.
+
+- **Fichier** : `test_pipeline.py`
+- **Couverture** :
+  - Normalisation textuelle, employeur, titre et localisation québécoise.
+  - Déduplication intra-source et inter-sources (rediffusions cross-plateformes).
+  - Préservation des descriptions, compétences, salaires et partenaires.
+  - Priorisation des stages et enrichissement du type de poste.
+  - Conformité des exports JSON et CSV (`utf-8-sig`, BOM Excel, délimiteur `;`).
+  - Validation de bout en bout sur batch synthétique et sur les 140 offres réelles de `data/`.
+- **Sorties** : 29 tests validés en ~0,68 s.
+- **Exemple de commande** :
+  ```powershell
+  python -m unittest test_pipeline.py -v
+  ```
+
+---
+
 ### Exécution globale de l'ensemble des tests du Livrable 3
 
-Pour exécuter d'un coup l'ensemble des suites de tests unitaires (Guichet-Emplois + Jobboom + Remotive) :
+Pour exécuter d'un coup l'ensemble des suites de tests unitaires (Guichet-Emplois + Jobboom + Remotive + Pipeline) :
 
 ```powershell
 python -m unittest discover -s . -p "test_*.py" -v
 ```
-*(81 tests unitaires validés en ~0,10 s).*
+*(110 tests unitaires validés en ~0,78 s).*
 
 ---
 
