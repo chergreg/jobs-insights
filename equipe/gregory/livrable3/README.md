@@ -15,6 +15,11 @@ Le livrable fusionne et bonifie les travaux de l'équipe :
   - Pagination ordonnée et paramétrable de la catégorie TI (surpassant la limite de 5 offres d'Elvira).
   - Extraction robuste du JSON-LD Schema.org/JobPosting via `json.loads` natif (fiabilisant l'approche de Mamadou).
   - Respect de la temporisation éthique de 2.0 s et gestion du cache local disque (search/details).
+- **Connecteur #3 : Remotive** (Lot 4) :
+  - Client API REST JSON (`/api/remote-jobs`) bonifié à partir des travaux de Kandet.
+  - Politique stricte de cache local 24 h (respectant la limitation de 4 requêtes/jour de Remotive).
+  - Moteur de classification géographique multi-niveaux ciblant le Canada, le Québec et le télétravail étudiant.
+  - Détection native des stages via `job_type == "internship"` et complétée sémantiquement.
 - **Modèle commun Pydantic v2 `JobOffer`** (zéro invention de données, conformité `AGENTS.md`).
 
 ---
@@ -154,14 +159,76 @@ Garantit la robustesse du parsing de listing et du bloc JSON-LD Schema.org/JobPo
 
 ---
 
+### G. Script de démonstration et test en direct Remotive (`run_demo_remotive.py`)
+
+Interroge l'API REST publique Remotive avec politique de cache local 24 h (respectant la limite stricte de 4 requêtes/jour), classification géographique fine et détection native des stages.
+
+- **Fichier** : `run_demo_remotive.py`
+- **Configuration** :
+  - `cache_hours` : `24` h (utilisation prioritaire du cache disque).
+  - `user_agent` : `jobs-insights-atelier/1.0 (Projet etudiant DEC Informatique; contact: gregory@jobs-insights.local)`.
+  - `cache_dir` : `cache/remotive/remotive_cache.json`.
+- **Entrées (Paramètres CLI)** :
+  - `--limit N` : Nombre maximal d'offres à afficher (défaut : `15`).
+  - `--geo-filter FILTRE` : `canada_eligible` (défaut), `canada_only`, `quebec_only`, `all`.
+  - `--category CAT` : Catégorie d'emplois Remotive (ex: `software-development`, `data`).
+  - `--search RECHERCHE` : Mot-clé de recherche optionnel.
+  - `--stage-only` : Conserver uniquement les stages.
+  - `--no-cache` : Forcer un appel réseau direct vers l'API Remotive.
+  - `--save-dataset` : Exporter les offres normalisées dans `data/offres_remotive.json`.
+- **Sorties** :
+  - **Console** : Synthèse statistique (répartition des contrats, lieux, technologies, stages) et fiches d'offres détaillées.
+  - **Cache disque** : Fichier JSON complet avec enveloppe et horodatage UTC.
+- **Exemples de commandes** :
+  ```powershell
+  # 1. Démonstration rapide sur les offres ouvertes au Canada
+  python run_demo_remotive.py --limit 5
+
+  # 2. Filtrer uniquement les stages TI
+  python run_demo_remotive.py --stage-only
+
+  # 3. Cibler les offres strictement au Québec ou Canada
+  python run_demo_remotive.py --geo-filter canada_only
+  ```
+
+---
+
+### H. Générateur du jeu d'essai standardisé Remotive (`generate_remotive_dataset.py`)
+
+Collecte les offres en direct/cache de Remotive et consolide les cas de référence de stages (conformité Kandet).
+
+- **Fichier** : `generate_remotive_dataset.py`
+- **Sortie** : `data/offres_remotive.json` (12 offres normalisées `JobOffer`, dont 3 stages confirmés).
+- **Exemple de commande** :
+  ```powershell
+  python generate_remotive_dataset.py
+  ```
+
+---
+
+### I. Suite de tests unitaires 100 % hors ligne Remotive (`test_remotive.py`)
+
+Valide l'ensemble des règles de parsing, de classification géographique, de détection de stages et de cache sans aucun appel réseau.
+
+- **Fichier** : `test_remotive.py`
+- **Configuration** : Mode hors ligne forcé (`offline_mode=True`).
+- **Entrées** : Fixtures JSON locales complètes (stages, Québec, Amérique du Nord, Monde, Hors cible).
+- **Sorties** : 34 tests validés en ~0,05 s.
+- **Exemple de commande** :
+  ```powershell
+  python -m unittest test_remotive.py -v
+  ```
+
+---
+
 ### Exécution globale de l'ensemble des tests du Livrable 3
 
-Pour exécuter d'un coup l'ensemble des suites de tests unitaires (Guichet-Emplois + Jobboom) :
+Pour exécuter d'un coup l'ensemble des suites de tests unitaires (Guichet-Emplois + Jobboom + Remotive) :
 
 ```powershell
 python -m unittest discover -s . -p "test_*.py" -v
 ```
-*(47 tests unitaires validés en moins de 0,06 s).*
+*(81 tests unitaires validés en ~0,10 s).*
 
 ---
 

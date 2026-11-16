@@ -207,13 +207,13 @@ flowchart TD
 
 ---
 
-### Itération 4 — Connecteur #3 : Remotive bonifié
-- [ ] Créer le module dans `equipe/gregory/livrable3/scrapers/remotive.py`.
-- [ ] Adapter le client API REST avec cache local 24 h (`remotive-cache.json`).
-- [ ] Améliorer le filtre géographique (Canada / Québec / télétravail éligible).
-- [ ] Aligner les sorties sur le modèle de données unifié `JobOffer`.
-- [ ] Écrire les tests unitaires hors ligne (`test_remotive.py`).
-- [ ] Valider l'exécution et produire un jeu d'essai `offres_remotive.json`.
+### Itération 4 — Connecteur #3 : Remotive bonifié *(✅ Terminée)*
+- [x] Créer le module dans `equipe/gregory/livrable3/scrapers/remotive.py`.
+- [x] Adapter le client API REST avec cache local 24 h (`cache/remotive/remotive_cache.json`).
+- [x] Améliorer le filtre géographique multi-niveaux (Canada / Québec / télétravail éligible).
+- [x] Aligner les sorties sur le modèle de données unifié `JobOffer` (détection native stages `internship`).
+- [x] Écrire la suite de 34 tests unitaires hors ligne (`test_remotive.py`).
+- [x] Valider l'exécution et produire le jeu d'essai `data/offres_remotive.json` (12 offres).
 
 ---
 
@@ -248,9 +248,9 @@ flowchart TD
 | **Modèle unifié `JobOffer`** | Gregory / IA | ✅ Terminé | `models.py` | 2 tests |
 | **Connecteur Guichet-Emplois** | Gregory / IA | ✅ Terminé | `scrapers/guichet_emplois.py` | 24 tests (0,03 s) |
 | **Connecteur Jobboom** | Gregory / IA | ✅ Terminé | `scrapers/jobboom.py` | 23 tests (0,03 s) |
-| **Connecteur Remotive** | Gregory / IA | ⏳ À démarrer | `scrapers/remotive.py` | 0 test |
+| **Connecteur Remotive** | Gregory / IA | ✅ Terminé | `scrapers/remotive.py` | 34 tests (0,05 s) |
 | **Pipeline & Déduplication** | Gregory / IA | ⏳ À démarrer | `pipeline.py`, `main.py` | 0 test |
-| **Exports JSON / CSV** | Gregory / IA | ⏳ En cours | `data/offres_guichet_emplois.json`, `data/offres_jobboom.json` | 97 GE + 31 JB |
+| **Exports JSON / CSV** | Gregory / IA | ⏳ En cours | `data/offres_guichet_emplois.json`, `data/offres_jobboom.json`, `data/offres_remotive.json` | 97 GE + 31 JB + 12 REM |
 | **Compte rendu Livrable 3** | Gregory / IA | ⏳ À démarrer | `COMPTE_RENDU.md` | S/O |
 
 ---

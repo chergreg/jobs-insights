@@ -8,5 +8,6 @@ Connecteurs spécialisés :
 
 from .guichet_emplois import GuichetEmploisScraper
 from .jobboom import JobboomScraper
+from .remotive import RemotiveScraper
 
-__all__ = ["GuichetEmploisScraper", "JobboomScraper"]
+__all__ = ["GuichetEmploisScraper", "JobboomScraper", "RemotiveScraper"]
