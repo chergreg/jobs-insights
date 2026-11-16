@@ -159,6 +159,106 @@ STAGE_PATTERNS = re.compile(
     re.IGNORECASE
 )
 
+# ==============================================================================
+# 1.B CODES CNP 2021 DU DOMAINE DEC EN INFORMATIQUE
+# ==============================================================================
+CODES_CNP_DEC_TI = {
+    # 2123 - Développement de logiciels et Web
+    "21230": "Informaticiens/informaticiennes et concepteurs/conceptrices de logiciels",
+    "21231": "Ingénieurs/ingénieures de logiciels",
+    "21232": "Développeurs/développeuses de logiciels et programmeurs/programmeuses",
+    "21233": "Concepteurs/conceptrices Web",
+    "21234": "Développeurs/développeuses Web",
+    # 2122 - Cybersécurité, TI, Données et Assurance Qualité
+    "21220": "Spécialistes de la cybersécurité",
+    "21221": "Spécialistes des systèmes d'information",
+    "21222": "Spécialistes en assurance de la qualité des systèmes d'information",
+    "21223": "Analystes et administrateurs/administratrices de bases de données",
+    # 2121 & 2131 - Données et Ingénierie
+    "21211": "Scientifiques des données",
+    "21311": "Ingénieurs/ingénieures en informatique",
+    # 2222 - Réseaux, Soutien technique et Évaluation (Helpdesk / Tech support)
+    "22220": "Techniciens/techniciennes de réseau informatique",
+    "22221": "Agents/agentes de soutien aux utilisateurs",
+    "22222": "Évaluateurs/évaluatrices de systèmes informatiques",
+}
+
+
+def extraire_code_cnp(source_html_ou_texte: str | BeautifulSoup) -> Optional[str]:
+    """
+    Extrait le code officiel CNP (Classification Nationale des Professions, 4 ou 5 chiffres).
+    Exemples repérés sur Guichet-Emplois :
+      - 'CNP 21234'
+      - 'NOC 21234'
+      - Balise <span class="...noc...">CNP 21234</span>
+      - Balise sémantique occupationalCategory
+    """
+    if not source_html_ou_texte:
+        return None
+
+    if isinstance(source_html_ou_texte, BeautifulSoup):
+        soup = source_html_ou_texte
+    elif "<" in str(source_html_ou_texte) and ">" in str(source_html_ou_texte):
+        soup = BeautifulSoup(str(source_html_ou_texte), "html.parser")
+    else:
+        soup = None
+
+    if soup:
+        # 1. Vérification dans les balises sémantiques (occupationalCategory)
+        for tag in soup.find_all(attrs={"property": re.compile(r"occupationalCategory", re.I)}):
+            val = tag.get("content") or tag.get_text()
+            m = re.search(r"\b(\d{4,5})\b", val)
+            if m:
+                return m.group(1)
+
+        # 2. Vérification dans les conteneurs du marché du travail (LMI / Labour Market Information)
+        lmi = soup.find(attrs={"id": re.compile(r"job-market|market-info", re.I)}) or \
+              soup.find(attrs={"class": re.compile(r"job-market|market-info|noc-code|cnp-code", re.I)})
+        if lmi:
+            m = re.search(r"\b(?:CNP|NOC)\s*:?\s*(\d{4,5})\b", lmi.get_text(" ", strip=True), re.I)
+            if m:
+                return m.group(1)
+
+        texte_global = soup.get_text(" ", strip=True)
+    else:
+        texte_global = str(source_html_ou_texte)
+
+    # 3. Recherche textuelle globale
+    m = re.search(r"\b(?:CNP|NOC)\s*:?\s*(\d{4,5})\b", texte_global, re.I)
+    if m:
+        return m.group(1)
+
+    return None
+
+
+def est_cnp_dec_informatique(code_cnp: Optional[str]) -> Optional[bool]:
+    """
+    Vérifie si un code CNP correspond aux métiers du DEC en informatique :
+    - Retourne True si le CNP fait partie des professions TI (212xx, 222xx, 21311, etc.).
+    - Retourne False si le CNP est hors TI (ex: 72203 monteurs de lignes, 65310 concierges, etc.).
+    - Retourne None si aucun code CNP n'est fourni.
+    """
+    if not code_cnp:
+        return None
+    code_str = re.sub(r"[^\d]", "", str(code_cnp))
+    if not code_str:
+        return None
+
+    # Code officiel DEC TI exact
+    if code_str in CODES_CNP_DEC_TI:
+        return True
+
+    # Familles CNP 2021 TI :
+    # 212xx : Spécialistes des technologies de l'information
+    # 222xx : Personnel technique des technologies de l'information
+    # 21311 : Ingénieurs en informatique
+    if re.match(r"^(?:212\d{2}|222\d{2}|21311)$", code_str):
+        return True
+
+    # Tous les autres codes CNP (ex: 72203, 65xxx, 7xxxx, etc.) ne sont PAS du DEC TI
+    return False
+
+
 
 def clean_text(raw_html: str) -> str:
     """Nettoie le balisage HTML et normalise les espaces."""
@@ -191,7 +291,7 @@ def extraire_identifiant_propre(raw_id: str, url_source: str = "") -> str:
     return f"gc-{clean}" if clean else "gc-inconnu"
 
 
-def est_metier_dec_informatique(titre: str, texte_complementaire: str = "") -> bool:
+def est_metier_dec_informatique(titre: str, texte_complementaire: str = "", code_cnp: Optional[str] = None) -> bool:
     """
     Vérifie si une offre d'emploi correspond au domaine du DEC en informatique :
     - Programmation / Développement (Web, Logiciel, Mobile, Jeux vidéo, DevOps)
@@ -199,13 +299,33 @@ def est_metier_dec_informatique(titre: str, texte_complementaire: str = "") -> b
     - Données et Assurance Qualité (Bases de données, QA)
     - Stages informatiques
 
-    Rejette formellement les offres hors TI (ex: cleaning man/woman, réseau électrique, etc.).
+    Arbitrage prioritaire par code CNP :
+    - Si un CNP TI officiel est reconnu (ex: 21234, 21230, 22220) => confirmation directe (True).
+    - Si un CNP hors TI est reconnu (ex: 72203 monteurs de lignes) => rejet immédiat (False).
+    - Sinon, application des filtres de garde d'exclusions et d'inclusions textuelles.
     """
+    # 0. Arbitrage direct et prioritaire par code CNP officiel s'il est spécifié
+    if code_cnp:
+        validation_cnp = est_cnp_dec_informatique(code_cnp)
+        if validation_cnp is False:
+            return False
+        if validation_cnp is True:
+            return True
+
     titre_propre = (titre or "").strip()
     if not titre_propre:
         return False
 
     texte_global = f"{titre_propre} {texte_complementaire}".lower()
+
+    # Si le texte contient explicitement une mention de code CNP (ex: "CNP 72203")
+    cnp_dans_texte = extraire_code_cnp(texte_global)
+    if cnp_dans_texte:
+        val_texte = est_cnp_dec_informatique(cnp_dans_texte)
+        if val_texte is False:
+            return False
+        if val_texte is True:
+            return True
 
     # 1. Vérification des exclusions prioritaires (métiers non-TI, réseau électrique, etc.)
     for pattern in MOTIFS_NON_TI:
@@ -333,8 +453,11 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
             if sal_m:
                 salaire = sal_m.group(1).strip()
 
-        # Filtrage strict DEC en informatique (rejette formellement réseau électrique, cleaning, etc.)
-        if not est_metier_dec_informatique(titre, summary_html):
+        # Extraction du code CNP si mentionné dans le résumé
+        cnp_code = extraire_code_cnp(summary_html)
+
+        # Filtrage strict DEC en informatique (arbitré par CNP si disponible)
+        if not est_metier_dec_informatique(titre, summary_html, code_cnp=cnp_code):
             continue
 
         type_poste = detect_stage(titre, summary_html)
@@ -348,6 +471,7 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
             province=province,
             pays="Canada",
             salaire=salaire,
+            cnp=cnp_code,
             date_publication=date_pub,
             type_poste=type_poste,
             modalite="Non spécifié",
@@ -388,8 +512,11 @@ def parse_search_page_html(html_str: str, base_url: str = "https://www.guichetem
             title_tag = article.find("span", class_="noctitle")
             titre = title_tag.get_text(strip=True) if title_tag else "Titre non spécifié"
 
+            # Extraction du code CNP si présent dans les attributs de la carte
+            cnp_code = extraire_code_cnp(article)
+
             # Filtrage strict DEC en informatique dès les cartes de recherche
-            if not est_metier_dec_informatique(titre):
+            if not est_metier_dec_informatique(titre, code_cnp=cnp_code):
                 continue
 
             business_tag = article.find("li", class_="business")
@@ -431,6 +558,7 @@ def parse_search_page_html(html_str: str, base_url: str = "https://www.guichetem
                 province=province,
                 pays="Canada",
                 salaire=salaire,
+                cnp=cnp_code,
                 date_publication=date_pub,
                 type_poste=type_poste,
                 modalite="Non spécifié",
@@ -465,6 +593,11 @@ def enrich_offer_detail(offer: JobOffer, detail_html: str) -> JobOffer:
     soup = BeautifulSoup(detail_html, "html.parser")
     description_trouvee: Optional[str] = None
     section_texte_exigences: List[str] = []
+
+    # 0. Extraction du code CNP officiel de la fiche détaillée
+    cnp_fiche = extraire_code_cnp(soup)
+    if cnp_fiche:
+        offer.cnp = cnp_fiche
 
     # 1. Analyse du bandeau résumé (Modalité et Type de poste)
     brief = soup.find("ul", class_="job-posting-brief")
