@@ -6,11 +6,16 @@ Ce répertoire constitue l'espace de référence de la démonstration du **Livra
 
 ## 1. Vue d'ensemble de l'architecture
 
-Le connecteur fusionne et bonifie les travaux de l'équipe :
-- **Pagination exhaustive par codes CNP TI** (approche de Kandet, 191 offres ciblées).
-- **Enrichissement sémantique RDFa / repli DOM et détection de compétences contextuelles** (approche de Hugo).
+Le livrable fusionne et bonifie les travaux de l'équipe :
+- **Connecteur #1 : Guichet-Emplois Canada** (Lot 2) :
+  - Pagination exhaustive par codes CNP TI (approche de Kandet, 191 offres ciblées).
+  - Enrichissement sémantique RDFa / repli DOM et détection de compétences contextuelles (approche de Hugo).
+  - Gestionnaire de cache local et respect du délai de 5 s de `robots.txt`.
+- **Connecteur #2 : Jobboom Québec** (Lot 3) :
+  - Pagination ordonnée et paramétrable de la catégorie TI (surpassant la limite de 5 offres d'Elvira).
+  - Extraction robuste du JSON-LD Schema.org/JobPosting via `json.loads` natif (fiabilisant l'approche de Mamadou).
+  - Respect de la temporisation éthique de 2.0 s et gestion du cache local disque (search/details).
 - **Modèle commun Pydantic v2 `JobOffer`** (zéro invention de données, conformité `AGENTS.md`).
-- **Gestionnaire de cache local** et respect du délai de 5 s de `robots.txt`.
 
 ---
 
@@ -81,6 +86,82 @@ Garantit la non-régression et la robustesse de chaque composant sans dépendre 
   ```powershell
   python -m unittest test_guichet_emplois.py -v
   ```
+
+---
+
+### D. Script de démonstration et test en direct Jobboom (`run_demo_jobboom.py`)
+
+Interroge le portail Jobboom Québec en direct ou depuis le cache pour collecter et enrichir les offres du secteur TI via JSON-LD.
+
+- **Fichier** : `run_demo_jobboom.py`
+- **Configuration** :
+  - `delai_secondes` : `2.0` s entre chaque requête HTTP directe (éthique et conforme).
+  - `user_agent` : `jobs-insights-atelier/1.0 (Projet etudiant DEC Informatique; contact: gregory@jobs-insights.local)`.
+  - `cache_dir` : `cache/jobboom/` (conservation 24 heures).
+- **Entrées (Paramètres CLI)** :
+  - `--limit N` : Nombre d'offres maximal à retourner (défaut : `5`).
+  - `--pages P` : Nombre de pages de résultats à parcourir (défaut : `1`).
+  - `--keyword MOTCLE` : Filtrage optionnel par mot-clé (ex: `python`, `stage`).
+  - `--no-cache` : Force des requêtes HTTP réelles sans lire le cache existant.
+  - `--save-dataset` : Sauvegarde les offres collectées dans `data/offres_jobboom.json`.
+- **Sorties** :
+  - **Console** : Affichage structuré pour chaque offre (ID `jb-...`, titre, employeur, lieu, type de contrat, modalité, salaire, compétences détectées, statut de stage, extrait de description).
+  - **Cache disque** : Fichiers HTML enregistrés sous `cache/jobboom/search/` et `cache/jobboom/details/`.
+- **Exemples de commandes** :
+  ```powershell
+  # 1. Test rapide sur 3 offres TI (mode cache automatique)
+  python run_demo_jobboom.py --limit 3
+
+  # 2. Recherche par mot-clé sur 2 pages
+  python run_demo_jobboom.py --keyword devops --pages 2 --limit 5
+
+  # 3. Forcer le rafraîchissement sans cache
+  python run_demo_jobboom.py --limit 2 --no-cache
+  ```
+
+---
+
+### E. Générateur du jeu d'essai Jobboom (`generate_jobboom_dataset.py`)
+
+Consolide les contributions d'Elvira (5 offres) et Mamadou (3 offres) avec une collecte paginée sur 2 pages du connecteur Jobboom fiabilisé.
+
+- **Fichier** : `generate_jobboom_dataset.py`
+- **Entrées** :
+  - Données sources Elvira : `../../elvira/02-preuve-de-concept-scraping/offres_jobboom.json`
+  - Données sources Mamadou : `../../mamadou/02-preuve-de-concept-scraping/sample_scraped_jobs.json`
+  - Collecte en direct/cache sur la catégorie `_i10lfr`
+- **Sorties** :
+  - Fichier JSON structuré : `data/offres_jobboom.json` (31 offres TI québécoises validées par Pydantic).
+- **Exemple de commande** :
+  ```powershell
+  python generate_jobboom_dataset.py
+  ```
+
+---
+
+### F. Suite de tests unitaires 100 % hors ligne Jobboom (`test_jobboom.py`)
+
+Garantit la robustesse du parsing de listing et du bloc JSON-LD Schema.org/JobPosting sans connexion réseau.
+
+- **Fichier** : `test_jobboom.py`
+- **Configuration** : Mode hors ligne forcé (`offline_mode=True`).
+- **Entrées** : Fixtures HTML/JSON-LD locales (JobPosting, @graph, MonetaryAmount, etc.).
+- **Sorties** : Rapport d'exécution unittest (23 tests validés en ~0,03 s).
+- **Exemple de commande** :
+  ```powershell
+  python -m unittest test_jobboom.py -v
+  ```
+
+---
+
+### Exécution globale de l'ensemble des tests du Livrable 3
+
+Pour exécuter d'un coup l'ensemble des suites de tests unitaires (Guichet-Emplois + Jobboom) :
+
+```powershell
+python -m unittest discover -s . -p "test_*.py" -v
+```
+*(47 tests unitaires validés en moins de 0,06 s).*
 
 ---
 

@@ -197,13 +197,13 @@ flowchart TD
 
 ---
 
-### Itération 3 — Connecteur #2 : Jobboom Québec fiabilisé
-- [ ] Créer le module dans `equipe/gregory/livrable3/scrapers/jobboom.py`.
-- [ ] Structurer la découverte des URLs avec pagination ordonnée (surpassant la limite de 5 offres).
-- [ ] Implémenter l'extraction robuste du JSON-LD `JobPosting` sans regex fragile.
-- [ ] Intégrer la temporisation conforme (pause de 2 s entre requêtes).
-- [ ] Écrire la suite de tests unitaires hors ligne avec fixtures HTML locales (`test_jobboom.py`).
-- [ ] Valider l'exécution et produire un jeu d'essai `offres_jobboom.json`.
+### Itération 3 — Connecteur #2 : Jobboom Québec fiabilisé *(✅ Terminée)*
+- [x] Créer le module dans `equipe/gregory/livrable3/scrapers/jobboom.py`.
+- [x] Structurer la découverte des URLs avec pagination ordonnée (surpassant la limite de 5 offres).
+- [x] Implémenter l'extraction robuste du JSON-LD `JobPosting` sans regex fragile.
+- [x] Intégrer la temporisation conforme (pause de 2 s entre requêtes).
+- [x] Écrire la suite de tests unitaires hors ligne avec fixtures HTML locales (`test_jobboom.py`).
+- [x] Valider l'exécution et produire un jeu d'essai `offres_jobboom.json`.
 
 ---
 
@@ -247,10 +247,10 @@ flowchart TD
 | **Plan directeur L3** | Gregory / IA | ✅ Terminé | `equipe/gregory/livrable3/plan.md` | S/O |
 | **Modèle unifié `JobOffer`** | Gregory / IA | ✅ Terminé | `models.py` | 2 tests |
 | **Connecteur Guichet-Emplois** | Gregory / IA | ✅ Terminé | `scrapers/guichet_emplois.py` | 24 tests (0,03 s) |
-| **Connecteur Jobboom** | Gregory / IA | ⏳ À démarrer | `scrapers/jobboom.py` | 0 test |
+| **Connecteur Jobboom** | Gregory / IA | ✅ Terminé | `scrapers/jobboom.py` | 23 tests (0,03 s) |
 | **Connecteur Remotive** | Gregory / IA | ⏳ À démarrer | `scrapers/remotive.py` | 0 test |
 | **Pipeline & Déduplication** | Gregory / IA | ⏳ À démarrer | `pipeline.py`, `main.py` | 0 test |
-| **Exports JSON / CSV** | Gregory / IA | ⏳ En cours | `data/offres_guichet_emplois.json` | 97 offres QC |
+| **Exports JSON / CSV** | Gregory / IA | ⏳ En cours | `data/offres_guichet_emplois.json`, `data/offres_jobboom.json` | 97 GE + 31 JB |
 | **Compte rendu Livrable 3** | Gregory / IA | ⏳ À démarrer | `COMPTE_RENDU.md` | S/O |
 
 ---
