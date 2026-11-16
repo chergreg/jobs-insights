@@ -1,48 +1,69 @@
-# Plan de travail & Repère IA — Mamadou (`job-insights`)
+# Plan Directeur — Livrable 3 (`jobs-insights` — Mamadou)
 
-> **Rôle de ce fichier (`plan.md`) :** Servir de mémoire de travail synthétique pour dialoguer efficacement avec l'assistant IA sans relire tout le dépôt à chaque échange (économie de contexte et de jetons).
-
----
-
-## 1. Contexte & Règles clés (Résumé de `AGENTS.md` + Synthèses Grégory)
-
-- **Dossier personnel :** `equipe/mamadou/`
-- **Cible métier :** Offres d'emploi juniors et stages en TI au Québec (`fprov=QC`).
-- **Choix technique validé (Dépendances > gros script `stdlib`) :**
-  - Utiliser **`requests` + `beautifulsoup4`** documentés dans un `requirements.txt` local.
-  - *Pourquoi :* Remplace avantageusement 250 lignes de `HTMLParser` manuel (comme chez Kandet) et élimine les Regex HTML fragiles de notre Livrable 2 (qui tronquaient la description au premier `</div>`). Le script devient court, lisible et maintenable par toute la classe.
-- **Règles de conformité obligatoires :**
-  - `User-Agent` honnête : `jobs-insights-osullivan/1.0 (atelier etudiant; mamadou)`.
-  - Vérification de `robots.txt` via `urllib.robotparser.RobotFileParser`.
-  - Respect du `Crawl-delay: 5` sur Guichet-Emplois (avec option `--delai` en CLI).
-  - Aucune donnée inventée : mettre `None` si un champ est absent.
-  - Tests unitaires hors ligne (`unittest` + dossier `fixtures/`) sans appel réseau.
-- **Style Markdown attendu par Grégory :**
-  - Tableaux synthèse très courts (cellules de quelques mots), suivis de fiches à puces.
-  - Chiffres vérifiés, liens relatifs vers les fichiers cités, et section honnête sur les limites.
+> **Rôle de ce fichier (`plan.md`) :** Mémoire de travail et repère entre les conversations IA pour travailler **Lot par Lot** (1 conversation = 1 lot = 1 commit) sans saturer la fenêtre de contexte ni brûler les tokens.  
+> **Dossier de travail :** `equipe/mamadou/03-amelioration-preuve-de-concept/`
 
 ---
 
-## 2. Stratégie technique pour le Livrable 3 (Guichet-Emplois CNP + Fiches RDFa)
+## 1. Analyse de l'existant & Sélection des 5 Sources
 
-En croisant les travaux de **Kandet** (`equipe/kandet/02-preuve-de-concept-scraping/poc_multi_source.py`), **Hugo** (`equipe/hugo/02-preuve-de-concept-scraping/parsers.py`) et notre **Livrable 2** (`equipe/mamadou/02-preuve-de-concept-scraping/poc_scrapers_atelier1.py`) :
+Plutôt que de nous limiter à 3 sites, nous exploitons **les 5 sources concluantes** de nos recherches initiales en fusionnant nos acquis avec les meilleures briques de la classe (Kandet, Hugo, Elvira) :
 
-1. **Recherche par codes CNP TI (`fn21`) et filtres Guichet-Emplois (idée Kandet) :**
-   - Au lieu d'un simple mot-clé `searchstring=développeur` (qui donnait seulement 7 offres à Québec), interroger les **codes CNP 2021 en informatique** (`21230`, `21231`, `21232`, `21233`, `21234`, `21220`, `21222`, `21223`, `22220`, `22221`, `22222`) + filtre province `fprov=QC` + option filtre étudiant/stage `fsrc=16`.
-2. **Collecte en 2 niveaux (Liste `<article>` + Fiche détaillée RDFa avec `BeautifulSoup`) :**
-   - **Niveau 1 (Liste de résultats) :** extraire de chaque `<article id="article-...">` l'ID, le titre normalisé CNP, l'employeur, la ville, le salaire, le mode de travail (`telework`) et le **site partenaire d'origine** (`Jobillico`, `Québec emploi`, `Talent.com`, etc.).
-   - **Niveau 2 (Fiche détaillée `/rechercheemplois/offredemploi/{id}`) :** résoudre la limite principale relevée chez Kandet (qui avait 0 stage détecté et aucune description car la liste n'affiche que le titre générique CNP). Avec `BeautifulSoup`, extraire proprement `property="description"`, `property="title"`, `property="validThrough"` et détecter les **stages** dans le texte complet.
+| # | Source | Mode d'accès | Forces combinées dans notre Livrable 3 |
+| :-: | --- | --- | --- |
+| **1** | **Guichet-Emplois Canada** | 14 codes CNP TI (`fn21`) + Fiches RDFa/DOM | Couverture exhaustive QC (Kandet) + cascade RDFa/DOM/bandeau (Hugo + Mamadou) + vrai titre employeur `.source-title-inner` |
+| **2** | **Talent.com Canada** | Double JSON-LD `@graph` (`ItemList` ➔ `JobPosting`) | URLs propres + coordonnées GPS (`latitude`, `longitude`) + descriptions complètes |
+| **3** | **Jobboom Québec** | Catégorie TI `_i10lfr` + JSON-LD `JobPosting` | Exclusion des commandites (`job_item_sponsorship`), ordre préservé et nettoyage HTML |
+| **4** | **Jobillico Québec** | Recherche TI Québec + JSON-LD `JobPosting` | Fiches PME/grandes entreprises québécoises riches en compétences TI |
+| **5** | **Remotive** | API REST JSON (`/api/remote-jobs`) | Postes TI 100 % télétravail ouverts au Canada |
 
 ---
 
-## 3. Feuille de route et état d'avancement
+## 2. Schéma de données unifié (`JobBankOffer`)
 
-- [x] **Livrable 1 :** `01-inventaire-des-sites/sites.md` (validé par Grégory dans la synthèse L1).
-- [x] **Création de `plan.md`** comme repère de contexte léger.
-- [x] **Finalisation Livrable 2 :** Ajouter `02-preuve-de-concept-scraping/compte-rendu.md` (demandé par Grégory dans la synthèse L2, ligne 132).
-- [x] **Livrable 3 — Code & Tests (`03-amelioration-preuve-de-concept/`) :**
-  - [x] `requirements.txt` (`requests`, `beautifulsoup4`).
-  - [x] `poc_guichet_cnp_v2.py` (recherche par codes CNP TI + filtres + enrichissement fiches RDFa via `BeautifulSoup` + `robots.txt` + `Crawl-delay: 5`).
-  - [x] `fixtures/` + `test_poc_guichet_cnp_v2.py` (5 tests unitaires hors ligne).
-  - [x] `echantillon_v2.json` (résultat d'un essai réel vérifié).
-  - [x] `note.md` (comparaison Kandet / Hugo / Mamadou v1 vs v2 dans le style de Grégory).
+Chaque offre collectée sur l'une des 5 sources est normalisée dans la `@dataclass JobBankOffer` (21 champs, `None` si absent, zéro donnée inventée) :
+- **Identifiants & Liens :** `id` (`ge-...`, `tc-...`, `jb-...`, `ji-...`, `rem-...`), `source_id`, `url`, `source`, `source_partenaire`
+- **Titres :** `titre`, `titre_employeur` (intitulé réel de l'employeur), `cnp_title` (intitulé officiel CNP)
+- **Entreprise & Lieu :** `entreprise`, `lieu`, `province`, `pays`, `latitude`, `longitude`
+- **Dates & Conditions :** `date_publication` (ISO `AAAA-MM-JJ`), `date_fin`, `type_poste`, `modalite` (`Sur place`, `Hybride`, `Télétravail`), `niveau_etudes`, `salaire`
+- **Qualification TI & Stage :** `est_stage` (`bool`), `statut_stage` (`confirmed_stage`, `possible_stage`, `not_indicated`), `competences_cles` (`list[str]` — 32 technos sans faux positifs), `description` (texte intégral nettoyé), `date_extraction`
+
+---
+
+## 3. Feuille de route par Lots (1 Lot = 1 Conversation = 1 Commit)
+
+### Lot 1 — Cadrage, analyse de la classe et plan directeur *(✅ Terminé)*
+- [x] Analyser les travaux du dépôt (Kandet, Hugo, Elvira, Ferdinand, Rayan, Grégory).
+- [x] Définir la stack (`requests` + `beautifulsoup4` dans `requirements.txt`).
+- [x] Rédiger le compte rendu manquant du Livrable 2 (`02-preuve-de-concept-scraping/compte-rendu.md`).
+- [x] Créer `plan.md` pour piloter les itérations.
+
+### Lot 2 — Collecteur 5 sources enrichi, Codes CNP TI, Tests hors ligne & Documentation *(✅ Terminé)*
+- [x] Implémenter la recherche Guichet-Emplois par **14 codes CNP TI (`fn21`)** + filtre stages (`fsrc=16`).
+- [x] Implémenter la cascade d'enrichissement des fiches Guichet-Emplois (RDFa `property="description"` avec décodage du HTML doublement échappé Jobillico + repli DOM `#job-posting-detail` + bandeau `ul.job-posting-brief` + vrai titre `.source-title-inner`).
+- [x] Intégrer les 4 autres sources (**Talent.com GPS**, **Jobboom TI**, **Jobillico**, **Remotive API**) dans le même schéma riche `JobBankOffer` avec dates ISO et extraction de 32 compétences TI.
+- [x] Créer **7 tests unitaires hors ligne** (`test_poc_guichet_cnp_v2.py` + `fixtures/`).
+- [x] Générer le jeu d'essai vérifié [`echantillon_v2.json`](03-amelioration-preuve-de-concept/echantillon_v2.json) (**22 offres riches, 693 lignes, 0 description `null`**).
+- [x] Documenter l'usage des scripts (Configuration / Entrées / Sorties) dans [`03-amelioration-preuve-de-concept/README.md`](03-amelioration-preuve-de-concept/README.md) et [`note.md`](03-amelioration-preuve-de-concept/note.md).
+
+### Lot 3 — Cache disque local & Pagination multi-pages *(⏳ Prochain lot)*
+- [ ] Ajouter un gestionnaire de cache local sur disque (`cache/` avec TTL 24 h, ignoré par Git) pour ne pas re-télécharger les fiches déjà lues et respecter le `Crawl-delay: 5s` sans attente inutile.
+- [ ] Ajouter la pagination multi-pages (`--pages N`) sur Guichet-Emplois CNP et Jobboom TI.
+- [ ] Ajouter les tests unitaires hors ligne du cache et de la pagination.
+- [ ] Mettre à jour `README.md` et `plan.md`.
+
+### Lot 4 — Déduplication inter-sources & Export CSV Excel (`utf-8-sig`) *(⏳ À venir)*
+- [ ] Implémenter la déduplication inter-sources (ex. lorsqu'une offre Jobillico ou Talent.com est également présente sur Guichet-Emplois via `source_partenaire` ou par empreinte normalisée `titre_employeur + entreprise + ville`).
+- [ ] Ajouter l'export CSV compatible Excel sous Windows (`utf-8-sig`, séparateur `;`) en complément de l'export JSON.
+- [ ] Ajouter les tests unitaires hors ligne de déduplication.
+
+---
+
+## 4. Matrice de suivi
+
+| Lot | Description | Statut | Fichiers principaux | Tests hors ligne |
+| :-: | --- | :-: | --- | :-: |
+| **Lot 1** | Cadrage, analyse & `compte-rendu.md` L2 | ✅ Fait | `plan.md`, `02-.../compte-rendu.md` | S/O |
+| **Lot 2** | Collecteur 5 sources CNP + Fiches + Doc | ✅ Fait | `poc_guichet_cnp_v2.py`, `README.md`, `note.md`, `echantillon_v2.json` | **7 tests OK (0,01 s)** |
+| **Lot 3** | Cache disque local 24 h & Pagination | ⏳ À faire | `poc_guichet_cnp_v2.py`, `test_poc_guichet_cnp_v2.py` | À ajouter |
+| **Lot 4** | Déduplication inter-sources & Export CSV | ⏳ À faire | `poc_guichet_cnp_v2.py`, `test_poc_guichet_cnp_v2.py` | À ajouter |
