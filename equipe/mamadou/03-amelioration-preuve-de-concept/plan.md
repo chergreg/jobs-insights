@@ -46,13 +46,13 @@ Chaque offre collectée sur l'une des 5 sources est normalisée dans la `@datacl
 - [x] Générer le jeu d'essai vérifié [`echantillon_v2.json`](03-amelioration-preuve-de-concept/echantillon_v2.json) (**22 offres riches, 693 lignes, 0 description `null`**).
 - [x] Documenter l'usage des scripts (Configuration / Entrées / Sorties) dans [`03-amelioration-preuve-de-concept/README.md`](03-amelioration-preuve-de-concept/README.md) et [`note.md`](03-amelioration-preuve-de-concept/note.md).
 
-### Lot 3 — Cache disque local & Pagination multi-pages *(⏳ Prochain lot)*
-- [ ] Ajouter un gestionnaire de cache local sur disque (`cache/` avec TTL 24 h, ignoré par Git) pour ne pas re-télécharger les fiches déjà lues et respecter le `Crawl-delay: 5s` sans attente inutile.
-- [ ] Ajouter la pagination multi-pages (`--pages N`) sur Guichet-Emplois CNP et Jobboom TI.
-- [ ] Ajouter les tests unitaires hors ligne du cache et de la pagination.
-- [ ] Mettre à jour `README.md` et `plan.md`.
+### Lot 3 — Cache disque local & Pagination multi-pages *(✅ Terminé)*
+- [x] Ajouter un gestionnaire de cache local sur disque (`cache/` avec TTL 24 h, ignoré par Git via `.gitignore`) pour ne pas re-télécharger les fiches déjà lues et respecter le `Crawl-delay: 5s` sans attente inutile.
+- [x] Ajouter la pagination multi-pages (`--pages N`) sur Guichet-Emplois CNP et Jobboom TI avec déduplication inter-pages.
+- [x] Ajouter les tests unitaires hors ligne du cache et de la pagination (**10 tests OK en 0,04 s**).
+- [x] Mettre à jour `README.md` et `plan.md`.
 
-### Lot 4 — Déduplication inter-sources & Export CSV Excel (`utf-8-sig`) *(⏳ À venir)*
+### Lot 4 — Déduplication inter-sources & Export CSV Excel (`utf-8-sig`) *(⏳ Prochain lot)*
 - [ ] Implémenter la déduplication inter-sources (ex. lorsqu'une offre Jobillico ou Talent.com est également présente sur Guichet-Emplois via `source_partenaire` ou par empreinte normalisée `titre_employeur + entreprise + ville`).
 - [ ] Ajouter l'export CSV compatible Excel sous Windows (`utf-8-sig`, séparateur `;`) en complément de l'export JSON.
 - [ ] Ajouter les tests unitaires hors ligne de déduplication.
@@ -65,5 +65,5 @@ Chaque offre collectée sur l'une des 5 sources est normalisée dans la `@datacl
 | :-: | --- | :-: | --- | :-: |
 | **Lot 1** | Cadrage, analyse & `compte-rendu.md` L2 | ✅ Fait | `plan.md`, `02-.../compte-rendu.md` | S/O |
 | **Lot 2** | Collecteur 5 sources CNP + Fiches + Doc | ✅ Fait | `poc_guichet_cnp_v2.py`, `README.md`, `note.md`, `echantillon_v2.json` | **7 tests OK (0,01 s)** |
-| **Lot 3** | Cache disque local 24 h & Pagination | ⏳ À faire | `poc_guichet_cnp_v2.py`, `test_poc_guichet_cnp_v2.py` | À ajouter |
+| **Lot 3** | Cache disque local 24 h & Pagination | ✅ Fait | `poc_guichet_cnp_v2.py`, `test_poc_guichet_cnp_v2.py`, `.gitignore` | **10 tests OK (0,04 s)** |
 | **Lot 4** | Déduplication inter-sources & Export CSV | ⏳ À faire | `poc_guichet_cnp_v2.py`, `test_poc_guichet_cnp_v2.py` | À ajouter |

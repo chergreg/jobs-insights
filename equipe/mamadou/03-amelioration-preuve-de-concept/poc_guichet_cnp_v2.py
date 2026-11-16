@@ -20,6 +20,7 @@ from __future__ import annotations
 import argparse
 from dataclasses import asdict, dataclass, field
 from datetime import date, datetime, timezone
+import hashlib
 import html
 import json
 from pathlib import Path
@@ -41,6 +42,8 @@ GUICHET_BASE_URL = "https://www.guichetemplois.gc.ca"
 GUICHET_SEARCH_PATH = "/jobsearch/rechercheemplois"
 USER_AGENT = "jobs-insights-osullivan/1.0 (atelier-livrable-3; mamadou)"
 DEFAULT_CRAWL_DELAY = 5.0
+CACHE_DIR = Path(__file__).parent / "cache"
+DEFAULT_CACHE_TTL_SECONDS = 86400  # 24 heures
 
 # 14 codes CNP 2021 du domaine informatique (Classification nationale des professions)
 CNP_CODES_TI: tuple[str, ...] = (
@@ -313,6 +316,64 @@ def check_robots_permission(session: requests.Session, base_url: str, target_url
 
 
 # ==============================================================================
+# Gestionnaire de Cache Disque Local (Expiration 24 h)
+# ==============================================================================
+def _cache_file_for_url(url: str, cache_dir: Path = CACHE_DIR) -> Path:
+    """Retourne le chemin du fichier JSON de cache associé à une URL."""
+    digest = hashlib.sha256(url.strip().encode("utf-8")).hexdigest()
+    return cache_dir / f"{digest}.json"
+
+
+def get_cached_or_fetch(
+    session: requests.Session,
+    url: str,
+    cache_dir: Path = CACHE_DIR,
+    ttl_seconds: int = DEFAULT_CACHE_TTL_SECONDS,
+    delay: float = 0.0,
+    use_cache: bool = True,
+) -> tuple[str, bool]:
+    """
+    Récupère le contenu d'une URL depuis le cache disque (si valide < 24 h) ou via HTTP.
+    Retourne `(contenu_texte, depuis_cache)`.
+    - Lorsqu'une fiche est présente dans le cache valide, aucun appel réseau ni `time.sleep` n'est effectué.
+    - Lorsqu'une fiche est absente ou expirée, le délai `delay` (ex: Crawl-delay 5s) est respecté avant la requête.
+    """
+    cache_file = _cache_file_for_url(url, cache_dir=cache_dir)
+    now = time.time()
+
+    if use_cache and cache_file.exists():
+        try:
+            payload = json.loads(cache_file.read_text(encoding="utf-8"))
+            fetched_at = float(payload.get("fetched_at", 0.0))
+            content = payload.get("content")
+            if isinstance(content, str) and (now - fetched_at) < ttl_seconds:
+                return content, True
+        except (OSError, ValueError, TypeError, json.JSONDecodeError):
+            pass
+
+    if delay > 0:
+        time.sleep(delay)
+
+    resp = session.get(url, timeout=15)
+    resp.raise_for_status()
+    text_content = resp.text
+
+    if use_cache:
+        try:
+            cache_dir.mkdir(parents=True, exist_ok=True)
+            cache_payload = {
+                "url": url,
+                "fetched_at": time.time(),
+                "content": text_content,
+            }
+            cache_file.write_text(json.dumps(cache_payload, ensure_ascii=False), encoding="utf-8")
+        except OSError:
+            pass
+
+    return text_content, False
+
+
+# ==============================================================================
 # SOURCE 1 : Guichet-Emplois Canada (14 codes CNP TI + Fiches RDFa & DOM)
 # ==============================================================================
 def build_cnp_search_url(
@@ -410,6 +471,42 @@ def parse_search_results_html(html_text: str) -> list[JobBankOffer]:
         )
 
     return offers
+
+
+def collect_guichet_paginated_offers(
+    session: requests.Session,
+    pages: int = 1,
+    province: str = "QC",
+    student_only: bool = False,
+    keyword: Optional[str] = None,
+    delay: float = 0.0,
+) -> list[JobBankOffer]:
+    """Parcourt jusqu'à `pages` pages de résultats Guichet-Emplois CNP TI et déduplique par identifiant."""
+    aggregated: list[JobBankOffer] = []
+    seen_ids: set[str] = set()
+    max_pages = max(1, pages)
+
+    for page_num in range(1, max_pages + 1):
+        if page_num > 1 and delay > 0:
+            time.sleep(delay)
+        page_url = build_cnp_search_url(
+            province=province,
+            student_only=student_only,
+            keyword=keyword,
+            page=page_num,
+        )
+        print(f"\n[Source 1 - Guichet-Emplois CNP TI] Page {page_num}/{max_pages} : {page_url}")
+        resp = session.get(page_url, timeout=15)
+        resp.raise_for_status()
+        page_offers = parse_search_results_html(resp.text)
+        if not page_offers:
+            break
+        for off in page_offers:
+            if off.id not in seen_ids:
+                seen_ids.add(off.id)
+                aggregated.append(off)
+
+    return aggregated
 
 
 def parse_job_detail_html(html_text: str, offer: JobBankOffer, student_filter: bool = False) -> JobBankOffer:
@@ -613,6 +710,11 @@ def parse_talent_job_detail_html(html_text: str, url: str) -> Optional[JobBankOf
 # ==============================================================================
 # SOURCE 3 : Jobboom Québec (Secteur Technologies _i10lfr + JSON-LD JobPosting)
 # ==============================================================================
+def build_jobboom_listing_url(page: int = 1) -> str:
+    """Construit l'URL de la catégorie Technologies (_i10lfr) de Jobboom pour la page demandée."""
+    return f"https://www.jobboom.com/fr/technologies-medias-numeriques/_i10lfr?sortBy=date&page={max(1, page)}"
+
+
 def parse_jobboom_listing_html(html_text: str) -> list[str]:
     """Extrait les URLs d'offres TI sur Jobboom dans l'ordre d'affichage (hors commandites)."""
     soup = BeautifulSoup(html_text, "html.parser")
@@ -627,6 +729,32 @@ def parse_jobboom_listing_html(html_text: str) -> list[str]:
             if full_u not in urls:
                 urls.append(full_u)
     return urls
+
+
+def collect_jobboom_paginated_urls(
+    session: requests.Session,
+    pages: int = 1,
+    delay: float = 0.0,
+) -> list[str]:
+    """Parcourt jusqu'à `pages` pages de la catégorie TI de Jobboom et agrège les URLs sans doublons."""
+    aggregated_urls: list[str] = []
+    max_pages = max(1, pages)
+
+    for page_num in range(1, max_pages + 1):
+        if page_num > 1 and delay > 0:
+            time.sleep(delay)
+        jb_url = build_jobboom_listing_url(page=page_num)
+        print(f"\n[Source 3 - Jobboom Québec TI] Page {page_num}/{max_pages} : {jb_url}")
+        jb_resp = session.get(jb_url, timeout=15)
+        jb_resp.raise_for_status()
+        page_urls = parse_jobboom_listing_html(jb_resp.text)
+        if not page_urls:
+            break
+        for u in page_urls:
+            if u not in aggregated_urls:
+                aggregated_urls.append(u)
+
+    return aggregated_urls
 
 
 def parse_json_ld_job_posting(html_text: str, url: str, source_name: str, id_prefix: str) -> Optional[JobBankOffer]:
@@ -722,15 +850,24 @@ def parse_jobillico_listing_html(html_text: str) -> list[str]:
 # ==============================================================================
 # SOURCE 5 : Remotive API (API REST JSON officielle - Télétravail Canada)
 # ==============================================================================
-def fetch_remotive_canada_offers(session: requests.Session, limit: int = 4) -> list[JobBankOffer]:
-    """Interroge l'API publique Remotive et filtre les offres TI accessibles depuis le Canada."""
+def fetch_remotive_canada_offers(
+    session: requests.Session,
+    limit: int = 4,
+    use_cache: bool = True,
+    cache_dir: Path = CACHE_DIR,
+) -> list[JobBankOffer]:
+    """Interroge l'API publique Remotive (avec cache 24 h) et filtre les offres TI accessibles au Canada."""
     api_url = "https://remotive.com/api/remote-jobs?category=software-dev&limit=30"
     print(f"\n[Source 5 - Remotive API] Requête JSON : {api_url}")
     offers: list[JobBankOffer] = []
     try:
-        resp = session.get(api_url, timeout=15)
-        resp.raise_for_status()
-        payload = resp.json()
+        raw_json, from_cache = get_cached_or_fetch(
+            session,
+            api_url,
+            cache_dir=cache_dir,
+            use_cache=use_cache,
+        )
+        payload = json.loads(raw_json)
         for item in payload.get("jobs", []):
             if len(offers) >= limit:
                 break
@@ -766,14 +903,15 @@ def fetch_remotive_canada_offers(session: requests.Session, limit: int = 4) -> l
                     description=desc_clean,
                 )
             )
-    except requests.RequestException as exc:
+        tag = "[CACHE]" if from_cache else "[HTTP]"
+        print(f"  -> {len(offers)} offres Remotive éligibles Canada extraites {tag}.")
+    except (requests.RequestException, json.JSONDecodeError) as exc:
         print(f"  ! Erreur Remotive API : {exc}")
-    print(f"  -> {len(offers)} offres Remotive éligibles Canada extraites.")
     return offers
 
 
 # ==============================================================================
-# Orchestrateur Multi-Sources (5 plateformes)
+# Orchestrateur Multi-Sources (5 plateformes, Cache 24h & Pagination)
 # ==============================================================================
 def collect_all_sources(
     guichet_limit: int = 8,
@@ -781,32 +919,47 @@ def collect_all_sources(
     student_only: bool = False,
     keyword: Optional[str] = None,
     delay: float = 2.0,
+    pages: int = 1,
+    use_cache: bool = True,
+    cache_dir: Path = CACHE_DIR,
 ) -> list[dict[str, Any]]:
-    """Collecte et enrichit les offres sur les 5 sources avec déduplication."""
+    """Collecte et enrichit les offres sur les 5 sources avec cache disque 24 h et pagination."""
     session = requests.Session()
     session.headers.update({"User-Agent": USER_AGENT, "Accept-Language": "fr-CA,fr;q=0.9"})
 
     all_offers: list[JobBankOffer] = []
 
-    # 1. Guichet-Emplois Canada (14 codes CNP TI)
-    search_url = build_cnp_search_url(province="QC", student_only=student_only, keyword=keyword)
-    allowed, _ = check_robots_permission(session, GUICHET_BASE_URL, search_url, default_delay=DEFAULT_CRAWL_DELAY)
+    # 1. Guichet-Emplois Canada (14 codes CNP TI, multi-pages)
+    first_url = build_cnp_search_url(province="QC", student_only=student_only, keyword=keyword, page=1)
+    allowed, _ = check_robots_permission(session, GUICHET_BASE_URL, first_url, default_delay=DEFAULT_CRAWL_DELAY)
     if allowed:
-        print(f"\n[Source 1 - Guichet-Emplois CNP TI] Recherche : {search_url}")
-        resp = session.get(search_url, timeout=15)
-        resp.raise_for_status()
-        ge_offers = parse_search_results_html(resp.text)
-        print(f"  -> {len(ge_offers)} offres TI détectées sur la 1re page CNP. Enrichissement de {guichet_limit} fiches...")
-        for idx, off in enumerate(ge_offers[:guichet_limit], start=1):
-            time.sleep(delay)
-            try:
-                d_resp = session.get(off.url, timeout=15)
-                d_resp.raise_for_status()
-                parse_job_detail_html(d_resp.text, off, student_filter=student_only)
-                print(f"  ✓ ({idx}/{guichet_limit}) [ge] {off.titre_employeur or off.titre} — {off.entreprise} ({len(off.competences_cles)} compétences)")
-                all_offers.append(off)
-            except requests.RequestException as exc:
-                print(f"  ! Erreur fiche {off.url}: {exc}")
+        try:
+            ge_offers = collect_guichet_paginated_offers(
+                session=session,
+                pages=pages,
+                province="QC",
+                student_only=student_only,
+                keyword=keyword,
+                delay=delay,
+            )
+            print(f"  -> {len(ge_offers)} offres TI détectées sur {max(1, pages)} page(s) CNP. Enrichissement de {guichet_limit} fiches...")
+            for idx, off in enumerate(ge_offers[:guichet_limit], start=1):
+                try:
+                    detail_html, from_cache = get_cached_or_fetch(
+                        session,
+                        off.url,
+                        cache_dir=cache_dir,
+                        delay=delay,
+                        use_cache=use_cache,
+                    )
+                    parse_job_detail_html(detail_html, off, student_filter=student_only)
+                    tag = "CACHE" if from_cache else "HTTP"
+                    print(f"  ✓ ({idx}/{guichet_limit}) [ge|{tag}] {off.titre_employeur or off.titre} — {off.entreprise} ({len(off.competences_cles)} compétences)")
+                    all_offers.append(off)
+                except requests.RequestException as exc:
+                    print(f"  ! Erreur fiche {off.url}: {exc}")
+        except requests.RequestException as exc:
+            print(f"  ! Erreur recherche Guichet-Emplois : {exc}")
 
     # 2. Talent.com Canada (JSON-LD @graph + GPS)
     tc_query = keyword or ("stage informatique" if student_only else "développeur informatique")
@@ -818,31 +971,37 @@ def collect_all_sources(
         tc_links = parse_talent_search_json_ld(tc_resp.text)
         print(f"  -> {len(tc_links)} offres détectées dans l'ItemList JSON-LD.")
         for u in tc_links[:other_limit]:
-            time.sleep(delay)
-            d_resp = session.get(u, timeout=15)
-            d_resp.raise_for_status()
-            parsed = parse_talent_job_detail_html(d_resp.text, u)
+            detail_html, from_cache = get_cached_or_fetch(
+                session,
+                u,
+                cache_dir=cache_dir,
+                delay=delay,
+                use_cache=use_cache,
+            )
+            parsed = parse_talent_job_detail_html(detail_html, u)
             if parsed:
-                print(f"  ✓ [tc] {parsed.titre} — {parsed.entreprise} (GPS: {parsed.latitude}, {parsed.longitude})")
+                tag = "CACHE" if from_cache else "HTTP"
+                print(f"  ✓ [tc|{tag}] {parsed.titre} — {parsed.entreprise} (GPS: {parsed.latitude}, {parsed.longitude})")
                 all_offers.append(parsed)
     except requests.RequestException as exc:
         print(f"  ! Erreur Talent.com : {exc}")
 
-    # 3. Jobboom Québec (Secteur TI _i10lfr)
-    jb_url = "https://www.jobboom.com/fr/technologies-medias-numeriques/_i10lfr?sortBy=date&page=1"
-    print(f"\n[Source 3 - Jobboom Québec TI] Navigation : {jb_url}")
+    # 3. Jobboom Québec (Secteur TI _i10lfr, multi-pages)
     try:
-        jb_resp = session.get(jb_url, timeout=15)
-        jb_resp.raise_for_status()
-        jb_links = parse_jobboom_listing_html(jb_resp.text)
-        print(f"  -> {len(jb_links)} offres TI organiques trouvées.")
+        jb_links = collect_jobboom_paginated_urls(session=session, pages=pages, delay=delay)
+        print(f"  -> {len(jb_links)} offres TI organiques trouvées sur {max(1, pages)} page(s) Jobboom.")
         for u in jb_links[:other_limit]:
-            time.sleep(delay)
-            d_resp = session.get(u, timeout=15)
-            d_resp.raise_for_status()
-            parsed = parse_json_ld_job_posting(d_resp.text, u, source_name="jobboom", id_prefix="jb")
+            detail_html, from_cache = get_cached_or_fetch(
+                session,
+                u,
+                cache_dir=cache_dir,
+                delay=delay,
+                use_cache=use_cache,
+            )
+            parsed = parse_json_ld_job_posting(detail_html, u, source_name="jobboom", id_prefix="jb")
             if parsed:
-                print(f"  ✓ [jb] {parsed.titre} — {parsed.entreprise} ({len(parsed.competences_cles)} compétences)")
+                tag = "CACHE" if from_cache else "HTTP"
+                print(f"  ✓ [jb|{tag}] {parsed.titre} — {parsed.entreprise} ({len(parsed.competences_cles)} compétences)")
                 all_offers.append(parsed)
     except requests.RequestException as exc:
         print(f"  ! Erreur Jobboom : {exc}")
@@ -857,18 +1016,23 @@ def collect_all_sources(
         ji_links = parse_jobillico_listing_html(ji_resp.text)
         print(f"  -> {len(ji_links)} offres détectées sur Jobillico.")
         for u in ji_links[:other_limit]:
-            time.sleep(delay)
-            d_resp = session.get(u, timeout=15)
-            d_resp.raise_for_status()
-            parsed = parse_json_ld_job_posting(d_resp.text, u, source_name="jobillico", id_prefix="ji")
+            detail_html, from_cache = get_cached_or_fetch(
+                session,
+                u,
+                cache_dir=cache_dir,
+                delay=delay,
+                use_cache=use_cache,
+            )
+            parsed = parse_json_ld_job_posting(detail_html, u, source_name="jobillico", id_prefix="ji")
             if parsed:
-                print(f"  ✓ [ji] {parsed.titre} — {parsed.entreprise} ({len(parsed.competences_cles)} compétences)")
+                tag = "CACHE" if from_cache else "HTTP"
+                print(f"  ✓ [ji|{tag}] {parsed.titre} — {parsed.entreprise} ({len(parsed.competences_cles)} compétences)")
                 all_offers.append(parsed)
     except requests.RequestException as exc:
         print(f"  ! Erreur Jobillico : {exc}")
 
-    # 5. Remotive API (Télétravail Canada)
-    all_offers.extend(fetch_remotive_canada_offers(session, limit=other_limit))
+    # 5. Remotive API (Télétravail Canada, avec cache 24 h)
+    all_offers.extend(fetch_remotive_canada_offers(session, limit=other_limit, use_cache=use_cache, cache_dir=cache_dir))
 
     return [asdict(o) for o in all_offers]
 
@@ -877,9 +1041,11 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Collecteur Multi-Sources Enrichi (5 sites Québec/Canada - Livrable 3)")
     parser.add_argument("--limite-guichet", type=int, default=8, help="Offres Guichet-Emplois CNP à enrichir (défaut: 8)")
     parser.add_argument("--limite-autres", type=int, default=4, help="Offres par autre source à enrichir (défaut: 4)")
+    parser.add_argument("--pages", type=int, default=1, help="Nombre de pages de résultats à parcourir sur Guichet-Emplois et Jobboom (défaut: 1)")
     parser.add_argument("--stages", action="store_true", help="Cibler en priorité les stages (fsrc=16 sur Guichet-Emplois)")
     parser.add_argument("--mot-cle", type=str, default=None, help="Mot-clé optionnel")
-    parser.add_argument("--delai", type=float, default=2.0, help="Délai en secondes entre les fiches (défaut: 2.0s)")
+    parser.add_argument("--delai", type=float, default=2.0, help="Délai en secondes entre les nouvelles fiches HTTP (défaut: 2.0s)")
+    parser.add_argument("--sans-cache", action="store_true", help="Désactiver le cache disque local 24 h")
     parser.add_argument("--sortie", type=str, default="echantillon_v2.json", help="Fichier JSON de sortie")
     args = parser.parse_args()
 
@@ -889,6 +1055,8 @@ def main() -> None:
         student_only=args.stages,
         keyword=args.mot_cle,
         delay=args.delai,
+        pages=args.pages,
+        use_cache=not args.sans_cache,
     )
 
     out_path = Path(__file__).parent / args.sortie

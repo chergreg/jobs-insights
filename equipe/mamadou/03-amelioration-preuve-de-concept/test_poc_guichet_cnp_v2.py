@@ -1,14 +1,23 @@
 """Tests unitaires hors ligne pour le collecteur multi-sources enrichi (Livrable 3)."""
 
+import json
 from pathlib import Path
+import tempfile
+import time
 import unittest
+from unittest.mock import MagicMock, patch
 
 from poc_guichet_cnp_v2 import (
     CNP_CODES_TI,
     JobBankOffer,
+    _cache_file_for_url,
     build_cnp_search_url,
+    build_jobboom_listing_url,
+    collect_guichet_paginated_offers,
+    collect_jobboom_paginated_urls,
     detect_stage_status,
     extract_tech_skills,
+    get_cached_or_fetch,
     parse_iso_date,
     parse_job_detail_html,
     parse_jobboom_listing_html,
@@ -135,6 +144,120 @@ class TestPocGuichetCnpV2(unittest.TestCase):
         """
         jb_urls = parse_jobboom_listing_html(jb_list_html)
         self.assertEqual(jb_urls, ["https://www.jobboom.com/fr/offre-emploi/dev-python_p222222"])
+
+    def test_disk_cache_hit_skips_network_and_sleep(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            cache_dir = Path(tmp_dir)
+            target_url = "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50711091"
+
+            mock_session = MagicMock()
+            mock_resp = MagicMock()
+            mock_resp.text = "<html>Fiche mise en cache</html>"
+            mock_session.get.return_value = mock_resp
+
+            # 1er appel : téléchargement HTTP et écriture dans le cache
+            content_1, from_cache_1 = get_cached_or_fetch(
+                mock_session,
+                target_url,
+                cache_dir=cache_dir,
+                ttl_seconds=86400,
+                delay=0.0,
+                use_cache=True,
+            )
+            self.assertFalse(from_cache_1)
+            self.assertEqual(content_1, "<html>Fiche mise en cache</html>")
+            self.assertEqual(mock_session.get.call_count, 1)
+
+            # 2e appel (< 24 h) : lecture directe du cache sans requête HTTP ni time.sleep
+            with patch("poc_guichet_cnp_v2.time.sleep") as mock_sleep:
+                content_2, from_cache_2 = get_cached_or_fetch(
+                    mock_session,
+                    target_url,
+                    cache_dir=cache_dir,
+                    ttl_seconds=86400,
+                    delay=5.0,
+                    use_cache=True,
+                )
+                self.assertTrue(from_cache_2)
+                self.assertEqual(content_2, "<html>Fiche mise en cache</html>")
+                self.assertEqual(mock_session.get.call_count, 1)
+                mock_sleep.assert_not_called()
+
+    def test_disk_cache_expired_refetches_from_network(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            cache_dir = Path(tmp_dir)
+            target_url = "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/99999999"
+            cache_file = _cache_file_for_url(target_url, cache_dir=cache_dir)
+
+            # Écriture d'une entrée expirée (vieille de 25 heures)
+            expired_payload = {
+                "url": target_url,
+                "fetched_at": time.time() - (25 * 3600),
+                "content": "<html>Ancienne version expirée</html>",
+            }
+            cache_file.write_text(json.dumps(expired_payload), encoding="utf-8")
+
+            mock_session = MagicMock()
+            mock_resp = MagicMock()
+            mock_resp.text = "<html>Nouvelle version fraîche</html>"
+            mock_session.get.return_value = mock_resp
+
+            content, from_cache = get_cached_or_fetch(
+                mock_session,
+                target_url,
+                cache_dir=cache_dir,
+                ttl_seconds=86400,
+                delay=0.0,
+                use_cache=True,
+            )
+            self.assertFalse(from_cache)
+            self.assertEqual(content, "<html>Nouvelle version fraîche</html>")
+            self.assertEqual(mock_session.get.call_count, 1)
+
+    def test_pagination_guichet_and_jobboom_multi_pages_deduplicates(self) -> None:
+        self.assertIn("page=2", build_jobboom_listing_url(page=2))
+
+        # Test pagination Guichet-Emplois sur 2 pages avec déduplication d'une offre commune
+        page2_html = """
+        <article id="article-50711091">
+          <span class="noctitle">agent/agente de soutien aux utilisateurs</span>
+          <li class="business">GolfIn - Saint-Georges</li>
+        </article>
+        <article id="article-50999999">
+          <span class="noctitle">développeur/développeuse Python</span>
+          <li class="business">Québec Numérique</li>
+        </article>
+        """
+        mock_ge_session = MagicMock()
+        resp_p1 = MagicMock(text=self.list_html)
+        resp_p2 = MagicMock(text=page2_html)
+        mock_ge_session.get.side_effect = [resp_p1, resp_p2]
+
+        ge_offers = collect_guichet_paginated_offers(mock_ge_session, pages=2, delay=0.0)
+        self.assertEqual(mock_ge_session.get.call_count, 2)
+        self.assertEqual([o.id for o in ge_offers], ["ge-50711091", "ge-50684844", "ge-50999999"])
+
+        # Test pagination Jobboom sur 2 pages (hors commandites et sans doublons)
+        jb_p1 = """
+        <div class="job_item job_item_sponsorship" data-url="/fr/offre-emploi/pub_p100"></div>
+        <div class="job_item" data-url="/fr/offre-emploi/dev-a_p111111"></div>
+        """
+        jb_p2 = """
+        <div class="job_item" data-url="/fr/offre-emploi/dev-a_p111111"></div>
+        <div class="job_item" data-url="/fr/offre-emploi/dev-b_p222222"></div>
+        """
+        mock_jb_session = MagicMock()
+        mock_jb_session.get.side_effect = [MagicMock(text=jb_p1), MagicMock(text=jb_p2)]
+
+        jb_urls = collect_jobboom_paginated_urls(mock_jb_session, pages=2, delay=0.0)
+        self.assertEqual(mock_jb_session.get.call_count, 2)
+        self.assertEqual(
+            jb_urls,
+            [
+                "https://www.jobboom.com/fr/offre-emploi/dev-a_p111111",
+                "https://www.jobboom.com/fr/offre-emploi/dev-b_p222222",
+            ],
+        )
 
 
 if __name__ == "__main__":
