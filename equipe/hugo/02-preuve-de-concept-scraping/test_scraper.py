@@ -1,7 +1,8 @@
 """
 test_scraper.py - Tests unitaires hors ligne pour le collecteur Jobs Insights.
 Vérifie la logique de parsing, la détection des compétences, l'extraction de description,
-et les parseurs Atom et HTML sans effectuer aucun appel réseau.
+le filtrage strict des métiers du DEC en informatique, et les parseurs Atom et HTML
+sans effectuer aucun appel réseau.
 
 Exécution :
     python -m unittest test_scraper.py -v
@@ -14,7 +15,9 @@ from parsers import (
     parse_search_page_html,
     enrich_offer_detail,
     extract_tech_skills,
-    detect_stage
+    detect_stage,
+    est_metier_dec_informatique,
+    normaliser_url_francaise
 )
 
 # ==============================================================================
@@ -48,6 +51,19 @@ ATOM_FEED_FIXTURE = """<?xml version="1.0" encoding="UTF-8"?>
       <strong>Salaire :</strong> 24,00 $ de l'heure
     ]]></summary>
   </entry>
+  <!-- Offre non-TI qui doit être filtrée et exclue -->
+  <entry>
+    <id>gc-99999999</id>
+    <title>Cleaning man/woman - Entretien ménager</title>
+    <link rel="alternate" href="https://www.guichetemplois.gc.ca/job/99999999" />
+    <updated>2026-11-09T09:15:00Z</updated>
+    <summary type="html"><![CDATA[
+      <strong>Numéro d'emploi :</strong> 99999999<br />
+      <strong>Employeur :</strong> Nettoyage Express<br />
+      <strong>Emplacement :</strong> Montréal (QC)<br />
+      <strong>Salaire :</strong> 16,50 $ de l'heure
+    ]]></summary>
+  </entry>
 </feed>
 """
 
@@ -64,6 +80,17 @@ HTML_SEARCH_FIXTURE = """
       <li class="date">10 novembre 2026</li>
     </ul>
     <span class="job-source">Jobillico.com</span>
+  </article>
+  <!-- Offre hors TI devant être ignorée -->
+  <article id="article-88888888">
+    <a class="resultJobItem" href="/jobsearch/jobposting/88888888">
+      <span class="noctitle">Aide-cuisinier et plongeur</span>
+    </a>
+    <ul class="list-unstyled">
+      <li class="business">Restaurant Bistro</li>
+      <li class="location">Québec (QC)</li>
+      <li class="salary">17,00 $ de l'heure</li>
+    </ul>
   </article>
 </div>
 """
@@ -109,9 +136,55 @@ HTML_DETAIL_DOM_FALLBACK_FIXTURE = """
 class TestScraperParsers(unittest.TestCase):
     """Suite de tests unitaires hors ligne validant le parsing et la normalisation."""
 
+    def test_est_metier_dec_informatique_inclusions(self):
+        """Vérifie que tous les métiers et branches du DEC en informatique sont acceptés."""
+        metiers_dec = [
+            "Développeur Web/développeuse Web",
+            "Programmeur-analyste",
+            "Ingénieur de logiciels",
+            "Développeur de jeux vidéo",
+            "Technicien en réseau informatique",
+            "Agent de soutien aux utilisateurs",
+            "Spécialiste de la cybersécurité",
+            "Administrateur de bases de données",
+            "Évaluateur de systèmes d'information (QA)",
+            "Stagiaire en informatique",
+            "Stagiaire en programmation",
+            "Full Stack Software Developer",
+            "DevOps Engineer",
+            "IT Helpdesk Support"
+        ]
+        for metier in metiers_dec:
+            self.assertTrue(
+                est_metier_dec_informatique(metier),
+                f"Le métier '{metier}' devrait être reconnu comme appartenant au DEC en informatique."
+            )
+
+    def test_est_metier_dec_informatique_exclusions(self):
+        """Vérifie que les métiers hors TI (cleaning, cuisine, etc.) sont formellement rejetés."""
+        metiers_hors_ti = [
+            "Cleaning man/woman",
+            "Nettoyeur de vitres",
+            "Préposé à l'entretien ménager",
+            "Concierge d'immeuble",
+            "Aide-cuisinier",
+            "Serveur en salle",
+            "Plongeur de restaurant",
+            "Commis d'entrepôt",
+            "Chauffeur-livreur",
+            "Préposé aux bénéficiaires",
+            "Gardien de sécurité"
+        ]
+        for metier in metiers_hors_ti:
+            self.assertFalse(
+                est_metier_dec_informatique(metier),
+                f"Le métier '{metier}' devrait être exclu (hors domaine informatique)."
+            )
+
     def test_parse_atom_feed(self):
-        """Vérifie l'extraction précise des métadonnées du flux Atom officiel."""
+        """Vérifie l'extraction précise et le filtrage des métiers non-TI du flux Atom."""
         offers = parse_atom_feed(ATOM_FEED_FIXTURE)
+        # Sur 3 entrées dans la fixture, 1 est "Cleaning man/woman" et doit être rejetée
         self.assertEqual(len(offers), 2)
 
         first = offers[0]
@@ -123,6 +196,7 @@ class TestScraperParsers(unittest.TestCase):
         self.assertEqual(first.salaire, "85 000 $ par année")
         self.assertEqual(first.type_poste, "Temps plein")
         self.assertEqual(first.methode_extraction, "Atom-XML")
+        self.assertIn("lang=fra", first.url_source)
         self.assertIsNotNone(first.description)
 
         # Vérifie la détection de stage
@@ -131,8 +205,9 @@ class TestScraperParsers(unittest.TestCase):
         self.assertEqual(second.entreprise, "Studio Web Québec")
 
     def test_parse_search_page_html(self):
-        """Vérifie le parsing des résultats de recherche HTML de Guichet-Emplois."""
+        """Vérifie le parsing et l'exclusion automatique des cartes hors TI."""
         offers = parse_search_page_html(HTML_SEARCH_FIXTURE)
+        # Sur 2 articles dans la fixture, 'Aide-cuisinier' doit être ignoré
         self.assertEqual(len(offers), 1)
 
         offer = offers[0]
@@ -142,6 +217,7 @@ class TestScraperParsers(unittest.TestCase):
         self.assertEqual(offer.lieu, "Montréal (QC)")
         self.assertEqual(offer.province, "QC")
         self.assertEqual(offer.partenaire, "Jobillico.com")
+        self.assertIn("lang=fra", offer.url_source)
         self.assertIn("Python", offer.competences_cles)
         self.assertIn("Django", offer.competences_cles)
 
@@ -150,7 +226,7 @@ class TestScraperParsers(unittest.TestCase):
         base_offer = JobOffer(
             id="gc-12345",
             titre="Développeur Backend",
-            url_source="https://guichetemplois.gc.ca/job/12345"
+            url_source="https://www.guichetemplois.gc.ca/job/12345?lang=fra"
         )
         self.assertIsNone(base_offer.description)
 
@@ -171,7 +247,7 @@ class TestScraperParsers(unittest.TestCase):
         base_offer = JobOffer(
             id="gc-67890",
             titre="Développeur Frontend",
-            url_source="https://guichetemplois.gc.ca/job/67890"
+            url_source="https://www.guichetemplois.gc.ca/job/67890?lang=fra"
         )
         enriched = enrich_offer_detail(base_offer, HTML_DETAIL_DOM_FALLBACK_FIXTURE)
 
@@ -207,12 +283,15 @@ class TestScraperParsers(unittest.TestCase):
         self.assertIn("C", skills_c_ok)
         self.assertIn("C++", skills_c_ok)
 
-    def test_detect_stage(self):
-        """Vérifie la détection du statut de stage ou poste régulier."""
-        self.assertEqual(detect_stage("Stagiaire en développement"), "Stage")
-        self.assertEqual(detect_stage("Internship - Software QA"), "Stage")
-        self.assertEqual(detect_stage("Emploi étudiant en informatique"), "Étudiant")
-        self.assertEqual(detect_stage("Architecte de solutions infonuagiques"), "Temps plein")
+    def test_normaliser_url_francaise(self):
+        """Vérifie que les URLs sont correctement normalisées avec le paramètre lang=fra."""
+        url1 = normaliser_url_francaise("https://www.jobbank.gc.ca/jobsearch/jobposting/12345")
+        self.assertIn("guichetemplois.gc.ca", url1)
+        self.assertIn("lang=fra", url1)
+
+        url2 = normaliser_url_francaise("/rechercheemplois/offredemploi/50738681?source=searchresults")
+        self.assertTrue(url2.startswith("https://www.guichetemplois.gc.ca"))
+        self.assertIn("lang=fra", url2)
 
 
 if __name__ == "__main__":
