@@ -355,9 +355,6 @@ def normalize_job_posting(
     skills = extract_skills(title, description_text)
     salary = extract_salary(job_data)
 
-    raw_copy = dict(job_data)
-    raw_copy["url_offre"] = url
-
     return {
         "id": extract_job_id(url),
         "source": "Jobboom",
@@ -379,7 +376,6 @@ def normalize_job_posting(
         "date_expiration": job_data.get("validThrough"),
         "url": url,
         "description_texte": description_text,
-        "raw_json_ld": raw_copy,
     }
 
 
@@ -500,16 +496,42 @@ def upgrade_existing_file(
     for item in items:
         raw_ld = item.get("raw_json_ld")
         url = item.get("url") or (raw_ld.get("url_offre") if isinstance(raw_ld, dict) else None)
-        if not isinstance(raw_ld, dict) or not url:
+        if not url:
             continue
         job_id = extract_job_id(url)
-        title = clean_html_text(raw_ld.get("title") or item.get("titre"))
+        title = clean_html_text((raw_ld.get("title") if isinstance(raw_ld, dict) else None) or item.get("titre"))
         if not is_it_job(title, url):
             continue
         origins = list(item.get("origines_decouverte") or ["mots_cles_elvira"])
         if job_id not in results_by_id:
             ordered_ids.append(job_id)
-            results_by_id[job_id] = normalize_job_posting(raw_ld, url, origines_decouverte=origins)
+            if isinstance(raw_ld, dict):
+                results_by_id[job_id] = normalize_job_posting(raw_ld, url, origines_decouverte=origins)
+            else:
+                desc = clean_html_text(item.get("description_texte"))
+                emp_types = list(item.get("type_contrat") or [])
+                results_by_id[job_id] = {
+                    "id": job_id,
+                    "source": "Jobboom",
+                    "origines_decouverte": origins,
+                    "titre": title,
+                    "entreprise": item.get("entreprise") or "Non spécifié",
+                    "logo_entreprise": item.get("logo_entreprise"),
+                    "ville": item.get("ville") or "Non spécifié",
+                    "province": item.get("province") or "QC",
+                    "pays": item.get("pays") or "CA",
+                    "code_postal": item.get("code_postal"),
+                    "coordonnees_gps": item.get("coordonnees_gps"),
+                    "salaire": item.get("salaire"),
+                    "type_contrat": emp_types,
+                    "modalite": item.get("modalite") or detect_work_mode(title, desc),
+                    "est_stage": bool(item.get("est_stage", detect_is_internship(title, desc, emp_types))),
+                    "competences_cles": item.get("competences_cles") or extract_skills(title, desc),
+                    "date_publication": item.get("date_publication"),
+                    "date_expiration": item.get("date_expiration"),
+                    "url": url,
+                    "description_texte": desc,
+                }
         else:
             existing_origins = results_by_id[job_id]["origines_decouverte"]
             for orig in origins:

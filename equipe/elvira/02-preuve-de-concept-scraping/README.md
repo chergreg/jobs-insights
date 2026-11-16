@@ -94,8 +94,7 @@ python Scraper.py --normalize-existing
   "date_publication": "2026-09-30",
   "date_expiration": "2026-12-01",
   "url": "https://www.jobboom.com/fr/offre-emploi/technicien-informatique_innovmetric-logiciels-inc_p3698100",
-  "description_texte": "Vous aimez résoudre des problèmes, offrir un service de qualité...",
-  "raw_json_ld": { "@type": "JobPosting", "...": "..." }
+  "description_texte": "Vous aimez résoudre des problèmes, offrir un service de qualité..."
 }
 ```
 

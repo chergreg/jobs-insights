@@ -252,8 +252,6 @@ def normalize_job_posting(job_data: dict[str, Any], url: str) -> dict[str, Any]:
     is_stage = detect_is_internship(title, description_text, employment_types)
     skills = extract_skills(title, description_text)
 
-    job_data["url_offre"] = url
-
     return {
         "id": extract_job_id(url),
         "source": "Jobboom",
@@ -273,7 +271,6 @@ def normalize_job_posting(job_data: dict[str, Any], url: str) -> dict[str, Any]:
         "date_expiration": job_data.get("validThrough"),
         "url": url,
         "description_texte": description_text,
-        "raw_json_ld": job_data,
     }
 
 
@@ -350,7 +347,7 @@ def extract_job_posting_json(job_url: str) -> dict[str, Any] | None:
 
 
 def normalize_existing_file(file_path: Path) -> list[dict[str, Any]]:
-    """Re-normalise et filtre les offres TI d'un fichier JSON existant contenant `raw_json_ld`."""
+    """Re-normalise et filtre les offres TI d'un fichier JSON existant (sans conserver `raw_json_ld`)."""
     if not file_path.exists():
         raise FileNotFoundError(f"Fichier introuvable : {file_path}")
 
@@ -361,13 +358,21 @@ def normalize_existing_file(file_path: Path) -> list[dict[str, Any]]:
     for item in existing_items:
         raw_ld = item.get("raw_json_ld")
         url = item.get("url") or (raw_ld.get("url_offre") if isinstance(raw_ld, dict) else None)
-        if not isinstance(raw_ld, dict) or not url or url in seen_urls:
+        if not url or url in seen_urls:
             continue
-        title = clean_html_text(raw_ld.get("title") or item.get("titre"))
-        if not is_it_job(title, url):
-            continue
+        if isinstance(raw_ld, dict):
+            title = clean_html_text(raw_ld.get("title") or item.get("titre"))
+            if not is_it_job(title, url):
+                continue
+            normalized = normalize_job_posting(raw_ld, url)
+        else:
+            title = clean_html_text(item.get("titre"))
+            if not is_it_job(title, url):
+                continue
+            cleaned_item = dict(item)
+            cleaned_item.pop("raw_json_ld", None)
+            normalized = cleaned_item
         seen_urls.add(url)
-        normalized = normalize_job_posting(raw_ld, url)
         normalized_results.append(normalized)
 
     file_path.write_text(json.dumps(normalized_results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
