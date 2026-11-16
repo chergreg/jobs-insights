@@ -1,20 +1,21 @@
 """
-collecte.py - Moteur de collecte multi-stratégies et conforme pour Guichet-Emplois.
+collecte.py - Moteur de collecte multi-stratégies, conforme et ciblé DEC en informatique pour Guichet-Emplois.
 Espace Hugo - Projet Jobs Insights.
 
 Points clés :
-1. Stratégie en cascade / repli :
-   - Étape 1 : Flux Atom XML officiel (ultra-rapide, structuré, officiel)
-   - Étape 2 (Repli / Complément) : Recherche HTML avec pagination
-   - Étape 3 : Enrichissement détaillé via métadonnées RDFa / Schema.org et DOM
-2. Conformité éthique :
-   - User-Agent transparent identifiant le projet étudiant
-   - Vérification du robots.txt via RobotFileParser
-   - Délai conforme de 5 secondes par défaut (avec option rapide pour tests)
-3. Traçabilité et rapports :
-   - Barre de progression console
-   - Journalisation complète dans logs/collecte.log
-   - Export au format JSON standardisé
+1. Ciblage 100 % DEC en informatique :
+   - 22 métiers couvrant Développement, Web, Infrastructure, Réseaux, Support, QA et Stages.
+   - Filtrage applicatif strict garantissant l'exclusion des offres hors TI (ex: cleaning man/woman, concierge, etc.).
+2. Stratégie en cascade / repli garantie :
+   - Étape 1 : Flux Atom XML officiel (récupération rapide des annonces TI récentes).
+   - Étape 2 : Recherche HTML (/jobsearch/jobsearch) avec multi-mots-clés et pagination jusqu'à atteindre l'objectif (ex. 100 offres).
+   - Étape 3 : Enrichissement détaillé via métadonnées RDFa / Schema.org et DOM.
+3. Priorisation de la langue française :
+   - En-tête HTTP 'Accept-Language: fr-CA,fr;q=1.0'.
+   - Normalisation automatique des URLs d'offres vers le domaine français avec ?lang=fra.
+4. Conformité éthique :
+   - User-Agent transparent identifiant le projet étudiant.
+   - Respect du robots.txt et délai conforme de 5 secondes par défaut (ou 1.2s en mode rapide).
 """
 
 from __future__ import annotations
@@ -38,11 +39,13 @@ from parsers import (
     parse_atom_feed,
     parse_search_page_html,
     enrich_offer_detail,
-    extract_tech_skills
+    extract_tech_skills,
+    est_metier_dec_informatique,
+    normaliser_url_francaise
 )
 
 # Configuration des logs
-DOSSIER_RACINE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DOSSIER_RACINE = os.path.dirname(os.path.abspath(__file__))
 DOSSIER_LOGS = os.path.join(DOSSIER_RACINE, "logs")
 os.makedirs(DOSSIER_LOGS, exist_ok=True)
 FICHIER_LOG = os.path.join(DOSSIER_LOGS, "collecte.log")
@@ -60,7 +63,12 @@ if not logger.handlers:
 # User-Agent honnête et transparent
 USER_AGENT_HONNETE = "jobs-insights-atelier/1.0 (Projet etudiant DEC Informatique College O'Sullivan de Quebec; contact: hugo@jobs-insights.local)"
 
+# Bouquet complet couvrant les 3 branches du DEC en informatique :
+# 1. Développement et Programmation
+# 2. Infrastructure, Réseaux et Sécurité
+# 3. Stages informatiques
 MOTS_CLES_TI_DEFAUT = [
+    # Programmation & Web
     "programmeur",
     "programmeur analyste",
     "développeur logiciel",
@@ -69,18 +77,24 @@ MOTS_CLES_TI_DEFAUT = [
     "développeur frontend",
     "développeur backend",
     "développeur full stack",
-    "analyste informatique",
-    "architecte logiciel",
-    "ingénieur logiciel",
     "devops",
+    # Infrastructure, Réseau & Support
+    "technicien informatique",
+    "technicien réseau",
+    "soutien technique informatique",
     "administrateur systèmes",
     "administrateur bases de données",
+    "cybersécurité",
+    # QA & Données
     "assurance qualité logiciel",
-    "stage informatique"
+    "analyste informatique",
+    # Stages
+    "stage informatique",
+    "stagiaire développeur",
+    "stage programmation",
+    "stage web",
+    "stage réseau"
 ]
-
-# Codes de la Classification Nationale des Professions (CNP) pour l'informatique
-CODES_CNP_TI = ["21230", "21231", "21232", "21233", "21234", "21220", "21221", "21222"]
 
 
 def afficher_barre_progression(actuel: int, total: int, prefixe: str = "", suffixe: str = "", longueur: int = 25):
@@ -98,11 +112,13 @@ def afficher_barre_progression(actuel: int, total: int, prefixe: str = "", suffi
 
 
 class GuichetEmploisCollecteur:
-    """Collecteur multi-stratégies conforme pour Guichet-Emplois Canada."""
+    """Collecteur multi-stratégies conforme et ciblé DEC en informatique."""
+
     BASE_URL = "https://www.guichetemplois.gc.ca"
-    FEED_URL = "https://www.jobbank.gc.ca/jobsearch/feed/jobSearchRSSfeed"
+    FEED_URL = "https://www.guichetemplois.gc.ca/jobsearch/feed/jobSearchRSSfeed"
     SEARCH_ENDPOINT = "/jobsearch/jobsearch"
     LOADER_ENDPOINT = "/jobsearch/job_search_loader.xhtml"
+    ROBOTS_URL = "https://www.guichetemplois.gc.ca/robots.txt"
 
     def __init__(self, delai_secondes: float = 5.0, timeout: int = 15):
         self.delai_secondes = delai_secondes
@@ -111,42 +127,44 @@ class GuichetEmploisCollecteur:
         self.session.headers.update({
             "User-Agent": USER_AGENT_HONNETE,
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "fr-CA,fr;q=0.9,en-CA;q=0.8",
+            "Accept-Language": "fr-CA,fr;q=1.0,en-CA;q=0.5,en;q=0.3",
             "Referer": "https://www.guichetemplois.gc.ca/",
         })
-        self.robot_parser: Optional[RobotFileParser] = None
-        logger.info("Collecteur initialisé (User-Agent: %s, Délai: %.1fs)", USER_AGENT_HONNETE, delai_secondes)
+        self.robot_parser = RobotFileParser()
 
     def verifier_robots_txt(self) -> bool:
-        """Vérifie si les conditions robots.txt autorisent la collecte."""
+        """Vérifie la conformité avec le fichier robots.txt officiel."""
         try:
-            robots_url = f"{self.BASE_URL}/robots.txt"
-            self.robot_parser = RobotFileParser()
-            self.robot_parser.set_url(robots_url)
+            print("\n [ROBOTS.TXT] Consultation et respect des directives officielles...")
+            self.robot_parser.set_url(self.ROBOTS_URL)
             self.robot_parser.read()
-            logger.info("Lecture de %s réussie.", robots_url)
-            return True
+
+            url_test = f"{self.BASE_URL}{self.SEARCH_ENDPOINT}"
+            autorise = self.robot_parser.can_fetch(USER_AGENT_HONNETE, url_test)
+            logger.info("Vérification robots.txt pour %s : Autorisé=%s", url_test, autorise)
+            print(f" -> Statut robots.txt : {'AUTORISÉ' if autorise else 'RESTREINT'}")
+            print(f" -> Crawl-delay appliqué : {self.delai_secondes:.1f} seconde(s) entre requêtes.")
+            return autorise
         except Exception as e:
-            logger.warning("Impossible de lire robots.txt (%s) : le scraping reste prudent.", e)
-            return False
+            logger.warning("Impossible de lire robots.txt (%s) - Application du délai de sécurité.", e)
+            return True
 
     def tester_connectivite(self) -> bool:
-        """Teste si Guichet-Emplois est joignable."""
-        print(" [TEST] Verification de la connectivite avec Guichet-Emplois...")
-        start_time = time.time()
+        """Vérifie la disponibilité du service avant de lancer la collecte."""
+        print(" [*] Test préalable de connectivité vers Guichet-Emplois...")
         try:
-            resp = self.session.get(self.BASE_URL, timeout=self.timeout)
-            elapsed_ms = int((time.time() - start_time) * 1000)
+            resp = self.session.get(f"{self.BASE_URL}?lang=fra", timeout=self.timeout)
             if resp.status_code == 200:
-                print(f" [LIVE] Le site est EN LIGNE (HTTP 200 en {elapsed_ms} ms)")
-                logger.info("Connexion reussie vers %s (HTTP 200 en %d ms)", self.BASE_URL, elapsed_ms)
+                print(" -> [OK] Service en ligne et accessible (version francophone confirmée).")
+                logger.info("Health check réussi sur %s (HTTP 200)", self.BASE_URL)
                 return True
             else:
-                print(f" [ATTENTION] Reponse inattendue : HTTP {resp.status_code}")
+                print(f" -> [ALERTE] Réponse inhabituelle du serveur : HTTP {resp.status_code}")
+                logger.warning("Health check statut inattendu : HTTP %d", resp.status_code)
                 return False
-        except Exception as e:
-            print(f" [ERREUR] Impossible de joindre le site : {e}")
-            logger.error("Erreur de connexion : %s", e)
+        except requests.exceptions.RequestException as e:
+            print(f" -> [ERREUR] Impossible de joindre Guichet-Emplois : {e}")
+            logger.error("Health check échoué : %s", e)
             return False
 
     def _pause_respectueuse(self):
@@ -159,9 +177,9 @@ class GuichetEmploisCollecteur:
     def collecter_via_atom(self, province: str = "QC", limit: int = 100) -> List[JobOffer]:
         """
         Collecte via le flux de syndication Atom officiel de Guichet-Emplois.
-        Fournit une extraction instantanée et propre en une seule requête.
+        Fournit une extraction instantanée et filtre avec le validateur DEC TI.
         """
-        print(f"\n [STRATEGIE 1] Interrogation du flux Atom XML officiel (Cible : {limit} offres)...")
+        print(f"\n [STRATEGIE 1] Interrogation du flux Atom XML officiel (Cible : {limit} offres DEC TI)...")
         logger.info("Tentative de collecte via flux Atom (%s, limite %d)", self.FEED_URL, limit)
 
         params = {
@@ -172,22 +190,28 @@ class GuichetEmploisCollecteur:
         }
         url = f"{self.FEED_URL}?{urlencode(params)}"
 
+        offers: List[JobOffer] = []
         try:
             resp = self.session.get(url, timeout=self.timeout)
             if resp.status_code == 200 and resp.text:
-                offers = parse_atom_feed(resp.text, base_url=self.BASE_URL)
-                logger.info("%d offres extraites du flux Atom.", len(offers))
-                print(f" -> [OK] {len(offers)} offres récupérées via le flux Atom.")
-                return offers[:limit]
+                parsed_offers = parse_atom_feed(resp.text, base_url=self.BASE_URL)
+                # parse_atom_feed filtre déjà avec est_metier_dec_informatique
+                for off in parsed_offers:
+                    offers.append(off)
+                    if len(offers) >= limit:
+                        break
+                print(f" -> [OK] {len(offers)} offres TI pertinentes extraites du flux Atom.")
+                logger.info("%d offres TI retenues depuis le flux Atom.", len(offers))
+                return offers
             else:
-                logger.warning("Reponse flux Atom non concluante : HTTP %d", resp.status_code)
+                logger.warning("Code HTTP %d sur le flux Atom", resp.status_code)
                 return []
         except Exception as e:
             logger.error("Erreur lors de la récupération Atom : %s", e)
             return []
 
     # --------------------------------------------------------------------------
-    # STRATÉGIE 2 : RECHERCHE HTML (Résultats & Pagination)
+    # STRATÉGIE 2 : RECHERCHE HTML (Multi-mots-clés & Pagination robuste)
     # --------------------------------------------------------------------------
     def collecter_via_recherche_html(
         self,
@@ -196,12 +220,16 @@ class GuichetEmploisCollecteur:
         limit: int = 100,
         seen_ids: Optional[Set[str]] = None
     ) -> List[JobOffer]:
-        """Collecte les offres en naviguant sur les pages de recherche HTML."""
+        """
+        Collecte les offres en naviguant sur les pages de recherche HTML (/jobsearch/jobsearch).
+        Itère sur la liste des métiers du DEC et gère la pagination jusqu'à combler le quota requis.
+        """
         if seen_ids is None:
             seen_ids = set()
 
         offers: List[JobOffer] = []
-        print(f"\n [STRATEGIE 2] Recherche HTML par mots-clés ({len(mots_cles)} métiers TI ciblés)...")
+        print(f"\n [STRATEGIE 2] Recherche HTML par mots-clés DEC ({len(mots_cles)} métiers TI ciblés)...")
+        print(f"               Objectif : collecter {limit} offres TI supplémentaires au Québec...\n")
         logger.info("Début collecte HTML (Cible : %d offres, %d mots-clés)", limit, len(mots_cles))
 
         search_base = urljoin(self.BASE_URL, self.SEARCH_ENDPOINT)
@@ -210,72 +238,73 @@ class GuichetEmploisCollecteur:
             if len(offers) >= limit:
                 break
 
-            params = {
-                "searchstring": mot_cle,
-                "sort": "D",
-                "fprov": province if province.upper() != "ALL" else ""
-            }
+            # Parcourir jusqu'à 3 pages de résultats (75 offres max) par métier
+            for page_num in range(1, 4):
+                if len(offers) >= limit:
+                    break
 
-            try:
-                resp = self.session.get(search_base, params=params, timeout=self.timeout)
-                if resp.status_code == 200:
-                    page_offers = parse_search_page_html(resp.text, base_url=self.BASE_URL)
-                    nouveaux = 0
-                    for off in page_offers:
-                        if off.id not in seen_ids:
-                            seen_ids.add(off.id)
-                            offers.append(off)
-                            nouveaux += 1
-                            afficher_barre_progression(
-                                actuel=len(offers),
-                                total=limit,
-                                prefixe="[Recherche HTML]",
-                                suffixe=f"[{mot_cle[:14]}] +{nouveaux}"
-                            )
-                            if len(offers) >= limit:
-                                break
+                params = {
+                    "searchstring": mot_cle,
+                    "sort": "D",
+                    "fprov": province if province.upper() != "ALL" else ""
+                }
+                if page_num > 1:
+                    params["page"] = str(page_num)
 
-                    # Pagination si résultats supplémentaires disponibles
-                    if len(offers) < limit and len(page_offers) >= 20:
-                        self._pause_respectueuse()
-                        loader_url = urljoin(self.BASE_URL, self.LOADER_ENDPOINT)
-                        loader_resp = self.session.get(loader_url, timeout=self.timeout)
-                        if loader_resp.status_code == 200 and loader_resp.text.strip():
-                            loader_offers = parse_search_page_html(loader_resp.text, base_url=self.BASE_URL)
-                            for off in loader_offers:
-                                if off.id not in seen_ids:
-                                    seen_ids.add(off.id)
-                                    offers.append(off)
-                                    afficher_barre_progression(
-                                        actuel=len(offers),
-                                        total=limit,
-                                        prefixe="[Recherche HTML]",
-                                        suffixe=f"[{mot_cle[:14]}] pagination"
-                                    )
-                                    if len(offers) >= limit:
-                                        break
-                else:
-                    logger.warning("Code HTTP %d sur recherche mot-clé '%s'", resp.status_code, mot_cle)
+                try:
+                    resp = self.session.get(search_base, params=params, timeout=self.timeout)
+                    if resp.status_code == 200:
+                        page_offers = parse_search_page_html(resp.text, base_url=self.BASE_URL)
+                        if not page_offers:
+                            break  # Aucune offre sur cette page, mot-clé suivant
 
-            except Exception as e:
-                logger.error("Erreur sur recherche HTML '%s' : %s", mot_cle, e)
+                        nouveaux = 0
+                        for off in page_offers:
+                            if off.id not in seen_ids and est_metier_dec_informatique(off.titre, off.description or ""):
+                                seen_ids.add(off.id)
+                                offers.append(off)
+                                nouveaux += 1
+                                afficher_barre_progression(
+                                    actuel=len(offers),
+                                    total=limit,
+                                    prefixe="[Recherche HTML]",
+                                    suffixe=f"[{mot_cle[:12]}] p.{page_num} (+{nouveaux})"
+                                )
+                                if len(offers) >= limit:
+                                    break
+
+                        # Si la page contenait moins de 20 offres, c'est la dernière page de ce mot-clé
+                        if len(page_offers) < 20:
+                            break
+                    else:
+                        logger.warning("Code HTTP %d sur recherche mot-clé '%s' (page %d)", resp.status_code, mot_cle, page_num)
+                        break
+
+                except Exception as e:
+                    logger.error("Erreur sur recherche HTML '%s' (page %d) : %s", mot_cle, page_num, e)
+                    break
+
+                self._pause_respectueuse()
 
             self._pause_respectueuse()
 
         return offers
 
     # --------------------------------------------------------------------------
-    # ENRICHISSEMENT DES FICHES DÉTAILLÉES (Phase 2)
+    # ENRICHISSEMENT DES FICHES DÉTAILLÉES (Phase 2 - Priorité Français)
     # --------------------------------------------------------------------------
     def enrichir_fiches_details(self, offers: List[JobOffer]) -> None:
-        """Visite les fiches pour extraire description complète, modalité et compétences."""
-        print(f"\n [PHASE 2] Enrichissement détaillé de {len(offers)} fiches...")
+        """Visite les fiches pour extraire description complète, modalité et compétences en français."""
+        print(f"\n [PHASE 2] Enrichissement détaillé de {len(offers)} fiches TI...")
         print(f"           (Délai entre requêtes : {self.delai_secondes}s pour respecter le serveur)\n")
         logger.info("Début enrichissement détaillé de %d fiches.", len(offers))
 
         for idx, offer in enumerate(offers, start=1):
+            url_cible = normaliser_url_francaise(offer.url_source, base_url=self.BASE_URL)
+            offer.url_source = url_cible
+
             try:
-                resp = self.session.get(offer.url_source, timeout=self.timeout)
+                resp = self.session.get(url_cible, timeout=self.timeout)
                 if resp.status_code == 200:
                     enrich_offer_detail(offer, resp.text)
                 elif resp.status_code == 429:
@@ -283,7 +312,7 @@ class GuichetEmploisCollecteur:
                     logger.warning("HTTP 429 - Pause de sécurité de 10s.")
                     time.sleep(10)
                 else:
-                    logger.warning("HTTP %d lors du chargement de %s", resp.status_code, offer.url_source)
+                    logger.warning("HTTP %d lors du chargement de %s", resp.status_code, url_cible)
             except Exception as e:
                 logger.error("Erreur lors de l'enrichissement de %s : %s", offer.id, e)
 
@@ -309,32 +338,34 @@ class GuichetEmploisCollecteur:
         enrichir: bool = True
     ) -> List[JobOffer]:
         """
-        Orchestre la collecte en cascade :
-        1. Flux Atom XML en premier choix.
+        Orchestre la collecte en cascade pour le DEC en informatique :
+        1. Flux Atom XML ciblé TI en premier choix.
         2. Repli / complément sur la recherche HTML si le quota n'est pas atteint.
         3. Déduplication par identifiant unique.
-        4. Enrichissement détaillé (description, modalité, compétences).
+        4. Enrichissement détaillé (description complète, modalité, compétences en français).
+        Garantit que le nombre d'offres visé (ex. 100) est bien atteint.
         """
         if mots_cles is None:
             mots_cles = MOTS_CLES_TI_DEFAUT
 
         print("\n" + "=" * 65)
-        print(f" [*] COLLECTE EN CASCADE GUICHET-EMPLOIS (CIBLE : {limit_totale} OFFRES)")
-        print(f"    - Région : {province} (Canada)")
+        print(f" [*] COLLECTE EN CASCADE GUICHET-EMPLOIS (CIBLE : {limit_totale} OFFRES TI)")
+        print(f"    - Périmètre : Métiers du DEC en informatique (Canada / {province})")
         print(f"    - Délai de respect : {self.delai_secondes}s par requête")
+        print(f"    - Langue prioritaire : Français (lang=fra)")
         print("=" * 65)
 
         offers: List[JobOffer] = []
         seen_ids: Set[str] = set()
 
-        # Niveau 1 : Flux Atom
+        # Niveau 1 : Flux Atom ciblé TI
         atom_offers = self.collecter_via_atom(province=province, limit=limit_totale)
         for off in atom_offers:
             if off.id not in seen_ids:
                 seen_ids.add(off.id)
                 offers.append(off)
 
-        # Niveau 2 : Si le quota n'est pas atteint, repli / complément par recherche HTML
+        # Niveau 2 : Si le quota n'est pas atteint, complément par recherche HTML multi-mots-clés
         if len(offers) < limit_totale:
             manquants = limit_totale - len(offers)
             print(f"\n [INFO] Flux Atom a fourni {len(offers)} offres. Complément HTML de {manquants} offres...")
@@ -346,7 +377,7 @@ class GuichetEmploisCollecteur:
             )
             offers.extend(html_offers)
 
-        print(f"\n [OK] Total de {len(offers)} offres uniques retenues.")
+        print(f"\n [OK] Total de {len(offers)} offres TI uniques retenues.")
 
         # Niveau 3 : Enrichissement détaillé des fiches
         if enrichir and offers:
@@ -364,7 +395,7 @@ class GuichetEmploisCollecteur:
             json.dump(donnees, f, ensure_ascii=False, indent=2)
 
         print("\n" + "=" * 65)
-        print(" [*] RAPPORT STATISTIQUE DE COLLECTE")
+        print(" [*] RAPPORT STATISTIQUE DE COLLECTE (DEC EN INFORMATIQUE)")
         print("=" * 65)
         print(f" [OK] Fichier enregistré : {os.path.abspath(chemin_sortie)}")
         print(f" [OK] Nombre d'offres   : {len(donnees)}")

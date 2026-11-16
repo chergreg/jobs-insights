@@ -1,0 +1,90 @@
+{
+  "data": [
+    {
+      "name": "Stage fin d'études - Consultant.e IA/DATA",
+      "reference": "33e7a622-7ec4-4434-b386-7151ae990688",
+      "slug": "stage-fin-d-etudes-consultant-e-ia-data_VONA_k4RDq5l",
+      "contract_type": "internship",
+      "remote": "no",
+      "published_at": "2026-09-21T14:39:35Z",
+      "updated_at": "2026-11-03T15:30:11.956574Z",
+      "salary_min": null,
+      "salary_max": 1500.0,
+      "salary_currency": "EUR",
+      "salary_period": "monthly",
+      "experience_min": 1.0,
+      "experience_max": 2.0,
+      "office": {
+        "city": "Paris",
+        "latitude": 48.87295,
+        "longitude": 2.3478,
+        "country_code": "FR"
+      },
+      "offices": [
+        {
+          "city": "Paris",
+          "latitude": 48.87295,
+          "longitude": 2.3478,
+          "country_code": "FR"
+        },
+        {
+          "city": "Montreal",
+          "latitude": 45.5124,
+          "longitude": -73.55469,
+          "country_code": "CA"
+        }
+      ],
+      "organization": {
+        "name": "VONA",
+        "slug": "vona",
+        "industry": "Strategy, Change Management, Cyber Security"
+      }
+    },
+    {
+      "name": "Développeur.se Python junior",
+      "reference": "test-0002",
+      "slug": "developpeur-python-junior_EXEMPLE_abc",
+      "contract_type": "full_time",
+      "remote": "partial",
+      "published_at": "2026-11-10T12:00:00Z",
+      "updated_at": "2026-11-10T12:00:00Z",
+      "salary_min": null,
+      "salary_max": null,
+      "salary_currency": null,
+      "salary_period": null,
+      "experience_min": null,
+      "experience_max": null,
+      "office": {
+        "city": "Lyon",
+        "latitude": 45.76,
+        "longitude": 4.83,
+        "country_code": "FR"
+      },
+      "offices": [
+        {
+          "city": "Lyon",
+          "latitude": 45.76,
+          "longitude": 4.83,
+          "country_code": "FR"
+        }
+      ],
+      "organization": {
+        "name": "Entreprise Exemple",
+        "slug": "entreprise-exemple",
+        "industry": "Software"
+      }
+    },
+    {
+      "name": "Offre sans bureau",
+      "reference": "test-0003",
+      "slug": "offre-sans-bureau",
+      "organization": {}
+    }
+  ],
+  "metadata": {
+    "total": 3,
+    "page": 1,
+    "per_page": 10,
+    "page_count": 1
+  }
+}

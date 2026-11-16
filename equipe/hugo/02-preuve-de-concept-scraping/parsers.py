@@ -1,5 +1,5 @@
 """
-parsers.py - Logique pure de parsing et de normalisation pour Guichet-Emplois.
+parsers.py - Logique pure de parsing, filtrage DEC et normalisation pour Guichet-Emplois.
 Ce module est totalement découplé du réseau et peut être testé 100 % hors ligne.
 
 Fonctionnalités :
@@ -8,8 +8,11 @@ Fonctionnalités :
 3. Extraction détaillée par cascade :
    - Étape 1 : Métadonnées sémantiques RDFa / Schema.org (JobPosting)
    - Étape 2 : Repli DOM HTML (sections description, modalité et compétences)
-4. Détection stricte et sans faux positifs des compétences techniques (exclut 'C' isolé et 'Vue').
-5. Classification fine des stages et modalités.
+4. Filtrage strict du périmètre DEC en informatique :
+   - Couvre : Programmation, Web, Logiciel, Réseaux, Support TI, QA, DevOps, Cybersécurité et Stages.
+   - Élimine : Métiers non-TI (cleaning man/woman, concierge, entretien, restauration, etc.).
+5. Détection stricte et sans faux positifs des compétences techniques (exclut 'C' isolé et 'Vue').
+6. Priorisation des URLs et contenus en langue française (?lang=fra).
 """
 
 from __future__ import annotations
@@ -23,8 +26,86 @@ from bs4 import BeautifulSoup
 
 from models import JobOffer
 
+# ==============================================================================
+# 1. MOTIFS D'EXCLUSION NON-TI & INCLUSION DEC EN INFORMATIQUE
+# ==============================================================================
+
+# Métiers hors TI à rejeter systématiquement (pour éliminer 'cleaning man/woman', etc.)
+MOTIFS_NON_TI = [
+    re.compile(r"\bclean(?:ing|er|ers)?\b", re.IGNORECASE),
+    re.compile(r"\bnettoy(?:age|eur|euse|eurs|euses)\b", re.IGNORECASE),
+    re.compile(r"\bentretien\s+m[eé]nag(?:er|ère)\b", re.IGNORECASE),
+    re.compile(r"\bconcierge\b", re.IGNORECASE),
+    re.compile(r"\bcuisin(?:e|ier|ière|iers|ières)\b", re.IGNORECASE),
+    re.compile(r"\bserveu(?:r|se|rs|ses)\b", re.IGNORECASE),
+    re.compile(r"\bplongeu(?:r|se|rs|ses)\b", re.IGNORECASE),
+    re.compile(r"\bcommis\b(?!\s+(?:ti|informatique|donn[eé]es))", re.IGNORECASE),
+    re.compile(r"\bchauffeu(?:r|se|rs|ses)\b", re.IGNORECASE),
+    re.compile(r"\bmanutentionn?aire\b", re.IGNORECASE),
+    re.compile(r"\bcaissi(?:er|ère|ers|ères)\b", re.IGNORECASE),
+    re.compile(r"\bpr[eé]pos[eé](?:e)?\s+aux\s+b[eé]n[eé]ficiaires\b", re.IGNORECASE),
+    re.compile(r"\bpr[eé]pos[eé](?:e)?\s+[aà]\s+l['’]entretien\b", re.IGNORECASE),
+    re.compile(r"\bgardien(?:ne)?\b", re.IGNORECASE),
+    re.compile(r"\bvendeu(?:r|se|rs|ses)\b(?!\s+(?:informatique|logiciel))", re.IGNORECASE),
+    re.compile(r"\bcharpentier|menuisier|m[eé]canicien|soudeur\b", re.IGNORECASE),
+]
+
+# Motifs positifs ciblés sur l'ensemble des branches du DEC en informatique :
+# 1. Développement d'applications (Web, Logiciel, Mobile, Jeux vidéo, DevOps)
+# 2. Infrastructure, Réseaux et Sécurité (Technicien, Sysadmin, Support TI, Cybersécurité)
+# 3. Données et Assurance Qualité (Bases de données, QA/Test)
+# 4. Stages en informatique
+MOTIFS_DEC_INFORMATIQUE = [
+    # Programmation & Développement logiciel / Web
+    re.compile(r"\bprogrammeu(?:r|se|rs|ses)?\b", re.IGNORECASE),
+    re.compile(r"\bprogrammation\b", re.IGNORECASE),
+    re.compile(r"\bd[eé]veloppeu(?:r|se|rs|ses)?\b", re.IGNORECASE),
+    re.compile(r"\bd[eé]veloppement\b", re.IGNORECASE),
+    re.compile(r"\bprogrammer(?:s)?\b", re.IGNORECASE),
+    re.compile(r"\bdeveloper(?:s)?\b", re.IGNORECASE),
+    re.compile(r"\bsoftware\b", re.IGNORECASE),
+    re.compile(r"\blogiciel(?:s)?\b", re.IGNORECASE),
+    re.compile(r"\bweb\b", re.IGNORECASE),
+    re.compile(r"\bfull[\s-]?stack\b", re.IGNORECASE),
+    re.compile(r"\bfront[\s-]?end\b", re.IGNORECASE),
+    re.compile(r"\bback[\s-]?end\b", re.IGNORECASE),
+    re.compile(r"\bmobile\b", re.IGNORECASE),
+    re.compile(r"\bjeux?\s+vid[eé]o\b|\bvideo\s+games?\b", re.IGNORECASE),
+    re.compile(r"\bgame(?:play)?\b", re.IGNORECASE),
+    re.compile(r"\bdevops\b", re.IGNORECASE),
+    re.compile(r"\bcloud\b|\binfonuagique\b", re.IGNORECASE),
+    re.compile(r"\barchitecte\s+(?:logiciel|syst[eè]me|cloud|solutions?|ti)\b", re.IGNORECASE),
+    re.compile(r"\bing[eé]nieu?r(?:e)?\s+(?:logiciel|informati(?:que|cien)|syst[eè]me|devops)\b", re.IGNORECASE),
+    
+    # Infrastructure, Réseaux, Systèmes, Support TI et Cybersécurité
+    re.compile(r"\br[eé]seau(?:x)?\b|\bnetwork(?:s)?\b", re.IGNORECASE),
+    re.compile(r"\bsyst[eè]me(?:s)?\s+informatique(?:s)?\b", re.IGNORECASE),
+    re.compile(r"\bsysadmin\b|\badministrat(?:eur|rice)\s+syst[eè]me\b", re.IGNORECASE),
+    re.compile(r"\bsupport\s+informatique\b|\bit\s+support\b", re.IGNORECASE),
+    re.compile(r"\bsoutien\s+technique\b|\btech\s+support\b", re.IGNORECASE),
+    re.compile(r"\bhelpdesk\b|\bhelp\s+desk\b", re.IGNORECASE),
+    re.compile(r"\btechnicien(?:ne)?\s+(?:en\s+)?(?:informatique|r[eé]seau|ti|syst[eè]me|soutien)\b", re.IGNORECASE),
+    re.compile(r"\bagent(?:e)?\s+de\s+soutien\b", re.IGNORECASE),
+    re.compile(r"\bcybers[eé]curit[eé]\b|\bcybersecurity\b|\bs[eé]curit[eé]\s+informatique\b", re.IGNORECASE),
+    re.compile(r"\bbases?\s+de\s+donn[eé]es\b|\bdatabase\b|\bdba\b", re.IGNORECASE),
+    re.compile(r"\banalyste\s+(?:ti|informatique|programmeur|syst[eè]me|donn[eé]es|affaires\s+ti|fonctionnel\s+ti)\b", re.IGNORECASE),
+    
+    # Données, IA et Big Data
+    re.compile(r"\bdata\s+(?:engineer|analyst|scientist)\b|\bing[eé]nieur\s+donn[eé]es\b", re.IGNORECASE),
+    re.compile(r"\bintelligence\s+artificielle\b|\bia\b|\bai\b", re.IGNORECASE),
+    
+    # Assurance Qualité (QA) et Test logiciel
+    re.compile(r"\bassurance\s+qualit[eé]\b|\bqa\b|\btesteu(?:r|se)\s+logiciel\b|\bqa\s+tester\b", re.IGNORECASE),
+    re.compile(r"\b[eé]valuateu(?:r|se)\s+de\s+syst[eè]mes\b", re.IGNORECASE),
+    
+    # Stages en informatique
+    re.compile(r"\b(?:stage|stagiaire|intern|internship|co[\s-]?op)\s+(?:en\s+|de\s+|d['’]\s*)?(?:informatique|d[eé]veloppement|prog(?:rammation)?|web|ti|logiciel|qa|r[eé]seau)\b", re.IGNORECASE),
+    
+    # Termes généraux TI
+    re.compile(r"\binformatique\b|\btechnologies?\s+de\s+l['’]information\b|\bit\b", re.IGNORECASE),
+]
+
 # Dictionnaire de motifs stricts pour compétences TI (sans faux positifs français)
-# Note: Pour C++ et C#, le symbole '#' et '+' n'étant pas dans \w, on utilise (?=[^\w]|$).
 TECH_PATTERNS = [
     ("Python", re.compile(r"\bpython\b", re.IGNORECASE)),
     ("Java", re.compile(r"\bjava\b(?!script)", re.IGNORECASE)),
@@ -73,6 +154,49 @@ def clean_text(raw_html: str) -> str:
     return re.sub(r"\s+", " ", txt).strip()
 
 
+def est_metier_dec_informatique(titre: str, texte_complementaire: str = "") -> bool:
+    """
+    Vérifie si une offre d'emploi correspond au domaine du DEC en informatique :
+    - Programmation / Développement (Web, Logiciel, Mobile, Jeux vidéo, DevOps)
+    - Infrastructure, Réseaux et Sécurité (Technicien, Sysadmin, Support TI, Cyber)
+    - Données et Assurance Qualité (Bases de données, QA)
+    - Stages informatiques
+
+    Rejette formellement les offres hors TI (ex: cleaning man/woman, concierge, etc.).
+    """
+    titre_propre = (titre or "").strip()
+    if not titre_propre:
+        return False
+
+    texte_global = f"{titre_propre} {texte_complementaire}".lower()
+
+    # 1. Vérification des exclusions prioritaires
+    for pattern in MOTIFS_NON_TI:
+        if pattern.search(titre_propre):
+            # Exception : si le titre contient explicitement un terme logiciel/informatique fort
+            mots_sauvegarde = ["informatique", "logiciel", "software", "programmeur", "développeur", "developer"]
+            if not any(w in titre_propre.lower() for w in mots_sauvegarde):
+                return False
+
+    # 2. Vérification de correspondance avec le domaine TI
+    for pattern in MOTIFS_DEC_INFORMATIQUE:
+        if pattern.search(titre_propre):
+            return True
+
+    # 3. Si le titre est un stage générique (ex: "Stagiaire"), vérifier le texte complémentaire
+    if any(k in titre_propre.lower() for k in ["stage", "stagiaire", "intern", "étudiant"]):
+        for pattern in MOTIFS_DEC_INFORMATIQUE:
+            if pattern.search(texte_global):
+                return True
+
+    # 4. Vérifier si des compétences TI majeures sont mentionnées dans le titre
+    for tech_name, pat in TECH_PATTERNS:
+        if pat.search(titre_propre):
+            return True
+
+    return False
+
+
 def extract_tech_skills(text: str) -> List[str]:
     """
     Extrait les compétences techniques en éliminant les faux positifs
@@ -97,8 +221,20 @@ def detect_stage(title: str, text: str = "") -> str:
     return "Temps plein"
 
 
+def normaliser_url_francaise(url: str, base_url: str = "https://www.guichetemplois.gc.ca") -> str:
+    """Normalise l'URL pour pointer vers le domaine français avec le paramètre lang=fra."""
+    if not url:
+        return ""
+    full_url = urljoin(base_url, url)
+    full_url = full_url.replace("jobbank.gc.ca", "guichetemplois.gc.ca")
+    if "lang=fra" not in full_url:
+        separateur = "&" if "?" in full_url else "?"
+        full_url = f"{full_url}{separateur}lang=fra"
+    return full_url
+
+
 # ==============================================================================
-# 1. PARSEUR FLUX ATOM XML OFFICIEL (Rapide, structuré, résilient)
+# 2. PARSEUR FLUX ATOM XML OFFICIEL (Rapide, structuré, résilient)
 # ==============================================================================
 def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guichetemplois.gc.ca") -> List[JobOffer]:
     """
@@ -124,9 +260,8 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
         titre = title_el.text.strip() if title_el is not None and title_el.text else "Titre non spécifié"
 
         link_el = entry.find(f"{atom_ns}link")
-        url_source = link_el.attrib.get("href", "") if link_el is not None else ""
-        if url_source and not url_source.startswith("http"):
-            url_source = urljoin(base_url, url_source)
+        raw_url = link_el.attrib.get("href", "") if link_el is not None else ""
+        url_source = normaliser_url_francaise(raw_url, base_url=base_url)
 
         updated_el = entry.find(f"{atom_ns}updated")
         date_pub = updated_el.text.strip() if updated_el is not None and updated_el.text else None
@@ -146,12 +281,10 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
         salaire = None
 
         if summary_html:
-            # Recherche de l'employeur
             emp_m = re.search(r"<strong>(?:Employer|Employeur)\s*:?</strong>\s*([^<]+)", summary_html, re.I)
             if emp_m:
                 entreprise = emp_m.group(1).strip()
 
-            # Recherche du lieu
             loc_m = re.search(r"<strong>(?:Location|Emplacement)\s*:?</strong>\s*([^<]+)", summary_html, re.I)
             if loc_m:
                 lieu = loc_m.group(1).strip()
@@ -160,10 +293,13 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
                         province = prov
                         break
 
-            # Recherche du salaire
             sal_m = re.search(r"<strong>(?:Salary|Salaire)\s*:?</strong>\s*([^<]+)", summary_html, re.I)
             if sal_m:
                 salaire = sal_m.group(1).strip()
+
+        # Filtrage strict DEC en informatique
+        if not est_metier_dec_informatique(titre, summary_html):
+            continue
 
         type_poste = detect_stage(titre, summary_html)
         description_initiale = clean_text(summary_html) if summary_html else None
@@ -192,7 +328,7 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
 
 
 # ==============================================================================
-# 2. PARSEUR DE RECHERCHE HTML (Résultats de recherche par mot-clé)
+# 3. PARSEUR DE RECHERCHE HTML (Résultats de recherche par mot-clé)
 # ==============================================================================
 def parse_search_page_html(html_str: str, base_url: str = "https://www.guichetemplois.gc.ca") -> List[JobOffer]:
     """Parse les cartes <article> sur les pages de résultats HTML de Guichet-Emplois."""
@@ -208,14 +344,18 @@ def parse_search_page_html(html_str: str, base_url: str = "https://www.guichetem
 
             raw_href = link_tag["href"]
             clean_href = raw_href.split(";")[0]
-            full_url = urljoin(base_url, clean_href)
+            full_url = normaliser_url_francaise(clean_href, base_url=base_url)
 
             raw_id = article.get("id", "")
-            base_ident = raw_id.replace("article-", "").replace("gc-", "") if raw_id else clean_href.split("/")[-1]
+            base_ident = raw_id.replace("article-", "").replace("gc-", "") if raw_id else clean_href.split("/")[-1].split("?")[0]
             job_id = f"gc-{base_ident}"
 
             title_tag = article.find("span", class_="noctitle")
             titre = title_tag.get_text(strip=True) if title_tag else "Titre non spécifié"
+
+            # Filtrage strict DEC en informatique dès les cartes de recherche
+            if not est_metier_dec_informatique(titre):
+                continue
 
             business_tag = article.find("li", class_="business")
             entreprise = business_tag.get_text(strip=True) if business_tag else "Non spécifié"
@@ -274,7 +414,7 @@ def parse_search_page_html(html_str: str, base_url: str = "https://www.guichetem
 
 
 # ==============================================================================
-# 3. ENRICHISSEMENT DÉTAILLÉ EN CASCADE (RDFa / Schema.org -> DOM Fallback)
+# 4. ENRICHISSEMENT DÉTAILLÉ EN CASCADE (RDFa / Schema.org -> DOM Fallback)
 # ==============================================================================
 def enrich_offer_detail(offer: JobOffer, detail_html: str) -> JobOffer:
     """
