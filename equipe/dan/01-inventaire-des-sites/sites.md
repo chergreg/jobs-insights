@@ -1,93 +1,101 @@
-# Sites d'offres d'emploi et de stages — repérage pour le scraping
+# Sites d'offres d'emploi et de stage
 
-> Atelier « Recherche d'emploi, des postes… » — fichier perso
-> Profil visé : étudiants de l'Université de Moncton (génie, informatique / web) qui cherchent
-> des **stages, emplois d'été, temps partiel et premiers emplois** au Nouveau-Brunswick.
-> Dernière mise à jour : 2026-11-09
+> Profil visé : étudiants du DEC en informatique (Collège O'Sullivan de Québec) qui cherchent
+> des **stages et des postes TI en début de carrière au Québec**.
+> Dernière mise à jour : 2026-11-16
 
-**Légende :** ✅ = vérifié · 🔍 = à confirmer en naviguant sur le site (clic droit → **Inspecter**)
+**Légende :** ✅ = vérifié · 🔍 = à confirmer
+
+## Résumé
+
+| Site | Méthode | Résultat |
+| --- | --- | --- |
+| Guichet-Emplois | HTML (sélecteurs CSS) | POC fonctionnel |
+| CareerBeacon | HTML | Bloqué (403, Cloudflare) |
 
 ---
 
 ## 1. Guichet-Emplois (Job Bank)
 
-| Élément | Détail |
-| --- | --- |
-| URL | https://www.guichetemplois.gc.ca |
-| Type | Site national d'emploi du gouvernement du Canada |
-| Langues | Français et anglais |
-| Coût / compte | Gratuit, pas de compte nécessaire pour chercher ✅ |
-| Volume | Environ 70 000 offres affichées en même temps ✅ |
-| Priorité | ⭐⭐⭐ (premier site du projet) |
-| Méthode prévue | Scraping HTML (`poc_guichetemplois.py`) + Alertes-Emplois par courriel |
+- **URL de recherche :** https://www.guichetemplois.gc.ca/jobsearch/rechercheemplois
+- **Type :** site national d'emploi du gouvernement du Canada, gratuit, sans compte pour chercher ✅
+- **Script :** [`poc_guichetemplois.py`](../02-preuve-de-concept-scraping/poc_guichetemplois.py)
 
-### Pourquoi ce site est intéressant pour nous
+### Pourquoi ce site
 
-- Il couvre tout le Nouveau-Brunswick, y compris Moncton.
-- Il reprend aussi des offres d'autres sites (ex. Jobillico) ✅ : une seule source donne déjà beaucoup d'offres.
-- Les offres publiées directement sur le Guichet-Emplois viennent d'employeurs vérifiés ✅.
-- Il existe un filtre pour les **étudiants** et les **jeunes** 🔍.
+- Couvre tout le Québec, avec un filtre par province et par code de profession (CNP) ✅.
+- Reprend aussi des offres de sites partenaires (Jobillico, Talent.com, CareerBeacon…) ✅.
+- Les offres publiées directement viennent d'employeurs vérifiés ✅.
 
-### Catégories et filtres à repérer
+### Paramètres d'URL
 
-| Filtre | Exemple de valeur | Paramètre dans l'URL |
+| Paramètre | Rôle | Exemple |
 | --- | --- | --- |
-| Mots-clés | `technicien`, `stage génie` | `searchstring` 🔍 |
-| Emplacement | `Moncton, NB` | `locationstring` 🔍 |
-| Date de publication | dernières 24 h, 7 jours | 🔍 |
-| Type d'emploi | temps plein, temps partiel | 🔍 |
-| Durée | permanent, temporaire, saisonnier | 🔍 |
-| Salaire | salaire minimum | 🔍 |
-| Groupes ciblés | étudiants, jeunes | 🔍 |
-| Source de l'offre | Guichet-Emplois ou sites partenaires | 🔍 |
-| Tri | pertinence, date | 🔍 |
-| Parcourir par employeur / province | `/parcourirlesoffresdemploi/employeur/...` | ✅ |
+| `searchstring` | Mot-clé | `developpeur` ✅ |
+| `fprov` | Province | `QC` ✅ |
+| `fn21` | Code CNP 2021 (répétable) | `21232` ✅ |
+| `sort` | Tri | `D` = date ✅ |
+| `page` | Page de résultats | `2` ✅ |
+| `fsrc` | Source de l'offre | `16` 🔍 |
 
-> **Méthode :** cocher un seul filtre à la fois et noter comment l'adresse change dans la barre du navigateur.
+Codes CNP TI utilisés : 21211, 21220 à 21223, 21230 à 21234, 21311, 22220 à 22222 (liste de Kandet).
 
-### Structure des URL
+### Sélecteurs de la page de résultats ✅
 
-| Page | Forme de l'URL |
+| Champ | Sélecteur |
 | --- | --- |
-| Recherche | `/jobsearch/rechercheemplois?searchstring=<mots>&locationstring=<lieu>` 🔍 |
-| Fiche d'une offre | `/jobsearch/jobposting/<numéro>` ✅ |
-| Pagination | paramètre `page` ou bouton « Afficher plus de résultats » 🔍 |
+| Bloc d'une offre | `article[id^='article-']` |
+| Lien | `a.resultJobItem` |
+| Titre | `.noctitle` |
+| Employeur | `.business` |
+| Lieu | `.location` |
+| Date | `.date` |
+| Salaire | `.salary` |
+| Site d'origine | `.job-source .wb-inv` |
 
-### Champs à extraire
+Sources : POC de Kandet (vérifiés sur le site) et POC de Hugo.
 
-**Sur la page de résultats** (liste d'offres) :
+### Formes d'URL
 
-| Champ | Sélecteur CSS supposé |
-| --- | --- |
-| Bloc d'une offre | `article` 🔍 |
-| Titre | `.noctitle` 🔍 |
-| Employeur | `.business` 🔍 |
-| Lieu | `.location` 🔍 |
-| Date de publication | `.date` 🔍 |
-| Salaire | `.salary` 🔍 |
-| Lien vers la fiche | `a` (attribut `href`) 🔍 |
+- Fiche d'une offre : `/rechercheemplois/offredemploi/<numéro>` ✅
+- Le lien contient un identifiant de session (`;jsessionid=…`) à retirer ✅
 
-**Sur la fiche d'une offre** (vus sur une vraie fiche ✅) : titre, employeur, lieu, salaire, type d'emploi (permanent, temps plein…), date de début, nombre de postes à pourvoir, date de publication, date « affichée jusqu'au », numéro d'offre, source de l'offre.
+### Règles
 
-### Règles et limites
-
-- [ ] Lire `https://www.guichetemplois.gc.ca/robots.txt` 🔍
-- [ ] Lire les conditions d'utilisation du site 🔍
-- Ne pas envoyer plus d'une requête toutes les 2 secondes (`time.sleep(2)` dans le script).
-- Alternative sans scraping : les **Alertes-Emplois**, un courriel gratuit envoyé jusqu'à deux fois par jour ✅.
-- Le site partage un fil XML de ses offres, mais seulement avec d'autres sites d'emploi qui en font la demande ✅ : ce n'est pas pour nous.
-
-### Grille de navigation (à remplir en atelier)
-
-- [ ] Faire une recherche « technicien » à « Moncton, NB » et copier l'URL obtenue
-- [ ] Noter le nom du paramètre ajouté par chaque filtre (tableau plus haut)
-- [ ] Vérifier comment passer à la page 2
-- [ ] Ouvrir « Afficher le code source » : les offres sont-elles dans le HTML ?
-- [ ] Avec **Inspecter**, confirmer la balise et la classe de chaque champ
-- [ ] Mettre à jour `SELECTEURS` dans `poc_guichetemplois.py` et lancer le script
+- `robots.txt` : `Crawl-delay: 5` → au moins **5 s** entre deux requêtes ✅
+- `User-Agent` honnête qui identifie le projet.
+- Alternative sans scraping : les **Alertes-Emplois** (courriel jusqu'à deux fois par jour) ✅.
 
 ---
 
-## Prochains sites à ajouter
+## 2. CareerBeacon
 
-EmploisNB · Offres d'emploi du GNB · Jobillico · Adzuna · BEC coop (U de M) · pages carrières d'employeurs du N.-B.
+- **URL :** https://www.careerbeacon.com (offres surtout dans les provinces de l'Atlantique)
+- **Résultat :** non utilisable pour la collecte automatique.
+
+### robots.txt (lu le 2026-11-16) ✅
+
+- Permis : recherche (`/fr/rechercher/…`) et fiches (`/en/job/…`, `/fr/emplois/…`).
+- Interdit : `/jobs/`, `/rss/`, `/feed/`, `/en/apply`, URL avec un filtre de salaire (`/*filter-salary_min=`)…
+
+### Test du POC (2026-11-16) ✅
+
+- `robots.txt` lu (code 200), mais la page de recherche répond **403 Forbidden**.
+- Protection identifiée : **Cloudflare** (anti-robot).
+- Décision : arrêt, **aucun contournement** (pas de faux navigateur).
+- Ses offres apparaissent en partie sur le Guichet-Emplois (« Source : CareerBeacon ») ✅.
+
+> **Leçon :** `robots.txt` dit ce qui est *permis*, mais le serveur peut quand même *refuser*. Un robot responsable respecte les deux.
+>
+> **Piège Python :** `urllib.robotparser` ne comprend pas les `*` dans les règles (ex. `/*filter-salary_min=`). Avec `read()`, il se présente comme « Python-urllib » ; si le serveur refuse, il conclut que tout est interdit.
+
+---
+
+## Prochains sites à explorer (Québec)
+
+Repris de l'[inventaire commun](../../../livrables/01-inventaire-des-sites/inventaire.md) :
+
+- Jobboom et Jobillico (JSON-LD `JobPosting`, après vérification de `robots.txt`)
+- Talent.com Canada
+- Adzuna Canada (API officielle gratuite)
+- Carrières Gouv. du Québec (stages de la fonction publique)
