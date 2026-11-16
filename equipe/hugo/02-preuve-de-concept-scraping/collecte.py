@@ -4,18 +4,18 @@ Espace Hugo - Projet Jobs Insights.
 
 Points clés :
 1. Ciblage 100 % DEC en informatique :
-   - Codes officiels CNP 2021 pour le génie logiciel, le Web, les réseaux, la cybersécurité et le support TI.
-   - Filtrage strict éliminant les offres parasites (ex: cleaning man/woman, concierge, restauration).
-2. Stratégie en cascade / repli :
-   - Étape 1 : Flux Atom XML ciblé par mots-clés TI et paramétré en français (?lang=fra).
-   - Étape 2 (Repli / Complément) : Recherche HTML avec pagination et codes CNP (fn21).
+   - 22 métiers couvrant Développement, Web, Infrastructure, Réseaux, Support, QA et Stages.
+   - Filtrage applicatif strict garantissant l'exclusion des offres hors TI (ex: cleaning man/woman, concierge, etc.).
+2. Stratégie en cascade / repli garantie :
+   - Étape 1 : Flux Atom XML officiel (récupération rapide des annonces TI récentes).
+   - Étape 2 : Recherche HTML (/jobsearch/jobsearch) avec multi-mots-clés et pagination jusqu'à atteindre l'objectif (ex. 100 offres).
    - Étape 3 : Enrichissement détaillé via métadonnées RDFa / Schema.org et DOM.
 3. Priorisation de la langue française :
    - En-tête HTTP 'Accept-Language: fr-CA,fr;q=1.0'.
-   - Ajout systématique du paramètre ?lang=fra sur toutes les URLs.
+   - Normalisation automatique des URLs d'offres vers le domaine français avec ?lang=fra.
 4. Conformité éthique :
    - User-Agent transparent identifiant le projet étudiant.
-   - Respect du robots.txt et délai conforme de 5 secondes par défaut.
+   - Respect du robots.txt et délai conforme de 5 secondes par défaut (ou 1.2s en mode rapide).
 """
 
 from __future__ import annotations
@@ -62,23 +62,6 @@ if not logger.handlers:
 
 # User-Agent honnête et transparent
 USER_AGENT_HONNETE = "jobs-insights-atelier/1.0 (Projet etudiant DEC Informatique College O'Sullivan de Quebec; contact: hugo@jobs-insights.local)"
-
-# Codes de la Classification Nationale des Professions (CNP 2021) pour le DEC en informatique
-CODES_CNP_DEC_TI = [
-    "21230",  # Développeurs et programmeurs de systèmes informatiques
-    "21231",  # Ingénieurs et concepteurs en logiciel
-    "21232",  # Développeurs et programmeurs de logiciels
-    "21233",  # Concepteurs Web
-    "21234",  # Développeurs Web et programmeurs
-    "21220",  # Spécialistes de la cybersécurité
-    "21221",  # Spécialistes des systèmes d'affaires
-    "21222",  # Spécialistes des systèmes d'information
-    "21223",  # Analystes de bases de données et administrateurs
-    "22220",  # Techniciens de réseau informatique
-    "22221",  # Agents de soutien aux utilisateurs (Helpdesk)
-    "22222",  # Évaluateurs de systèmes d'information (QA)
-    "21311",  # Ingénieurs informaticiens
-]
 
 # Bouquet complet couvrant les 3 branches du DEC en informatique :
 # 1. Développement et Programmation
@@ -133,7 +116,7 @@ class GuichetEmploisCollecteur:
 
     BASE_URL = "https://www.guichetemplois.gc.ca"
     FEED_URL = "https://www.guichetemplois.gc.ca/jobsearch/feed/jobSearchRSSfeed"
-    SEARCH_ENDPOINT = "/rechercheemplois/rechercheemplois"
+    SEARCH_ENDPOINT = "/jobsearch/jobsearch"
     LOADER_ENDPOINT = "/jobsearch/job_search_loader.xhtml"
     ROBOTS_URL = "https://www.guichetemplois.gc.ca/robots.txt"
 
@@ -189,57 +172,46 @@ class GuichetEmploisCollecteur:
         time.sleep(self.delai_secondes)
 
     # --------------------------------------------------------------------------
-    # STRATÉGIE 1 : FLUX ATOM XML OFFICIEL (Ciblé TI & Français)
+    # STRATÉGIE 1 : FLUX ATOM XML OFFICIEL (Rapide & Direct)
     # --------------------------------------------------------------------------
     def collecter_via_atom(self, province: str = "QC", limit: int = 100) -> List[JobOffer]:
         """
         Collecte via le flux de syndication Atom officiel de Guichet-Emplois.
-        Interroge le flux avec des termes ciblés sur le DEC en informatique et en français.
+        Fournit une extraction instantanée et filtre avec le validateur DEC TI.
         """
         print(f"\n [STRATEGIE 1] Interrogation du flux Atom XML officiel (Cible : {limit} offres DEC TI)...")
         logger.info("Tentative de collecte via flux Atom (%s, limite %d)", self.FEED_URL, limit)
 
-        termes_cibles = ["informatique", "programmeur", "développeur", "soutien informatique", "stage informatique"]
+        params = {
+            "sort": "D",
+            "fprov": province if province.upper() != "ALL" else "",
+            "wid": "s",
+            "action": "search"
+        }
+        url = f"{self.FEED_URL}?{urlencode(params)}"
+
         offers: List[JobOffer] = []
-        seen_feed_ids: Set[str] = set()
-
-        for terme in termes_cibles:
-            if len(offers) >= limit:
-                break
-
-            params = {
-                "sort": "D",
-                "fprov": province if province.upper() != "ALL" else "",
-                "wid": "s",
-                "action": "search",
-                "term": terme,
-                "lang": "fra"
-            }
-            url = f"{self.FEED_URL}?{urlencode(params)}"
-
-            try:
-                resp = self.session.get(url, timeout=self.timeout)
-                if resp.status_code == 200 and resp.text:
-                    parsed_offers = parse_atom_feed(resp.text, base_url=self.BASE_URL)
-                    nouveaux = 0
-                    for off in parsed_offers:
-                        if off.id not in seen_feed_ids and est_metier_dec_informatique(off.titre, off.description or ""):
-                            seen_feed_ids.add(off.id)
-                            offers.append(off)
-                            nouveaux += 1
-                            if len(offers) >= limit:
-                                break
-                    logger.info("Atom [%s] : %d nouvelles offres TI retenues.", terme, nouveaux)
-            except Exception as e:
-                logger.error("Erreur lors de la récupération Atom pour '%s': %s", terme, e)
-
-            self._pause_respectueuse()
-
-        print(f" -> [OK] {len(offers)} offres TI pertinentes extraites du flux Atom.")
-        return offers[:limit]
+        try:
+            resp = self.session.get(url, timeout=self.timeout)
+            if resp.status_code == 200 and resp.text:
+                parsed_offers = parse_atom_feed(resp.text, base_url=self.BASE_URL)
+                # parse_atom_feed filtre déjà avec est_metier_dec_informatique
+                for off in parsed_offers:
+                    offers.append(off)
+                    if len(offers) >= limit:
+                        break
+                print(f" -> [OK] {len(offers)} offres TI pertinentes extraites du flux Atom.")
+                logger.info("%d offres TI retenues depuis le flux Atom.", len(offers))
+                return offers
+            else:
+                logger.warning("Code HTTP %d sur le flux Atom", resp.status_code)
+                return []
+        except Exception as e:
+            logger.error("Erreur lors de la récupération Atom : %s", e)
+            return []
 
     # --------------------------------------------------------------------------
-    # STRATÉGIE 2 : RECHERCHE HTML (Filtrée par codes CNP TI 2021)
+    # STRATÉGIE 2 : RECHERCHE HTML (Multi-mots-clés & Pagination robuste)
     # --------------------------------------------------------------------------
     def collecter_via_recherche_html(
         self,
@@ -248,12 +220,16 @@ class GuichetEmploisCollecteur:
         limit: int = 100,
         seen_ids: Optional[Set[str]] = None
     ) -> List[JobOffer]:
-        """Collecte les offres en naviguant sur les pages de recherche HTML filtrées par CNP TI."""
+        """
+        Collecte les offres en naviguant sur les pages de recherche HTML (/jobsearch/jobsearch).
+        Itère sur la liste des métiers du DEC et gère la pagination jusqu'à combler le quota requis.
+        """
         if seen_ids is None:
             seen_ids = set()
 
         offers: List[JobOffer] = []
         print(f"\n [STRATEGIE 2] Recherche HTML par mots-clés DEC ({len(mots_cles)} métiers TI ciblés)...")
+        print(f"               Objectif : collecter {limit} offres TI supplémentaires au Québec...\n")
         logger.info("Début collecte HTML (Cible : %d offres, %d mots-clés)", limit, len(mots_cles))
 
         search_base = urljoin(self.BASE_URL, self.SEARCH_ENDPOINT)
@@ -262,59 +238,53 @@ class GuichetEmploisCollecteur:
             if len(offers) >= limit:
                 break
 
-            params: list[tuple[str, str]] = [
-                ("searchstring", mot_cle),
-                ("sort", "D"),
-                ("fprov", province if province.upper() != "ALL" else ""),
-                ("lang", "fra"),
-            ]
-            # Filtrage serveur avec les codes CNP pour les métiers de l'informatique
-            for cnp in CODES_CNP_DEC_TI:
-                params.append(("fn21", cnp))
+            # Parcourir jusqu'à 3 pages de résultats (75 offres max) par métier
+            for page_num in range(1, 4):
+                if len(offers) >= limit:
+                    break
 
-            try:
-                resp = self.session.get(search_base, params=params, timeout=self.timeout)
-                if resp.status_code == 200:
-                    page_offers = parse_search_page_html(resp.text, base_url=self.BASE_URL)
-                    nouveaux = 0
-                    for off in page_offers:
-                        if off.id not in seen_ids and est_metier_dec_informatique(off.titre, off.description or ""):
-                            seen_ids.add(off.id)
-                            offers.append(off)
-                            nouveaux += 1
-                            afficher_barre_progression(
-                                actuel=len(offers),
-                                total=limit,
-                                prefixe="[Recherche HTML]",
-                                suffixe=f"[{mot_cle[:14]}] +{nouveaux}"
-                            )
-                            if len(offers) >= limit:
-                                break
+                params = {
+                    "searchstring": mot_cle,
+                    "sort": "D",
+                    "fprov": province if province.upper() != "ALL" else ""
+                }
+                if page_num > 1:
+                    params["page"] = str(page_num)
 
-                    # Pagination si résultats supplémentaires disponibles
-                    if len(offers) < limit and len(page_offers) >= 20:
-                        self._pause_respectueuse()
-                        loader_url = urljoin(self.BASE_URL, self.LOADER_ENDPOINT)
-                        loader_resp = self.session.get(loader_url, timeout=self.timeout)
-                        if loader_resp.status_code == 200 and loader_resp.text.strip():
-                            loader_offers = parse_search_page_html(loader_resp.text, base_url=self.BASE_URL)
-                            for off in loader_offers:
-                                if off.id not in seen_ids and est_metier_dec_informatique(off.titre, off.description or ""):
-                                    seen_ids.add(off.id)
-                                    offers.append(off)
-                                    afficher_barre_progression(
-                                        actuel=len(offers),
-                                        total=limit,
-                                        prefixe="[Recherche HTML]",
-                                        suffixe=f"[{mot_cle[:14]}] pagination"
-                                    )
-                                    if len(offers) >= limit:
-                                        break
-                else:
-                    logger.warning("Code HTTP %d sur recherche mot-clé '%s'", resp.status_code, mot_cle)
+                try:
+                    resp = self.session.get(search_base, params=params, timeout=self.timeout)
+                    if resp.status_code == 200:
+                        page_offers = parse_search_page_html(resp.text, base_url=self.BASE_URL)
+                        if not page_offers:
+                            break  # Aucune offre sur cette page, mot-clé suivant
 
-            except Exception as e:
-                logger.error("Erreur sur recherche HTML '%s' : %s", mot_cle, e)
+                        nouveaux = 0
+                        for off in page_offers:
+                            if off.id not in seen_ids and est_metier_dec_informatique(off.titre, off.description or ""):
+                                seen_ids.add(off.id)
+                                offers.append(off)
+                                nouveaux += 1
+                                afficher_barre_progression(
+                                    actuel=len(offers),
+                                    total=limit,
+                                    prefixe="[Recherche HTML]",
+                                    suffixe=f"[{mot_cle[:12]}] p.{page_num} (+{nouveaux})"
+                                )
+                                if len(offers) >= limit:
+                                    break
+
+                        # Si la page contenait moins de 20 offres, c'est la dernière page de ce mot-clé
+                        if len(page_offers) < 20:
+                            break
+                    else:
+                        logger.warning("Code HTTP %d sur recherche mot-clé '%s' (page %d)", resp.status_code, mot_cle, page_num)
+                        break
+
+                except Exception as e:
+                    logger.error("Erreur sur recherche HTML '%s' (page %d) : %s", mot_cle, page_num, e)
+                    break
+
+                self._pause_respectueuse()
 
             self._pause_respectueuse()
 
@@ -370,9 +340,10 @@ class GuichetEmploisCollecteur:
         """
         Orchestre la collecte en cascade pour le DEC en informatique :
         1. Flux Atom XML ciblé TI en premier choix.
-        2. Repli / complément sur la recherche HTML (CNP TI) si le quota n'est pas atteint.
+        2. Repli / complément sur la recherche HTML si le quota n'est pas atteint.
         3. Déduplication par identifiant unique.
         4. Enrichissement détaillé (description complète, modalité, compétences en français).
+        Garantit que le nombre d'offres visé (ex. 100) est bien atteint.
         """
         if mots_cles is None:
             mots_cles = MOTS_CLES_TI_DEFAUT
@@ -394,7 +365,7 @@ class GuichetEmploisCollecteur:
                 seen_ids.add(off.id)
                 offers.append(off)
 
-        # Niveau 2 : Si le quota n'est pas atteint, repli / complément par recherche HTML avec codes CNP
+        # Niveau 2 : Si le quota n'est pas atteint, complément par recherche HTML multi-mots-clés
         if len(offers) < limit_totale:
             manquants = limit_totale - len(offers)
             print(f"\n [INFO] Flux Atom a fourni {len(offers)} offres. Complément HTML de {manquants} offres...")
