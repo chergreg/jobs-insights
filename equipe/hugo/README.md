@@ -1,149 +1,124 @@
-# Jobs Insights - Espace Hugo
+# Jobs Insights — Espace Hugo
 
-Projet académique visant à développer un **agrégateur intelligent d'offres d'emploi et de stages en informatique** (Québec et Canada), complété par un module d'assistance à la **personnalisation et bonification de CV** selon les compétences requises.
+Projet collaboratif visant à développer un **agrégateur intelligent d'offres d'emploi et de stages en informatique** (Québec et Canada), complété par un module d'assistance à la **personnalisation et bonification de CV** selon les compétences demandées.
 
-> 📌 **Note** : Ce document est un fichier évolutif ("living document"). Il est mis à jour au fil de l'avancement de la preuve de concept (POC) et des développements techniques.
+> 📌 **Cadre académique** : Cours `420-SV2-OQ` — DEC en Techniques de l'informatique au Collège O'Sullivan de Québec.
 
 ---
 
 ## 🎯 1. Objectifs du projet
 
 1. **Agrégation et filtrage ciblé** :
-   * **Domaine** : Informatique / Technologies de l'information (TI).
-   * **Niveau** : Stages (internships) et emplois juniors / début de carrière.
+   * **Domaine** : Technologies de l'information (TI) / Génie logiciel.
+   * **Niveau** : Stages (*internships*) et postes juniors / début de carrière.
    * **Périmètre géographique** : Québec (prioritaire) et ensemble du Canada.
-   * **Filtres multicritères** : Présentiel / Télétravail / Hybride, technologies requises, localisation, langue.
+   * **Filtres multicritères** : Télétravail / Hybride / Sur place, compétences techniques requises, salaire et employeur.
 
-2. **Aide à la bonification de CV** :
-   * Extraction des mots-clés et compétences techniques demandées par les offres retenues (langages, frameworks, outils, méthodologies).
-   * Recommandations d'ajustements du CV pour maximiser la correspondance (matching) avec l'offre ciblée.
+2. **Aide à la bonification de CV (Étape 4)** :
+   * Extraction précise des mots-clés et technologies demandées (langages, frameworks, outils, cloud, bases de données).
+   * Analyse de l'écart (*gap analysis*) entre le CV de l'étudiant et les exigences réelles du poste pour maximiser le matching.
 
-3. **Preuve de concept initiale (POC)** :
-   * Source prioritaire : **Emploi Canada / Guichet-Emplois** (données officielles fiables et structurées).
-   * Objectif technique : Collecter, normaliser et exporter les offres vers un format **JSON / JSONL** propre et réutilisable par le reste de l'équipe.
+3. **Preuve de concept robuste & pérenne (POC)** :
+   * Source principale : **Guichet-Emplois Canada** (données officielles du gouvernement fédéral).
+   * Architecture à haute résilience basée sur une **stratégie de collecte en cascade**.
 
 ---
 
-## 🏛️ 2. Architecture logicielle & Modularité
+## 🏛️ 2. Architecture logicielle & Stratégie en Cascade
 
-Afin de garantir un code robuste, maintenable et facilement intégrable avec les autres modules de l'équipe, la solution repose sur une séparation claire des responsabilités :
+Pour garantir un code professionnel, testable hors ligne et résilient aux changements de mise en page, la solution est découpée en modules spécialisés :
 
 ```
-[ Guichet-Emplois (RSS / Web) ]
-               │
-               ▼
-       1. EXTRACTEUR (Fetcher)        --> Gère les requêtes HTTP, flux RSS, pagination et résilience réseau
-               │
-               ▼
-       2. PARSEUR (Parser)            --> Extrait les champs bruts et nettoie le texte
-               │
-               ▼
-       3. MODÈLE (Data Model)         --> Valide les types et structure les données (Pydantic / Dataclass)
-               │
-               ▼
-       4. EXPORTATEUR (Storage)       --> Sauvegarde en JSON / JSONL standardisé
+┌─────────────────────────────────────────────────────────────┐
+│                 GUICHET-EMPLOIS CANADA                      │
+└─────────────────────────────────────────────────────────────┘
+                               │
+       ┌───────────────────────┴───────────────────────┐
+       ▼                                               ▼
+[ Stratégie 1 : Flux Atom XML ]            [ Stratégie 2 : Recherche HTML ]
+  - Officiel, ultra-rapide (1 req)           - Mots-clés ciblés TI (16 métiers)
+  - Codes CNP TI (21230, etc.)               - Complément de quota & pagination
+       │                                               │
+       └───────────────────────┬───────────────────────┘
+                               ▼
+               [ Normalisation & Déduplication ]
+                 - Identifiant unique `gc-...`
+                               ▼
+             [ Stratégie 3 : Enrichissement Fiches ]
+                 - 1. Balises Schema.org / RDFa
+                 - 2. Repli conteneurs DOM HTML
+                 - Extraction description & compétences strictes
+                               ▼
+                  [ Modèle Typé : JobOffer ]
+                               ▼
+               [ Export JSON Standardisé & Logs ]
 ```
 
-### Avantages de cette structure :
-* **Modulaire** : Si la structure HTML ou le flux RSS d'Emploi Canada change, seul le parseur est ajusté sans casser le reste du système.
-* **Intégrable** : N'importe quel membre de l'équipe pourra réutiliser la même classe de base ou le même modèle de données pour scraper d'autres plateformes (Adzuna, Jobillico, etc.).
+### Organisation des modules
+* **[`models.py`](02-preuve-de-concept-scraping/models.py)** : Modèle de données Pydantic `JobOffer` (typage strict, validation, horodatage ISO).
+* **[`parsers.py`](02-preuve-de-concept-scraping/parsers.py)** : Logique pure d'extraction (Flux Atom, HTML, RDFa, DOM, compétences strictes) **découplée de tout appel réseau**.
+* **[`collecte.py`](02-preuve-de-concept-scraping/collecte.py)** : Moteur HTTP avec `User-Agent` transparent, respect du `crawl-delay` (5s conforme robots.txt), et cascade de repli.
+* **[`main.py`](02-preuve-de-concept-scraping/main.py)** : Point d'entrée à double mode (CLI pour automatisation / Menu interactif pour double-clic sous Windows).
+* **[`test_scraper.py`](02-preuve-de-concept-scraping/test_scraper.py)** : Suite de **tests unitaires hors ligne** validant les parseurs sur fixtures locales.
+* **[`COMPTE_RENDU_LIVRABLE_2.md`](02-preuve-de-concept-scraping/COMPTE_RENDU_LIVRABLE_2.md)** : Rapport formel d'analyse critique requis pour le Livrable 2.
 
 ---
 
-## 📋 3. Schéma de données cible (Contrat JSON)
+## 🚀 3. Guide d'exécution
 
-Chaque offre extraite respecte la structure standard suivante :
+### 1. Prérequis & Installation des dépendances
+Le script ne modifie pas votre environnement silencieusement (pas d'auto-installation pip cachée). Installez simplement les paquets déclarés :
 
-```json
-{
-  "id": "gc-12345678",
-  "titre": "Stagiaire en développement logiciel",
-  "entreprise": "Entreprise Exemple Inc.",
-  "ville": "Montréal",
-  "province": "QC",
-  "pays": "Canada",
-  "type_poste": "Stage",
-  "modalite": "Hybride",
-  "salaire": {
-    "montant": 25.50,
-    "unite": "heure",
-    "devise": "CAD"
-  },
-  "description_texte": "Description complète du poste...",
-  "competences_cles": ["Python", "Git", "Docker", "SQL"],
-  "date_publication": "2026-11-10",
-  "url_source": "https://www.guichetemplois.gc.ca/...",
-  "source": "Emploi Canada"
-}
+```powershell
+cd 02-preuve-de-concept-scraping
+pip install -r requirements.txt
 ```
 
----
+### 2. Exécution des tests unitaires hors ligne
+Valide instantanément la logique d'extraction et l'élimination des faux positifs sans connexion Internet :
 
-## 📂 4. Organisation du répertoire de travail
-
-```text
-equipe/Hugo/
-├── main.py                 # Point d'entrée principal (lançable par double-clic ou commande)
-├── poc_emploi_canada.py    # Moteur de collecte multi-mots-clés, parsing et enrichissement
-├── models.py               # Définition des structures de données typées (Pydantic)
-├── README.md               # Documentation principale et suivi d'avancement
-├── sites.md                # Répertoire et comparatif des plateformes d'emploi
-├── requirements.txt        # Dépendances Python (requests, beautifulsoup4, pydantic)
-├── data/                   # Données collectées (offres_emploi_canada.json)
-└── logs/                   # Journalisation détaillée des requêtes et erreurs (collecte.log)
+```powershell
+python -m unittest test_scraper.py -v
 ```
 
----
+### 3. Mode Ligne de commande (Automatisable & Scriptable)
+Idéal pour les scripts automatisés ou l'intégration par l'équipe sans blocage :
 
-## 🚀 5. Feuille de route (Roadmap)
+```powershell
+# Collecte standard conforme (100 offres par défaut, délai 5s)
+python main.py --limit 100 --province QC
 
-- [x] **Étape 1 : Veille & exploration des sources**
-  - [x] Recherche et recensement des plateformes d'emploi (Canada & International).
-  - [x] Évaluation des méthodes d'accès (API, RSS, Scraping) consignée dans `sites.md`.
-- [x] **Étape 2 : Cadrage & Socle technique du POC**
-  - [x] Création du `README.md` et définition du contrat de données.
-  - [x] Configuration de l'environnement Python (`requirements.txt`).
-  - [x] Création du modèle de données typé Pydantic (`models.py`).
-- [x] **Étape 3 : Implémentation du collecteur Emploi Canada**
-  - [x] Développer la recherche ciblée TI et la pagination par session (`poc_emploi_canada.py`).
-  - [x] Bouquet étendu de 16 métiers informatiques (Programmeurs, Analystes, Jeux vidéo, Web, etc.).
-  - [x] Barre de progression dynamique en temps réel dans le terminal.
-  - [x] Système de journalisation et traçage des erreurs de plantage (`logs/collecte.log`).
-  - [x] Implémenter l'enrichissement détaillé (modalité télétravail/hybride, compétences TI).
-  - [x] Exporter les résultats au format JSON propre dans `data/`.
-- [ ] **Étape 4 : Bonification de CV & Matching**
-  - [ ] Définir la logique d'extraction de compétences à partir des descriptions de postes.
-  - [ ] Implémenter un premier mécanisme de comparaison offre vs compétences du CV.
-- [ ] **Étape 5 : Intégration globale**
-  - [ ] Harmonisation avec les composants développés par les autres coéquipiers.
+# Collecte rapide de développement (délai accéléré à 1.2s)
+python main.py --limit 20 --fast
 
----
-
-## 🛠️ 6. Guide d'utilisation du POC
-
-### Méthode 1 : Lancement par double-clic sur le fichier Python
-Faites simplement un double-clic sur :
-👉 **`main.py`** (ou sur **`poc_emploi_canada.py`**)
-
-Le script s'exécute automatiquement :
-1. **Auto-installation** des dépendances requises (`requests`, `beautifulsoup4`, `pydantic`) avec affichage du statut en direct.
-2. **Test de connectivité** préalable avec Guichet-Emplois pour vérifier que le site est bien **EN LIGNE (Live)**.
-3. **Menu interactif** :
-   * Saisissez le nombre d'offres souhaité (défaut : `100`).
-   * Choisissez le mode : **Bouquet de 16 métiers informatiques** (recommandé pour un max d'offres ciblées) ou mot-clé unique.
-4. **Barre de progression en direct** :
-   * `[Recherche] [==============-------] 70.0% (70/100) [développeur jeux vidéo] +5`
-   * `[Details  ] [=====================] 100.0% (100/100) Analyste-programmeur (Hybride)`
-5. **Rapport de synthèse et sauvegarde** dans `data/offres_emploi_canada.json`.
-6. **Journalisation complète** : Toutes les requêtes, erreurs et éventuels plantages sont enregistrés dans `logs/collecte.log`.
-7. **Maintien de la fenêtre ouverte** : La console reste ouverte avec le message `"Appuyez sur Entrée pour quitter..."`.
-
----
-
-### Méthode 2 : Lancement depuis le terminal
-```bash
-cd C:\Users\hugoc\ProjetGit\jobs-insights\equipe\Hugo
-python main.py
+# Recherche sur un mot-clé précis
+python main.py --keyword "stage informatique" --limit 50
 ```
 
+### 4. Mode Interactif (Lancement par double-clic sous Windows)
+Faites simplement un double-clic sur **`main.py`** dans l'Explorateur Windows :
+1. Choisissez la vitesse : Mode Conforme (5s) ou Rapide (1.2s).
+2. Choisissez le volume souhaité (valeur par défaut : **100**).
+3. Choisissez le mode : Bouquet de 16 métiers TI ou mot-clé spécifique.
+4. Visualisez la **barre de progression en temps réel**.
+5. Consultez le rapport final et appuyez sur Entrée pour fermer la fenêtre.
 
+---
+
+## 🛡️ 4. Conformité, Éthique & Bonnes Pratiques
+
+* **User-Agent transparent** : Identifie clairement la provenance académique du projet (`jobs-insights-atelier/1.0`).
+* **Respect du `crawl-delay`** : Respecte les 5 secondes imposées par le `robots.txt` officiel de Guichet-Emplois.
+* **Résolution des faux positifs** : Les termes comme `"Vue.js"` ou `"Langage C"` sont vérifiés avec des expressions régulières contextuelles pour ne pas confondre le français courant (*"en vue de"*, *"c'est"*) avec des technologies.
+* **Champ description garanti** : La description complète de l'offre est systématiquement extraite via balises sémantiques ou repli DOM.
+
+---
+
+## 📋 5. Feuille de route (Roadmap)
+
+- [x] **Étape 1 : Veille & exploration des sources** (`01-inventaire-des-sites/sites.md`).
+- [x] **Étape 2 : Cadrage & Contrat de données** (`models.py`, `JobOffer`).
+- [x] **Étape 3 : Collecteur Guichet-Emplois multi-stratégies** (`collecte.py`, `parsers.py`).
+- [x] **Étape 3b : Tests unitaires hors ligne et conformité éthique** (`test_scraper.py`, robots.txt, délais).
+- [ ] **Étape 4 : Bonification de CV & Matching** (Analyse des compétences requises vs CV).
+- [ ] **Étape 5 : Intégration globale** (Convergence avec les sources des coéquipiers : Adzuna, Jobboom, Remotive).
