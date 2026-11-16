@@ -1,5 +1,5 @@
 """
-parsers.py - Logique pure de parsing et de normalisation pour Guichet-Emplois.
+parsers.py - Logique pure de parsing, filtrage DEC et normalisation pour Guichet-Emplois.
 Ce module est totalement découplé du réseau et peut être testé 100 % hors ligne.
 
 Fonctionnalités :
@@ -8,8 +8,11 @@ Fonctionnalités :
 3. Extraction détaillée par cascade :
    - Étape 1 : Métadonnées sémantiques RDFa / Schema.org (JobPosting)
    - Étape 2 : Repli DOM HTML (sections description, modalité et compétences)
-4. Détection stricte et sans faux positifs des compétences techniques (exclut 'C' isolé et 'Vue').
-5. Classification fine des stages et modalités.
+4. Filtrage strict du périmètre DEC en informatique :
+   - Couvre : Programmation, Web, Logiciel, Réseaux informatiques, Support TI, QA, DevOps, Cybersécurité et Stages.
+   - Élimine : Métiers non-TI (cleaning man/woman, concierge, entretien, restauration, réseau électrique/lignes, etc.).
+5. Détection stricte et sans faux positifs des compétences techniques (exclut 'C' isolé et 'Vue').
+6. Priorisation des URLs et contenus en langue française (?lang=fra).
 """
 
 from __future__ import annotations
@@ -23,8 +26,101 @@ from bs4 import BeautifulSoup
 
 from models import JobOffer
 
+# ==============================================================================
+# 1. MOTIFS D'EXCLUSION NON-TI & INCLUSION DEC EN INFORMATIQUE
+# ==============================================================================
+
+# Métiers hors TI à rejeter systématiquement (pour éliminer 'cleaning man/woman', 'réseau électrique', etc.)
+MOTIFS_NON_TI = [
+    # Métiers du nettoyage et conciergerie
+    re.compile(r"\bclean(?:ing|er|ers)?\b", re.IGNORECASE),
+    re.compile(r"\bnettoy(?:age|eur|euse|eurs|euses)\b", re.IGNORECASE),
+    re.compile(r"\bentretien\s+m[eé]nag(?:er|ère)\b", re.IGNORECASE),
+    re.compile(r"\bconcierge\b", re.IGNORECASE),
+    re.compile(r"\bpr[eé]pos[eé](?:e)?\s+aux\s+b[eé]n[eé]ficiaires\b", re.IGNORECASE),
+    re.compile(r"\bpr[eé]pos[eé](?:e)?\s+[aà]\s+l['’]entretien\b", re.IGNORECASE),
+    
+    # Métiers électriques, lignes, haute tension et réseaux physiques non-TI
+    re.compile(r"\br[eé]seau(?:x)?\s+(?:[eé]lectrique|routier|ferroviaire|aqueduc|gaz|distribution\s+d['’][eé]lectricit[eé])\b", re.IGNORECASE),
+    re.compile(r"\bmonteu(?:r|se)\s+(?:de\s+)?lignes\b", re.IGNORECASE),
+    re.compile(r"\b[eé]lectricien(?:ne)?\b", re.IGNORECASE),
+    re.compile(r"\blignes?\s+[eé]lectriques?\b|\bhaute\s+tension\b", re.IGNORECASE),
+    re.compile(r"\bc[aâ]bl(?:eur|euse)\s+(?:[eé]lectrique|haute\s+tension)\b", re.IGNORECASE),
+    re.compile(r"\btuyauteur|plombier|chauffagiste\b", re.IGNORECASE),
+    
+    # Restauration, manutention et vente
+    re.compile(r"\bcuisin(?:e|ier|ière|iers|ières)\b", re.IGNORECASE),
+    re.compile(r"\bserveu(?:r|se|rs|ses)\b", re.IGNORECASE),
+    re.compile(r"\bplongeu(?:r|se|rs|ses)\b", re.IGNORECASE),
+    re.compile(r"\bcommis\b(?!\s+(?:ti|informatique|donn[eé]es))", re.IGNORECASE),
+    re.compile(r"\bchauffeu(?:r|se|rs|ses)\b", re.IGNORECASE),
+    re.compile(r"\bmanutentionn?aire\b", re.IGNORECASE),
+    re.compile(r"\bcaissi(?:er|ère|ers|ères)\b", re.IGNORECASE),
+    re.compile(r"\bgardien(?:ne)?\b", re.IGNORECASE),
+    re.compile(r"\bvendeu(?:r|se|rs|ses)\b(?!\s+(?:informatique|logiciel))", re.IGNORECASE),
+    re.compile(r"\bcharpentier|menuisier|m[eé]canicien|soudeur\b", re.IGNORECASE),
+]
+
+# Motifs positifs ciblés sur l'ensemble des branches du DEC en informatique :
+# 1. Développement d'applications (Web, Logiciel, Mobile, Jeux vidéo, DevOps)
+# 2. Infrastructure, Réseaux informatiques et Sécurité (Technicien, Sysadmin, Support TI, Cybersécurité)
+# 3. Données et Assurance Qualité (Bases de données, QA/Test)
+# 4. Stages en informatique
+MOTIFS_DEC_INFORMATIQUE = [
+    # Programmation & Développement logiciel / Web
+    re.compile(r"\bprogrammeu(?:r|se|rs|ses)?\b", re.IGNORECASE),
+    re.compile(r"\bprogrammation\b", re.IGNORECASE),
+    re.compile(r"\bd[eé]veloppeu(?:r|se|rs|ses)?\b", re.IGNORECASE),
+    re.compile(r"\bd[eé]veloppement\b", re.IGNORECASE),
+    re.compile(r"\bprogrammer(?:s)?\b", re.IGNORECASE),
+    re.compile(r"\bdeveloper(?:s)?\b", re.IGNORECASE),
+    re.compile(r"\bsoftware\b", re.IGNORECASE),
+    re.compile(r"\blogiciel(?:s)?\b", re.IGNORECASE),
+    re.compile(r"\bweb\b", re.IGNORECASE),
+    re.compile(r"\bfull[\s-]?stack\b", re.IGNORECASE),
+    re.compile(r"\bfront[\s-]?end\b", re.IGNORECASE),
+    re.compile(r"\bback[\s-]?end\b", re.IGNORECASE),
+    re.compile(r"\bmobile\b", re.IGNORECASE),
+    re.compile(r"\bjeux?\s+vid[eé]o\b|\bvideo\s+games?\b", re.IGNORECASE),
+    re.compile(r"\bgame(?:play)?\b", re.IGNORECASE),
+    re.compile(r"\bdevops\b", re.IGNORECASE),
+    re.compile(r"\bcloud\b|\binfonuagique\b", re.IGNORECASE),
+    re.compile(r"\barchitecte\s+(?:logiciel|syst[eè]me|cloud|solutions?|ti)\b", re.IGNORECASE),
+    re.compile(r"\bing[eé]nieu?r(?:e)?\s+(?:logiciel|informati(?:que|cien)|syst[eè]me|devops)\b", re.IGNORECASE),
+    
+    # Infrastructure, Réseaux informatiques, Systèmes, Support TI et Cybersécurité
+    # Note : Le mot 'réseau' doit être qualifié ou rattaché à un métier TI pour éviter les réseaux électriques/routiers
+    re.compile(r"\br[eé]seau(?:x)?\s+(?:informatique(?:s)?|ti|ip|donn[eé]es|t[eé]l[eé]com|local|sans[\s-]fil|wifi|lan|wan)\b", re.IGNORECASE),
+    re.compile(r"\b(?:technicien(?:ne)?|administrat(?:eur|rice)|sp[eé]cialiste|analyste|architecte|ing[eé]nieur|gestionnaire|soutien)\s+(?:de\s+|du\s+|en\s+|des\s+)?r[eé]seau(?:x)?\b", re.IGNORECASE),
+    re.compile(r"\bs[eé]curit[eé]\s+des\s+r[eé]seau(?:x)?\b", re.IGNORECASE),
+    re.compile(r"\bnetwork\s+(?:administrator|engineer|technician|specialist|analyst|architect|support)\b", re.IGNORECASE),
+    re.compile(r"\bsyst[eè]me(?:s)?\s+informatique(?:s)?\b", re.IGNORECASE),
+    re.compile(r"\bsysadmin\b|\badministrat(?:eur|rice)\s+syst[eè]me\b", re.IGNORECASE),
+    re.compile(r"\bsupport\s+informatique\b|\bit\s+support\b", re.IGNORECASE),
+    re.compile(r"\bsoutien\s+technique\b|\btech\s+support\b", re.IGNORECASE),
+    re.compile(r"\bhelpdesk\b|\bhelp\s+desk\b", re.IGNORECASE),
+    re.compile(r"\btechnicien(?:ne)?\s+(?:en\s+)?(?:informatique|r[eé]seau|ti|syst[eè]me|soutien)\b", re.IGNORECASE),
+    re.compile(r"\bagent(?:e)?\s+de\s+soutien\b", re.IGNORECASE),
+    re.compile(r"\bcybers[eé]curit[eé]\b|\bcybersecurity\b|\bs[eé]curit[eé]\s+informatique\b", re.IGNORECASE),
+    re.compile(r"\bbases?\s+de\s+donn[eé]es\b|\bdatabase\b|\bdba\b", re.IGNORECASE),
+    re.compile(r"\banalyste\s+(?:ti|informatique|programmeur|syst[eè]me|donn[eé]es|affaires\s+ti|fonctionnel\s+ti)\b", re.IGNORECASE),
+    
+    # Données, IA et Big Data
+    re.compile(r"\bdata\s+(?:engineer|analyst|scientist)\b|\bing[eé]nieur\s+donn[eé]es\b", re.IGNORECASE),
+    re.compile(r"\bintelligence\s+artificielle\b|\bia\b|\bai\b", re.IGNORECASE),
+    
+    # Assurance Qualité (QA) et Test logiciel
+    re.compile(r"\bassurance\s+qualit[eé]\b|\bqa\b|\btesteu(?:r|se)\s+logiciel\b|\bqa\s+tester\b", re.IGNORECASE),
+    re.compile(r"\b[eé]valuateu(?:r|se)\s+de\s+syst[eè]mes\b", re.IGNORECASE),
+    
+    # Stages en informatique
+    re.compile(r"\b(?:stage|stagiaire|intern|internship|co[\s-]?op)\s+(?:en\s+|de\s+|d['’]\s*)?(?:informatique|d[eé]veloppement|prog(?:rammation)?|web|ti|logiciel|qa|r[eé]seau)\b", re.IGNORECASE),
+    
+    # Termes généraux TI
+    re.compile(r"\binformatique\b|\btechnologies?\s+de\s+l['’]information\b|\bit\b", re.IGNORECASE),
+]
+
 # Dictionnaire de motifs stricts pour compétences TI (sans faux positifs français)
-# Note: Pour C++ et C#, le symbole '#' et '+' n'étant pas dans \w, on utilise (?=[^\w]|$).
 TECH_PATTERNS = [
     ("Python", re.compile(r"\bpython\b", re.IGNORECASE)),
     ("Java", re.compile(r"\bjava\b(?!script)", re.IGNORECASE)),
@@ -63,6 +159,106 @@ STAGE_PATTERNS = re.compile(
     re.IGNORECASE
 )
 
+# ==============================================================================
+# 1.B CODES CNP 2021 DU DOMAINE DEC EN INFORMATIQUE
+# ==============================================================================
+CODES_CNP_DEC_TI = {
+    # 2123 - Développement de logiciels et Web
+    "21230": "Informaticiens/informaticiennes et concepteurs/conceptrices de logiciels",
+    "21231": "Ingénieurs/ingénieures de logiciels",
+    "21232": "Développeurs/développeuses de logiciels et programmeurs/programmeuses",
+    "21233": "Concepteurs/conceptrices Web",
+    "21234": "Développeurs/développeuses Web",
+    # 2122 - Cybersécurité, TI, Données et Assurance Qualité
+    "21220": "Spécialistes de la cybersécurité",
+    "21221": "Spécialistes des systèmes d'information",
+    "21222": "Spécialistes en assurance de la qualité des systèmes d'information",
+    "21223": "Analystes et administrateurs/administratrices de bases de données",
+    # 2121 & 2131 - Données et Ingénierie
+    "21211": "Scientifiques des données",
+    "21311": "Ingénieurs/ingénieures en informatique",
+    # 2222 - Réseaux, Soutien technique et Évaluation (Helpdesk / Tech support)
+    "22220": "Techniciens/techniciennes de réseau informatique",
+    "22221": "Agents/agentes de soutien aux utilisateurs",
+    "22222": "Évaluateurs/évaluatrices de systèmes informatiques",
+}
+
+
+def extraire_code_cnp(source_html_ou_texte: str | BeautifulSoup) -> Optional[str]:
+    """
+    Extrait le code officiel CNP (Classification Nationale des Professions, 4 ou 5 chiffres).
+    Exemples repérés sur Guichet-Emplois :
+      - 'CNP 21234'
+      - 'NOC 21234'
+      - Balise <span class="...noc...">CNP 21234</span>
+      - Balise sémantique occupationalCategory
+    """
+    if not source_html_ou_texte:
+        return None
+
+    if isinstance(source_html_ou_texte, BeautifulSoup):
+        soup = source_html_ou_texte
+    elif "<" in str(source_html_ou_texte) and ">" in str(source_html_ou_texte):
+        soup = BeautifulSoup(str(source_html_ou_texte), "html.parser")
+    else:
+        soup = None
+
+    if soup:
+        # 1. Vérification dans les balises sémantiques (occupationalCategory)
+        for tag in soup.find_all(attrs={"property": re.compile(r"occupationalCategory", re.I)}):
+            val = tag.get("content") or tag.get_text()
+            m = re.search(r"\b(\d{4,5})\b", val)
+            if m:
+                return m.group(1)
+
+        # 2. Vérification dans les conteneurs du marché du travail (LMI / Labour Market Information)
+        lmi = soup.find(attrs={"id": re.compile(r"job-market|market-info", re.I)}) or \
+              soup.find(attrs={"class": re.compile(r"job-market|market-info|noc-code|cnp-code", re.I)})
+        if lmi:
+            m = re.search(r"\b(?:CNP|NOC)\s*:?\s*(\d{4,5})\b", lmi.get_text(" ", strip=True), re.I)
+            if m:
+                return m.group(1)
+
+        texte_global = soup.get_text(" ", strip=True)
+    else:
+        texte_global = str(source_html_ou_texte)
+
+    # 3. Recherche textuelle globale
+    m = re.search(r"\b(?:CNP|NOC)\s*:?\s*(\d{4,5})\b", texte_global, re.I)
+    if m:
+        return m.group(1)
+
+    return None
+
+
+def est_cnp_dec_informatique(code_cnp: Optional[str]) -> Optional[bool]:
+    """
+    Vérifie si un code CNP correspond aux métiers du DEC en informatique :
+    - Retourne True si le CNP fait partie des professions TI (212xx, 222xx, 21311, etc.).
+    - Retourne False si le CNP est hors TI (ex: 72203 monteurs de lignes, 65310 concierges, etc.).
+    - Retourne None si aucun code CNP n'est fourni.
+    """
+    if not code_cnp:
+        return None
+    code_str = re.sub(r"[^\d]", "", str(code_cnp))
+    if not code_str:
+        return None
+
+    # Code officiel DEC TI exact
+    if code_str in CODES_CNP_DEC_TI:
+        return True
+
+    # Familles CNP 2021 TI :
+    # 212xx : Spécialistes des technologies de l'information
+    # 222xx : Personnel technique des technologies de l'information
+    # 21311 : Ingénieurs en informatique
+    if re.match(r"^(?:212\d{2}|222\d{2}|21311)$", code_str):
+        return True
+
+    # Tous les autres codes CNP (ex: 72203, 65xxx, 7xxxx, etc.) ne sont PAS du DEC TI
+    return False
+
+
 
 def clean_text(raw_html: str) -> str:
     """Nettoie le balisage HTML et normalise les espaces."""
@@ -71,6 +267,91 @@ def clean_text(raw_html: str) -> str:
     txt = re.sub(r"<[^>]+>", " ", str(raw_html))
     txt = html.unescape(txt)
     return re.sub(r"\s+", " ", txt).strip()
+
+
+def extraire_identifiant_propre(raw_id: str, url_source: str = "") -> str:
+    """
+    Extrait un identifiant normalisé et propre au format gc-XXXXXX.
+    Élimine les URLs complètes comme 'gc-https://...'.
+    """
+    # 1. Chercher un numéro d'offre officiel (généralement 6 à 9 chiffres)
+    source_texte = f"{raw_id} {url_source}"
+    m = re.search(r"/(?:jobposting|offredemploi|job)/(\d+)", source_texte)
+    if m:
+        return f"gc-{m.group(1)}"
+
+    # 2. Chercher id=XXXXX dans les query params
+    m_param = re.search(r"[?&]id=(\d+)", source_texte)
+    if m_param:
+        return f"gc-{m_param.group(1)}"
+
+    # 3. Repli : nettoyer la chaîne brute
+    clean = raw_id.replace("article-", "").replace("gc-", "").strip()
+    clean = clean.split("/")[-1].split("?")[0]
+    return f"gc-{clean}" if clean else "gc-inconnu"
+
+
+def est_metier_dec_informatique(titre: str, texte_complementaire: str = "", code_cnp: Optional[str] = None) -> bool:
+    """
+    Vérifie si une offre d'emploi correspond au domaine du DEC en informatique :
+    - Programmation / Développement (Web, Logiciel, Mobile, Jeux vidéo, DevOps)
+    - Infrastructure, Réseaux et Sécurité (Technicien, Sysadmin, Support TI, Cyber)
+    - Données et Assurance Qualité (Bases de données, QA)
+    - Stages informatiques
+
+    Arbitrage prioritaire par code CNP :
+    - Si un CNP TI officiel est reconnu (ex: 21234, 21230, 22220) => confirmation directe (True).
+    - Si un CNP hors TI est reconnu (ex: 72203 monteurs de lignes) => rejet immédiat (False).
+    - Sinon, application des filtres de garde d'exclusions et d'inclusions textuelles.
+    """
+    # 0. Arbitrage direct et prioritaire par code CNP officiel s'il est spécifié
+    if code_cnp:
+        validation_cnp = est_cnp_dec_informatique(code_cnp)
+        if validation_cnp is False:
+            return False
+        if validation_cnp is True:
+            return True
+
+    titre_propre = (titre or "").strip()
+    if not titre_propre:
+        return False
+
+    texte_global = f"{titre_propre} {texte_complementaire}".lower()
+
+    # Si le texte contient explicitement une mention de code CNP (ex: "CNP 72203")
+    cnp_dans_texte = extraire_code_cnp(texte_global)
+    if cnp_dans_texte:
+        val_texte = est_cnp_dec_informatique(cnp_dans_texte)
+        if val_texte is False:
+            return False
+        if val_texte is True:
+            return True
+
+    # 1. Vérification des exclusions prioritaires (métiers non-TI, réseau électrique, etc.)
+    for pattern in MOTIFS_NON_TI:
+        if pattern.search(titre_propre) or pattern.search(texte_global):
+            # Exception : si le titre contient explicitement un terme logiciel/informatique fort
+            mots_sauvegarde = ["informatique", "logiciel", "software", "programmeur", "développeur", "developer"]
+            if not any(w in titre_propre.lower() for w in mots_sauvegarde):
+                return False
+
+    # 2. Vérification de correspondance avec le domaine TI
+    for pattern in MOTIFS_DEC_INFORMATIQUE:
+        if pattern.search(titre_propre):
+            return True
+
+    # 3. Si le titre est un stage générique (ex: "Stagiaire"), vérifier le texte complémentaire
+    if any(k in titre_propre.lower() for k in ["stage", "stagiaire", "intern", "étudiant"]):
+        for pattern in MOTIFS_DEC_INFORMATIQUE:
+            if pattern.search(texte_global):
+                return True
+
+    # 4. Vérifier si des compétences TI majeures sont mentionnées dans le titre
+    for tech_name, pat in TECH_PATTERNS:
+        if pat.search(titre_propre):
+            return True
+
+    return False
 
 
 def extract_tech_skills(text: str) -> List[str]:
@@ -97,8 +378,20 @@ def detect_stage(title: str, text: str = "") -> str:
     return "Temps plein"
 
 
+def normaliser_url_francaise(url: str, base_url: str = "https://www.guichetemplois.gc.ca") -> str:
+    """Normalise l'URL pour pointer vers le domaine français avec le paramètre lang=fra."""
+    if not url:
+        return ""
+    full_url = urljoin(base_url, url)
+    full_url = full_url.replace("jobbank.gc.ca", "guichetemplois.gc.ca")
+    if "lang=fra" not in full_url:
+        separateur = "&" if "?" in full_url else "?"
+        full_url = f"{full_url}{separateur}lang=fra"
+    return full_url
+
+
 # ==============================================================================
-# 1. PARSEUR FLUX ATOM XML OFFICIEL (Rapide, structuré, résilient)
+# 2. PARSEUR FLUX ATOM XML OFFICIEL (Rapide, structuré, résilient)
 # ==============================================================================
 def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guichetemplois.gc.ca") -> List[JobOffer]:
     """
@@ -124,17 +417,15 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
         titre = title_el.text.strip() if title_el is not None and title_el.text else "Titre non spécifié"
 
         link_el = entry.find(f"{atom_ns}link")
-        url_source = link_el.attrib.get("href", "") if link_el is not None else ""
-        if url_source and not url_source.startswith("http"):
-            url_source = urljoin(base_url, url_source)
+        raw_url = link_el.attrib.get("href", "") if link_el is not None else ""
+        url_source = normaliser_url_francaise(raw_url, base_url=base_url)
 
         updated_el = entry.find(f"{atom_ns}updated")
         date_pub = updated_el.text.strip() if updated_el is not None and updated_el.text else None
 
         id_el = entry.find(f"{atom_ns}id")
-        raw_id = id_el.text.strip() if id_el is not None and id_el.text else url_source.split("/")[-1].split("?")[0]
-        clean_id = raw_id.replace("article-", "").replace("gc-", "")
-        job_id = f"gc-{clean_id}"
+        raw_id = id_el.text.strip() if id_el is not None and id_el.text else ""
+        job_id = extraire_identifiant_propre(raw_id, url_source)
 
         # Extraction des métadonnées contenues dans le HTML du résumé
         summary_el = entry.find(f"{atom_ns}summary")
@@ -146,12 +437,10 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
         salaire = None
 
         if summary_html:
-            # Recherche de l'employeur
             emp_m = re.search(r"<strong>(?:Employer|Employeur)\s*:?</strong>\s*([^<]+)", summary_html, re.I)
             if emp_m:
                 entreprise = emp_m.group(1).strip()
 
-            # Recherche du lieu
             loc_m = re.search(r"<strong>(?:Location|Emplacement)\s*:?</strong>\s*([^<]+)", summary_html, re.I)
             if loc_m:
                 lieu = loc_m.group(1).strip()
@@ -160,10 +449,16 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
                         province = prov
                         break
 
-            # Recherche du salaire
             sal_m = re.search(r"<strong>(?:Salary|Salaire)\s*:?</strong>\s*([^<]+)", summary_html, re.I)
             if sal_m:
                 salaire = sal_m.group(1).strip()
+
+        # Extraction du code CNP si mentionné dans le résumé
+        cnp_code = extraire_code_cnp(summary_html)
+
+        # Filtrage strict DEC en informatique (arbitré par CNP si disponible)
+        if not est_metier_dec_informatique(titre, summary_html, code_cnp=cnp_code):
+            continue
 
         type_poste = detect_stage(titre, summary_html)
         description_initiale = clean_text(summary_html) if summary_html else None
@@ -176,6 +471,7 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
             province=province,
             pays="Canada",
             salaire=salaire,
+            cnp=cnp_code,
             date_publication=date_pub,
             type_poste=type_poste,
             modalite="Non spécifié",
@@ -192,7 +488,7 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
 
 
 # ==============================================================================
-# 2. PARSEUR DE RECHERCHE HTML (Résultats de recherche par mot-clé)
+# 3. PARSEUR DE RECHERCHE HTML (Résultats de recherche par mot-clé)
 # ==============================================================================
 def parse_search_page_html(html_str: str, base_url: str = "https://www.guichetemplois.gc.ca") -> List[JobOffer]:
     """Parse les cartes <article> sur les pages de résultats HTML de Guichet-Emplois."""
@@ -208,14 +504,20 @@ def parse_search_page_html(html_str: str, base_url: str = "https://www.guichetem
 
             raw_href = link_tag["href"]
             clean_href = raw_href.split(";")[0]
-            full_url = urljoin(base_url, clean_href)
+            full_url = normaliser_url_francaise(clean_href, base_url=base_url)
 
             raw_id = article.get("id", "")
-            base_ident = raw_id.replace("article-", "").replace("gc-", "") if raw_id else clean_href.split("/")[-1]
-            job_id = f"gc-{base_ident}"
+            job_id = extraire_identifiant_propre(raw_id, full_url)
 
             title_tag = article.find("span", class_="noctitle")
             titre = title_tag.get_text(strip=True) if title_tag else "Titre non spécifié"
+
+            # Extraction du code CNP si présent dans les attributs de la carte
+            cnp_code = extraire_code_cnp(article)
+
+            # Filtrage strict DEC en informatique dès les cartes de recherche
+            if not est_metier_dec_informatique(titre, code_cnp=cnp_code):
+                continue
 
             business_tag = article.find("li", class_="business")
             entreprise = business_tag.get_text(strip=True) if business_tag else "Non spécifié"
@@ -256,6 +558,7 @@ def parse_search_page_html(html_str: str, base_url: str = "https://www.guichetem
                 province=province,
                 pays="Canada",
                 salaire=salaire,
+                cnp=cnp_code,
                 date_publication=date_pub,
                 type_poste=type_poste,
                 modalite="Non spécifié",
@@ -274,7 +577,7 @@ def parse_search_page_html(html_str: str, base_url: str = "https://www.guichetem
 
 
 # ==============================================================================
-# 3. ENRICHISSEMENT DÉTAILLÉ EN CASCADE (RDFa / Schema.org -> DOM Fallback)
+# 4. ENRICHISSEMENT DÉTAILLÉ EN CASCADE (RDFa / Schema.org -> DOM Fallback)
 # ==============================================================================
 def enrich_offer_detail(offer: JobOffer, detail_html: str) -> JobOffer:
     """
@@ -290,6 +593,11 @@ def enrich_offer_detail(offer: JobOffer, detail_html: str) -> JobOffer:
     soup = BeautifulSoup(detail_html, "html.parser")
     description_trouvee: Optional[str] = None
     section_texte_exigences: List[str] = []
+
+    # 0. Extraction du code CNP officiel de la fiche détaillée
+    cnp_fiche = extraire_code_cnp(soup)
+    if cnp_fiche:
+        offer.cnp = cnp_fiche
 
     # 1. Analyse du bandeau résumé (Modalité et Type de poste)
     brief = soup.find("ul", class_="job-posting-brief")
