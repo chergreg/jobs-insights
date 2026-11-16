@@ -2,6 +2,9 @@
 
 Ce répertoire constitue l'espace de référence de la démonstration du **Livrable 3** (*Reprendre et améliorer une preuve de concept*) pour le projet **`jobs-insights`**.
 
+> 📄 **Note de synthèse officielle :** Consultez [`COMPTE_RENDU.md`](COMPTE_RENDU.md) pour le compte rendu complet de démonstration (analyse comparative, justifications du Top 3, traçabilité des contributions étudiantes et métriques avant/après).  
+> 🗺️ **Plan directeur de référence :** Consultez [`plan.md`](plan.md) pour l'historique complet des 6 lots de réalisation (100 % validés).
+
 ---
 
 ## 1. Vue d'ensemble de l'architecture

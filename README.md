@@ -47,7 +47,27 @@ Cette section recense les scripts exécutables du projet, leur rôle, leur confi
 
 ### 2. Démonstration de référence — Livrable 3 (`equipe/gregory/livrable3/`)
 
-Le dossier `equipe/gregory/livrable3/` propose une implémentation de référence modulaire fusionnant les meilleures briques techniques de l'équipe (pagination CNP exhaustive de Kandet et enrichissement sémantique RDFa / compétences contextuelles de Hugo).
+Le dossier [`equipe/gregory/livrable3/`](equipe/gregory/livrable3/README.md) propose l'implémentation de référence complète et unifiée fusionnant les meilleures briques techniques de l'équipe :
+- **Top 3 de sources complémentaires :** Guichet-Emplois Canada (socle fédéral par codes CNP), Jobboom Québec (portail privé local en JSON-LD Schema.org) et Remotive (API REST pour le télétravail tech et les stages).
+- **Pipeline d'unification & déduplication :** Modèle Pydantic `JobOffer`, fusion intra et inter-sources par empreinte `(titre, employeur, lieu)`, 140 offres consolidées avec descriptions intégrales à 100 % et zéro faux positif de compétences (`SQL`, `Python`, `JavaScript`, etc.).
+- **Exports finaux :** `data/offres_unifiees.json` (270 Ko) et `data/offres_unifiees.csv` (213 Ko, encodé en `utf-8-sig` avec séparateur `;` pour Microsoft Excel sous Windows).
+- **Documentation officielle :**
+  - [Note de synthèse et compte rendu de démonstration](equipe/gregory/livrable3/COMPTE_RENDU.md) (`COMPTE_RENDU.md`)
+  - [Guide d'exécution détaillé de l'ensemble des scripts](equipe/gregory/livrable3/README.md) (`README.md`)
+  - [Plan directeur des 6 lots d'implémentation](equipe/gregory/livrable3/plan.md) (`plan.md`)
+
+#### Exécution rapide du pipeline et des tests
+
+```powershell
+# 1. Installer les dépendances requises
+pip install -r equipe/gregory/livrable3/requirements.txt
+
+# 2. Exécuter l'ensemble des 110 tests unitaires 100 % hors ligne (~0,78 s)
+python -m unittest discover -s equipe/gregory/livrable3 -p "test_*.py" -v
+
+# 3. Lancer le pipeline d'unification et de déduplication multi-sources
+python equipe/gregory/livrable3/main.py
+```
 
 #### A. Test et démonstration en direct (`run_demo_guichet.py`)
 

@@ -232,20 +232,20 @@ flowchart TD
 
 ---
 
-### Itération 6 — Compte rendu de démonstration et note de synthèse
-- [ ] Rédiger la note de démonstration du Livrable 3 dans `equipe/gregory/livrable3/COMPTE_RENDU.md`.
-- [ ] Documenter explicitement :
+### Itération 6 — Compte rendu de démonstration et note de synthèse *(✅ Terminée)*
+- [x] Rédiger la note de démonstration du Livrable 3 dans `equipe/gregory/livrable3/COMPTE_RENDU.md`.
+- [x] Documenter explicitement :
   - Le site principal choisi et les contributions réutilisées (avec liens vers les fichiers de Kandet, Hugo, Elvira, Mamadou).
   - Ce qui a fonctionné, les limites initiales et les améliorations apportées.
   - La commande exacte de reproduction et le résultat comparatif avant/après.
-- [ ] Fournir un guide d'exécution rapide pour les étudiants (`README.md`).
+- [x] Fournir un guide d'exécution rapide pour les étudiants (`README.md`).
 
 ---
 
 ## 6. Matrice de suivi d'avancement de la démo
 
 | Étape / Module | Responsable | Statut | Fichiers associés | Tests validés |
-| --- | --- | :---: | --- | :---: |
+| --- | --- | --- | --- | --- |
 | **Plan directeur L3** | Gregory / IA | ✅ Terminé | `equipe/gregory/livrable3/plan.md` | S/O |
 | **Modèle unifié `JobOffer`** | Gregory / IA | ✅ Terminé | `models.py` | 2 tests |
 | **Connecteur Guichet-Emplois** | Gregory / IA | ✅ Terminé | `scrapers/guichet_emplois.py` | 24 tests (0,03 s) |
@@ -253,7 +253,7 @@ flowchart TD
 | **Connecteur Remotive** | Gregory / IA | ✅ Terminé | `scrapers/remotive.py` | 34 tests (0,05 s) |
 | **Pipeline & Déduplication** | Gregory / IA | ✅ Terminé | `pipeline.py`, `main.py` | 29 tests (0,68 s) |
 | **Exports JSON / CSV** | Gregory / IA | ✅ Terminé | `data/offres_unifiees.json`, `data/offres_unifiees.csv` | 140 offres consolidées |
-| **Compte rendu Livrable 3** | Gregory / IA | ⏳ À démarrer | `COMPTE_RENDU.md` | S/O |
+| **Compte rendu Livrable 3** | Gregory / IA | ✅ Terminé | `COMPTE_RENDU.md` | S/O |
 
 ---
 
