@@ -26,7 +26,9 @@ Je suis le seul à avoir travaillé sur ce site.
 - Pas de `raise_for_status()`, User-Agent générique, `os.startfile()` (Windows seulement).
 - Pas de `requirements.txt`, pas de tests.
 
-## Ce que j'ai modifié
+## Ce que j'ai repris et modifié
+
+J'ai repris mon script `poc_wttj.py` (appel de l'API, pagination, export CSV) et je l'ai découpé en fonctions dans `poc_wttj_v2.py`.
 
 | Changement | Pourquoi |
 | --- | --- |
@@ -52,32 +54,71 @@ python poc_wttj_v2.py --partout
 python -m unittest test_poc_wttj_v2.py -v
 ```
 
+Le résultat est enregistré dans `offres_wttj_v2.csv` (remplacé à chaque lancement).
+
 ## Vérification
 
 ### Tests hors ligne
 
 6 tests passent (`python -m unittest test_poc_wttj_v2.py -v`), à partir d'un petit fichier d'exemple dans `fixtures/`.
 
-### Essai réel
-
-<!-- À compléter avec tes propres résultats -->
+### Essai réel (16 novembre 2026)
 
 | Essai | Offres reçues | Offres gardées (Canada) |
 | --- | --- | --- |
 | v1 : `stage data`, partout | 30 | 0 identifiée (pas de colonne lieu) |
-| v2 : `stage`, Québec | ... | ... |
-| v2 : `développeur`, Québec | ... | ... |
+| v2 : `stage`, Québec | 3 | 3 |
+| v2 : `développeur`, Québec | 4 | 4 |
 
-Exemple de ligne obtenue :
+#### Essai 1 : stages
+
+```bash
+python poc_wttj_v2.py
+```
+
+```
+Page 1/1 - 3 offres au total
+3 offres reçues, 3 gardées
+- Stage fin d'études - Consultant.e IA/DATA | VONA | Montreal, Paris | internship
+- Fintech Intern | Naboo | Montreal | internship
+- Business Development Representative (BDR) - Stage - Montréal (Canada) | Jint | Montreal | internship
+```
+
+L'offre VONA a des bureaux à Paris et à Montréal : elle est gardée parce qu'au moins un bureau est au Canada.
+
+#### Essai 2 : développeur
+
+```bash
+python poc_wttj_v2.py --mot-cle "développeur"
+```
+
+```
+Page 1/1 - 4 offres au total
+4 offres reçues, 4 gardées
+- Développeur·se logiciel senior, Creative Solutions | Equativ | Montreal | full_time
+- Senior Software Developer, Creative Solutions | Equativ | Montreal | full_time
+- [VO2 Canada] Développeuse Backend Javascript - Node.js - Developer | VO2 GROUP | Montreal | full_time
+- [VO2 Canada] - Développeuse.eur - Salesforce | VO2 GROUP | Montreal | full_time
+```
+
+#### Exemple de ligne du CSV
 
 ```
 titre;entreprise;villes;pays;contrat
-...
+Fintech Intern;Naboo;Montreal;CA;internship
 ```
+
+### Comparaison avec la version 1
+
+- **v1** : 30 offres, presque toutes en Europe, sans ville ni pays dans le CSV.
+- **v2** : seulement des offres à Montréal, avec la ville et le pays dans le CSV.
+- Les 4 offres « développeur » sont des postes à temps plein, dont 2 seniors.
+- Les 3 stages trouvés sont en data/IA, fintech et développement commercial : aucun stage en développement informatique.
 
 ## Limites qui restent
 
-- **Peu d'offres au Québec** : Welcome to the Jungle est surtout européen. Ce site restera une source secondaire pour le projet.
+- **Très peu d'offres** : 3 stages et 4 offres « développeur » au Québec, sans stage en développement informatique.
+- **Welcome to the Jungle est surtout européen** : ce site restera une source secondaire pour le projet. Guichet-Emplois, Jobillico ou Jobboom sont plus adaptés au Québec.
 - L'API n'est pas documentée publiquement : son format peut changer sans prévenir.
 - `robots.txt` et conditions d'utilisation de l'API à vérifier avant une collecte régulière.
 - Le format des lieux envoyés à l'API a été copié depuis l'onglet Réseau du navigateur.
