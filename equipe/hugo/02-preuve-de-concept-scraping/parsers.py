@@ -9,8 +9,8 @@ Fonctionnalités :
    - Étape 1 : Métadonnées sémantiques RDFa / Schema.org (JobPosting)
    - Étape 2 : Repli DOM HTML (sections description, modalité et compétences)
 4. Filtrage strict du périmètre DEC en informatique :
-   - Couvre : Programmation, Web, Logiciel, Réseaux, Support TI, QA, DevOps, Cybersécurité et Stages.
-   - Élimine : Métiers non-TI (cleaning man/woman, concierge, entretien, restauration, etc.).
+   - Couvre : Programmation, Web, Logiciel, Réseaux informatiques, Support TI, QA, DevOps, Cybersécurité et Stages.
+   - Élimine : Métiers non-TI (cleaning man/woman, concierge, entretien, restauration, réseau électrique/lignes, etc.).
 5. Détection stricte et sans faux positifs des compétences techniques (exclut 'C' isolé et 'Vue').
 6. Priorisation des URLs et contenus en langue française (?lang=fra).
 """
@@ -30,12 +30,25 @@ from models import JobOffer
 # 1. MOTIFS D'EXCLUSION NON-TI & INCLUSION DEC EN INFORMATIQUE
 # ==============================================================================
 
-# Métiers hors TI à rejeter systématiquement (pour éliminer 'cleaning man/woman', etc.)
+# Métiers hors TI à rejeter systématiquement (pour éliminer 'cleaning man/woman', 'réseau électrique', etc.)
 MOTIFS_NON_TI = [
+    # Métiers du nettoyage et conciergerie
     re.compile(r"\bclean(?:ing|er|ers)?\b", re.IGNORECASE),
     re.compile(r"\bnettoy(?:age|eur|euse|eurs|euses)\b", re.IGNORECASE),
     re.compile(r"\bentretien\s+m[eé]nag(?:er|ère)\b", re.IGNORECASE),
     re.compile(r"\bconcierge\b", re.IGNORECASE),
+    re.compile(r"\bpr[eé]pos[eé](?:e)?\s+aux\s+b[eé]n[eé]ficiaires\b", re.IGNORECASE),
+    re.compile(r"\bpr[eé]pos[eé](?:e)?\s+[aà]\s+l['’]entretien\b", re.IGNORECASE),
+    
+    # Métiers électriques, lignes, haute tension et réseaux physiques non-TI
+    re.compile(r"\br[eé]seau(?:x)?\s+(?:[eé]lectrique|routier|ferroviaire|aqueduc|gaz|distribution\s+d['’][eé]lectricit[eé])\b", re.IGNORECASE),
+    re.compile(r"\bmonteu(?:r|se)\s+(?:de\s+)?lignes\b", re.IGNORECASE),
+    re.compile(r"\b[eé]lectricien(?:ne)?\b", re.IGNORECASE),
+    re.compile(r"\blignes?\s+[eé]lectriques?\b|\bhaute\s+tension\b", re.IGNORECASE),
+    re.compile(r"\bc[aâ]bl(?:eur|euse)\s+(?:[eé]lectrique|haute\s+tension)\b", re.IGNORECASE),
+    re.compile(r"\btuyauteur|plombier|chauffagiste\b", re.IGNORECASE),
+    
+    # Restauration, manutention et vente
     re.compile(r"\bcuisin(?:e|ier|ière|iers|ières)\b", re.IGNORECASE),
     re.compile(r"\bserveu(?:r|se|rs|ses)\b", re.IGNORECASE),
     re.compile(r"\bplongeu(?:r|se|rs|ses)\b", re.IGNORECASE),
@@ -43,8 +56,6 @@ MOTIFS_NON_TI = [
     re.compile(r"\bchauffeu(?:r|se|rs|ses)\b", re.IGNORECASE),
     re.compile(r"\bmanutentionn?aire\b", re.IGNORECASE),
     re.compile(r"\bcaissi(?:er|ère|ers|ères)\b", re.IGNORECASE),
-    re.compile(r"\bpr[eé]pos[eé](?:e)?\s+aux\s+b[eé]n[eé]ficiaires\b", re.IGNORECASE),
-    re.compile(r"\bpr[eé]pos[eé](?:e)?\s+[aà]\s+l['’]entretien\b", re.IGNORECASE),
     re.compile(r"\bgardien(?:ne)?\b", re.IGNORECASE),
     re.compile(r"\bvendeu(?:r|se|rs|ses)\b(?!\s+(?:informatique|logiciel))", re.IGNORECASE),
     re.compile(r"\bcharpentier|menuisier|m[eé]canicien|soudeur\b", re.IGNORECASE),
@@ -52,7 +63,7 @@ MOTIFS_NON_TI = [
 
 # Motifs positifs ciblés sur l'ensemble des branches du DEC en informatique :
 # 1. Développement d'applications (Web, Logiciel, Mobile, Jeux vidéo, DevOps)
-# 2. Infrastructure, Réseaux et Sécurité (Technicien, Sysadmin, Support TI, Cybersécurité)
+# 2. Infrastructure, Réseaux informatiques et Sécurité (Technicien, Sysadmin, Support TI, Cybersécurité)
 # 3. Données et Assurance Qualité (Bases de données, QA/Test)
 # 4. Stages en informatique
 MOTIFS_DEC_INFORMATIQUE = [
@@ -77,8 +88,12 @@ MOTIFS_DEC_INFORMATIQUE = [
     re.compile(r"\barchitecte\s+(?:logiciel|syst[eè]me|cloud|solutions?|ti)\b", re.IGNORECASE),
     re.compile(r"\bing[eé]nieu?r(?:e)?\s+(?:logiciel|informati(?:que|cien)|syst[eè]me|devops)\b", re.IGNORECASE),
     
-    # Infrastructure, Réseaux, Systèmes, Support TI et Cybersécurité
-    re.compile(r"\br[eé]seau(?:x)?\b|\bnetwork(?:s)?\b", re.IGNORECASE),
+    # Infrastructure, Réseaux informatiques, Systèmes, Support TI et Cybersécurité
+    # Note : Le mot 'réseau' doit être qualifié ou rattaché à un métier TI pour éviter les réseaux électriques/routiers
+    re.compile(r"\br[eé]seau(?:x)?\s+(?:informatique(?:s)?|ti|ip|donn[eé]es|t[eé]l[eé]com|local|sans[\s-]fil|wifi|lan|wan)\b", re.IGNORECASE),
+    re.compile(r"\b(?:technicien(?:ne)?|administrat(?:eur|rice)|sp[eé]cialiste|analyste|architecte|ing[eé]nieur|gestionnaire|soutien)\s+(?:de\s+|du\s+|en\s+|des\s+)?r[eé]seau(?:x)?\b", re.IGNORECASE),
+    re.compile(r"\bs[eé]curit[eé]\s+des\s+r[eé]seau(?:x)?\b", re.IGNORECASE),
+    re.compile(r"\bnetwork\s+(?:administrator|engineer|technician|specialist|analyst|architect|support)\b", re.IGNORECASE),
     re.compile(r"\bsyst[eè]me(?:s)?\s+informatique(?:s)?\b", re.IGNORECASE),
     re.compile(r"\bsysadmin\b|\badministrat(?:eur|rice)\s+syst[eè]me\b", re.IGNORECASE),
     re.compile(r"\bsupport\s+informatique\b|\bit\s+support\b", re.IGNORECASE),
@@ -154,6 +169,28 @@ def clean_text(raw_html: str) -> str:
     return re.sub(r"\s+", " ", txt).strip()
 
 
+def extraire_identifiant_propre(raw_id: str, url_source: str = "") -> str:
+    """
+    Extrait un identifiant normalisé et propre au format gc-XXXXXX.
+    Élimine les URLs complètes comme 'gc-https://...'.
+    """
+    # 1. Chercher un numéro d'offre officiel (généralement 6 à 9 chiffres)
+    source_texte = f"{raw_id} {url_source}"
+    m = re.search(r"/(?:jobposting|offredemploi|job)/(\d+)", source_texte)
+    if m:
+        return f"gc-{m.group(1)}"
+
+    # 2. Chercher id=XXXXX dans les query params
+    m_param = re.search(r"[?&]id=(\d+)", source_texte)
+    if m_param:
+        return f"gc-{m_param.group(1)}"
+
+    # 3. Repli : nettoyer la chaîne brute
+    clean = raw_id.replace("article-", "").replace("gc-", "").strip()
+    clean = clean.split("/")[-1].split("?")[0]
+    return f"gc-{clean}" if clean else "gc-inconnu"
+
+
 def est_metier_dec_informatique(titre: str, texte_complementaire: str = "") -> bool:
     """
     Vérifie si une offre d'emploi correspond au domaine du DEC en informatique :
@@ -162,7 +199,7 @@ def est_metier_dec_informatique(titre: str, texte_complementaire: str = "") -> b
     - Données et Assurance Qualité (Bases de données, QA)
     - Stages informatiques
 
-    Rejette formellement les offres hors TI (ex: cleaning man/woman, concierge, etc.).
+    Rejette formellement les offres hors TI (ex: cleaning man/woman, réseau électrique, etc.).
     """
     titre_propre = (titre or "").strip()
     if not titre_propre:
@@ -170,9 +207,9 @@ def est_metier_dec_informatique(titre: str, texte_complementaire: str = "") -> b
 
     texte_global = f"{titre_propre} {texte_complementaire}".lower()
 
-    # 1. Vérification des exclusions prioritaires
+    # 1. Vérification des exclusions prioritaires (métiers non-TI, réseau électrique, etc.)
     for pattern in MOTIFS_NON_TI:
-        if pattern.search(titre_propre):
+        if pattern.search(titre_propre) or pattern.search(texte_global):
             # Exception : si le titre contient explicitement un terme logiciel/informatique fort
             mots_sauvegarde = ["informatique", "logiciel", "software", "programmeur", "développeur", "developer"]
             if not any(w in titre_propre.lower() for w in mots_sauvegarde):
@@ -267,9 +304,8 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
         date_pub = updated_el.text.strip() if updated_el is not None and updated_el.text else None
 
         id_el = entry.find(f"{atom_ns}id")
-        raw_id = id_el.text.strip() if id_el is not None and id_el.text else url_source.split("/")[-1].split("?")[0]
-        clean_id = raw_id.replace("article-", "").replace("gc-", "")
-        job_id = f"gc-{clean_id}"
+        raw_id = id_el.text.strip() if id_el is not None and id_el.text else ""
+        job_id = extraire_identifiant_propre(raw_id, url_source)
 
         # Extraction des métadonnées contenues dans le HTML du résumé
         summary_el = entry.find(f"{atom_ns}summary")
@@ -297,7 +333,7 @@ def parse_atom_feed(xml_content: str | bytes, base_url: str = "https://www.guich
             if sal_m:
                 salaire = sal_m.group(1).strip()
 
-        # Filtrage strict DEC en informatique
+        # Filtrage strict DEC en informatique (rejette formellement réseau électrique, cleaning, etc.)
         if not est_metier_dec_informatique(titre, summary_html):
             continue
 
@@ -347,8 +383,7 @@ def parse_search_page_html(html_str: str, base_url: str = "https://www.guichetem
             full_url = normaliser_url_francaise(clean_href, base_url=base_url)
 
             raw_id = article.get("id", "")
-            base_ident = raw_id.replace("article-", "").replace("gc-", "") if raw_id else clean_href.split("/")[-1].split("?")[0]
-            job_id = f"gc-{base_ident}"
+            job_id = extraire_identifiant_propre(raw_id, full_url)
 
             title_tag = article.find("span", class_="noctitle")
             titre = title_tag.get_text(strip=True) if title_tag else "Titre non spécifié"

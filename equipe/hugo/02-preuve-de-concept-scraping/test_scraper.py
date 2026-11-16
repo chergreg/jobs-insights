@@ -17,7 +17,8 @@ from parsers import (
     extract_tech_skills,
     detect_stage,
     est_metier_dec_informatique,
-    normaliser_url_francaise
+    normaliser_url_francaise,
+    extraire_identifiant_propre
 )
 
 # ==============================================================================
@@ -51,7 +52,19 @@ ATOM_FEED_FIXTURE = """<?xml version="1.0" encoding="UTF-8"?>
       <strong>Salaire :</strong> 24,00 $ de l'heure
     ]]></summary>
   </entry>
-  <!-- Offre non-TI qui doit être filtrée et exclue -->
+  <!-- Offres non-TI qui doivent être filtrées et exclues -->
+  <entry>
+    <id>https://www.guichetemplois.gc.ca/jobsearch/jobSearchRSSfeed?id=3720401</id>
+    <title>apprenti monteur/apprentie monteuse de lignes - réseau électrique</title>
+    <link rel="alternate" href="https://www.guichetemplois.gc.ca/jobsearch/jobposting/50738713" />
+    <updated>2026-11-16T03:53:00Z</updated>
+    <summary type="html"><![CDATA[
+      <strong>Numéro d'emploi :</strong> 50738713<br />
+      <strong>Employeur :</strong> Borea<br />
+      <strong>Emplacement :</strong> Pointe-à-la-Garde (QC)<br />
+      <strong>Salaire :</strong> 40,46 $ de l'heure
+    ]]></summary>
+  </entry>
   <entry>
     <id>gc-99999999</id>
     <title>Cleaning man/woman - Entretien ménager</title>
@@ -167,6 +180,9 @@ class TestScraperParsers(unittest.TestCase):
             "Nettoyeur de vitres",
             "Préposé à l'entretien ménager",
             "Concierge d'immeuble",
+            "apprenti monteur/apprentie monteuse de lignes - réseau électrique",
+            "Monteur de lignes haute tension",
+            "Électricien industriel",
             "Aide-cuisinier",
             "Serveur en salle",
             "Plongeur de restaurant",
@@ -292,6 +308,21 @@ class TestScraperParsers(unittest.TestCase):
         url2 = normaliser_url_francaise("/rechercheemplois/offredemploi/50738681?source=searchresults")
         self.assertTrue(url2.startswith("https://www.guichetemplois.gc.ca"))
         self.assertIn("lang=fra", url2)
+
+
+    def test_extraire_identifiant_propre(self):
+        """Vérifie que les identifiants bruts (y compris URLs de flux RSS) sont bien nettoyés."""
+        id1 = extraire_identifiant_propre("article-50738681", "")
+        self.assertEqual(id1, "gc-50738681")
+
+        id2 = extraire_identifiant_propre(
+            "https://www.guichetemplois.gc.ca/jobsearch/jobSearchRSSfeed?id=3720401",
+            "https://www.guichetemplois.gc.ca/jobsearch/jobposting/50738713?lang=fra"
+        )
+        self.assertEqual(id2, "gc-50738713")
+
+        id3 = extraire_identifiant_propre("50701948", "")
+        self.assertEqual(id3, "gc-50701948")
 
 
 if __name__ == "__main__":
