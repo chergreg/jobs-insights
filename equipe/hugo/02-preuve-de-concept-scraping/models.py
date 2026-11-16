@@ -1,7 +1,7 @@
 """
-models.py - Modèles de données pour le projet Jobs Insights.
+models.py - Modèles de données pour le projet Jobs Insights (Espace Hugo).
 Définit la structure standard des offres d'emploi pour assurer
-la cohérence et la compatibilité entre les différentes sources.
+la cohérence et la compatibilité entre les différentes sources et stratégies d'extraction.
 """
 
 from datetime import datetime
@@ -21,13 +21,17 @@ class JobOffer(BaseModel):
     pays: str = Field(default="Canada", description="Pays")
     salaire: Optional[str] = Field(default=None, description="Information brute sur le salaire / taux horaire")
     date_publication: Optional[str] = Field(default=None, description="Date d'affichage de l'offre")
-    modalite: Optional[str] = Field(default=None, description="Modalité : Sur place, Hybride, Télétravail")
-    type_poste: Optional[str] = Field(default=None, description="Type de contrat : Temps plein, Temps partiel, Stage")
-    competences_cles: List[str] = Field(default_factory=list, description="Mots-clés / compétences informatiques détectées")
-    description: Optional[str] = Field(default=None, description="Description ou résumé du poste")
+    modalite: Optional[str] = Field(default="Non spécifié", description="Modalité : Sur place, Hybride, Télétravail")
+    type_poste: Optional[str] = Field(default="Temps plein", description="Type de contrat : Temps plein, Temps partiel, Stage, etc.")
+    competences_cles: List[str] = Field(default_factory=list, description="Mots-clés / compétences informatiques détectées (filtrées)")
+    description: Optional[str] = Field(default=None, description="Description textuelle complète ou résumé du poste")
     url_source: str = Field(..., description="URL complète vers l'offre d'emploi")
     source: str = Field(default="Guichet-Emplois", description="Plateforme source d'extraction")
     partenaire: Optional[str] = Field(default=None, description="Partenaire d'origine (ex: Jobillico, Guichet-Emplois direct)")
+    methode_extraction: Optional[str] = Field(
+        default="HTML",
+        description="Stratégie d'extraction utilisée (ex: Atom-XML, HTML-Search, RDFa-Detail, DOM-Detail)"
+    )
     date_extraction: str = Field(
         default_factory=lambda: datetime.now().isoformat(),
         description="Horodatage ISO de l'extraction"
