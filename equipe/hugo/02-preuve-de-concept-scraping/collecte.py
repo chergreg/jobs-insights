@@ -41,6 +41,7 @@ from parsers import (
     enrich_offer_detail,
     extract_tech_skills,
     est_metier_dec_informatique,
+    est_cnp_dec_informatique,
     normaliser_url_francaise
 )
 
@@ -293,12 +294,13 @@ class GuichetEmploisCollecteur:
     # --------------------------------------------------------------------------
     # ENRICHISSEMENT DES FICHES DÉTAILLÉES (Phase 2 - Priorité Français)
     # --------------------------------------------------------------------------
-    def enrichir_fiches_details(self, offers: List[JobOffer]) -> None:
-        """Visite les fiches pour extraire description complète, modalité et compétences en français."""
+    def enrichir_fiches_details(self, offers: List[JobOffer]) -> List[JobOffer]:
+        """Visite les fiches pour extraire description complète, code CNP, modalité et compétences en français."""
         print(f"\n [PHASE 2] Enrichissement détaillé de {len(offers)} fiches TI...")
         print(f"           (Délai entre requêtes : {self.delai_secondes}s pour respecter le serveur)\n")
         logger.info("Début enrichissement détaillé de %d fiches.", len(offers))
 
+        offres_validees: List[JobOffer] = []
         for idx, offer in enumerate(offers, start=1):
             url_cible = normaliser_url_francaise(offer.url_source, base_url=self.BASE_URL)
             offer.url_source = url_cible
@@ -316,7 +318,15 @@ class GuichetEmploisCollecteur:
             except Exception as e:
                 logger.error("Erreur lors de l'enrichissement de %s : %s", offer.id, e)
 
-            suffixe = f"{offer.titre[:20]} ({offer.modalite})"
+            # Validation par code CNP : si le CNP extrait de la fiche révèle une profession hors TI, on l'écarte
+            if offer.cnp and est_cnp_dec_informatique(offer.cnp) is False:
+                logger.warning("Offre %s rejetée lors de l'enrichissement : CNP %s hors domaine DEC TI.", offer.id, offer.cnp)
+                continue
+
+            offres_validees.append(offer)
+
+            cnp_badge = f"[{offer.cnp}] " if offer.cnp else ""
+            suffixe = f"{cnp_badge}{offer.titre[:16]} ({offer.modalite})"
             afficher_barre_progression(
                 actuel=idx,
                 total=len(offers),
@@ -325,7 +335,8 @@ class GuichetEmploisCollecteur:
             )
             self._pause_respectueuse()
 
-        print("\n [OK] Enrichissement des descriptions et modalités terminé avec succès !")
+        print("\n [OK] Enrichissement des descriptions et validation des codes CNP terminés !")
+        return offres_validees
 
     # --------------------------------------------------------------------------
     # ORCHESTRATION EN CASCADE
@@ -381,7 +392,7 @@ class GuichetEmploisCollecteur:
 
         # Niveau 3 : Enrichissement détaillé des fiches
         if enrichir and offers:
-            self.enrichir_fiches_details(offers)
+            offers = self.enrichir_fiches_details(offers)
 
         return offers
 
@@ -403,9 +414,11 @@ class GuichetEmploisCollecteur:
         stages = sum(1 for o in offers if o.type_poste == "Stage")
         teletravail = sum(1 for o in offers if o.modalite in ["Télétravail", "Hybride"])
         avec_desc = sum(1 for o in offers if o.description and len(o.description) > 30)
+        avec_cnp = sum(1 for o in offers if o.cnp)
         toutes_competences = [c for o in offers for c in o.competences_cles]
 
         print(f" [OK] Descriptions complètes remplies : {avec_desc}/{len(donnees)}")
+        print(f" [OK] Offres avec code CNP officiel    : {avec_cnp}/{len(donnees)}")
         print(f" [OK] Stages et emplois étudiants      : {stages}")
         print(f" [OK] Postes Télétravail / Hybride     : {teletravail}")
 

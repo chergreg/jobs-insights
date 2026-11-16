@@ -20,6 +20,7 @@ class JobOffer(BaseModel):
     province: str = Field(default="QC", description="Code de province (ex: QC, ON, BC)")
     pays: str = Field(default="Canada", description="Pays")
     salaire: Optional[str] = Field(default=None, description="Information brute sur le salaire / taux horaire")
+    cnp: Optional[str] = Field(default=None, description="Code officiel CNP de la profession (ex: 21234, 21230)")
     date_publication: Optional[str] = Field(default=None, description="Date d'affichage de l'offre")
     modalite: Optional[str] = Field(default="Non spécifié", description="Modalité : Sur place, Hybride, Télétravail")
     type_poste: Optional[str] = Field(default="Temps plein", description="Type de contrat : Temps plein, Temps partiel, Stage, etc.")

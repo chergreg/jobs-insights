@@ -18,7 +18,9 @@ from parsers import (
     detect_stage,
     est_metier_dec_informatique,
     normaliser_url_francaise,
-    extraire_identifiant_propre
+    extraire_identifiant_propre,
+    extraire_code_cnp,
+    est_cnp_dec_informatique
 )
 
 # ==============================================================================
@@ -115,6 +117,11 @@ HTML_DETAIL_RDFA_FIXTURE = """
     <li>Modalité de travail : Télétravail régulier</li>
     <li>Conditions d'emploi : Temps plein</li>
   </ul>
+  <div class="job-market-info">
+    <h4>Infos sur le marché du travail</h4>
+    <p>Développeur Web/développeuse Web</p>
+    <span class="badge">CNP 21234</span>
+  </div>
   <div property="description">
     <h3>Description du poste</h3>
     <p>Nous recrutons un développeur senior pour rejoindre notre équipe agile.</p>
@@ -252,6 +259,7 @@ class TestScraperParsers(unittest.TestCase):
         self.assertIsNotNone(enriched.description)
         self.assertIn("Nous recrutons un développeur senior", enriched.description)
         self.assertEqual(enriched.modalite, "Télétravail")
+        self.assertEqual(enriched.cnp, "21234")
         self.assertIn("Python", enriched.competences_cles)
         self.assertIn("FastAPI", enriched.competences_cles)
         self.assertIn("Docker", enriched.competences_cles)
@@ -323,6 +331,45 @@ class TestScraperParsers(unittest.TestCase):
 
         id3 = extraire_identifiant_propre("50701948", "")
         self.assertEqual(id3, "gc-50701948")
+
+
+    def test_extraire_code_cnp(self):
+        """Vérifie l'extraction du code CNP à partir de texte et de balises HTML."""
+        # 1. Extraction textuelle
+        cnp1 = extraire_code_cnp("Information sur le marché du travail : CNP 21234 (Développeur Web)")
+        self.assertEqual(cnp1, "21234")
+
+        # 2. Extraction variante anglophone
+        cnp2 = extraire_code_cnp("Labour market information: NOC 21230")
+        self.assertEqual(cnp2, "21230")
+
+        # 3. Extraction depuis balise sémantique HTML
+        html_tag = '<meta property="occupationalCategory" content="21232" />'
+        cnp3 = extraire_code_cnp(html_tag)
+        self.assertEqual(cnp3, "21232")
+
+        # 4. Absence de CNP
+        self.assertIsNone(extraire_code_cnp("Poste de développeur sans code mentionné."))
+
+    def test_est_cnp_dec_informatique(self):
+        """Vérifie la classification formelle des codes CNP TI vs hors TI."""
+        # Métiers DEC TI
+        self.assertTrue(est_cnp_dec_informatique("21234"))  # Développeurs Web
+        self.assertTrue(est_cnp_dec_informatique("21232"))  # Développeurs de logiciels
+        self.assertTrue(est_cnp_dec_informatique("21230"))  # Informaticiens
+        self.assertTrue(est_cnp_dec_informatique("22220"))  # Techniciens réseau
+        self.assertTrue(est_cnp_dec_informatique("22221"))  # Soutien utilisateurs
+        self.assertTrue(est_cnp_dec_informatique("22222"))  # QA / Évaluateurs systèmes
+        self.assertTrue(est_cnp_dec_informatique("21220"))  # Cybersécurité
+
+        # Métiers hors TI (ex: monteurs de lignes électriques CNP 72203)
+        self.assertFalse(est_cnp_dec_informatique("72203"))
+        self.assertFalse(est_cnp_dec_informatique("65310"))
+        self.assertFalse(est_cnp_dec_informatique("72010"))
+
+        # Valeurs nulles
+        self.assertIsNone(est_cnp_dec_informatique(None))
+        self.assertIsNone(est_cnp_dec_informatique(""))
 
 
 if __name__ == "__main__":
