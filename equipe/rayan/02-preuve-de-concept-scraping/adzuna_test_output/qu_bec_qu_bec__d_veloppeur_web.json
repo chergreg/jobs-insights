@@ -1,0 +1,781 @@
+{
+  "search": {
+    "keyword": "développeur web",
+    "location": "Québec, Québec",
+    "category": "it-jobs",
+    "results_per_page": 20,
+    "max_pages": 2
+  },
+  "pages": [
+    {
+      "page": 1,
+      "returned": 20,
+      "total_count": 24
+    },
+    {
+      "page": 2,
+      "returned": 4,
+      "total_count": 24
+    }
+  ],
+  "results": [
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur ou développeuse web full stack Senior",
+      "contract_type": "contract",
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5967039631",
+      "redirect_url": "https://www.adzuna.ca/details/5967039631?utm_medium=api&utm_source=9ca5241a",
+      "description": "Développeur ou développeuse web full stack Senior Chez PAR Design , on ne fait pas juste du web : on crée des expériences WordPress qui font briller les marques et leurs équipes. Propulser nos clients grâce à des sites sur mesure, performants et audacieux, tout en positionnant PAR Design comme LA référence WordPress au Québec. Ensemble, on fait briller le web On est une équipe de passionnés , des vrais Jedis du numérique: curieux, brillants et un brin décalé. On aime rire, brainstormer et céléb…",
+      "longitude": -73.840743,
+      "latitude": 45.618395,
+      "created": "2026-11-15T12:16:09Z",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzAzOTYzMSIsInMiOiJmUEI1NjlyaDhSRzhzZC15WlBNVmZBIn0.aiZb1RqiGPr4kbatwttDgsFWEaEeUXU7HTHhwXOoa8I",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "PAR Design"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Laurentides",
+          "Thérèse-De Blainville",
+          "Boisbriand"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Boisbriand, Thérèse-De Blainville"
+      }
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Quantum"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiZlBCNTY5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY2MTQ0MTQwIn0.D-AJ-cJF4b3HXwJglgc5WaaSuS6_W7ui7LZmNZCNzIo",
+      "redirect_url": "https://www.adzuna.ca/details/5966144140?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "description": " Développeur de logiciel principal (applications web) / Senior Software Developer (Web Applications)back to job searchref. no.1001355-1typeHybridlocationMontréal, QCsalary$100000 - $120000statusPermanentPoste : développeur de logiciel principal (applications Web) Lieu de travail : Montréal, Québec Rejoignez une entreprise à la pointe de la technologie, active dans le secteur des logiciels de sécurité publique, qui fournit des solutions essentielles utilisées par les équipes d'intervention d'urg…",
+      "latitude": 45.544959,
+      "created": "2026-11-14T12:22:29Z",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Développeur de logiciel principal (applications web) / Senior Software Developer (Web Applications)",
+      "id": "5966144140",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      }
+    },
+    {
+      "company": {
+        "display_name": "Genetec",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NDYzNTgwNiIsInMiOiJmUEI1NjlyaDhSRzhzZC15WlBNVmZBIn0.eJNQn-GejrzBRqqB2rOZGpy1PvA238bTcKfdN32wgAI",
+      "redirect_url": "https://www.adzuna.ca/details/5964635806?utm_medium=api&utm_source=9ca5241a",
+      "description": "Job Description Job Description La dynamique de votre équipe : Joignez-vous à une équipe passionnée qui travaille avec les toutes dernières technologies en développement logiciel. Voici quelques exemples des technologies utilisées dans le projet : Écosystème de micro-services écrits avec la dernière version C#/ ASP.NET Plusieurs bases de données NoSQL tel que MongoDB, ElasticSearch et Redis Interfaces utilisateurs développées en ReactJS avec : TypeScript, MaterialUI, ViteJS, Cypress, Tanstack C…",
+      "longitude": -73.588138,
+      "created": "2026-11-13T08:59:47Z",
+      "latitude": 45.544959,
+      "title": "Développeur(euse) logiciel / Software Developer - C#/Web",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5964635806"
+    },
+    {
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5961958806",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Développeur(euse) Full Stack Sénior / Senior Full Stack Developer",
+      "created": "2026-11-11T12:24:14Z",
+      "latitude": 45.458603,
+      "longitude": -73.467023,
+      "description": "La division des systèmes et services d’ingénierie électrique d’Eaton est actuellement à la recherche d’un(e) développeur(euse) full stack sénior motivé(e) pour notre équipe Solutions & Technologies CYME. Ce poste est basé au Centre d'Innovation des Amériques d’Eaton à Brossard (Québec) et offre des opportunités de travail hybride, ainsi que les avantages sociaux dès le premier jour. La fourchette salariale annuelle prévue pour ce poste est de 92 000$ à 115 000$. Veuillez noter que les informati…",
+      "redirect_url": "https://www.adzuna.ca/details/5961958806?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiZlBCNTY5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTU4ODA2In0.dyN0ufIpf1f69_htZA7kmgGrnI0OwlR5Q7s8vzbgxZw",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Champlain",
+          "Brossard"
+        ],
+        "display_name": "Brossard, Champlain",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Eaton Corporation"
+      }
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1NzY1OCIsInMiOiJmUEI1NjlyaDhSRzhzZC15WlBNVmZBIn0.6hT67-1Vdaq7LPqsMIBcwJ029nMszZRolLQXcCSzULw",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "company": {
+        "display_name": "Genetec",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5961957658",
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur(euse) web front-end senior / Senior Front-End Web Developer",
+      "latitude": 45.544959,
+      "created": "2026-11-11T12:23:57Z",
+      "description": "Your team's dynamic: We are looking for a Senior Front-End Web Developer to join the UX Development team and help shape the foundations of user experience across Genetec products. In this role, you will contribute to the evolution of Gelato, Genetec’s design system, our micro front-ends platform, and the tooling that enables designers and developers to build consistent, high‑quality user experiences at scale. Your work will directly influence how product teams design, develop, and deliver inter…",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5961957658?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5961949643?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959,
+      "created": "2026-11-11T12:21:59Z",
+      "longitude": -73.588138,
+      "description": "Description du poste Développeur Web Full Stack Senior (3D rendering) Evident Canada est une société du groupe Wabtec! Evident Canada, une société du groupe Wabtec, est un chef de file mondial dans la fabrication d'équipements d'inspection innovants utilisés dans des applications industrielles et de recherche dans l'aérospatiale, la production d'énergie, la pétrochimie, les infrastructures civiles, l'industrie automobile et les produits de consommation. Résumé du poste : En tant que Développeur…",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5961949643",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur, web fullstack senior",
+      "salary_is_predicted": "0",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "company": {
+        "display_name": "Wabtec Corporation",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiZlBCNTY5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTQ5NjQzIn0.a1VALQ-K7MnaskzQettQUc6g8NpkCIDyollDCnzuWTQ"
+    },
+    {
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur(euse) Full Stack Sénior / Senior Full Stack Developer",
+      "id": "5961940492",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "longitude": -73.467023,
+      "description": "Career Opportunities: Développeur(euse) Full Stack Sénior / Senior Full Stack Developer (73785) La division des systèmes et services d’ingénierie électrique d’Eaton est actuellement à la recherche d’un(e) développeur(euse) full stack sénior motivé(e) pour notre équipe Solutions & Technologies CYME. Ce poste est basé au Centre d'Innovation des Amériques d’Eaton à Brossard (Québec) et offre des opportunités de travail hybride, ainsi que les avantages sociaux dès le premier jour. La fourchette sal…",
+      "created": "2026-11-11T12:19:56Z",
+      "latitude": 45.458603,
+      "redirect_url": "https://www.adzuna.ca/details/5961940492?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk0MDQ5MiIsInMiOiJmUEI1NjlyaDhSRzhzZC15WlBNVmZBIn0.45HmK1GTBjzhfzGmvRSuSeVj7DfumbfeRbByoVvmw74",
+      "company": {
+        "display_name": "Eaton",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "display_name": "Brossard, Champlain",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Champlain",
+          "Brossard"
+        ]
+      }
+    },
+    {
+      "id": "5961716814",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "title": "Développeur(euse) web front-end senior / Senior Front-End Web Developer",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "redirect_url": "https://www.adzuna.ca/details/5961716814?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-11T09:08:25Z",
+      "latitude": 45.458603,
+      "description": "Job Description Job Description:\\n\\nLa dynamique de votre équipe :\\nNous recherchons un(e) développeur(euse) web front-end senior pour rejoindre l’équipe de développement UX et contribuer à définir les fondements de l’expérience utilisateur pour l’ensemble des produits Genetec.\\nÀ ce poste, vous contribuerez à l’évolution de Gelato, le système de conception de Genetec, de notre plateforme de micro-front-ends, ainsi que des outils permettant aux concepteurs et aux développeurs de créer à grande …",
+      "longitude": -73.467023,
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTcxNjgxNCIsInMiOiJmUEI1NjlyaDhSRzhzZC15WlBNVmZBIn0.dGxZaDvIciRv5_5hKNOc8uX5mfYpfDqGjrXjf-drTeY",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Champlain",
+          "Brossard"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Brossard, Champlain"
+      },
+      "company": {
+        "display_name": "Genetec",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      }
+    },
+    {
+      "description": "Job Description Job Description:\\n\\nLa dynamique de votre équipe :\\nNous recherchons un(e) développeur(euse) web front-end senior pour rejoindre l’équipe de développement UX et contribuer à définir les fondements de l’expérience utilisateur pour l’ensemble des produits Genetec.\\nÀ ce poste, vous contribuerez à l’évolution de Gelato, le système de conception de Genetec, de notre plateforme de micro-front-ends, ainsi que des outils permettant aux concepteurs et aux développeurs de créer à grande …",
+      "longitude": -73.588138,
+      "created": "2026-11-10T09:30:13Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5960428225?utm_medium=api&utm_source=9ca5241a",
+      "title": "Développeur(euse) web front-end senior / Senior Front-End Web Developer",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5960428225",
+      "company": {
+        "display_name": "Genetec",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiZlBCNTY5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYwNDI4MjI1In0.07XR3fO5UdN7BfugDw-nVt_hlFkR_1fiQv84jJ9Kegs"
+    },
+    {
+      "longitude": -74.27655,
+      "description": "Job Description Job Description Les contenants I.M.L d’Amérique du Nord Inc. est une entreprise dynamique qui œuvre dans le domaine de l’emballage alimentaire et qui met de l’avant la collaboration entre les collègues de travail, les relations enrichissantes avec ces derniers et les clients, et qui proscrit à des normes de qualité de très hauts niveaux. Nous sommes actuellement à la recherche de personnes qui désirent s’impliquer dans une entreprise en pleine expansion. Tes responsabilités: Dév…",
+      "latitude": 45.57212,
+      "created": "2026-11-04T10:51:43Z",
+      "redirect_url": "https://www.adzuna.ca/details/5953122705?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "DÉVELOPPEUR(EUSE) WEB",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5953122705",
+      "company": {
+        "display_name": "IML Containers/Labels North America Inc.",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "display_name": "Saint-Andre-d'Argenteuil, Argenteuil",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Laurentides",
+          "Argenteuil",
+          "Saint-Andre-d'Argenteuil"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk1MzEyMjcwNSIsInMiOiJmUEI1NjlyaDhSRzhzZC15WlBNVmZBIn0.xvQjrSSupSGUdidLPs2qhe6UpRWMvhkE9_J4bJ7wwYQ"
+    },
+    {
+      "description": "Description de l'entreprise La compagnie LEXO-1000 Inc forme des conseillers et des coordonnateurs en santé et sécurité pour le secteur de la construction afin de pouvoir louer leurs service à ses clients. La compagnie LEXO-1000 Inc est inclusive, elle forme des débutants, des étudiants, des immigrants et toutes les personnes motivées pour travailler dans le secteur de la construction… Description de l’offre d’emploi Description de l'entreprise [Insérez ici une courte phrase sur votre entrepris…",
+      "salary_max": 100000,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "contract_type": "permanent",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5949148860",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk0OTE0ODg2MCIsInMiOiJmUEI1NjlyaDhSRzhzZC15WlBNVmZBIn0.lEvgIsIqFejtD8v0FrZw8zN_oKqHWinmte7iaOP-fWY",
+      "contract_time": "full_time",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-01T06:59:06Z",
+      "salary_min": 35000,
+      "redirect_url": "https://www.adzuna.ca/details/5949148860?utm_medium=api&utm_source=9ca5241a",
+      "title": "Développeur web/développeuse web",
+      "salary_is_predicted": "0",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Lexo-1000 Inc."
+      }
+    },
+    {
+      "title": "Développeur.NET Senior Sécurité Applicative Web et Mobile",
+      "salary_is_predicted": "0",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "salary_min": 60000,
+      "created": "2026-11-01T04:05:35Z",
+      "redirect_url": "https://www.adzuna.ca/details/5948977552?utm_medium=api&utm_source=9ca5241a",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "CGI"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5948977552",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "description": "Position Description: Job Description Nous recherchons un Développeur .NET expérimenté pour contribuer au développement, à l'évolution et à la sécurisation de nos applications Web et Mobile critiques. Vous participerez activement à la conception et à l'optimisation de solutions applicatives modernes reposant sur l'écosystème Microsoft .NET, tout en intégrant les meilleures pratiques en matière de sécurité applicative, performance, observabilité et architecture logicielle. Vous évoluerez dans un…",
+      "salary_max": 115000,
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk0ODk3NzU1MiIsInMiOiJmUEI1NjlyaDhSRzhzZC15WlBNVmZBIn0.ChsYXOWkYEqkO8MKi4eUHrU3zLRPonUsWfLPL7g3Zvs",
+      "contract_time": "full_time",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      }
+    },
+    {
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "company": {
+        "display_name": "Valnet Inc.",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiZlBCNTY5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTQ4MDI1OTA1In0.9shS_VPCFT3PHR3EiEE-v_lQ5_la7TmK8mkTqyHIY38",
+      "redirect_url": "https://www.adzuna.ca/details/5948025905?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-10-31T08:18:48Z",
+      "latitude": 45.544959,
+      "description": "Job Description Job Description Functional Analyst Location: Montreal, Quebec, Canada (On-site) Who we are Valnet Inc., the world’s premier digital media investment company, owns and operates over 27 highly authoritative brands across various verticals, including entertainment, sports, technology, automotive, gaming, and travel. Specializing in acquiring, operating, and growing properties that are mission-critical in their respective environments, Valnet is at the forefront of media investment …",
+      "longitude": -73.588138,
+      "id": "5948025905",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Functional Anayst",
+      "salary_is_predicted": "0"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Développeur.se Web Fullstack Senior",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5946003384",
+      "redirect_url": "https://www.adzuna.ca/details/5946003384?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -71.172791,
+      "description": "Chez Robotiq, notre mission est claire : libérer les mains humaines des tâches répétitives. Nous accompagnons les manufacturiers et les concepteurs de solutions d’IA physique grâce à des composants robotiques intelligents et des cellules de travail prêtes à l’emploi, qui génèrent des résultats mesurables sur le plancher de production. Ce qui distingue notre approche? Nous « productisons » l’automatisation au lieu de la traiter comme un projet d’ingénierie sur mesure. Nous intégrons l’intelligen…",
+      "latitude": 46.804026,
+      "created": "2026-10-29T13:49:32Z",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiZlBCNTY5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTQ2MDAzMzg0In0.tdjVl6BSWjd_t9NHz4lLD_ErjyR8hlciQke-AUOz3BA",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Robotiq"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Chaudière - Appalaches",
+          "Desjardins",
+          "Lévis"
+        ],
+        "display_name": "Lévis, Desjardins",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      }
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5940403614",
+      "salary_max": 47840,
+      "description": "Description de l’offre d’emploi Stage en développement Web HexaQuébec recherche des stagiaires en développement Web. Pour postuler, envoyez votre CV et votre convention de stage sur notre site : hexaquebec.com Qualifications professionnellesCette offre d'emploi est soumise à une qualification professionnelle reconnue en dehors du réseau scolaire ou universitaire : (certificats, permis, cours, appartenance à un ordre ou une association professionnelle, etc.)Langues Français parlé - Élevé Françai…",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk0MDQwMzYxNCIsInMiOiJmUEI1NjlyaDhSRzhzZC15WlBNVmZBIn0.NbyM_w1VFaihTCgvk-ns3eIObHMnc84Kjh5LWwgSlw4",
+      "contract_time": "part_time",
+      "location": {
+        "display_name": "Saguenay - Lac-Saint-Jean, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Saguenay - Lac-Saint-Jean"
+        ]
+      },
+      "title": "Développeur/développeuse d'application web",
+      "salary_is_predicted": "0",
+      "redirect_url": "https://www.adzuna.ca/details/5940403614?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -71.81301,
+      "created": "2026-10-24T07:33:26Z",
+      "latitude": 48.590172,
+      "salary_min": 41600,
+      "company": {
+        "display_name": "Kamara",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      }
+    },
+    {
+      "description": "JOIGNEZ UNE ÉQUIPE GAGNANTE DÉVELOPPEUR WEB BACK-END — STAGE Télétravail Êtes-vous étudiant(e) en informatique, passionné(e) par le développement back-end ? Voici la chance de bâtir de vrais systèmes de qualité production aux côtés d'une équipe dynamique et axée sur les résultats. Si c'est le cas, cette opportunité est pour vous! À PROPOS DE CE POSTE Workland offre un stage de 3 mois à titre de développeur web back-end, ouvert aux étudiants actuellement inscrits dans un programme reconnu en inf…",
+      "longitude": -73.55424,
+      "latitude": 45.49661,
+      "created": "2026-10-03T01:46:37Z",
+      "redirect_url": "https://www.adzuna.ca/details/5909547315?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "DÉVELOPPEUR WEB BACK-END — STAGE (2026-2027)",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5909547315",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Workland"
+      },
+      "location": {
+        "display_name": "Verdun, Montréal",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal",
+          "Verdun"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTkwOTU0NzMxNSIsInMiOiJmUEI1NjlyaDhSRzhzZC15WlBNVmZBIn0.L6FeF-eO2diTH3AfBDFaUJRdqlBzsW9QG4Hbc5Ec5pg",
+      "contract_time": "full_time"
+    },
+    {
+      "id": "5904200467",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Functional Anayst",
+      "redirect_url": "https://www.adzuna.ca/details/5904200467?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-09-30T15:27:58Z",
+      "latitude": 45.544959,
+      "longitude": -73.588138,
+      "description": "Functional Analyst Location: Montreal, Quebec, Canada (On-site) Who we are Valnet Inc., the world’s premier digital media investment company, owns and operates over 27 highly authoritative brands across various verticals, including entertainment, sports, technology, automotive, gaming, and travel. Specializing in acquiring, operating, and growing properties that are mission-critical in their respective environments, Valnet is at the forefront of media investment . The opportunity: Valnet is see…",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTkwNDIwMDQ2NyIsInMiOiJmUEI1NjlyaDhSRzhzZC15WlBNVmZBIn0.CMe-7zFeoxPSmSmN5leO83vYzq-VSExdWTfW3vTaxZc",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "company": {
+        "display_name": "Valnet Inc.",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      }
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Robotiq"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Chaudière - Appalaches",
+          "Les Chutes-de-la-Chaudière",
+          "Saint-Rédempteur"
+        ],
+        "display_name": "Saint-Rédempteur, Les Chutes-de-la-Chaudière",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiZlBCNTY5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1ODQ3OTU4NzMxIn0.OURF3BkiUgRJp6BTBRhc8dSpNvRr4vfTLDU7ow5iVjk",
+      "contract_time": "full_time",
+      "redirect_url": "https://www.adzuna.ca/details/5847958731?utm_medium=api&utm_source=9ca5241a",
+      "description": "Chez Robotiq , notre mission est claire : libérer les mains humaines des tâches répétitives. Nous accompagnons les manufacturiers et les concepteurs de solutions d’IA physique grâce à des composants robotiques intelligents et des cellules de travail prêtes à l’emploi, qui génèrent des résultats mesurables sur le plancher de production. Ce qui distingue notre approche? Nous « productisons » l’automatisation au lieu de la traiter comme un projet d’ingénierie sur mesure. Nous intégrons l’intellige…",
+      "longitude": -71.30708,
+      "created": "2026-08-19T04:32:56Z",
+      "latitude": 46.69529,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur.se Web Fullstack",
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5847958731"
+    },
+    {
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Brossard, Champlain",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Champlain",
+          "Brossard"
+        ]
+      },
+      "company": {
+        "display_name": "Genetec",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "contract_time": "full_time",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiZlBCNTY5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1ODM4NjQzMjMwIn0.eWxjzk4ofwAnGZPUdOimSNUuPYCYQsc9aJctyt2r42w",
+      "redirect_url": "https://www.adzuna.ca/details/5838643230?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.458603,
+      "created": "2026-08-12T13:31:52Z",
+      "description": "La dynamique de votre équipe : Nous recherchons un(e) développeur(euse) web front-end senior pour rejoindre l’équipe de développement UX et contribuer à définir les fondements de l’expérience utilisateur pour l’ensemble des produits Genetec. À ce poste, vous contribuerez à l’évolution de Gelato, le système de conception de Genetec, de notre plateforme de micro-front-ends, ainsi que des outils permettant aux concepteurs et aux développeurs de créer à grande échelle des expériences utilisateur co…",
+      "longitude": -73.467023,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5838643230",
+      "title": "Développeur(euse) web front-end senior / Senior Front-End Web Developer",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0"
+    },
+    {
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "id": "5837138118",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Développeur(euse) web front-end senior / Senior Front-End Web Developer",
+      "redirect_url": "https://www.adzuna.ca/details/5837138118?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-08-11T16:21:12Z",
+      "latitude": 45.544959,
+      "longitude": -73.588138,
+      "description": "La dynamique de votre équipe : Nous recherchons un(e) développeur(euse) web front-end senior pour rejoindre l’équipe de développement UX et contribuer à définir les fondements de l’expérience utilisateur pour l’ensemble des produits Genetec. À ce poste, vous contribuerez à l’évolution de Gelato, le système de conception de Genetec, de notre plateforme de micro-front-ends, ainsi que des outils permettant aux concepteurs et aux développeurs de créer à grande échelle des expériences utilisateur co…",
+      "contract_time": "full_time",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiZlBCNTY5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1ODM3MTM4MTE4In0.hCaGds9DYaJrBL1snDEbf4S4PfGuZzGV1KE7wFTHLY0",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "company": {
+        "display_name": "Genetec",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      }
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5806160381?utm_medium=api&utm_source=9ca5241a",
+      "contract_time": "full_time",
+      "title": "Analyste-Programmeur Angular (F/H)",
+      "longitude": -71.21747,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Québec City",
+          "Beauport"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Beauport, Québec City"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiYUxkRDdOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1ODA2MTYwMzgxIn0.v4WgvGxS8Z6a2-SSyHXDt_AjWE3Qxo92bbPHRGFlJ-I",
+      "id": "5806160381",
+      "salary_is_predicted": "0",
+      "company": {
+        "display_name": "Solution SFT",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "latitude": 46.80904,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "created": "2026-07-18T09:14:36Z",
+      "description": "À propos du mandat Nous recherchons des analystes-programmeurs Angular pour un mandat d'envergure en modernisation et transformation numérique au sein d'une organisation publique. Vous participerez à la conception et au développement d'interfaces adaptatives modernes, en collaboration étroite avec les équipes back-end. Responsabilités Participer à l'analyse et à la conception d'interfaces adaptatives de qualité Développer les fonctionnalités retenues à l'aide du framework Angular Programmer et …"
+    },
+    {
+      "id": "5806160382",
+      "salary_is_predicted": "0",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Solution SFT"
+      },
+      "latitude": 46.816056,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "created": "2026-07-18T09:14:36Z",
+      "description": "À propos du mandat Nous recherchons un analyste-programmeur web multiniveaux pour un mandat d'envergure en modernisation et transformation numérique au sein d'une organisation publique. Vous interviendrez sur l'ensemble de la chaîne de développement web, du client au serveur, dans un environnement technologique varié. Responsabilités Participer à l'architecture, à la conception et au développement de solutions et composantes Web Mettre en place les tests unitaires, fonctionnels et d'intégration…",
+      "redirect_url": "https://www.adzuna.ca/details/5806160382?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -71.252738,
+      "title": "Analyste-programmeur web multiniveaux - Angular / Node.js / PHP (F/H)",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Québec City"
+        ],
+        "display_name": "Québec City, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTgwNjE2MDM4MiIsInMiOiJhTGREN05yaDhSR3cwYjRJMGFHWHl3In0.Jgm1FkEBM9YGqktN1LVgoQpn5gxh7Vg8wHcUmLlxZ7Y"
+    },
+    {
+      "salary_is_predicted": "0",
+      "id": "5764671779",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Gest-Can RLX"
+      },
+      "latitude": 45.57212,
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "created": "2026-06-15T17:03:15Z",
+      "description": "Les contenants I.M.L d’Amérique du Nord Inc. est une entreprise dynamique qui œuvre dans le domaine de l’emballage alimentaire et qui met de l’avant la collaboration entre les collègues de travail, les relations enrichissantes avec ces derniers et les clients, et qui proscrit à des normes de qualité de très hauts niveaux. Nous sommes actuellement à la recherche de personnes qui désirent s’impliquer dans une entreprise en pleine expansion. Tes responsabilités: Développement et maintenance : Conc…",
+      "redirect_url": "https://www.adzuna.ca/details/5764671779?utm_medium=api&utm_source=9ca5241a",
+      "title": "Développeur(Euse) Web",
+      "longitude": -74.27655,
+      "contract_time": "full_time",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "display_name": "Saint-Andre-d'Argenteuil, Argenteuil",
+        "area": [
+          "Canada",
+          "Québec",
+          "Laurentides",
+          "Argenteuil",
+          "Saint-Andre-d'Argenteuil"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiYUxkRDdOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1NzY0NjcxNzc5In0.1ZUbjK_Tj8hcztfljl8slsMaXiSn5QwiXnBkVGg7YKA"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5546348739?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "contract_time": "full_time",
+      "title": "Développeur(euse) logiciel / Software Developer - C#/Web",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTU0NjM0ODczOSIsInMiOiJhTGREN05yaDhSR3cwYjRJMGFHWHl3In0.8pDOJRc0u-wHBSvs-LG7klkueIGkEpySEdSzW9MiTxg",
+      "salary_is_predicted": "0",
+      "id": "5546348739",
+      "company": {
+        "display_name": "Genetec",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "latitude": 45.544959,
+      "created": "2025-12-17T17:03:56Z",
+      "description": "La dynamique de votre équipe : Joignez-vous à une équipe passionnée qui travaille avec les toutes dernières technologies en développement logiciel. Voici quelques exemples des technologies utilisées dans le projet : Écosystème de micro-services écrits avec la dernière version C#/ ASP.NET Plusieurs bases de données NoSQL tel que MongoDB, ElasticSearch et Redis Interfaces utilisateurs développées en ReactJS avec : TypeScript, MaterialUI, ViteJS, Cypress, Tanstack Communication asynchrone utilisan…"
+    }
+  ]
+}

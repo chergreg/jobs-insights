@@ -1,0 +1,1239 @@
+{
+  "search": {
+    "keyword": "technicien informatique",
+    "location": "Québec, Québec",
+    "category": "it-jobs",
+    "results_per_page": 20,
+    "max_pages": 2
+  },
+  "pages": [
+    {
+      "page": 1,
+      "returned": 20,
+      "total_count": 38
+    },
+    {
+      "page": 2,
+      "returned": 18,
+      "total_count": 38
+    }
+  ],
+  "results": [
+    {
+      "title": "Poste régulier – Technicienne ou technicien en informatique, classe principale - Direction des ressources informationnelles (2026-50)",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiYkFtUjd0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY0MTk0NDUxIn0.Q_cGlVOC4_xJ8eJemPWmippDxSkn3fWHKUttQNTKnII",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Mauricie",
+          "Francheville",
+          "Trois-Rivières"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Trois-Rivières, Francheville"
+      },
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "redirect_url": "https://www.adzuna.ca/details/5964194451?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 46.35473,
+      "contract_time": "full_time",
+      "created": "2026-11-13T01:58:51Z",
+      "company": {
+        "display_name": "Cégep de Trois-Rivières",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5964194451",
+      "description": "Classe d’emploi : Technicienne ou technicien en informatique, classe principale Département : Direction des ressources informationnelles Lieu : La prestation de travail s’effectue dans les différents bâtiments du Cégep de Trois-Rivières. Après une période d’intégration et une entente avec le gestionnaire, il est possible d’adopter un mode de travail hybride (présence et télétravail). Supérieur immédiat : Monsieur Billy Angers Statut : Poste régulier, temps complet. Entrée en fonction : Dès que …",
+      "longitude": -72.57322
+    },
+    {
+      "title": "Analyste spécialisé(e) en informatique – Ingénieur de données",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "redirect_url": "https://www.adzuna.ca/details/5962895133?utm_medium=api&utm_source=9ca5241a",
+      "contract_type": "permanent",
+      "salary_min": 65478,
+      "id": "5962895133",
+      "created": "2026-11-12T05:03:46Z",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2Mjg5NTEzMyIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.0mNvaDBuBV1Suucl_d43_IVhlNotGmNrAAZ6bhtbcRY",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec City, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Québec City"
+        ]
+      },
+      "salary_max": 120120,
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "latitude": 46.816056,
+      "description": "Job Description À Santé Québec, prendre soin des gens est au cœur de notre engagement. C'est ce qui nous unit et nous anime. Nous regroupons les 30 établissements publics de santé et de services sociaux du Québec et comptons sur l'engagement de près de 325 000 personnes qui, chaque jour, mettent leur savoir-faire au service du mieux-être de toute la population. Nous croyons que c'est par la collaboration, l'engagement, le respect, la bienveillance et l'excellence que se construit un réseau plus…",
+      "longitude": -71.252738,
+      "company": {
+        "display_name": "Santé Québec",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      }
+    },
+    {
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1NDg1MCIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.1ZggWE44haXmw__iZ3ogRrDqqdrwe71mLk9vovqrvSA",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec"
+        ],
+        "display_name": "Québec, Canada",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "title": "Expert en cybersécurité/Experte en cybersécurité",
+      "created": "2026-11-11T12:23:21Z",
+      "id": "5961954850",
+      "description": "Expert en cybersécurité/Experte en cybersécurité Expert en cybersécurité/Experte en cybersécurité Notre client, grande institution du secteur public, est actuellement à la recherche d’un(e) Spécialiste en cybersécurité - volet sécurité offensive pour un temps partiel (2 à 3 jours par semaine). Pigiste/consultant(e) sont bienvenu(e)s Début visé le 9 juillet Localisation Québec ou Montréal, au choix Télétravail et présentiel 8 ans d'expérience en cybersécurité dont, au moins 3 ans en Red/Purple T…",
+      "longitude": -72.213404,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "ITI"
+      },
+      "latitude": 47.262372,
+      "redirect_url": "https://www.adzuna.ca/details/5961954850?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiYkFtUjd0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTYxOTM3MTM0In0.I7QRhm98RTEgTcM5s2ybYXxObGDnB7_VrgVciLxGMxw",
+      "title": "Cisco VoIP Specialist [5005]",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5961937134?utm_medium=api&utm_source=9ca5241a",
+      "description": "Alteo is looking for a Cisco VoIP Specialist for a permanent position based in Montreal.  Hybrid Work  You will be responsible for monitoring and executing tasks to ensure the continuity of network services. This includes change planning and configuring alerts. You will also meet with clients, analyze their needs, apply your specific expertise, contribute to the development of implementation plans, and monitor the execution of tasks. RESPONSIBILITIES: Collaborates on information technology arch…",
+      "id": "5961937134",
+      "contract_type": "permanent",
+      "longitude": -73.588138,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Alteo"
+      },
+      "created": "2026-11-11T12:19:20Z"
+    },
+    {
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiYkFtUjd0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTYxNDU1MTQ2In0.kOVokF7bx8K2BU7nGg1jCyFH42FtVHXuE584LUHLRUY",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Chaudière - Appalaches",
+          "Desjardins",
+          "Lévis"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Lévis, Desjardins"
+      },
+      "title": "Technicien(ne) systèmes informatiques",
+      "created": "2026-11-11T04:47:30Z",
+      "contract_time": "full_time",
+      "id": "5961455146",
+      "longitude": -71.172791,
+      "description": "Description À titre de Technicien(ne) en systèmes informatiques, vous aurez à fournir du soutien aux utilisateurs. Vous aurez également comme tâches de configurer, d’installer, d’entretenir, de réparer et de modifier le matériel informatique tel que des ordinateurs, des imprimantes, équipements de réseautique et des appareils périphériques. Plus spécifiquement, vous aurez à : Configurer, déployer, entretenir et réparer des ordinateurs, postes de travail, téléphones cellulaires, tablettes et aut…",
+      "company": {
+        "display_name": "Chantier Davie Canada",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "latitude": 46.804026,
+      "redirect_url": "https://www.adzuna.ca/details/5961455146?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "salary_is_predicted": "0",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTI0NzM5NyIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.gbGRU4zexYt9pJdnEKlCsL5CHalqmcLFSx9mESaru7E",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Longueuil, Champlain",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Champlain",
+          "Longueuil"
+        ]
+      },
+      "title": "Analyste spécialisé en informatique - Service des technologies de l'information",
+      "description": "Vous souhaitez travailler pour une organisation qui a à coeur la réussite de ses élèves tout comme le bien-être de ses employés? Le Centre de services scolaire Marie-Victorin compte sur vous! Le Service des technologies de l’information recherche un analyste spécialisé en informatique pour combler un contrat à temps plein (35 heures par semaine) d'une durée de 2 ans. Votre rôle Sous la supervision du coordonnateur de l’infrastructure et des télécommunications, l’analyste spécialisé assume la co…",
+      "id": "5961247397",
+      "longitude": -73.50439,
+      "company": {
+        "display_name": "Centre de services scolaire Marie-Victorin",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "created": "2026-11-11T01:59:20Z",
+      "contract_time": "full_time",
+      "latitude": 45.54013,
+      "redirect_url": "https://www.adzuna.ca/details/5961247397?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "salary_is_predicted": "0",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec City, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Québec City"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk1MzU1NzY0NSIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.DvUUjADATrisi2ifJwuEUdijk1C_eCcjxJN73qkutDU",
+      "title": "Technicien•ne support technique",
+      "id": "5953557645",
+      "longitude": -71.252738,
+      "description": "Ã propos de Logiciels Sport-Plus Depuis 1989, Logiciels Sport-Plus dÃ©veloppe des solutions logicielles innovantes pour simplifier la gestion des services rÃ©crÃ©atifs, des centres sportifs, des organismes Ã but non lucratif et des municipalitÃ©s. Nos applications couvrent l'inscription, la rÃ©servation, la location, la billetterie et la gestion des Ã©quipements, avec des interfaces intuitives et un hÃ©bergement sÃ©curisÃ© accessible 24/7. Nous sommes fiers d'accompagner nos clients grÃ¢ce Ã d…",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Equest"
+      },
+      "created": "2026-11-04T20:14:34Z",
+      "latitude": 46.816056,
+      "redirect_url": "https://www.adzuna.ca/details/5953557645?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5953554623?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 46.816056,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Equest"
+      },
+      "id": "5953554623",
+      "description": "Ã propos de Logiciels Sport-Plus Depuis 1989, Logiciels Sport-Plus dÃ©veloppe des solutions logicielles innovantes pour simplifier la gestion des services rÃ©crÃ©atifs, des centres sportifs, des organismes Ã but non lucratif et des municipalitÃ©s. Nos applications couvrent l'inscription, la rÃ©servation, la location, la billetterie et la gestion des Ã©quipements, avec des interfaces intuitives et un hÃ©bergement sÃ©curisÃ© accessible 24/7. Nous sommes fiers d'accompagner nos clients grÃ¢ce Ã d…",
+      "longitude": -71.252738,
+      "created": "2026-11-04T20:13:57Z",
+      "title": "Technicien•ne support technique",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk1MzU1NDYyMyIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.Yb5GZRNC-_QQmCf1iIuNjxZb9ncLbbGx66WmWyMDBK8",
+      "location": {
+        "display_name": "Québec City, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Québec City"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      }
+    },
+    {
+      "created": "2026-11-04T10:52:20Z",
+      "description": "Job Description Job Description À travers le département des radiocommunications, l'implication du Pilote des applications est cruciale car il assure le lien entre l'infrastructure technologique complexe (réseaux voix ADF, transmission de données RTD) et les besoins concrets des utilisateurs de première ligne. Ses domaines d'intervention majeurs : Maintien Opérationnel (MCO) : Il garantit que les applications de radiocommunication sont toujours disponibles et performantes, ce qui est vital pour…",
+      "id": "5953123504",
+      "longitude": -72.213404,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Solution SFT"
+      },
+      "latitude": 47.262372,
+      "redirect_url": "https://www.adzuna.ca/details/5953123504?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec, Canada",
+        "area": [
+          "Canada",
+          "Québec"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk1MzEyMzUwNCIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.tJiAczt5PL3GfSUJxknykl9fGvKpUu8aFkScC4TRGEY",
+      "title": "Pilote des applications"
+    },
+    {
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Cisco VoIP Specialist [5005]",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk1MTY2MDM4MCIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.Rgib1bu4ch82nwAFX5p-nMZ_iPtUrUnF966pUuCIgvs",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "created": "2026-11-03T07:11:24Z",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Alteo"
+      },
+      "id": "5951660380",
+      "contract_type": "permanent",
+      "longitude": -73.588138,
+      "description": "Job Description Job Description Alteo is looking for a Cisco VoIP Specialist for a permanent position based in Montreal.  Hybrid Work  You will be responsible for monitoring and executing tasks to ensure the continuity of network services. This includes change planning and configuring alerts. You will also meet with clients, analyze their needs, apply your specific expertise, contribute to the development of implementation plans, and monitor the execution of tasks. RESPONSIBILITIES: > Architect…",
+      "redirect_url": "https://www.adzuna.ca/details/5951660380?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959
+    },
+    {
+      "latitude": 45.715103,
+      "redirect_url": "https://www.adzuna.ca/details/5948016062?utm_medium=api&utm_source=9ca5241a",
+      "description": "Job Description Job Description IPS est à la recherche de professionnels en TI pour renforcer l'infrastructure technologique de notre équipe innovante. Chez IPS, nous savons que des idées novatrices et des projets d'envergure reposent sur des solutions informatiques solides et fiables. Votre développement professionnel et votre expertise sont notre priorité, avec des opportunités illimitées pour faire progresser votre carrière. Nous soutenons nos collaborateurs grâce à un ensemble d'avantages s…",
+      "salary_min": 65000,
+      "id": "5948016062",
+      "longitude": -73.662377,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Integrated Power Services"
+      },
+      "created": "2026-10-31T08:15:17Z",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiYkFtUjd0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTQ4MDE2MDYyIn0.9r1-iNc1i-uCp5cBXy9qlxP9Vrwp-Kali8wXML0CDqQ",
+      "location": {
+        "display_name": "Terrebonne, Les Moulins",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Lanaudière",
+          "Les Moulins",
+          "Terrebonne"
+        ]
+      },
+      "title": "Technicien.ne en Informatique",
+      "salary_max": 85000,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      }
+    },
+    {
+      "company": {
+        "display_name": "Robover",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5945478946",
+      "description": "Résumé du poste Sous la supervision du Directeur TI, le technicien en support informatique assure le soutien technique aux usagers du bureau et de l’usine ainsi que le déploiement et l’entretien du parc informatique. Autonome et méthodique, il contribue à la continuité des opérations et à l’amélioration des services TI, en collaboration avec l’administrateur systèmes et réseaux. Responsabilités principales Offrir un soutien technique matériel et logiciel aux usagers du bureau et de l’usine. Ana…",
+      "longitude": -72.213404,
+      "contract_time": "full_time",
+      "created": "2026-10-29T05:24:15Z",
+      "redirect_url": "https://www.adzuna.ca/details/5945478946?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 47.262372,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "title": "Technicien(ne) informatique",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk0NTQ3ODk0NiIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.lseW_cmSANR1Mb0MFw4yWQcfOKyIT1xQo-UAaPeUfP8",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec, Canada"
+      }
+    },
+    {
+      "created": "2026-10-28T07:34:08Z",
+      "salary_min": 70000,
+      "id": "5944454353",
+      "contract_type": "permanent",
+      "redirect_url": "https://www.adzuna.ca/details/5944454353?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Technicien/technicienne en informatique",
+      "contract_time": "full_time",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Alliance Ressources Humaines Inc."
+      },
+      "longitude": -73.840743,
+      "description": "Description de l’offre d’emploi Tu es la personne qu’on appelle quand plus personne ne trouve? Le N1 a redémarré. Le N2 a vidé la cache. Toi, tu sais déjà que c’est le DNS. On veut te rencontrer. Pourquoi Grav-iti? Grav-iti est une firme de consultation TI en pleine croissance qui garde les infrastructures des PME fiables et sécuritaires. Chaque client t’amène un nouvel environnement et de nouveaux défis. Ici, tu n’es pas un numéro dans une file de billets : tu es une référence technique pour l…",
+      "latitude": 45.618395,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk0NDQ1NDM1MyIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.JB34t7dkaIYB6BbdkCyKIb38jxUrXm7WKpfDb-QLRO8",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Laurentides",
+          "Thérèse-De Blainville",
+          "Boisbriand"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Boisbriand, Thérèse-De Blainville"
+      }
+    },
+    {
+      "created": "2026-10-22T04:58:56Z",
+      "contract_time": "full_time",
+      "id": "5937650178",
+      "description": "←Back to all jobs at VERBOM INC Technicien en informatique - Support et réseau Chez Verbom, l’informatique fait rouler la production. Nos trois usines dépendent de systèmes fiables : notre ERP IFS, notre infrastructure, nos services Microsoft, nos ordinateurs, Microsoft 365, et le réseau qui relie tout ça. On cherche quelqu’un de débrouillard qui aime régler des problèmes concrets, qui veut toucher à tout et qui a envie de grandir vers l’administration réseau. Ici, pas de billets qui passent de…",
+      "longitude": -71.96295,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Verbom"
+      },
+      "latitude": 45.4001,
+      "redirect_url": "https://www.adzuna.ca/details/5937650178?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTkzNzY1MDE3OCIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.17YF0uioR8pdtvztR5iu2NNstGcZ1yLCsm3n0A0MjIU",
+      "location": {
+        "display_name": "Saint-François-d'Orleans, Sherbrooke",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Estrie",
+          "Sherbrooke",
+          "Saint-François-d'Orleans"
+        ]
+      },
+      "title": "Technicien en informatique - Support et réseau"
+    },
+    {
+      "salary_min": 52000,
+      "id": "5922036391",
+      "contract_type": "permanent",
+      "created": "2026-10-10T07:09:29Z",
+      "redirect_url": "https://www.adzuna.ca/details/5922036391?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Technicien/technicienne en informatique",
+      "description": "Description de l'entreprise Supportic Conseils inc. est une entreprise québécoise spécialisée dans le placement des ressources qualifiées en technologies de l'information Description de l’offre d’emploi Supportic Conseils inc. recherche 2 technicien(ne)s en support bureautique Poste en présentiel à Québec, dans un environnement technologique moderne et critique. Responsabilités principales Support technique niveau 1 et 2 auprès des utilisateurs. Installation, configuration et entretien des post…",
+      "longitude": -72.213404,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Supportic Conseils Inc."
+      },
+      "contract_time": "full_time",
+      "latitude": 47.262372,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec, Canada",
+        "area": [
+          "Canada",
+          "Québec"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiYkFtUjd0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTIyMDM2MzkxIn0.OGSTh4nPf7e3c2SFS1qRXGWtdf61IxBd7YudkMr-mQY"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Technicien en informatique",
+      "contract_type": "permanent",
+      "salary_min": 50,
+      "id": "5913599219",
+      "created": "2026-10-06T04:56:01Z",
+      "redirect_url": "https://www.adzuna.ca/details/5913599219?utm_medium=api&utm_source=9ca5241a",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "salary_max": 50,
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiYkFtUjd0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTEzNTk5MjE5In0.qoD9w6U7lECDb0tOpLYZuohLSqrs-g259gmkmQ7NN70",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Wolinak, Bécancour",
+        "area": [
+          "Canada",
+          "Québec",
+          "Centre-du-Québec",
+          "Bécancour",
+          "Wolinak"
+        ]
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Grand Royal Wolinak S.E.C."
+      },
+      "longitude": -72.42237,
+      "description": "Description du poste 1. 1. Description de l’Organisation Le Grand Royal Wôlinak Casino en collaboration avec la communauté Abénakis de Wôlinak veut développer les activités et les retombés économiques de la communauté et de la région. Le Grand Royal Wôlinak Casino veut offrir à sa clientèle une expérience de jeux et de divertissements unique en région. Le LGRW casino a développé un concept de jeux adaptés aux besoins de chacun de ces visiteurs. Le LGRW Casino a mis en place une expérience diver…",
+      "contract_time": "full_time",
+      "latitude": 46.32856
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "title": "Technicien(ne) en soutien informatique – Niveau 1",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTkwNjYzMjkxNiIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.H2NYQ1dn_8J6j5nhfJvKQDmiTOdP_T6jhXoz0OPk510",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Vaudreuil-Soulanges",
+          "L'Île-Perrot"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "L'Île-Perrot, Vaudreuil-Soulanges"
+      },
+      "company": {
+        "display_name": "Sanivac",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5906632916",
+      "description": "Sanivac est à la recherche d’un(e) technicien(ne) informatique pour offrir un soutien de première ligne aux employés du Groupe Kelly et de ses différentes entreprises. Tu seras la personne-ressource pour résoudre les problèmes informatiques du quotidien, préparer les équipements et accompagner les utilisateurs, autant au bureau que sur le terrain. C’est une excellente porte d’entrée en TI pour développer ton expertise dans un environnement concret et diversifié. Tu travailleras avec une équipe …",
+      "longitude": -73.9662,
+      "created": "2026-10-01T21:24:15Z",
+      "redirect_url": "https://www.adzuna.ca/details/5906632916?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.39078
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5902583221?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.53335,
+      "contract_time": "full_time",
+      "created": "2026-09-29T02:10:03Z",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Centre de services scolaire des Patriotes"
+      },
+      "id": "5902583221",
+      "longitude": -73.34352,
+      "description": "T-4278-070-2627-91689 LIEU DE TRAVAIL : Service des ressources informatiques STATUT : Remplacement congé de maternité - 35 h/semaine CORPS D'EMPLOI – ÉCHELLE : 4278 - 28,40 à 40,88 $/heure Vous faites preuve de leadership, d’ouverture et d’engagement ? Ça tombe bien, ce sont justement les valeurs qu’on véhicule. Ici, l’évolution, les possibilités et le climat de travail bienveillant sont au cœur de notre quotidien. Découvrez pourquoi vous aurez L'espace pour grandir avec nous, en visionnant cet…",
+      "title": "Technicienne ou technicien en informatique classe principale - Support applicatif (niveau 2) et SQL",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Saint-Bruno, La Vallée-du-Richelieu",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "La Vallée-du-Richelieu",
+          "Saint-Bruno"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTkwMjU4MzIyMSIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.yKAZLYgxuuyEfvcTltc3ZokG3QPt3GcMlyuTL7Ko1Y0",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "salary_max": 70000,
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Saint-François-d'Orleans, Sherbrooke",
+        "area": [
+          "Canada",
+          "Québec",
+          "Estrie",
+          "Sherbrooke",
+          "Saint-François-d'Orleans"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTg5OTA3Nzc1NCIsInMiOiJiQW1SN3RyaDhSRzIxZDJXQmRwRV9nIn0.SviS3UVH4KMHaST791pHP4qAkQiUaw5XwMD4TClBCkc",
+      "company": {
+        "display_name": "Solulan",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "description": "Technicien(ne) informatique Niveau 2 - Sherbrooke This role requires a strong knowledge of French Nous sommes présentement à la recherche d’un(e) Technicien(ne) informatique pour se joindre à l’équipe de Services TI sur la route (région Sherbrooke) et contribuer à notre mission. Devenez la face cachée du succès de Solulan! Depuis 1999, Solulan accompagne les organisations dans leur transformation numérique en offrant des services de consultation, d’intégration et de support pour des solutions T…",
+      "longitude": -71.898095,
+      "latitude": 45.393139,
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Technicien Informatique Niveau 2 - Sherbrooke",
+      "created": "2026-09-25T22:22:13Z",
+      "salary_min": 60000,
+      "contract_type": "permanent",
+      "id": "5899077754",
+      "redirect_url": "https://www.adzuna.ca/details/5899077754?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Technicien·ne informatique - Support niveau 1",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiYkFtUjd0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1ODkzNjIzMjYxIn0.VHf5URJU8CgtFN90WoUhKPPODTtJvuY2t9ELKKPXf_E",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Centre-du-Québec",
+          "Drummond",
+          "Saint-Germain-de-Grantham"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Saint-Germain-de-Grantham, Drummond"
+      },
+      "contract_time": "full_time",
+      "created": "2026-09-22T01:43:16Z",
+      "company": {
+        "display_name": "Annexair Inc.",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "longitude": -72.56471,
+      "id": "5893623261",
+      "description": "Et si tu changeais d’air ? Chez Annexair, tu contribueras à la fabrication de systèmes HVAC sur mesure destinés à certains des plus grands joueurs au monde : Marriott, Facebook et même Universal Studio. Chaque projet est unique. Chaque journée a un impact. En plus, ton travail contribue à des solutions plus écoénergétiques et plus durables. Arrête de chercher, la suite commence ici! Ce qu'on t'offre Cafétéria hors du commun 2 semaines de fermeture durant l’été & pendant la période des fêtes Ass…",
+      "redirect_url": "https://www.adzuna.ca/details/5893623261?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.84484
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Annexair Inc."
+      },
+      "salary_is_predicted": "0",
+      "id": "5893623263",
+      "latitude": 45.84484,
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "created": "2026-09-22T01:43:16Z",
+      "description": "Et si tu changeais d’air ? Chez Annexair, tu contribueras à la fabrication de systèmes HVAC sur mesure destinés à certains des plus grands joueurs au monde : Marriott, Facebook et même Universal Studio. Chaque projet est unique. Chaque journée a un impact. En plus, ton travail contribue à des solutions plus écoénergétiques et plus durables. Arrête de chercher, la suite commence ici! Ce qu'on t'offre Cafétéria hors du commun 2 semaines de fermeture durant l’été & pendant la période des fêtes Ass…",
+      "longitude": -72.56471,
+      "title": "Technicien·ne informatique - Support niveau 2-3 (Sénior)",
+      "contract_time": "full_time",
+      "redirect_url": "https://www.adzuna.ca/details/5893623263?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Saint-Germain-de-Grantham, Drummond",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Centre-du-Québec",
+          "Drummond",
+          "Saint-Germain-de-Grantham"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTg5MzYyMzI2MyIsInMiOiJSczl5NzlyaDhSR3cwYjRJMGFHWHl3In0.1GFQ6zs41bJrIBmRUameeIAuwNlp7ZD4Bbt_mO5ryuQ"
+    },
+    {
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Laval region",
+          "Laval"
+        ],
+        "display_name": "Laval, Laval region"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTg4OTY0NzgwNSIsInMiOiJSczl5NzlyaDhSR3cwYjRJMGFHWHl3In0.8gvPIUEcX0mXthupEUVYwy4kqTswg3_wIF_V3Kr5koo",
+      "contract_time": "full_time",
+      "title": "Technicien en soutien informatique",
+      "redirect_url": "https://www.adzuna.ca/details/5889647805?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-09-18T13:29:08Z",
+      "description": "TEHORA est présentement à la recherche des techniciens en soutien informatique à distance possédant une expérience en assistance aux utilisateurs, diagnostic d’incidents et soutien bureautique dans des environnements technologiques complexes. Ces ressources participeront aux opérations du centre d’assistance du ministère et assureront le premier niveau de soutien aux utilisateurs partout au Québec. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Rec…",
+      "company": {
+        "display_name": "TEHORA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5889647805",
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      }
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "TEHORA"
+      },
+      "salary_is_predicted": "0",
+      "id": "5889647803",
+      "latitude": 45.544959,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "created": "2026-09-18T13:29:08Z",
+      "description": "TEHORA est présentement à la recherche des techniciens en soutien informatique à distance possédant une expérience en assistance aux utilisateurs, diagnostic d’incidents et soutien bureautique dans des environnements technologiques complexes. Ces ressources participeront aux opérations du centre d’assistance du ministère et assureront le premier niveau de soutien aux utilisateurs partout au Québec. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Rec…",
+      "title": "Technicien en soutien informatique",
+      "longitude": -73.588138,
+      "contract_time": "full_time",
+      "redirect_url": "https://www.adzuna.ca/details/5889647803?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTg4OTY0NzgwMyIsInMiOiJSczl5NzlyaDhSR3cwYjRJMGFHWHl3In0.9aMJEY95whLo9PTG-exUoScL0OVf5JYhuUfeQjyVrEI"
+    },
+    {
+      "created": "2026-09-18T13:29:08Z",
+      "description": "TEHORA est présentement à la recherche des techniciens en soutien informatique à distance possédant une expérience en assistance aux utilisateurs, diagnostic d’incidents et soutien bureautique dans des environnements technologiques complexes. Ces ressources participeront aux opérations du centre d’assistance du ministère et assureront le premier niveau de soutien aux utilisateurs partout au Québec. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Rec…",
+      "id": "5889647797",
+      "salary_is_predicted": "0",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "TEHORA"
+      },
+      "latitude": 46.816056,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Québec City"
+        ],
+        "display_name": "Québec City, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiUnM5eTc5cmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1ODg5NjQ3Nzk3In0.8_Vo1y515zMF5g_M8nN6MSpEhL8c499fZx_KAUqF3vQ",
+      "redirect_url": "https://www.adzuna.ca/details/5889647797?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -71.252738,
+      "title": "Technicien en soutien informatique",
+      "contract_time": "full_time"
+    },
+    {
+      "title": "Administrateur·trice de réseaux",
+      "contract_time": "full_time",
+      "redirect_url": "https://www.adzuna.ca/details/5864101230?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Laval, Laval region",
+        "area": [
+          "Canada",
+          "Québec",
+          "Laval region",
+          "Laval"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTg2NDEwMTIzMCIsInMiOiJSczl5NzlyaDhSR3cwYjRJMGFHWHl3In0.7LoDcfzVu4_SHMYdGFw4A3iG6472Q4mFEhp51Ukhq_A",
+      "company": {
+        "display_name": "Laval Transit",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5864101230",
+      "salary_is_predicted": "0",
+      "salary_min": 105164,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "salary_max": 105164,
+      "created": "2026-09-01T04:28:32Z",
+      "description": "Les avantages de travailler à la STL • Rejoignez un environnement de travail respectueux, propice à la collaboration et qui prône l'excellence ; • Profitez de la meilleure balance travail/famille avec des congés mobiles et monnayables ; • Voyagez sans limites avec un titre de transport en commun ; • Bénéficiez d'avantages sociaux dont un régime de retraite, des assurances collectives, un programme d’aide dédié aux employés et à leur famille et des rabais corporatifs ; • Stationnement gratuit ré…"
+    },
+    {
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "salary_min": 59134,
+      "latitude": 46.563699,
+      "created": "2026-08-06T06:40:20Z",
+      "salary_max": 85113,
+      "contract_type": "permanent",
+      "redirect_url": "https://www.adzuna.ca/details/5830335834?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTgzMDMzNTgzNCIsInMiOiJSczl5NzlyaDhSR3cwYjRJMGFHWHl3In0.FmchU8UMh2NfWljfI8pzBVd_-Ml2vNaFGFsACCnOoJI",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Cégep shawinigan"
+      },
+      "id": "5830335834",
+      "description": "Situé en Mauricie, le Cégep de Shawinigan est renommé pour la qualité de sa formation préuniversitaire et technique, il accueille des personnes étudiantes à l’enseignement régulier, à la formation continue ainsi qu’à son Centre d’études collégiales à La Tuque. Fier de son équipe dédiée à la diffusion de savoirs et à la réussite de ses étudiantes et étudiants de tout âge et de tout profil, le Cégep offre un milieu stimulant où l’ouverture, l’engagement, la créativité et l’innovation offrent un e…",
+      "longitude": -72.741941,
+      "title": "technicienne ou technicien en informatique, classe principale",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Mauricie",
+          "Shawinigan"
+        ],
+        "display_name": "Shawinigan, Mauricie"
+      }
+    },
+    {
+      "description": "TEHORA est présentement à la recherche d’ un Soutien informatique sénior / Technicien en informatique sénior – DEC afin de participer au soutien, à l’installation, à la configuration et à l’optimisation des environnements technologiques ainsi qu’au soutien des utilisateurs dans des environnements complexes. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Assurer le soutien technique de niveau avancé auprès des utilisateurs; Installer, configurer et …",
+      "created": "2026-07-27T13:06:27Z",
+      "latitude": 46.804026,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "company": {
+        "display_name": "TEHORA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5817526689",
+      "salary_is_predicted": "0",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiUnM5eTc5cmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1ODE3NTI2Njg5In0.NMO5I5qI0ouS8tRWuqM60zRy9k8d8fgYhL6wUeaBrA0",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Chaudière - Appalaches",
+          "Desjardins",
+          "Lévis"
+        ],
+        "display_name": "Lévis, Desjardins"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Soutien informatique sénior / Technicien en informatique - DEC",
+      "longitude": -71.172791,
+      "contract_time": "full_time",
+      "redirect_url": "https://www.adzuna.ca/details/5817526689?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTgxNzUyNjY3NyIsInMiOiJSczl5NzlyaDhSR3cwYjRJMGFHWHl3In0.qdKEaPDFRMLqI1L6VT2vSzaWOEt9YufgQ8Kt5BnQWB8",
+      "redirect_url": "https://www.adzuna.ca/details/5817526677?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "contract_time": "full_time",
+      "title": "Soutien informatique intermédiaire / Technicien en informatique - DEC",
+      "created": "2026-07-27T13:06:26Z",
+      "description": "TEHORA est présentement à la recherche d’ un Soutien informatique intermédiaire / Technicien en informatique intermédiaire – DEC afin d’assurer le soutien technique aux utilisateurs ainsi que l’installation, la configuration et le maintien des équipements et postes de travail. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Assurer le soutien informatique auprès des utilisateurs; Installer, configurer et maintenir les équipements informatiques; Diag…",
+      "salary_is_predicted": "0",
+      "id": "5817526677",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "TEHORA"
+      },
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "latitude": 45.544959
+    },
+    {
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTgxNzUyNjY4MCIsInMiOiJSczl5NzlyaDhSR3cwYjRJMGFHWHl3In0._jJEAOZY0bYULqm730QFzW3VlzZKW-72XmyOyW1XUzQ",
+      "contract_time": "full_time",
+      "longitude": -73.588138,
+      "title": "Soutien informatique sénior / Technicien en informatique - DEC",
+      "redirect_url": "https://www.adzuna.ca/details/5817526680?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-07-27T13:06:26Z",
+      "description": "TEHORA est présentement à la recherche d’ un Soutien informatique sénior / Technicien en informatique sénior – DEC afin de participer au soutien, à l’installation, à la configuration et à l’optimisation des environnements technologiques ainsi qu’au soutien des utilisateurs dans des environnements complexes. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Assurer le soutien technique de niveau avancé auprès des utilisateurs; Installer, configurer et …",
+      "company": {
+        "display_name": "TEHORA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "salary_is_predicted": "0",
+      "id": "5817526680",
+      "latitude": 45.544959,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      }
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiUnM5eTc5cmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1ODE3NTI2Njc0In0.SCJdx20AA6lE_oou-VkiB9fFbD6vlRcaQoTihwm7M6w",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Québec City"
+        ],
+        "display_name": "Québec City, Québec"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "longitude": -71.252738,
+      "title": "Soutien informatique intermédiaire / Technicien en informatique - DEC",
+      "contract_time": "full_time",
+      "redirect_url": "https://www.adzuna.ca/details/5817526674?utm_medium=api&utm_source=9ca5241a",
+      "description": "TEHORA est présentement à la recherche d’ un Soutien informatique intermédiaire / Technicien en informatique intermédiaire – DEC afin d’assurer le soutien technique aux utilisateurs ainsi que l’installation, la configuration et le maintien des équipements et postes de travail. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Assurer le soutien informatique auprès des utilisateurs; Installer, configurer et maintenir les équipements informatiques; Diag…",
+      "created": "2026-07-27T13:06:26Z",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "latitude": 46.816056,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "TEHORA"
+      },
+      "id": "5817526674",
+      "salary_is_predicted": "0"
+    },
+    {
+      "description": "TEHORA est présentement à la recherche d’ un Soutien informatique intermédiaire / Technicien en informatique intermédiaire – DEC afin d’assurer le soutien technique aux utilisateurs ainsi que l’installation, la configuration et le maintien des équipements et postes de travail. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Assurer le soutien informatique auprès des utilisateurs; Installer, configurer et maintenir les équipements informatiques; Diag…",
+      "created": "2026-07-27T13:06:26Z",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "latitude": 46.804026,
+      "salary_is_predicted": "0",
+      "id": "5817526665",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "TEHORA"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiUnM5eTc5cmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1ODE3NTI2NjY1In0.IO7tfe2MFQf_0OVhOwnBEHHOgUu8-ufPwsuG3OZjC_g",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Chaudière - Appalaches",
+          "Desjardins",
+          "Lévis"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Lévis, Desjardins"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5817526665?utm_medium=api&utm_source=9ca5241a",
+      "contract_time": "full_time",
+      "longitude": -71.172791,
+      "title": "Soutien informatique intermédiaire / Technicien en informatique - DEC"
+    },
+    {
+      "contract_time": "full_time",
+      "longitude": -71.252738,
+      "title": "Soutien informatique sénior / Technicien en informatique - DEC",
+      "redirect_url": "https://www.adzuna.ca/details/5817526656?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiUnM5eTc5cmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1ODE3NTI2NjU2In0.QlgfpjwssuNTO9oTUvDCZErrcenzFDfP6fDLo1DNc7Q",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Québec City"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec City, Québec"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "latitude": 46.816056,
+      "company": {
+        "display_name": "TEHORA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "salary_is_predicted": "0",
+      "id": "5817526656",
+      "description": "TEHORA est présentement à la recherche d’ un Soutien informatique sénior / Technicien en informatique sénior – DEC afin de participer au soutien, à l’installation, à la configuration et à l’optimisation des environnements technologiques ainsi qu’au soutien des utilisateurs dans des environnements complexes. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Assurer le soutien technique de niveau avancé auprès des utilisateurs; Installer, configurer et …",
+      "created": "2026-07-27T13:06:26Z"
+    },
+    {
+      "latitude": 45.50687,
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Ton talent, nos opportunités"
+      },
+      "id": "5812903212",
+      "salary_is_predicted": "0",
+      "description": "Chez Lussier, on le vit vraiment! Ici, la priorité, c’est toi. Ce n’est pas seulement quelque chose qu’on dit, c’est ce qu’on vit, vraiment. S’épanouir chez Lussier, c’est décrocher le téléphone le jour et décrocher le soir, pour vrai. C’est avancer dans une carrière qui te ressemble, où tu peux être toi-même et faire une différence. En tant que Technicienne / Technicien informatique • Technologies de l'information, tu assures le support technique avancé auprès des utilisateurs, tu participes à…",
+      "created": "2026-07-23T18:03:32Z",
+      "longitude": -73.56065,
+      "contract_time": "full_time",
+      "title": "Technicienne / Technicien informatique Technologies de l'information",
+      "redirect_url": "https://www.adzuna.ca/details/5812903212?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTgxMjkwMzIxMiIsInMiOiJSczl5NzlyaDhSR3cwYjRJMGFHWHl3In0.4S-U_CXlj8iGfX2orRPilMRvIytXb5p6MTWGciNoOVo",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal",
+          "Westmount"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Westmount, Montréal"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiUnM5eTc5cmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1ODA5ODkzMTg5In0.mUNZ54xsoy_p1vcm8vBBKakLJxnQ2Kpo_WKz8h1N8Xo",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Analyste spécialisé.e en informatique - Réseautique",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5809893189?utm_medium=api&utm_source=9ca5241a",
+      "description": "Informations générales Entreprise: CIUSSS du Centre-Ouest-de-l'Île-de-Montréal Titre de l'emploi: Analyste spécialisé.e en informatique - Réseautique Réf n°: 4955 Direction: Direction des ressources informationnelles Site: Hôpital général juif Ville de l'emploi: Montréal Statut de l'emploi: Permanent à temps plein Quart de travail: Jour Type d'emploi: Syndiqué Nombre d’heures par période de paie: 80 Base (min.): 31.51 Base (max.): 57.81 Catégorie d’emploi: Technologie de l’information (TI) Nomb…",
+      "contract_type": "permanent",
+      "created": "2026-07-21T17:54:08Z",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "latitude": 45.544959,
+      "company": {
+        "display_name": "CIUSSS-du-Centre-Ouest-de-l’Île-de-Montréal",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "salary_is_predicted": "0",
+      "id": "5809893189"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec"
+        ],
+        "display_name": "Québec, Canada"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiUnM5eTc5cmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1ODAzNzk0MzA2In0.G3egXrkyXwKt1iuTV02WH5w5pR9j2uTx1ezWnS8ytC0",
+      "redirect_url": "https://www.adzuna.ca/details/5803794306?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -72.213404,
+      "contract_time": "full_time",
+      "title": "Technicien.ne en informatique - Québec/Lévis",
+      "created": "2026-07-16T17:47:48Z",
+      "contract_type": "permanent",
+      "description": "Technicien(ne) informatique sur la route - Québec/Lévis | Mode hybride (terrain et télétravail) Tu es le genre de personne qu’on appelle quand « rien ne marche »… et qui aime ça? Tu préfères être sur le terrain, comprendre les vrais problèmes et aider les clients concrètement plutôt que de faire toujours la même chose derrière un écran? Tu habites la région de Québec ou Lévis? Si tu es débrouillard, autonome et à l’aise avec les clients, ce rôle pourrait vraiment t’intéresser! À propos de 6tem …",
+      "salary_is_predicted": "0",
+      "id": "5803794306",
+      "company": {
+        "display_name": "Go RH",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "latitude": 47.262372,
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      }
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5636065186?utm_medium=api&utm_source=9ca5241a",
+      "title": "Technicien en soutien aux utilisateurs",
+      "longitude": -71.252738,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Québec City"
+        ],
+        "display_name": "Québec City, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiUnM5eTc5cmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1NjM2MDY1MTg2In0.nbm6Ezn0pME1qN5OEBTPrpEB1h48iQy5A_EAsVmQaJM",
+      "id": "5636065186",
+      "salary_is_predicted": "0",
+      "company": {
+        "display_name": "Solution SFT",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "latitude": 46.816056,
+      "created": "2026-02-19T09:28:14Z",
+      "description": "Exigences de base Posséder un diplôme d’études collégiales (DEC) en informatique reconnu par le ministère de l’Éducation ou l’équivalent. Posséder 5 ans d’expérience comme technicien informatique, dont au moins 2 années en tant que technicien en soutien aux utilisateurs, cumulées au cours des 10 dernières années. Avoir réalisé, à titre de technicien en soutien aux utilisateurs, 2 mandats d’une envergure de plus de 220 jours/personnes au cours des 6 dernières années, et ce, dans un environnement…"
+    },
+    {
+      "company": {
+        "display_name": "Solution SFT",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5617121289",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "latitude": 46.816056,
+      "created": "2026-02-06T04:40:25Z",
+      "description": "À travers le département des radiocommunications, l'implication du Pilote des applications est cruciale car il assure le lien entre l'infrastructure technologique complexe (réseaux voix ADF, transmission de données RTD) et les besoins concrets des utilisateurs de première ligne. Ses domaines d'intervention majeurs : Maintien Opérationnel (MCO) : Il garantit que les applications de radiocommunication sont toujours disponibles et performantes, ce qui est vital pour la sécurité civile. Évolution d…",
+      "longitude": -71.252738,
+      "title": "Pilote des applications",
+      "redirect_url": "https://www.adzuna.ca/details/5617121289?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Québec City"
+        ],
+        "display_name": "Québec City, Québec"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTYxNzEyMTI4OSIsInMiOiJSczl5NzlyaDhSR3cwYjRJMGFHWHl3In0.kJe-urjWv7h7_C_Vs_anOvm5R_bKNDIsk4iqdK7X6JQ"
+    },
+    {
+      "salary_is_predicted": "0",
+      "latitude": 45.71241,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "salary_min": 65000,
+      "salary_max": 85000,
+      "created": "2025-11-25T10:52:01Z",
+      "contract_type": "permanent",
+      "redirect_url": "https://www.adzuna.ca/details/5512905830?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiUnM5eTc5cmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1NTEyOTA1ODMwIn0.4VWHhRRYZOx0kqJsYQ2_9r4KzBJejAvW7eGhFYAE0Wg",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Integrated Power Services"
+      },
+      "id": "5512905830",
+      "description": "IPS est à la recherche de professionnels en TI pour renforcer l'infrastructure technologique de notre équipe innovante. Chez IPS, nous savons que des idées novatrices et des projets d'envergure reposent sur des solutions informatiques solides et fiables. Votre développement professionnel et votre expertise sont notre priorité, avec des opportunités illimitées pour faire progresser votre carrière. Nous soutenons nos collaborateurs grâce à un ensemble d'avantages sociaux complets, un équilibre tr…",
+      "longitude": -73.62491,
+      "title": "Technicien.ne en Informatique",
+      "contract_time": "full_time",
+      "location": {
+        "display_name": "Mascouche, Les Moulins",
+        "area": [
+          "Canada",
+          "Québec",
+          "Lanaudière",
+          "Les Moulins",
+          "Mascouche"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      }
+    }
+  ]
+}

@@ -1,0 +1,1236 @@
+{
+  "search": {
+    "keyword": "développeur logiciel",
+    "location": "Montréal, Québec",
+    "category": "it-jobs",
+    "results_per_page": 20,
+    "max_pages": 2
+  },
+  "pages": [
+    {
+      "page": 1,
+      "returned": 20,
+      "total_count": 277
+    },
+    {
+      "page": 2,
+      "returned": 20,
+      "total_count": 277
+    }
+  ],
+  "results": [
+    {
+      "salary_is_predicted": "0",
+      "title": "Développeur·se logiciel senior, Creative Solutions",
+      "latitude": 45.544959,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "contract_time": "full_time",
+      "id": "5967627987",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzYyNzk4NyIsInMiOiI0UEpDODlyaDhSR0RMXzMzaDdxSkhRIn0.zTbs0dMeMx39Pl7LL4b142wpfw7heAiwqCnaIh_JT1U",
+      "redirect_url": "https://www.adzuna.ca/details/5967627987?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "Equativ",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "created": "2026-11-16T05:13:14Z",
+      "description": " About the team At Equativ, we’re on a mission to develop advertising technologies that empower our customers to reach their digital business goals. This means that we rely on massively scalable, widely distributed, highly available, and efficient software systems; the platform deals with over 3 million requests per second (250 billion/day) managed by 3,000 servers with less than 250ms response time . Our innovation team based in Paris, Nantes, Bordeaux, Limoges, Krakow and Berlin is composed o…"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5967041352",
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "title": "Senior Software Engineer, Low-Latency Gaming",
+      "created": "2026-11-15T12:16:21Z",
+      "description": "L'opportunité Parsec crée une technologie d’accès à distance aux postes de travail à très faible latence et à haut rendement. Elle permet aux professionnel(le)s de la création de travailler de n’importe où, aux entreprises d’adopter des milieux de travail flexibles et aux gens de jouer ensemble, où qu’ils se trouvent. Nous poursuivons notre croissance afin d’aider les leaders des secteurs du jeu vidéo, du divertissement, du développement et de l’architecture à créer ce que nous aimons, qu’ils/e…",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY3MDQxMzUyIn0.IVQ9D28XACc3eWoliEv1iBTIxomqvCR9lR6pga0Dn8Y",
+      "redirect_url": "https://www.adzuna.ca/details/5967041352?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "longitude": -73.588138,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Unity"
+      }
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5967040593?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY3MDQwNTkzIn0.k5WLciSL_UQxNbDIfijUGNKaRkA5sZt-kzE9xbhSANY",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "contract_type": "permanent",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "GoTo Meeting"
+      },
+      "longitude": -73.588138,
+      "created": "2026-11-15T12:16:16Z",
+      "description": "Job Description Votre lieu de travail: N’importe où au Québec Ingénierie chez GoTo Nous développons des logiciels de travail à distance utilisés par des millions de personnes. Nos équipes prennent en charge des problématiques concrètes de bout en bout et livrent des solutions logicielles fiables à grande échelle. Lorsque vous joignez une équipe produit chez GoTo, vous avez de réelles responsabilités et voyez directement l’impact de votre travail en production. Votre quotidien À titre de dévelop…",
+      "salary_is_predicted": "0",
+      "title": "Ingénieur(e) Senior en Développement Logiciel / Sr. Software Developer",
+      "latitude": 45.544959,
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5967040593"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY3MDQwNDE0In0.5ZCAoXcnzXzy7AfAQ73Qk79J4HNqb_PlL9JhyeJb6ew",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5967040414?utm_medium=api&utm_source=9ca5241a",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Alteo"
+      },
+      "contract_type": "permanent",
+      "longitude": -73.588138,
+      "created": "2026-11-15T12:16:15Z",
+      "description": "Alteo is looking for a DevOps Developer for a permanent position based in Montreal.  Hybrid work: 3 days in the office / 2 days remote  You will be responsible for bridging the gap between software development and IT operations by automating, optimizing, and securing the software delivery lifecycle. This role involves designing, implementing, and maintaining CI/CD pipelines, automating deployments, and ensuring system monitoring and reliability practices. The DevOps Developer works closely with…",
+      "salary_is_predicted": "0",
+      "title": "DevOps Developer [5001]",
+      "latitude": 45.544959,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5967040414"
+    },
+    {
+      "created": "2026-11-15T09:09:02Z",
+      "description": "Job Description Job Description À propos de nous : Rejoignez notre équipe mondiale de R&D spécialisée dans les solutions personnalisées pour nos clients et faites partie du groupe Development Partner Experience. En collaboration avec des équipes multidisciplinaires à Paris et à Montréal, nous créons des solutions innovantes adaptées aux besoins uniques et individuels des entreprises. De la prévente au support complet, nos développeurs sont impliqués dans chaque étape du processus de développeme…",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY2OTIxNDM1In0.PxiBvb-pfKdDyK_IkvPwlCEk4zwpNQWPTN2x2ZdMsIs",
+      "redirect_url": "https://www.adzuna.ca/details/5966921435?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "Genetec",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5966921435",
+      "salary_is_predicted": "0",
+      "title": "Développeur(euse) logiciel / Software Developer - CSOL",
+      "latitude": 45.544959
+    },
+    {
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "title": "Développeur(euse) logiciel Back-End/DevOps",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5966739304",
+      "contract_time": "full_time",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY2NzM5MzA0In0.m7Ob27DdcCrm44aFi534DkSezgQbrgEXzZax5Umiidc",
+      "redirect_url": "https://www.adzuna.ca/details/5966739304?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "company": {
+        "display_name": "Mirego",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "longitude": -73.588138,
+      "created": "2026-11-15T05:12:20Z",
+      "description": "Au sein de l'équipe de développement, tu prends part chaque jour à la création de produits numériques innovants qui ont pour ambition de changer le monde, quels que soient leur envergure ou leur domaine. Tu es spécialisé en développement back-end, mais ce qui te distingue, c'est ta maîtrise de l'écosystème DevOps. Tu ne te contentes pas d'écrire du code robuste et maintenable : tu conçois, déploies et opères l'infrastructure qui lui permet de vivre et de performer. Ton enthousiasme pour le déve…"
+    },
+    {
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY2NzE0NDg3In0.X90XmX-57KVbRFs4gJg97Q-IqAEa2UnePFVeG4s_zIw",
+      "redirect_url": "https://www.adzuna.ca/details/5966714487?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Manulife"
+      },
+      "created": "2026-11-15T04:32:40Z",
+      "description": "The Senior Software Engineer - Canada Retirement (AI/ML & Agentic SDLC) designs, builds, and maintains applications and services that support Manulife's Canadian Retirement business. This role combines strong software engineering skills with hands-on AI/ML experience and agentic SDLC practices to deliver well-architected, secure, and reliable solutions. The engineer works closely with product, business, and architecture partners to implement features, modernize platforms, and orchestrate AI-dri…",
+      "salary_is_predicted": "0",
+      "title": "Senior Full Stack AI Engineer/Ingnieur(e) principal(e), Full Stack et intelligence artificielle (IA)",
+      "latitude": 45.544959,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "id": "5966714487"
+    },
+    {
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjE0NTQ0MCIsInMiOiI0UEpDODlyaDhSR0RMXzMzaDdxSkhRIn0.MCuaG8hALfGyjzfZatrs7AAPOrXZskUb8Jixl7nqGfs",
+      "redirect_url": "https://www.adzuna.ca/details/5966145440?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "EXFO"
+      },
+      "created": "2026-11-14T12:22:36Z",
+      "description": "Job Description: Sommaire du rôle Le Scientifique des données sénior extrait de la valeur des données par l’analyse statistique, l’exploration, la modélisation descriptive/prédictive et la définition de métriques fiables, afin d’éclairer les décisions produit, opérationnelles et AI. Au-delà de l’exécution analytique, il agit comme référence technique et influenceur de leadership au sein du pôle données : il élève la qualité des pratiques analytiques, encadre et fait grandir les analystes plus j…",
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "title": "Scientifique des données sénior",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5966145440"
+    },
+    {
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY2MTQ1MjMwIn0.NgUIYkN1LC8TML3uHCa0PBFbGkBcF63xoVz_m4Bilr0",
+      "redirect_url": "https://www.adzuna.ca/details/5966145230?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "Nakisa FR",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "created": "2026-11-14T12:22:35Z",
+      "description": "À propos de Nakisa Nakisa est un leader mondial des logiciels d’entreprise propulsés par l’IA pour les ressources humaines, la gestion financière et l’immobilier commercial (CRE). Notre plateforme infonuagique soutient des opérations critiques pour plus de 1 100 organisations dans 135 pays et est utilisée par des millions d’utilisateurs. Nous bâtissons la prochaine génération d’applications d’entreprise avec Nakisa AI. Nos produits utilisent la génération augmentée par récupération (RAG) et des…",
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "title": "Développeur(euse) de logiciels — Plateforme infonuagique",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5966145230"
+    },
+    {
+      "latitude": 45.544959,
+      "title": "Analyste du renseignement sur les menaces (jeux vidéo)",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5966144578",
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "epicgamesfrench",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY2MTQ0NTc4In0.EZwdJa4I-wTVPyLdLs-uWfhQ75kdZAsDLjfmX8v88lc",
+      "redirect_url": "https://www.adzuna.ca/details/5966144578?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "description": "CE QUI NOUS REND EPIC ? Au cœur du succès d'Epic se trouvent des personnes talentueuses et passionnées. Epic est fière de créer un environnement collaboratif, accueillant et créatif. Que ce soit en développant des jeux primés ou en concevant une technologie de moteur qui permet à d'autres de créer des expériences interactives visuellement impressionnantes, nous innovons constamment. Faire partie d'Epic, c'est rejoindre une équipe qui s'efforce continuellement de faire ce qui est juste pour sa c…",
+      "created": "2026-11-14T12:22:32Z"
+    },
+    {
+      "created": "2026-11-14T12:22:31Z",
+      "description": " Développeur logicielQuébec,Quebec,CanadaUse AI to find out how well you match with this jobJob ID: 793624 Grandissez avec nous:À propos de l'opportunitéCloud Core Resource Controller (CCRC) est la mise en œuvre commerciale des fonctions réseau 3GPP NSSF et NRF, permettant le contrôle automatisé des ressources au sein des réseaux 5G Core (5GC). Basé à Montréal, vous rejoindrez des équipes interfonctionnelles travaillant avec des pratiques Lean et Agile tout au long du cycle de vie du développem…",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY2MTQ0NDAxIn0.nR34NCnOP2k--A5cxOUd46nrN-LQS9ofeYydb9WXgJE",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5966144401?utm_medium=api&utm_source=9ca5241a",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Ericsson"
+      },
+      "contract_type": "contract",
+      "longitude": -73.588138,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5966144401",
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "title": "Développeur logiciel Québec,Quebec,Canada  2 more Product Development Posted 4 hours ago"
+    },
+    {
+      "description": " Développeur de logiciel principal (applications web) / Senior Software Developer (Web Applications)back to job searchref. no.1001355-1typeHybridlocationMontréal, QCsalary$100000 - $120000statusPermanentPoste : développeur de logiciel principal (applications Web) Lieu de travail : Montréal, Québec Rejoignez une entreprise à la pointe de la technologie, active dans le secteur des logiciels de sécurité publique, qui fournit des solutions essentielles utilisées par les équipes d'intervention d'urg…",
+      "created": "2026-11-14T12:22:29Z",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Quantum"
+      },
+      "longitude": -73.588138,
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY2MTQ0MTQwIn0.ZPROeIeW1pTWYLYqqAhAlp82KuhihKnaIcZIoPGBQnk",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5966144140?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5966144140",
+      "latitude": 45.544959,
+      "title": "Développeur de logiciel principal (applications web) / Senior Software Developer (Web Applications)",
+      "salary_is_predicted": "0"
+    },
+    {
+      "description": " Développeur logiciel principal – Strata CAD / Senior Software Developer – Strata CADback to job searchref. no.1003875-1typeHybridlocationMontréal, QCsalary$100000 - $120000statusPermanentPoste : développeur logiciel .NET principal – logiciels de sécurité publique Lieu de travail : Montréal, QC (mode hybride) Type de poste : temps plein À propos de l’entrepriseNotre client est une entreprise montréalaise spécialisée dans les logiciels de sécurité publique qui compte plusieurs décennies d’expéri…",
+      "created": "2026-11-14T12:22:26Z",
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "Quantum",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjE0Mzc4MCIsInMiOiI0UEpDODlyaDhSR0RMXzMzaDdxSkhRIn0.426uG7Xm5PFRIlQnKLGfxu4pNloNoByD2btpcDDwah8",
+      "redirect_url": "https://www.adzuna.ca/details/5966143780?utm_medium=api&utm_source=9ca5241a",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "contract_time": "full_time",
+      "id": "5966143780",
+      "title": "Développeur logiciel principal – Strata CAD / Senior Software Developer – Strata CAD",
+      "latitude": 45.544959,
+      "salary_is_predicted": "0"
+    },
+    {
+      "id": "5966143880",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "title": "Développeur(euse) Logiciel / Software Developer",
+      "created": "2026-11-14T12:22:26Z",
+      "description": "Aperçu du poste: L’équipe de développement Web est à la recherche d’une personne autonome possédant une solide expérience en développement logiciel Web afin de contribuer à l’évolution d’une application Web utilisée à grande échelle. Nous recherchons une personne passionnée par les technologies Web, autant du côté client que serveur, qui apprécie résoudre des problèmes complexes et contribuer à la qualité, à la stabilité et à l’amélioration continue d’un produit utilisé quotidiennement par nos …",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY2MTQzODgwIn0.wYLg7PFkE4xyfMT_UO0QoWOrAz-EenKbG5zgOq7lVe0",
+      "redirect_url": "https://www.adzuna.ca/details/5966143880?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "longitude": -73.588138,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Genetec"
+      }
+    },
+    {
+      "longitude": -73.588138,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Marsh Agency"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjE0MzQzMCIsInMiOiI0UEpDODlyaDhSR0RMXzMzaDdxSkhRIn0.bkOOQhJu6Oo1dMmf535VybwXhon1_aHzpVjfzWx32Ms",
+      "redirect_url": "https://www.adzuna.ca/details/5966143430?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "description": "Oliver Wyman fait partie de Marsh (NYSE : MRSH), un chef de file mondial dans les domaines du risque, de la réassurance, du capital humain et des investissements, ainsi que du conseil en gestion, qui conseille des clients dans 130 pays. Avec des revenus annuels de plus de 27 milliards de dollars et plus de 95 000 collègues, Marsh contribue à donner à ses clients la confiance nécessaire pour prospérer grâce au pouvoir de la perspective. Pour en savoir plus, visitez oliverwyman.com ou suivez-nous…",
+      "created": "2026-11-14T12:22:23Z",
+      "latitude": 45.544959,
+      "title": "Oliver Wyman — Software Developer — Data & Analytics (DNA) — Montreal",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5966143430"
+    },
+    {
+      "description": "Job Description Job Description Solution SFT cherche des Architectes technique plateforme infonuagique – DevSecOps dans ce poste vous interviendrez dans le cadre d'un projet client qui relève du secteur public dans la ville du Québec et Montreal . L’Architecte technique DevSecOps joue un rôle clé dans la conception, le déploiement, la sécurisation et l’optimisation des plateformes infonuagiques hébergeant les systèmes du Ministère. Il accompagne les équipes produit en intégrant les pratiques De…",
+      "created": "2026-11-14T08:54:17Z",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Solution SFT"
+      },
+      "longitude": -73.588138,
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NTk4NzYzNSIsInMiOiI0UEpDODlyaDhSR0RMXzMzaDdxSkhRIn0.VVJ63Rt2taPGBsFwa9fhXpPsrdhTTqTFACXepNAs3rw",
+      "redirect_url": "https://www.adzuna.ca/details/5965987635?utm_medium=api&utm_source=9ca5241a",
+      "id": "5965987635",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Architecte technique plateforme infonuagique - DevSecOps",
+      "latitude": 45.544959,
+      "salary_is_predicted": "0"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "id": "5965944934",
+      "title": "Développeur.euse de logiciel intermédiaire",
+      "latitude": 45.544959,
+      "salary_is_predicted": "0",
+      "description": "Job Description Job Description Propulse les données de produits au cœur des expériences de commerce intelligentes Tu aimes résoudre des défis techniques complexes et concevoir des systèmes capables de fonctionner à grande échelle? En tant que développeur de logiciel senior au sein de l'équipe launch, tu développeras les services et les applications qui permettent aux clients de gérer leurs catalogues de produits et d'exploiter pleinement les capacités de recherche de Coveo. Tu contribueras aut…",
+      "created": "2026-11-14T08:23:46Z",
+      "longitude": -73.588138,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Coveo Solutions"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5965944934?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NTk0NDkzNCIsInMiOiI0UEpDODlyaDhSR0RMXzMzaDdxSkhRIn0.CN42HFo5a2kIA-8s1S5_W5hfThFLbR9AIwByht-opng",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      }
+    },
+    {
+      "longitude": -73.588138,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Maples Group"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY0ODIwMDE5In0.FGL41EBYJ-Uh8TPO_b6x_hlcLrn_x1Rob7zuOmnyA-k",
+      "redirect_url": "https://www.adzuna.ca/details/5964820019?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "description": "Poste : Développeur de logiciels principal Emplacement : Montréal, Canada Le Groupe Maples est un leader mondial des services financiers auquel font confiance de nombreux gestionnaires de fonds de couverture, sociétés de capital-investissement et entreprises internationales parmi les plus importants au monde. Nos équipes financières et juridiques, qui travaillent côte à côte, fournissent constamment des services primés à une clientèle mondiale, offrant ainsi des possibilités d’apprentissage et …",
+      "created": "2026-11-13T12:17:04Z",
+      "latitude": 45.544959,
+      "title": "Senior Software Developer / Développeur de logiciels principal",
+      "salary_is_predicted": "0",
+      "id": "5964820019",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "created": "2026-11-13T12:16:58Z",
+      "description": "À propos de l'opportunité Cloud Core Resource Controller (CCRC) est la mise en œuvre commerciale des fonctions réseau 3GPP NSSF et NRF, permettant le contrôle automatisé des ressources au sein des réseaux 5G Core (5GC). Basé à Montréal, vous rejoindrez des équipes interfonctionnelles travaillant avec des pratiques Lean et Agile tout au long du cycle de vie du développement logiciel — de l'architecture et la conception au déploiement et à l'amélioration continue — avec une exposition aux platefo…",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NDgxOTUyMCIsInMiOiI0UEpDODlyaDhSR0RMXzMzaDdxSkhRIn0.eRVgmi93fGLr7txGmFr4jeiuymNvWMx4UKi5YQusBRI",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5964819520?utm_medium=api&utm_source=9ca5241a",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Ericsson AB"
+      },
+      "longitude": -73.588138,
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5964819520",
+      "salary_is_predicted": "0",
+      "title": "Développeur logiciel",
+      "latitude": 45.544959
+    },
+    {
+      "description": "Game Development 5 years Technical Engineering Electronic Arts creates next-level entertainment experiences that inspire players and fans around the world. Here, everyone is part of the story. Part of a community that connects across the globe. A place where creativity thrives, new perspectives are invited, and ideas matter. A team where everyone makes play happen. Pour visualiser la description de poste en français, veuillez sélectionner le français dans le menu déroulant au haut de la page.Co…",
+      "created": "2026-11-13T12:16:56Z",
+      "longitude": -73.588138,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Game Companies"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiNFBKQzg5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTY0ODE5NDE0In0.17Rydjk__33tPq_LRZTwOQeoZ_69BYfPXV9vzn3V7XE",
+      "redirect_url": "https://www.adzuna.ca/details/5964819414?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "id": "5964819414",
+      "title": "Développeur logiciel (moteur principal)/Software Developer (Core Engine) - Battlefield",
+      "latitude": 45.544959,
+      "salary_is_predicted": "0"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicW9IOTg5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY0NjM1ODA2In0.mKTahbCjwOCH7qYn2S1TjBbedzjQWixOrEZHcgOQVp8",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Genetec"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "title": "Développeur(euse) logiciel / Software Developer - C#/Web",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5964635806",
+      "description": "Job Description Job Description La dynamique de votre équipe : Joignez-vous à une équipe passionnée qui travaille avec les toutes dernières technologies en développement logiciel. Voici quelques exemples des technologies utilisées dans le projet : Écosystème de micro-services écrits avec la dernière version C#/ ASP.NET Plusieurs bases de données NoSQL tel que MongoDB, ElasticSearch et Redis Interfaces utilisateurs développées en ReactJS avec : TypeScript, MaterialUI, ViteJS, Cypress, Tanstack C…",
+      "longitude": -73.588138,
+      "created": "2026-11-13T08:59:47Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5964635806?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "title": "Développeur(euse) logiciel / Software Developer - Appliances Platform (Edge OS)",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "id": "5964629867",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "description": "Job Description Job Description Aperçu du poste : La grande famille Edge OS est responsable du développement d’un système d’exploitation ainsi que de services permettant la gestion à distance des appareils Cloudlink servant à déployer la prochaine génération de logiciels de sécurité physique de Genetec chez nos clients. Vous aurez comme objectif d’offrir des fonctionnalités en lien avec la gestion du cycle de vie de l’appareil (enrôlement, mise à jour, etc.), le déploiement d’applications et l’…",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-13T08:56:29Z",
+      "redirect_url": "https://www.adzuna.ca/details/5964629867?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NDYyOTg2NyIsInMiOiJxb0g5ODlyaDhSRzhzZC15WlBNVmZBIn0.2uKpGq3KadD5_wBGTm2mn3_hAMKonx_eufKjHEoT3Ik",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Genetec"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      }
+    },
+    {
+      "longitude": -73.588138,
+      "description": "Job Description Job Description Contribue à réinventer le déploiement logiciel chez Coveo! Comment permettre aux équipes de développement de livrer leurs logiciels plus rapidement, de façon sécuritaire et en toute confiance? Chez Coveo, l'équipe des outils de développement conçoit et améliore les outils et les processus de déploiement qui facilitent la mise en production des applications. Tu rejoindras une équipe expérimentée et collaborative qui modernise notre plateforme de déploiement à l'èr…",
+      "created": "2026-11-13T08:23:55Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5964564859?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Développeur.euse de logiciels intermédiaire, DevOps",
+      "id": "5964564859",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "company": {
+        "display_name": "Coveo Solutions",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicW9IOTg5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY0NTY0ODU5In0.K1_-xo9hUftE1qePdLaCQunSkIlrZEuSFq4dU3kIDG4"
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Genetec"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicW9IOTg5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY0NTYzMzE2In0.H-PjvQkQyc_XzuVZIgPOU7Xdi6u8cKm6GhNuxrVasi4",
+      "description": "Job Description Job Description Aperçu du poste : Le/la développeur(euse) logiciel sénior travaillera au sein de l'équipe SCMT (Software Configuration Management & Tools) qui fait partie du groupe Engineering Effectiveness, contribuant à diverses étapes du développement d'applications logicielles afin de permettre aux équipes d'être plus efficaces. Vous participerez au développement de divers outils et scripts utilisés pour optimiser et assurer une bonne gouvernance des multiples applications u…",
+      "longitude": -73.588138,
+      "created": "2026-11-13T08:23:20Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5964563316?utm_medium=api&utm_source=9ca5241a",
+      "title": "Développeur(euse) logiciel sénior / Senior Software Developer - DevOps",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5964563316"
+    },
+    {
+      "description": "Bonjour! Merci de votre visite  Êtes-vous activement à la recherche d’une nouvelle opportunité? Ou simplement en train d’explorer le marché? Dans tous les cas, vous êtes peut-être au bon endroit! Services financiers Lightspeed est à la recherche d’un(e) Gestionnaire du développement logiciel en Amérique du Nord pour développer et diriger notre équipe technique au sein de l’organisation des services financiers. Relevant du Directeur, Fondations des services , vous jouerez un rôle clé dans le lea…",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-13T04:57:33Z",
+      "redirect_url": "https://www.adzuna.ca/details/5964338239?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Gestionnaire du développement logiciel",
+      "id": "5964338239",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "company": {
+        "display_name": "Lightspeed Commerce",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NDMzODIzOSIsInMiOiJxb0g5ODlyaDhSRzhzZC15WlBNVmZBIn0.XNelrfWMlnEe6_z1bPMHUFH_AuTrkMErGtpc8RXJoN4",
+      "contract_time": "full_time"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5963511303?utm_medium=api&utm_source=9ca5241a",
+      "description": "Notre équipe est à la recherche d'un Développeur logicielle Guidewire talentueux pour se joindre à un chef de file de l'industrie des services financiers et de l'assurance de dommages. Dans le cadre de ce mandat, vous jouerez un rôle clé dans une initiative majeure de modernisation technologique visant la transition des systèmes de facturation centraux vers une architecture SaaS dans le nuage. Au sein d'une équipe d'ingénierie logicielle dynamique, vous concevrez et optimiserez des solutions in…",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-12T12:14:39Z",
+      "title": "Développeur logiciel Java - Guidewire - Montréal",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "id": "5963511303",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Randstad"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MzUxMTMwMyIsInMiOiJxb0g5ODlyaDhSRzhzZC15WlBNVmZBIn0.uDqJeit4HdYBw1jYvONwrylEMHHvUxVsuE9zQ9opfvQ"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5963511212?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-12T12:14:38Z",
+      "latitude": 45.544959,
+      "description": "Backend Development 5 years Software Engineering Développeur(euse) de logiciels sénior, Unity Services Foundation En plus de notre éditeur et de notre moteur, Unity propose diverses solutions pour concevoir des jeux et des expériences 3D enrichies par des données en temps réel. Notre équipe, Unity Services Foundation, joue un rôle essentiel dans cette mission : elle fournit les fonctionnalités de base à toutes les équipes internes qui créent des services infonuagiques. En tant qu’équipe de plat…",
+      "longitude": -73.588138,
+      "id": "5963511212",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Senior Software Engineer | Développeur(euse) de logiciels sénior",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "company": {
+        "display_name": "Game Companies",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicW9IOTg5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYzNTExMjEyIn0.rFDgzVO_OPKeKafpcY3jhNyngNCaSoAJluWhkVeFBZk"
+    },
+    {
+      "longitude": -73.588138,
+      "description": "Aperçu du poste: Le groupe Digital Experience est chargé de concevoir et de fournir la plateforme numérique pour notre écosystème, permettant ainsi à nos partenaires d'accomplir de manière autonome un large ensemble de tâches. Nous recherchons un développeur logiciel possédant une maîtrise avancée de Microsoft Dynamics 365 et Power Platform. Ce poste implique la conception et la mise en œuvre de solutions sécurisées et évolutives au sein de l'environnement d'entreprise de Microsoft. Votre journ…",
+      "latitude": 45.544959,
+      "created": "2026-11-12T12:14:35Z",
+      "redirect_url": "https://www.adzuna.ca/details/5963510988?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Dynamics 365 & Power Platform Software Engineer",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5963510988",
+      "company": {
+        "display_name": "Genetec Inc.",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicW9IOTg5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYzNTEwOTg4In0.cavS-GUgDxik5hW0e7mn-J_Lpbdm0egoDCAUPOwKGMA"
+    },
+    {
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Valsoft Corporation"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MzIyNDM5OSIsInMiOiJxb0g5ODlyaDhSRzhzZC15WlBNVmZBIn0.5wnbf4QefMyUtOOniwK_MBvlwIcwXwcKpBt5UQ2yftM",
+      "redirect_url": "https://www.adzuna.ca/details/5963224399?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-12T08:56:20Z",
+      "latitude": 45.544959,
+      "longitude": -73.588138,
+      "description": "Job Description Job Description (English version follows) Qui sommes-nous : Manos Manos Software Group fait partie de Valsoft Corporation, un investisseur à long terme dans les entreprises de logiciels de marchés verticaux. Valsoft acquiert et exploite des sociétés de logiciels avec une vision de détention permanente, en mettant l’accent sur l’autonomie, une croissance disciplinée et la création de valeur à long terme. Manos se concentre sur des verticales adjacentes au secteur de la santé, not…",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5963224399",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur(se) logiciel IA | AI Software Developer",
+      "salary_is_predicted": "0",
+      "contract_type": "permanent"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicW9IOTg5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYyODk4MjQ3In0.9A5L6k7XTm__1zdHnEnPhQ7DVC87yMFW6Aad1eoW1iA",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Principal Consultant / Head of AI chez TobogganLabs"
+      },
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5962898247",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Consultant principal / Responsable de l'IA - Principal Consultant / Head of AI",
+      "contract_type": "contract",
+      "redirect_url": "https://www.adzuna.ca/details/5962898247?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959,
+      "created": "2026-11-12T05:07:24Z",
+      "longitude": -73.588138,
+      "description": "La version anglaise suivra - English version will follow Consultant principal / Responsable de l'IA À propos de nous Toboggan Labs est une firme-conseil boutique qui œuvre à l’intersection de l’IA et de la santé. Nous résolvons des problèmes humains complexes en appliquant des technologies de pointe combinées à une solide compréhension du domaine. À propos du poste Nous sommes à la recherche Veuillez noter que, bien que nous soyons spécialisés dans le secteur de la santé et les industries régle…"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2Mjg4NzQwOSIsInMiOiJxb0g5ODlyaDhSRzhzZC15WlBNVmZBIn0.IKbVUfv32YU49hed4316doKms8gjcFQl0bhUumd50Jo",
+      "contract_time": "full_time",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Maples Group"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Senior Software Developer / Développeur de logiciels principal",
+      "id": "5962887409",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5962887409?utm_medium=api&utm_source=9ca5241a",
+      "description": "Description Position at The Maples Group (Financial Services) Position: Senior Software Developer Location : Montreal, Canada About Us The Maples Group is a global leader in financial services, trusted by many of the world’s largest hedge fund managers, private equity firms, and international corporations. Our side-by-side financial and legal teams consistently deliver award-winning services to a global client base, offering unrivalled learning and career opportunities to our 3,000 colleagues w…",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-12T04:56:39Z"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5962885455?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-12T04:54:34Z",
+      "latitude": 45.544959,
+      "longitude": -73.588138,
+      "description": "La version anglaise suivra - English version will follow Développeur·euse senior en IA / systèmes agentiques À propos de nous Toboggan Labs est une firme-conseil boutique qui œuvre à l’intersection de l’IA et de la santé. Nous résolvons des problèmes humains complexes en appliquant des technologies de pointe combinées à une solide compréhension du domaine. À propos du poste Nous sommes à la recherche d’un·e développeur·euse senior en IA / systèmes agentiques pour rejoindre notre équipe et conce…",
+      "id": "5962885455",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur·euse senior en IA / systèmes agentiques - Senior AI/Agentic Systems Developer",
+      "salary_is_predicted": "0",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Senior AI/Agentic Systems Developer chez TobogganLabs"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicW9IOTg5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYyODg1NDU1In0.TSGleZBd3SrzE4VVLSATzfH_UDTv3G7KiQ7JTuVmH_w"
+    },
+    {
+      "description": "La version anglaise suivra - English version will follow Développeur Senior (Produit/Full-Stack/ML) À propos de nous Toboggan Labs est une firme-conseil boutique qui œuvre à l’intersection de l’IA et de la santé. Nous résolvons des problèmes humains complexes en appliquant des technologies de pointe combinées à une solide compréhension du domaine. À propos du poste Nous recherchons un développeur de logiciels senior pour rejoindre notre équipe dynamique et jouer un rôle dans la création de solu…",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-12T04:48:13Z",
+      "redirect_url": "https://www.adzuna.ca/details/5962879632?utm_medium=api&utm_source=9ca5241a",
+      "title": "Développeur Senior (Produit/Full-Stack/ML) - Senior Developer (Product/Full-Stack/ML)",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "id": "5962879632",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Produit/Full-Stack/ML"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2Mjg3OTYzMiIsInMiOiJxb0g5ODlyaDhSRzhzZC15WlBNVmZBIn0.i0_dEVtMTF4U20fIIHixOvVo-8dfvXJ_dFaDwjDo2BY"
+    },
+    {
+      "company": {
+        "display_name": "Valsoft Corporation",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MjUwOTEwOSIsInMiOiJxb0g5ODlyaDhSRzhzZC15WlBNVmZBIn0.K3tZzjOSsdNAX6B8OU27b_M26nZ6arxvxR04VqdI29w",
+      "contract_time": "full_time",
+      "redirect_url": "https://www.adzuna.ca/details/5962509109?utm_medium=api&utm_source=9ca5241a",
+      "description": "(English version follows) Qui sommes-nous : Manos Manos Software Group fait partie de Valsoft Corporation, un investisseur à long terme dans les entreprises de logiciels de marchés verticaux. Valsoft acquiert et exploite des sociétés de logiciels avec une vision de détention permanente, en mettant l’accent sur l’autonomie, une croissance disciplinée et la création de valeur à long terme. Manos se concentre sur des verticales adjacentes au secteur de la santé, notamment les logiciels dentaires, …",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-11T23:21:24Z",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Développeur(se) logiciel IA | AI Software Developer",
+      "contract_type": "permanent",
+      "id": "5962509109",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      }
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5961958853?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-11T12:24:14Z",
+      "latitude": 45.544959,
+      "description": "La dynamique de votre équipe: Clearance, c'est une équipe de développeurs et de testeurs enthousiastes, animés par la curiosité et l’envie de repousser les limites de la technologie. Nous valorisons l'innovation, l'entraide et la créativité pour relever des défis ambitieux et transformer des idées en solutions concrètes afin d’améliorer le quotidien de différents verticaux du secteur publique. Concrètement, nous travaillons sur un portail Web en libre-service qui réduit la friction et augmente …",
+      "longitude": -73.588138,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5961958853",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur(euse) logiciel Senior/ Senior Software Developer - Clearance",
+      "salary_is_predicted": "0",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Genetec Inc."
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicW9IOTg5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTU4ODUzIn0.HC5NeLRcvGm7EsNhtrGyoSjPnKNkzhWuKy_H6bqeVtQ"
+    },
+    {
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal",
+          "Sainte-Anne-de-Bellevue"
+        ],
+        "display_name": "Sainte-Anne-de-Bellevue, Montréal",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "company": {
+        "display_name": "Akkodis",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicW9IOTg5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTU4NDE3In0.Bzp0m9VHaJWya9cFnMvIorAK5HXBLS6f8dJUpJmP6TM",
+      "created": "2026-11-11T12:24:08Z",
+      "latitude": 45.41155,
+      "longitude": -73.945634,
+      "description": "Le développeur intermédiaire de logiciels embarqués fait partie d'une équipe de développement agile et est responsable de la documentation et de la mise en œuvre de modules logiciels de vol complexes pour diverses applications spatiales, notamment les communications et les satellites. Responsabilités Soutenir l’élaboration de la documentation formelle dans un environnement d'équipe multidisciplinaire (systèmes, numérique, RF) Collaborer avec une équipe pour concevoir, coder, mettre à l’essai et…",
+      "redirect_url": "https://www.adzuna.ca/details/5961958417?utm_medium=api&utm_source=9ca5241a",
+      "id": "5961958417",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Ingénieur Logiciel Embedded"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1ODA2OCIsInMiOiJxb0g5ODlyaDhSRzhzZC15WlBNVmZBIn0.DHdgDFN4RspF8wrOUMsG8hXC6k28uC8HkDUY_siOygA",
+      "company": {
+        "display_name": "Motive",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur logiciel (moteur principal)/Software Developer (Core Engine) - Battlefield",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "id": "5961958068",
+      "longitude": -73.588138,
+      "description": "Core Software Engineer Battlefield is a storied franchise renowned for uncompromising combat gameplay and all-out warfare, for over two decades. 100 million players and 5 billion hours played later, Battlefield Studios is defining the future of the first-person shooter with the biggest launch in franchise history with Battlefield 6, and a new era beginning with Battlefield REDSEC. United under the banner of Battlefield Studios, 4 world-class teams across Criterion, DICE, Motive, and Ripple Effe…",
+      "created": "2026-11-11T12:24:03Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5961958068?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "company": {
+        "display_name": "Genetec",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicW9IOTg5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTU3OTIwIn0.TeQkO1daMmY-19O8SKhJjlIUtJei3IDwonmvLmz2Cws",
+      "redirect_url": "https://www.adzuna.ca/details/5961957920?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "description": "Aperçu du poste: ClearID est une solution infonuagique de gestion des identités et des accès physiques qui centralise et automatise le contrôle d’accès au sein des systèmes de sécurité physique. Nous sommes une équipe passionnée qui travaille avec les toutes dernières technologies en développement logiciel. Voici quelques exemples des technologies utilisées dans le projet : Écosystème de micro-services C#/ ASP.NET et Go Plusieurs bases de données NoSQL tel que MongoDB, ElasticSearch et Redis In…",
+      "latitude": 45.544959,
+      "created": "2026-11-11T12:24:01Z",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Développeur(euse) logiciel sénior / Senior Software Developer - Clear ID",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "id": "5961957920"
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Canadian Inclusion"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicW9IOTg5cmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTU2ODg2In0.keHpGlqaPJ6OZTGuaO77s_gd4a20QpK5qs8K8V_UvVE",
+      "description": "Analyste-programmeur (Project Management) Tender Retail recherche un développeur logiciel pour rejoindre son équipe Recherche et Développement. Le candidat idéal est autonome, débrouillard et doté d'un excellent esprit d'équipe. Il devra s'intégrer dans une équipe agile Scrum et collaborer avec différents intervenants pour concevoir, développer et optimiser des solutions de paiement. Notre secteur d'activité couvre les paiements aux points de vente ainsi que les paiements électroniques via des …",
+      "longitude": -73.588138,
+      "created": "2026-11-11T12:23:47Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5961956886?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Analyste-programmeur",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5961956886"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1NjgxNiIsInMiOiJxb0g5ODlyaDhSRzhzZC15WlBNVmZBIn0.dFSCmPK26siAk13roeL-8w6lCrALUJS6qgzqNNeDf14",
+      "company": {
+        "display_name": "Stratege",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur logiciel – Ingénierie assistée par IA Montréal, QC — hybride Voir le poste →",
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5961956816",
+      "description": "Nous cherchons un développeur logiciel qui souhaite travailler à la frontière entre l’ingénierie logicielletraditionnelle et les nouvelles méthodes de développement assistées par agents IA. Chez nous, le rôle du développeur évolue : il ne s’agit plus uniquement d’écrire chaque ligne de code, mais de concevoir, orienter et superviser le travail d’agents IA spécialisés , tout en demeurant responsable de laqualité technique du produit livré. Vous travaillerez avec une méthode de développement stru…",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-11T12:23:46Z",
+      "redirect_url": "https://www.adzuna.ca/details/5961956816?utm_medium=api&utm_source=9ca5241a"
+    }
+  ]
+}

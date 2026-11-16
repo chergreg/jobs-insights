@@ -1,0 +1,1238 @@
+{
+  "search": {
+    "keyword": "administrateur système",
+    "location": "Québec, Québec",
+    "category": "it-jobs",
+    "results_per_page": 20,
+    "max_pages": 2
+  },
+  "pages": [
+    {
+      "page": 1,
+      "returned": 20,
+      "total_count": 161
+    },
+    {
+      "page": 2,
+      "returned": 20,
+      "total_count": 161
+    }
+  ],
+  "results": [
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5967041356?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-15T12:16:22Z",
+      "latitude": 45.544959,
+      "longitude": -73.588138,
+      "description": "La connaissance de l'anglais est requise pour ce poste car le/la titulaire devra collaborer quotidiennement avec nos équipes des studios internationaux et participer à des réunions de travail qui se déroulent exclusivement en anglais. Rejoignez les pionnier·ère·s chez Turbulent ! English Below Chez CIG Turbulent, nous repoussons les limites des jeux en ligne pour créer des univers vastes et immersifs qui redéfinissent l'expérience multijoueur massive. Nous croyons que les jeux révolutionnaires …",
+      "id": "5967041356",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "title": "DevOps Principal·e / Principal DevOps",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Cloud Imperium Games Montreal"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY3MDQxMzU2In0.PdZRNzrTfWxNllKnSc-XekmhxqMii1uS-_BfAS1iJbw"
+    },
+    {
+      "company": {
+        "display_name": "Alteo",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzA0MDQxNCIsInMiOiJXalE2OE5yaDhSRzhzZC15WlBNVmZBIn0.epPbC81bSlgr3L7hM9e9OobIahby0RJ-rTqbKZWFtao",
+      "description": "Alteo is looking for a DevOps Developer for a permanent position based in Montreal.  Hybrid work: 3 days in the office / 2 days remote  You will be responsible for bridging the gap between software development and IT operations by automating, optimizing, and securing the software delivery lifecycle. This role involves designing, implementing, and maintaining CI/CD pipelines, automating deployments, and ensuring system monitoring and reliability practices. The DevOps Developer works closely with…",
+      "longitude": -73.588138,
+      "created": "2026-11-15T12:16:15Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5967040414?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "contract_type": "permanent",
+      "salary_is_predicted": "0",
+      "title": "DevOps Developer [5001]",
+      "id": "5967040414",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      }
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5967039913?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-15T12:16:11Z",
+      "latitude": 45.458603,
+      "description": "G Services Miniers est une entreprise multidisciplinaire qui offre des services professionnels dans l’industrie minière, pour des projets de mines souterraines et à ciel ouvert, en métaux précieux, de base ou industriels. G Mining est l’une des plus importantes firmes de génie-conseil en ingénierie minière au Québec et compte parmi les grandes firmes reconnues pour leurs projets internationaux. G Mining valorise son personnel en favorisant le développement professionnel et personnel grâce à des…",
+      "longitude": -73.467023,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5967039913",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Administrateur(trice) réseaux et systèmes",
+      "location": {
+        "display_name": "Brossard, Champlain",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Champlain",
+          "Brossard"
+        ]
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "G Mining Services / G Services Miniers"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY3MDM5OTEzIn0.EzdGY4z_AwQxfsiQHB-sHjZoc1qi5qryUtTOt_Onjio"
+    },
+    {
+      "title": "Administrateur Systèmes / Systems Administrator",
+      "salary_is_predicted": "0",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-15T05:01:06Z",
+      "salary_min": 1500,
+      "redirect_url": "https://www.adzuna.ca/details/5966730671?utm_medium=api&utm_source=9ca5241a",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "TS Imagine"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5966730671",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "description": "Nous sommes à la recherche d’un Administrateur Systèmes Junior bilingue motivé et curieux, prêt à apprendre rapidement, pour rejoindre notre équipe mondiale d’infrastructure. Ce poste, basé à Montréal, vous offrira l’occasion de collaborer avec une équipe internationale chargée du soutien de nos bureaux, centres de données et environnements infonuagiques à l’échelle mondiale. En tant que membre clé de l’équipe, vous participerez activement à l’administration quotidienne des systèmes, au soutien…",
+      "salary_max": 1500,
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY2NzMwNjcxIn0.qSavAEtGSJzIGe25zMJ0US-GA88-9jSkpIFuxp7frnk",
+      "contract_time": "full_time",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      }
+    },
+    {
+      "id": "5966728080",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "contract_type": "permanent",
+      "title": "Directeur TI / IT Director",
+      "created": "2026-11-15T04:57:04Z",
+      "latitude": 45.544959,
+      "description": "Directeur TI Montréal · Temps plein · Hybride Tu as bâti et mené des équipes d'administrateurs systèmes, tu connais la réalité d'un MSP multi-clients, et tu veux un rôle où tes décisions changent vraiment la façon dont l'entreprise opère? Chez Images et Technologie, tu prends la tête de nos opérations TI : l'équipe technique, nos services gérés, notre centre de données et l'infrastructure qu'on déploie pour nos clients. Pourquoi ce poste est différent Un vrai siège à la table. Tu relèves de la …",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5966728080?utm_medium=api&utm_source=9ca5241a",
+      "contract_time": "full_time",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY2NzI4MDgwIn0.0SRjQHvL6NRMir7ZF4ep8fbtNC32cI9N45At4wC-IIU",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Images et Technologie"
+      }
+    },
+    {
+      "description": "English Below La connaissance de l'anglais est requise pour ce poste car le/la titulaire devra collaborer quotidiennement avec nos équipes des studios internationaux et participer à des réunions de travail qui se déroulent exclusivement en anglais. Rejoignez les pionnier·ère·s chez Turbulent ! Chez CIG Turbulent, nous repoussons les limites des jeux en ligne pour créer des univers vastes et immersifs qui redéfinissent l'expérience multijoueur massive. Nous croyons que les jeux révolutionnaires …",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-14T22:59:18Z",
+      "redirect_url": "https://www.adzuna.ca/details/5966473993?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "DevOps Principal·e / Principal DevOps",
+      "contract_type": "permanent",
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5966473993",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Cloud Imperium Games Limited"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY2NDczOTkzIn0.vHPLcGBejwYdTJpkdbuEdT8A4vsZAsTH1IKRfeoypkQ",
+      "contract_time": "full_time"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjE0MzQ4MCIsInMiOiJXalE2OE5yaDhSRzhzZC15WlBNVmZBIn0.4s5sNedGACGuTgeS-UuMJgVzuY_UjjXF8mN3KbYmUFA",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Longueuil, Champlain",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Champlain",
+          "Longueuil"
+        ]
+      },
+      "company": {
+        "display_name": "APTS",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5966143480",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "title": "Administrateur.trice réseau, systèmes et sécurité",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "contract_type": "permanent",
+      "salary_is_predicted": "0",
+      "redirect_url": "https://www.adzuna.ca/details/5966143480?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-14T12:22:24Z",
+      "latitude": 45.531116,
+      "longitude": -73.480282,
+      "description": "Administrateur.trice réseau, systèmes et sécurité Statut : Poste permanent Lieu de travail : Bureau de Longueuil Joins-toi à une équipe humaine engagée dans une mission sociale forte! À l’APTS, nous sommes fiers de représenter plus de 68 000 membres essentiels au bon fonctionnement du réseau public de la santé et des services sociaux du Québec. Solidement ancrée dans des valeurs de solidarité, de démocratie et de justice sociale, notre organisation est portée par une équipe bienveillante et col…"
+    },
+    {
+      "location": {
+        "area": [
+          "Canada",
+          "Québec"
+        ],
+        "display_name": "Québec, Canada",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Optisigma Inc."
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY0ODE5Njc4In0.jvwtKs7CJ388XZBJxXBkaHuAJxVsCXhZ7HttB6Hvktc",
+      "latitude": 47.262372,
+      "created": "2026-11-13T12:16:59Z",
+      "longitude": -72.213404,
+      "description": "Optisigma, une firme de consultation en transformation numérique reconnue pour l'excellence de ses services et son approche centrée sur le client, recherche un Conseiller OPS senior passionné pour rejoindre notre équipe dynamique. Si tu as une solide expérience en transformation numérique et que tu souhaites contribuer à des projets d'envergure tout en jouant un rôle clé dans l'accompagnement de nos clients vers l'innovation et l'efficacité opérationnelle, nous aimerions te rencontrer. Rejoins …",
+      "redirect_url": "https://www.adzuna.ca/details/5964819678?utm_medium=api&utm_source=9ca5241a",
+      "id": "5964819678",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Administrateur systèmes Linux"
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Cégep de Trois-Rivières"
+      },
+      "location": {
+        "display_name": "Trois-Rivières, Francheville",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Mauricie",
+          "Francheville",
+          "Trois-Rivières"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY0MTk0NDUxIn0.bPNoJObdgsFKdddW6AoPoNrXUF6FnA4tXc3wG8H_TXA",
+      "contract_time": "full_time",
+      "redirect_url": "https://www.adzuna.ca/details/5964194451?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -72.57322,
+      "description": "Classe d’emploi : Technicienne ou technicien en informatique, classe principale Département : Direction des ressources informationnelles Lieu : La prestation de travail s’effectue dans les différents bâtiments du Cégep de Trois-Rivières. Après une période d’intégration et une entente avec le gestionnaire, il est possible d’adopter un mode de travail hybride (présence et télétravail). Supérieur immédiat : Monsieur Billy Angers Statut : Poste régulier, temps complet. Entrée en fonction : Dès que …",
+      "latitude": 46.35473,
+      "created": "2026-11-13T01:58:51Z",
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Poste régulier – Technicienne ou technicien en informatique, classe principale - Direction des ressources informationnelles (2026-50)",
+      "id": "5964194451",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      }
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2Mzc5Njg1OCIsInMiOiJXalE2OE5yaDhSRzhzZC15WlBNVmZBIn0.yuTdn7qeNe3S7wXf3pqw_Ce5bAR1zZDEUvIbRjiTArI",
+      "company": {
+        "display_name": "Vosker",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Administrateur·trice technique des applications – NetSuite",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5963796858",
+      "description": "Description du poste Nous recherchons un(e) Spécialiste des systèmes d’entreprise expérimenté(e) pour agir comme référence en administration et opérations NetSuite. La personne idéale combine une solide expérience pratique de NetSuite avec un forte capacité d’analyse et de troubleshooting, notamment pour les intégrations, automatisations, données et processus opérationnels. Au quotidien, la personne assure la surveillance de la santé du système, le traitement des incidents, le dépannage des int…",
+      "longitude": -73.588138,
+      "created": "2026-11-12T20:10:06Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5963796858?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "contract_time": "full_time",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYyODk1MzU4In0.KGo5_Myomx9gqqfVk4L3Oxd-k-gOA3fNpJNgPgAUJis",
+      "description": "Position Description: Mode de travail : Hybride — fréquence et lieu à confirmer Description du poste Nous recherchons un(e) administrateur(trice) systèmes Linux senior pour installer, sécuriser et exploiter l’infrastructure d’une application critique répartie sur trois centres de données. Vous jouerez un rôle clé dans deux initiatives : la mise en place de la bascule automatique entre les sites et la migration de l’application vers une nouvelle zone d’hébergement. Vous serez également responsab…",
+      "salary_max": 100000,
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5962895358",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "company": {
+        "display_name": "CGI",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "created": "2026-11-12T05:03:57Z",
+      "latitude": 45.544959,
+      "salary_min": 70000,
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5962895358?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "title": "Administrateur(trice) systèmes Linux senior"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5962879913?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-12T04:48:31Z",
+      "latitude": 45.744774,
+      "description": "Administrateur système aux Projets Responsabilités principales Implanter et migrer des serveurs et des infrastructures réseaux ; Migration vers le nuage (serveurs, Microsoft 365, Azure, etc.) Administrer et entretenir des réseaux informatiques ; Respect des échéanciers prévus Proposer des solutions à la suite d’un diagnostic technique de haut niveau Vérifier les solutions proposées et transmettre les informations et correctifs au département des ventes Communiquer à l’équipe la progression des …",
+      "longitude": -73.627815,
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5962879913",
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Administrateur système (ressource projet)",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Mascouche, Les Moulins",
+        "area": [
+          "Canada",
+          "Québec",
+          "Lanaudière",
+          "Les Moulins",
+          "Mascouche"
+        ]
+      },
+      "company": {
+        "display_name": "chez IT-ED",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2Mjg3OTkxMyIsInMiOiJXalE2OE5yaDhSRzhzZC15WlBNVmZBIn0.2K9FyCT5Kx6dqkLMtDYtjjsLF59lU3KTxyLI2TjFuFw"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1ODgzMCIsInMiOiJXalE2OE5yaDhSRzhzZC15WlBNVmZBIn0.rnAsR7zzPkFiMGGqdEncqvI7-VDOwRLuxOehqdPWAWM",
+      "company": {
+        "display_name": "CHROME TECHNOLOGIES",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec, Canada",
+        "area": [
+          "Canada",
+          "Québec"
+        ]
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "contract_type": "permanent",
+      "title": "ADMINISTRATEUR SYSTÈMES (SYSADMIN) MIDDLEWARE IIS Québec (hybride) 2026-08-12",
+      "id": "5961958830",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5961958830?utm_medium=api&utm_source=9ca5241a",
+      "description": "Référence Date de démarrage Localisation du poste Québec (hybride) Durée Nous recherchons un Administrateur systèmes (sysadmin) Middleware IIS pour rejoindre notre équipe de conseillers du bureau de Québec dans le cadre d'un poste permanent. Ce poste est en mode hybride. 2 jours/semaine au bureau de Québec. Agissant à titre de conseiller / consultant de Chrome Technologies, le candidat interviendra auprès de nos clients dans la réalisation des projets qu'ils nous ont confiés. L'administrateur d…",
+      "longitude": -72.213404,
+      "created": "2026-11-11T12:24:14Z",
+      "latitude": 47.262372
+    },
+    {
+      "company": {
+        "display_name": "Blinds To Go Inc.",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTU4ODA3In0.gkASl9jEDnYcSYQC7H4z9ER2w43g4_lZ7lxutdBlGyA",
+      "longitude": -73.588138,
+      "description": "Administrateur système senior Lieu de travail : [Montréal / Sur place] Type d'emploi : Temps plein Département : Informatique À propos du poste Nous sommes à la recherche d'un administrateur système senior pour rejoindre notre équipe informatique et prendre en charge la conception, la mise en œuvre et le support de notre infrastructure de base. Le candidat idéal possède une solide expertise de la pile de sécurité Fortinet, des technologies SD-WAN, de l'administration de Windows Server et de Lin…",
+      "created": "2026-11-11T12:24:14Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5961958807?utm_medium=api&utm_source=9ca5241a",
+      "title": "Administrateur système senior / Senior System Administrator",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "id": "5961958807",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      }
+    },
+    {
+      "description": "*Veuillez attacher un Curriculum Vitae en français et anglais.* Administrateur système senior Lieu de travail : [Montréal / Sur place] Type d'emploi : Temps plein Département : Informatique À propos du poste Nous sommes à la recherche d'un administrateur système senior pour rejoindre notre équipe informatique et prendre en charge la conception, la mise en œuvre et le support de notre infrastructure de base. Le candidat idéal possède une solide expertise de la pile de sécurité Fortinet, des tech…",
+      "longitude": -73.588138,
+      "created": "2026-11-11T12:24:14Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5961958815?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Senior Systems Administrator: Cloud, Security & SD-WAN",
+      "salary_is_predicted": "0",
+      "id": "5961958815",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "company": {
+        "display_name": "Blinds To Go Inc.",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTU4ODE1In0._zpu5ILTYLwcZYgGLhSP7r50CESmqrrCP_4cm7jzZPk"
+    },
+    {
+      "title": "Administrateur·trice principal.e en cybersécurité",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "id": "5961958829",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "description": "Intelcom | Dragonfly C’est plus de 100 stations de tri et des opérations sur trois continents. Leader canadien de la logistique du dernier kilomètre, on a une vision claire : offrir une livraison rapide, précise et fiable grâce à une technologie de pointe. Tu veux un emploi en pleine action où tu peux collaborer en équipe et voir l’impact direct de ton travail ? On t’attend ! Un rôle stratégique au cœur de la logistique Les responsabilités Planifier, mettre en place, configurer et rendre opérat…",
+      "longitude": -73.588138,
+      "created": "2026-11-11T12:24:14Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5961958829?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTU4ODI5In0.qy76WIiCUTvptyavA_MHvoeWDO84BXJMub3UtyLO6hI",
+      "company": {
+        "display_name": "Intelcom",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      }
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1ODIxMSIsInMiOiJXalE2OE5yaDhSRzhzZC15WlBNVmZBIn0.xr9ouxuZ1FS1omYyYSqMyrphZpCswyp2F8vKZwSXZ1U",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Laval region",
+          "Laval"
+        ],
+        "display_name": "Laval, Laval region",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "company": {
+        "display_name": "Randstad Digital",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5961958211",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "contract_type": "permanent",
+      "title": "Administrateur système réseau/Administratrice système réseau",
+      "salary_is_predicted": "0",
+      "created": "2026-11-11T12:24:05Z",
+      "description": "Administrateur·trice Systèmes et Réseaux Lieu : Laval (Mode Présentiel) Type de poste : Permanent, temps plein (40 h / semaine) Entrée en fonction : À déterminer Leader reconnu dans le secteur du CVAC (HVAC), notre entreprise est en pleine croissance et recherche un·e Administrateur·trice Systèmes et Réseaux pour veiller à la robustesse, à la sécurité et à l’évolution de ses infrastructures technologiques multi-sites. Vos avantages Vacances : 5 semaines de congés payés dès l'entrée en poste San…",
+      "redirect_url": "https://www.adzuna.ca/details/5961958211?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "latitude": 45.544959,
+      "created": "2026-11-11T12:23:55Z",
+      "longitude": -73.588138,
+      "description": "French version available here: View job description  GO ROCK IT is a leading talent agency specializing in Information Technology (IT) and Digital Marketing. Our agency stands out for the diversity and depth of expertise of our talent network, as well as the experience and dedication of our recruitment and talent management team. We're committed to connecting talented professionals with opportunities that align with their skills and career goals while helping our clients find the expertise they…",
+      "redirect_url": "https://www.adzuna.ca/details/5961957457?utm_medium=api&utm_source=9ca5241a",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "id": "5961957457",
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Administrateur système réseau/Administratrice système réseau",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "company": {
+        "display_name": "GO ROCK IT",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTU3NDU3In0.if1GHxljrqiSd0Ocx-kG_8Z-KZAMU-QMBBLG2dkFZAY"
+    },
+    {
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "DevOps",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5961957393",
+      "description": "ALTEN Canada accompagne ses partenaires dans le développement de leurs projets technologiques en leur proposant l’expertise de ses consultant·e·s. Acteur incontournable du conseil en ingénierie, nous intervenons dans des secteurs variés et innovants afin de soutenir la croissance et la transformation numérique de nos clients. Quels profils recrutons‑nous et pour qui ? Nous recherchons un·e administrateur·trice de système pour l’un de nos clients du secteur bancanre. La personne retenue contribu…",
+      "longitude": -73.588138,
+      "created": "2026-11-11T12:23:54Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5961957393?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTU3MzkzIn0.G9gLAn6b6vsORRVIYb3Sr3adiiOs376IT6vVchP9ArY",
+      "company": {
+        "display_name": "ALTEN",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      }
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "LAPORTE L.E.C."
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiV2pRNjhOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTYxOTU2MDM4In0.E7AOtLQ5L5JrDCHnMGM7tcpkk7LZYYjg6Or78UtaGuM",
+      "longitude": -73.588138,
+      "description": "LAPORTE est une firme de génie-conseil offrant un service d’ingénierie à haute valeur ajoutée aux usines pharmaceutiques, agroalimentaires et biotech industrielles. L’entreprise compte aujourd’hui 25 agences à travers l’Amérique du Nord et l’Europe, et regroupe plus de 480 employé.es passionné.es d’ingénierie. Nous offrons un environnement stimulant où l’autonomie, la collaboration et la croissance professionnelle sont au cœur de notre quotidien. Nous croyons en un cadre de travail flexible qui…",
+      "latitude": 45.544959,
+      "created": "2026-11-11T12:23:37Z",
+      "redirect_url": "https://www.adzuna.ca/details/5961956038?utm_medium=api&utm_source=9ca5241a",
+      "title": "Administrateur.trice systèmes sénior",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "id": "5961956038",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      }
+    },
+    {
+      "latitude": 47.262372,
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Solution SFT"
+      },
+      "id": "5961955600",
+      "salary_is_predicted": "0",
+      "description": "Notre client, une organisation du secteur du transport collectif, utilise le progiciel Hastus pour la gestion et l'optimisation de son service d'autobus : production des horaires, affectation des chauffeurs et soutien aux activités quotidiennes de transport collectif. Après avoir complété une première phase (mise à jour des modules existants), l'organisation amorce une deuxième phase, qui prévoit l'intégration de nouveaux modules (gestion des autobus électriques, gestion des déviations sur le r…",
+      "created": "2026-11-11T12:23:31Z",
+      "longitude": -72.213404,
+      "title": "Administrateur de système - Progiciel Hastus",
+      "redirect_url": "https://www.adzuna.ca/details/5961955600?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1NTYwMCIsInMiOiJFRVhfOE5yaDhSR3cwYjRJMGFHWHl3In0.C5kNzFKlwQucQ22IQ-a99RxBbea37NfJV0Qo1ynlyqQ",
+      "location": {
+        "display_name": "Québec, Canada",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "latitude": 45.544959,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Strana"
+      },
+      "id": "5961955568",
+      "salary_is_predicted": "0",
+      "description": "Administrateur.trice système et réseau sénior (poste en mode hybride) Montréal, Varennes Notre client, une firme-conseil spécialisée dans le secteur industriel, offre des services de mise en place de solutions logicielles et d’infrastructures technologiques. L’entreprise se distingue par sa culture axée sur l’équilibre travail-vie personnelle, en proposant une grande flexibilité dans l’organisation du travail afin de favoriser une excellente conciliation entre les obligations professionnelles e…",
+      "contract_type": "permanent",
+      "created": "2026-11-11T12:23:31Z",
+      "title": "Administrateur système et réseau sénior – Hybride et Flexible",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5961955568?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1NTU2OCIsInMiOiJFRVhfOE5yaDhSR3cwYjRJMGFHWHl3In0.IE4sRnREfu8BZ6J-bwt42tgk928JYi6wRcAJTODkoJc",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1NTExMCIsInMiOiJFRVhfOE5yaDhSR3cwYjRJMGFHWHl3In0.n7xCvgl2xDbYdgVV3R34JUkTfLsCV5zdeD_4_LVrKxM",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "longitude": -73.588138,
+      "title": "DevOps pour infrastructure cloud - DevOps for Cloud Infrastructure",
+      "redirect_url": "https://www.adzuna.ca/details/5961955110?utm_medium=api&utm_source=9ca5241a",
+      "description": "Here at Gameloft, we create moments of happiness for our players all over the world through exciting gaming experiences. This is our mission, and it has been the same for over 25 years. We are the proud creators of Asphalt, Dungeon Hunter, Modern Combat, and over 200 other great games. With almost 3,000 passionate Gamelofters across the globe, we take great pride in our differences and draw on them to create games just as diverse as we are. If you’re looking for a new challenge and want to work…",
+      "created": "2026-11-11T12:23:24Z",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "latitude": 45.544959,
+      "company": {
+        "display_name": "Gameloft Montreal",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "salary_is_predicted": "0",
+      "id": "5961955110"
+    },
+    {
+      "location": {
+        "display_name": "Québec, Canada",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTU0MTEzIn0.gro8cGW7XNJoZevbiI6edsrMNgWXK-3JquuathnhpY0",
+      "longitude": -72.213404,
+      "title": "ADMINISTRATEUR SYSTÈMES (SYSADMIN) MIDDLEWARE IIS Québec (hybride) 2026-08-12",
+      "redirect_url": "https://www.adzuna.ca/details/5961954113?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-11T12:23:11Z",
+      "description": "Référence Date de démarrage Dès que possible Localisation du poste Québec (hybride) Durée Nous recherchons un Administrateur systèmes (sysadmin) Middleware IIS pour rejoindre notre équipe de conseillers du bureau de Québec dans le cadre d'un poste permanent. Ce poste est en mode hybride. 2 jours/semaine au bureau de Québec. Agissant à titre de conseiller / consultant de Chrome Technologies, le candidat interviendra auprès de nos clients dans la réalisation des projets qu'ils nous ont confiés. L…",
+      "contract_type": "permanent",
+      "company": {
+        "display_name": "Gravity Conseil",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "salary_is_predicted": "0",
+      "id": "5961954113",
+      "latitude": 47.262372,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      }
+    },
+    {
+      "title": "Administrateur réseau/système - projets",
+      "redirect_url": "https://www.adzuna.ca/details/5961953506?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Laval, Laval region",
+        "area": [
+          "Canada",
+          "Québec",
+          "Laval region",
+          "Laval"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTUzNTA2In0.1Hbp5KJwZ2YcxDdWN8xaz8M7fB1eF3buVLvIWVcKhrc",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Mon Technicien"
+      },
+      "salary_is_predicted": "0",
+      "id": "5961953506",
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "created": "2026-11-11T12:23:02Z",
+      "description": "Chez MONTECHNICIEN, on fait évoluer les PME québécoises depuis plus de 25 ans, portés par une équipe de plus de 60 passionnés des TI. Notre force ? Une culture d’équipe forte, une collaboration authentique et un environnement de travail humain, flexible et stimulant, où les idées ont de la valeur et où le plaisir fait partie du quotidien. En pleine croissance, nous agrandissons notre équipe et cherchons des talents qui souhaitent s’impliquer et contribuer concrètement au succès d’une entreprise…"
+    },
+    {
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "latitude": 45.544959,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "ited"
+      },
+      "salary_is_predicted": "0",
+      "id": "5961952535",
+      "description": "Le département des projets recherche un administrateur système expérimenté pour prendre en charge les projets de migration vers Azure, Office 365, ainsi que la modernisation de l'infrastructure serveur et réseau. Le candidat sera responsable de planifier, implémenter, et maintenir les systèmes et infrastructures réseau dans un environnement hybride, incluant des migrations vers le cloud. Il jouera également un rôle clé dans la gestion et la configuration des équipements réseau tels que les comm…",
+      "created": "2026-11-11T12:22:49Z",
+      "title": "Administrateur Système - Spécialiste Azure O365",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5961952535?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTUyNTM1In0.0BjGG9V5mQcvCmg4ciFJsDh1HIA6l5rXGro3e94F-Mk",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "TEHORA"
+      },
+      "id": "5961952590",
+      "salary_is_predicted": "0",
+      "latitude": 47.262372,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "created": "2026-11-11T12:22:49Z",
+      "description": "TEHORA est présentement à la recherche d'un administrateur de systèmes Windows possédant une expérience en gestion, exploitation et optimisation d'environnements Microsoft de grande envergure. Cette ressource participera à l'administration, à la maintenance et à l'évolution des infrastructures technologiques. Installer, configurer et maintenir les serveurs Windows Server; Administrer Active Directory, DNS, DHCP et IIS; Effectuer les mises à jour de sécurité et les correctifs; Assurer les sauveg…",
+      "title": "Administrateur de systèmes Windows",
+      "longitude": -72.213404,
+      "redirect_url": "https://www.adzuna.ca/details/5961952590?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Québec, Canada",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTUyNTkwIn0.ifArZ0c1K3EIr36yf-kRinxnx-axuotbPZztto3yI-0"
+    },
+    {
+      "title": "Senior System Administrator [4972]",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5961952238?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1MjIzOCIsInMiOiJFRVhfOE5yaDhSR3cwYjRJMGFHWHl3In0.Jscz1gTeQsaVyVTayq8rKRCuDjlsS81VnPCulNKU1MQ",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "latitude": 45.544959,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "company": {
+        "display_name": "Alteo",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "salary_is_predicted": "0",
+      "id": "5961952238",
+      "description": "Alteo is seeking a Senior System Administrator for a permanent position based in Montreal.  Hybrid work: 2 days in the office per week  Within a well-established SME offering exciting challenges, you will be responsible for implementing best practices in IT infrastructure. You will have a significant impact by improving processes related to systems, networks, IT security, DevOps, vendor management, and team coaching. You are an experienced system/network administrator with excellent analytical …",
+      "contract_type": "permanent",
+      "created": "2026-11-11T12:22:44Z"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTUyMjM0In0.AqMEvQqCJg49FptpQtQOG46PajEUHw7jSmadL69mvhg",
+      "redirect_url": "https://www.adzuna.ca/details/5961952234?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "title": "Administrateur.trice système et réseau sénior (poste en mode hybride)",
+      "created": "2026-11-11T12:22:44Z",
+      "description": "Administrateur.trice système et réseau sénior (poste en mode hybride) Montréal, Varennes Notre client, une firme-conseil spécialisée dans le secteur industriel, offre des services de mise en place de solutions logicielles et d’infrastructures technologiques. L’entreprise se distingue par sa culture axée sur l’équilibre travail-vie personnelle, en proposant une grande flexibilité dans l’organisation du travail afin de favoriser une excellente conciliation entre les obligations professionnelles e…",
+      "salary_is_predicted": "0",
+      "id": "5961952234",
+      "company": {
+        "display_name": "Strana",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "latitude": 45.544959
+    },
+    {
+      "created": "2026-11-11T12:22:40Z",
+      "description": "Nous recherchons une personne hautement qualifiée et expérimentée pour rejoindre notre équipe en tant que spécialiste du support M365. La principale responsabilité de ce rôle est de fournir un soutien technique avancé pour notre environnement Microsoft 365 (niveau 3) et de superviser divers projets liés à l’environnement Microsoft. Responsabilités : Fournir un support de niveau 3 pour tous les aspects de notre environnement Microsoft 365, y compris, mais sans s’y limiter, Exchange Online, Share…",
+      "id": "5961951959",
+      "salary_is_predicted": "0",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Kinessor"
+      },
+      "latitude": 45.544959,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTUxOTU5In0._-Cr1Sh012ACbLvWTiOEdpn0kDAfTwfY10Llirh4mmM",
+      "redirect_url": "https://www.adzuna.ca/details/5961951959?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "title": "Administrateur Système Microsoft 365 (Niveau 3)"
+    },
+    {
+      "created": "2026-11-11T12:22:31Z",
+      "description": " Administrateur Système Microsoft 365 (Niveau 3)Kinessor · Montreal, Quebec, CABack to resultsAdministrateur Système Microsoft 365 (Niveau 3)KinessorMontreal, Quebec, CA Posted October 23, 2026 Via LinkedIn Full Job DescriptionNous recherchons une personne hautement qualifiée et expérimentée pour rejoindre notre équipe en tant que spécialiste du support M365. La principale responsabilité de ce rôle est de fournir un soutien technique avancé pour notre environnement Microsoft 365 (niveau 3) et d…",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Linuxassociation"
+      },
+      "id": "5961951471",
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTUxNDcxIn0.Fz_GCyssf511GeaWKoMlvFV37Z-fUa6pU-FhqFAPXJE",
+      "longitude": -73.588138,
+      "title": "Administrateur Système Microsoft 365 (Niveau 3)",
+      "redirect_url": "https://www.adzuna.ca/details/5961951471?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5961950769?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -72.213404,
+      "title": "DevOps",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec, Canada"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTUwNzY5In0.J69-fgW-FILC1i8MyPDjwtMxcwLCApNJ_Zs830jfkCY",
+      "salary_is_predicted": "0",
+      "id": "5961950769",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "webO3"
+      },
+      "latitude": 47.262372,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "created": "2026-11-11T12:22:20Z",
+      "description": "On cherche un·e DevOps pour automatiser nos déploiements et fiabiliser l'infrastructure de nos clients : CI/CD, conteneurs et infrastructure as code, sur des serveurs Linux qu'on gère vraiment. Le rôle On garde des dizaines de serveurs et de sites en ligne, rapides et sécurisés. Votre mission: rendre nos déploiements automatiques, reproductibles et sans stress , et fiabiliser l'infrastructure de nos clients. Vous travaillez main dans la main avec nos développeurs et nos administrateurs système.…"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5961950526?utm_medium=api&utm_source=9ca5241a",
+      "title": "Administrateur de systèmes Windows",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Laval region",
+          "Laval"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Laval, Laval region"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTUwNTI2In0.Ae2XOXlN_lSWHAHagy6K-UbOY2xEE3makuo0iEokYMs",
+      "salary_is_predicted": "0",
+      "id": "5961950526",
+      "company": {
+        "display_name": "TEHORA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "created": "2026-11-11T12:22:15Z",
+      "description": "TEHORA est présentement à la recherche d'un administrateur de systèmes Windows possédant une expérience en gestion, exploitation et optimisation d'environnements Microsoft de grande envergure. Cette ressource participera à l'administration, à la maintenance et à l'évolution des infrastructures technologiques. Installer, configurer et maintenir les serveurs Windows Server; Administrer Active Directory, DNS, DHCP et IIS; Effectuer les mises à jour de sécurité et les correctifs; Assurer les sauveg…"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1MDM2NiIsInMiOiJFRVhfOE5yaDhSR3cwYjRJMGFHWHl3In0.SRGhlQ9F7Z4KaIrCD-O62UJIqnWi3pb9o1Tohhq4lQ0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Laval region",
+          "Laval"
+        ],
+        "display_name": "Laval, Laval region"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5961950366?utm_medium=api&utm_source=9ca5241a",
+      "title": "Administrateur systèmes Solaris",
+      "description": "TEHORA est présentement à la recherche d'un(e) administrateur(trice) systèmes Solaris expérimenté(e) ayant une solide expertise afin de contribuer à l'administration, à la modernisation et à l'évolution des environnements serveurs Solaris dans le cadre d'un mandat au sein d'un organisme public du secteur de la santé. Responsabilités Assurer l'administration courante des plateformes Solaris Mettre à niveau les actifs technologiques sous Solaris Réaliser la migration des zones sous Solaris 10 et …",
+      "created": "2026-11-11T12:22:12Z",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "salary_is_predicted": "0",
+      "id": "5961950366",
+      "company": {
+        "display_name": "TEHORA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      }
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5961950065?utm_medium=api&utm_source=9ca5241a",
+      "title": "Administrateur systèmes (Azure Cloud)",
+      "longitude": -73.588138,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1MDA2NSIsInMiOiJFRVhfOE5yaDhSR3cwYjRJMGFHWHl3In0.lqGistN7UCzTa6iDR0f468lX_p71IEJyAk2LBOYiWgQ",
+      "id": "5961950065",
+      "salary_is_predicted": "0",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "EquiSoft"
+      },
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "latitude": 45.544959,
+      "created": "2026-11-11T12:22:07Z",
+      "contract_type": "permanent",
+      "description": "Qu’est-ce qu’Equisoft? Equisoft est un fournisseur mondial de solutions numériques pour les secteurs de l’assurance et de l’investissement, reconnu par plus de 300 des principales institutions financières au monde. Nous offrons un écosystème complet de solutions évolutives qui aident nos clients à relever les défis de la transformation numérique, porté par une approche centrée sur les besoins d’affaires, une connaissance approfondie du secteur, des technologies de pointe et une équipe multicult…"
+    },
+    {
+      "title": "Analyste-administratrice, analyste-administrateur de systèmes - Windows",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5961949535?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTQ5NTM1In0.a6bVfSezmrJiLJp0AS3ZNjjiZlFvIMqEdY24E3qzUqM",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "latitude": 45.544959,
+      "company": {
+        "display_name": "Polytechnique Montréal",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5961949535",
+      "salary_is_predicted": "0",
+      "description": "Analyste-administratrice, analyste-administrateur de systèmes - Windows Polytechnique Montréal est une université d'ingénierie de renommée internationale. Située sur le Mont-Royal, en plein cœur de Montréal, elle s'illustre par sa recherche multidisciplinaire et multisectorielle de premier plan sur la scène locale, nationale et internationale, et par la grande qualité de la formation offerte à tous les cycles. Fière de ses 150 ans d’histoire, elle accueille aujourd'hui plus de 10 000 étudiantes…",
+      "created": "2026-11-11T12:21:57Z"
+    },
+    {
+      "created": "2026-11-11T12:21:50Z",
+      "description": "TEHORA est présentement à la recherche d'un administrateur de systèmes Windows possédant une expérience en gestion, exploitation et optimisation d'environnements Microsoft de grande envergure. Cette ressource participera à l'administration, à la maintenance et à l'évolution des infrastructures technologiques. Installer, configurer et maintenir les serveurs Windows Server; Administrer Active Directory, DNS, DHCP et IIS; Effectuer les mises à jour de sécurité et les correctifs; Assurer les sauveg…",
+      "company": {
+        "display_name": "TEHORA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "salary_is_predicted": "0",
+      "id": "5961949103",
+      "latitude": 45.544959,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTQ5MTAzIn0.rN5lA904QA0nJkOqXS-5XHjBVuO3z80eYbAA6G1GG6g",
+      "longitude": -73.588138,
+      "title": "Administrateur de systèmes Windows",
+      "redirect_url": "https://www.adzuna.ca/details/5961949103?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk0ODgzNSIsInMiOiJFRVhfOE5yaDhSR3cwYjRJMGFHWHl3In0.DYu2eLGbjt2jFGoNQsvV2JoMi-ql0ATQVzHueQ2zVsQ",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec"
+        ],
+        "display_name": "Québec, Canada"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5961948835?utm_medium=api&utm_source=9ca5241a",
+      "title": "Administrateur système Linux",
+      "longitude": -72.213404,
+      "description": "TEHORA est présentement à la recherche d’un administrateur système Linux possédant une solide expérience en administration de serveurs Linux, en environnements infonuagiques et en automatisation des infrastructures. Cette ressource participera à l’entretien, à l’évolution et à l’amélioration des infrastructures technologiques et applicatives. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Réaliser et faire évoluer l’architecture technologique; Part…",
+      "created": "2026-11-11T12:21:45Z",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "latitude": 47.262372,
+      "salary_is_predicted": "0",
+      "id": "5961948835",
+      "company": {
+        "display_name": "TEHORA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      }
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTQ3OTEyIn0.kPp5BiWe5PYmcyRKpXUGyjCA8F_qW8BsZSL9HwIn584",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "display_name": "Laval, Laval region",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Laval region",
+          "Laval"
+        ]
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5961947912?utm_medium=api&utm_source=9ca5241a",
+      "title": "Administrateur réseau/système - gestion clients - Network/System Administrator – Client Services",
+      "description": "Chez MONTECHNICIEN, on fait évoluer les PME québécoises depuis plus de 25 ans, portés par une équipe de plus de 60 passionnés des TI. Notre force ? Une culture d’équipe forte, une collaboration authentique et un environnement de travail humain, flexible et stimulant, où les idées ont de la valeur et où le plaisir fait partie du quotidien. En pleine croissance, nous agrandissons notre équipe et cherchons des talents qui souhaitent s’impliquer et contribuer concrètement au succès d’une entreprise…",
+      "created": "2026-11-11T12:21:29Z",
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5961947912",
+      "salary_is_predicted": "0",
+      "company": {
+        "display_name": "Mon Technicien",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      }
+    },
+    {
+      "created": "2026-11-11T12:21:23Z",
+      "description": "Rejoignez les pionniers chez Turbulent ! Chez CIG Turbulent, nous repoussons les limites des jeux en ligne pour créer des univers vastes et immersifs qui redéfinissent l'expérience multijoueur massive. Nous croyons que les jeux révolutionnaires naissent de la fusion entre technologie de pointe, vision artistique et talent extraordinaire. Nous réunissons à Montréal une équipe de passionné·e·s du jeu vidéo, où chacun·e peut donner vie à ses idées les plus folles. Ensemble, nous créons des mondes …",
+      "salary_is_predicted": "0",
+      "id": "5961947538",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Cloud Imperium Games"
+      },
+      "latitude": 45.544959,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiRUVYXzhOcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTYxOTQ3NTM4In0.4ZYyHiuxNsLWh4QtUQwrMnlzWGzdIePuemHi-n4ns0c",
+      "redirect_url": "https://www.adzuna.ca/details/5961947538?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "title": "Principal DevOps"
+    }
+  ]
+}
