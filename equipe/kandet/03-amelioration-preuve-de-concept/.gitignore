@@ -1,0 +1,5 @@
+# Résultats complets et caches locaux (regénérés par le script)
+offres.json
+remotive-cache.json
+cache/
+__pycache__/

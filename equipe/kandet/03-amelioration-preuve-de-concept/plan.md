@@ -50,20 +50,32 @@ Je réécris ces idées avec la bibliothèque standard (`html.parser`), sans Bea
 
 Chaque étape se termine par des tests hors ligne qui passent, un essai réel et un commit.
 
-### Étape 1 — Découper le script en modules
+### Étape 1 — Découper le script en modules ✅ (17 novembre)
 
-Le fichier fait plus de 700 lignes. Je le sépare sans rien changer au fonctionnement :
+Le fichier faisait plus de 700 lignes. Je l'ai séparé dans ce dossier sans rien changer au fonctionnement. Le prototype du L2 reste tel quel dans `02-preuve-de-concept-scraping/`.
 
-- `modele.py` : `SourceRecord`, `AggregatedOffer` ;
-- `collecte.py` : `fetch_url`, délais, cache ;
-- `guichet.py` : page de résultats et fiches ;
-- `remotive.py` ;
-- `analyse.py` : stages, compétences, salaires, statistiques ;
-- `main.py` : options en ligne de commande.
+| Module | Contenu |
+|---|---|
+| `modele.py` | `SourceRecord`, `AggregatedOffer` |
+| `collecte.py` | `fetch_url`, nouvel essai sur HTTP 429/503 |
+| `texte.py` | nettoyage, comparaison sans accents, dates |
+| `guichet.py` | codes CNP, page de résultats, pagination |
+| `remotive.py` | API et cache 24 h |
+| `fusion.py` | déduplication |
+| `analyse.py` | stages, statistiques |
+| `main.py` | options en ligne de commande |
+
+J'ai ajouté `texte.py` et `fusion.py` par rapport à l'idée de départ : sans eux, `analyse.py` aurait tout mélangé.
 
 Tests :
-- les 33 tests existants doivent passer sans modification de leur logique (seulement les imports) ;
-- un test vérifie que `main.py --sans-sauvegarde` fonctionne avec des réponses simulées.
+- les 33 tests du L2, répartis en un fichier par module (`test_guichet.py`, `test_remotive.py`, `test_collecte_texte.py`, `test_analyse_fusion.py`), avec les fausses pages dans `fixtures.py` ;
+- 2 nouveaux tests dans `test_main.py` : une collecte complète avec réponses simulées, et `--sans-sauvegarde` qui n'écrit aucun fichier.
+
+```powershell
+python -m unittest discover -s equipe/kandet/03-amelioration-preuve-de-concept -p "test_*.py" -v
+```
+
+Résultat : 35 tests OK. Essai réel le 17 novembre : 189 offres récupérées sur 189 annoncées, 195 offres uniques avec Remotive. C'est le même comportement qu'au L2 ; ZipRecruiter apparaît maintenant parmi les sites d'origine.
 
 ### Étape 2 — Lire les fiches des offres (RDFa) avec un cache
 
