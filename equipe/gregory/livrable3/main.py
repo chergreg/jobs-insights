@@ -125,7 +125,8 @@ def collect_from_scrapers(
         scraper_ge = GuichetEmploisScraper(cache_dir=ge_cache, offline_mode=False)
         ge_limit = limit or 10
         try:
-            ge_offers = scraper_ge.search(max_results=ge_limit, max_pages=1, enrich_details=True)
+            raw_ge = scraper_ge.search(limit=ge_limit, max_pages=1, use_cache=use_cache)
+            ge_offers = scraper_ge.enrich_offers(raw_ge, limit=ge_limit, use_cache=use_cache)
             print(f" -> Guichet-Emplois : {len(ge_offers)} offres collectées")
             offers.extend(ge_offers)
         except Exception as err:
@@ -136,8 +137,9 @@ def collect_from_scrapers(
         jb_cache = cache_root / "jobboom"
         scraper_jb = JobboomScraper(cache_dir=jb_cache, offline_mode=False)
         jb_limit = limit or 10
+        max_p = 2 if (limit is None or limit > 15) else 1
         try:
-            jb_offers = scraper_jb.search(max_offers=jb_limit, max_pages=1)
+            jb_offers = scraper_jb.search(limit=jb_limit, max_pages=max_p, use_cache=use_cache)
             print(f" -> Jobboom : {len(jb_offers)} offres collectées")
             offers.extend(jb_offers)
         except Exception as err:
@@ -153,7 +155,8 @@ def collect_from_scrapers(
                 category="software-development",
                 geo_filter="canada_eligible",
                 limit=rem_limit,
-                force_refresh=not use_cache,
+                refresh=not use_cache,
+                use_cache=use_cache,
             )
             print(f" -> Remotive : {len(rem_offers)} offres collectées")
             offers.extend(rem_offers)

@@ -188,6 +188,30 @@ def main() -> None:
                 )
                 offers.append(offer)
 
+    # 3. Traitement des offres issues du cache local Guichet-Emplois (recherche et fiches détaillées)
+    search_dir = CUR_DIR / "cache" / "guichet_emplois" / "search"
+    details_dir = CUR_DIR / "cache" / "guichet_emplois" / "details"
+    if search_dir.is_dir():
+        from scrapers.guichet_emplois import parse_search_page_html, enrich_job_offer_from_detail
+        cached_count = 0
+        for sf in search_dir.glob("*.html"):
+            try:
+                page_offers, _ = parse_search_page_html(sf.read_text(encoding="utf-8"))
+                for po in page_offers:
+                    if po.id in seen_ids:
+                        continue
+                    clean_id = po.id.replace("ge-", "").replace("gc-", "")
+                    det_file = details_dir / f"detail_{clean_id}.html"
+                    if det_file.is_file():
+                        po = enrich_job_offer_from_detail(po, det_file.read_text(encoding="utf-8"))
+                    seen_ids.add(po.id)
+                    offers.append(po)
+                    cached_count += 1
+            except Exception as err:
+                pass
+        if cached_count > 0:
+            print(f" • {cached_count} nouvelle(s) offre(s) intégrée(s) depuis le cache de recherche Guichet-Emplois.")
+
     # Tri par date décroissante puis par ID
     offers.sort(key=lambda o: (o.date_publication or "", o.id), reverse=True)
 

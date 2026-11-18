@@ -662,14 +662,14 @@ class TestPipelineEndToEnd(unittest.TestCase):
             self.skipTest("Dossier data/ non présent.")
 
         offers = load_all_datasets(data_dir)
-        self.assertEqual(len(offers), 140)
+        self.assertGreaterEqual(len(offers), 140)
 
         unified, stats = unify_offers(offers)
         self.assertGreater(stats.total_unified, 0)
-        self.assertLessEqual(stats.total_unified, 140)
-        self.assertEqual(stats.by_source.get("guichet-emplois", 0), 97)
-        self.assertEqual(stats.by_source.get("jobboom", 0), 31)
-        self.assertEqual(stats.by_source.get("remotive", 0), 12)
+        self.assertLessEqual(stats.total_unified, len(offers))
+        self.assertGreaterEqual(stats.by_source.get("guichet-emplois", 0), 97)
+        self.assertGreaterEqual(stats.by_source.get("jobboom", 0), 31)
+        self.assertGreaterEqual(stats.by_source.get("remotive", 0), 12)
         self.assertGreater(stats.by_stage_status.get("confirmed_stage", 0), 0)
 
 
