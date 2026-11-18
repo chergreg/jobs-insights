@@ -81,6 +81,18 @@ class AggregationTests(unittest.TestCase):
         )
         self.assertEqual(build_summary(offers)["merged_offers"], 1)
 
+    def test_merged_offer_takes_posting_details_from_the_other_site(self) -> None:
+        jobillico = record("1", "Jobillico")
+        quebec = record("2", "Québec emploi")
+        quebec.expires_at = "2026-12-07"
+        quebec.languages = ["Français"]
+
+        offers = aggregate_records([jobillico, quebec])
+
+        self.assertEqual(offers[0].expires_at, "2026-12-07")
+        self.assertEqual(offers[0].languages, ["Français"])
+        self.assertEqual(jobillico.languages, [])  # l'annonce d'origine n'est pas modifiée
+
     def test_two_identical_titles_from_same_site_stay_separate(self) -> None:
         offers = aggregate_records([record("1", "Jobillico"), record("2", "Jobillico")])
         self.assertEqual(len(offers), 2)

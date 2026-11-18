@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import sys
 import time
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
@@ -23,6 +24,10 @@ def fetch_url(url: str, accept: str) -> bytes:
             break
         except HTTPError as error:
             if attempt == 1 and error.code in RETRY_STATUS_CODES:
+                print(
+                    f"HTTP {error.code} : nouvel essai dans {RETRY_WAIT_SECONDS} s ({url})",
+                    file=sys.stderr,
+                )
                 time.sleep(RETRY_WAIT_SECONDS)
                 continue
             raise

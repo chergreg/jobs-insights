@@ -60,4 +60,15 @@ def build_summary(offers: list[AggregatedOffer]) -> dict[str, object]:
         "stage_classification": dict(Counter(offer.stage_status for offer in offers)),
         "work_mode": dict(Counter(offer.work_mode or "Non précisé" for offer in offers)),
         "with_salary": sum(bool(offer.salary) for offer in offers),
+        # Nombre d'offres où chaque champ est rempli (pour comparer avant/après).
+        "filled_fields": {
+            name: sum(bool(getattr(offer, name)) for offer in offers)
+            for name in FILLED_FIELDS
+        },
     }
+
+
+FILLED_FIELDS = (
+    "original_title", "description", "tasks", "expires_at", "job_type", "city", "postal_code",
+    "education", "experience", "languages", "original_url",
+)

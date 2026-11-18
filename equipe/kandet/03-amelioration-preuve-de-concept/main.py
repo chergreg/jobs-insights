@@ -18,6 +18,7 @@ import sys
 import time
 
 from analyse import build_summary
+from fiches import enrich_with_postings
 from fusion import aggregate_records
 from guichet import CNP_CODES_TI, GUICHET_DELAY_SECONDS, GUICHET_SEARCH_URL, fetch_guichet
 from modele import AggregatedOffer, SourceRecord
@@ -64,6 +65,22 @@ def build_parser() -> argparse.ArgumentParser:
         help="Ignorer le cache Remotive (l'API demande au plus 4 appels par jour).",
     )
     parser.add_argument("--sans-remotive", action="store_true", help="Ne pas interroger Remotive.")
+    parser.add_argument(
+        "--sans-fiches",
+        action="store_true",
+        help="Ne pas lire les fiches des offres (collecte rapide, comme au livrable 2).",
+    )
+    parser.add_argument(
+        "--max-fiches",
+        type=int,
+        help="Lire seulement les N premières fiches (pour un essai court). Par défaut : toutes.",
+    )
+    parser.add_argument(
+        "--cache-fiches",
+        type=Path,
+        default=DOSSIER / "cache" / "fiches",
+        help="Dossier où les fiches téléchargées sont gardées (défaut : cache/fiches).",
+    )
     parser.add_argument(
         "--sortie",
         type=Path,
@@ -121,6 +138,18 @@ def main(argv: list[str] | None = None) -> None:
         except (OSError, ValueError) as error:
             errors.append(f"Guichet-Emplois ({label}) : {error}")
 
+    postings: dict[str, object] | None = None
+    if not args.sans_fiches and source_records:
+        postings = enrich_with_postings(
+            source_records,
+            args.cache_fiches,
+            max_postings=args.max_fiches,
+            progress=lambda index, total, cached: print(
+                f"Fiche {index}/{total}" + (" (cache)" if cached else ""),
+                file=sys.stderr,
+            ),
+        )
+
     remotive_total: object = None
     if not args.sans_remotive:
         try:
@@ -155,6 +184,12 @@ def main(argv: list[str] | None = None) -> None:
         kept = summary["offers_by_source"].get("Remotive", 0)
         print(f"Remotive : {kept} gardées sur {remotive_total} dans l'API")
     print(f"Sites d'origine (Guichet-Emplois) : {summary['guichet_by_origin_site']}")
+    if postings is not None:
+        print(
+            f"Fiches lues : {postings['read']} ({postings['from_cache']} du cache, "
+            f"{postings['downloaded']} téléchargées), erreurs : {len(postings['errors'])}"
+        )
+        print(f"Champs remplis : {summary['filled_fields']}")
     print(f"Offres publiées sur plusieurs sites (fusionnées) : {summary['merged_offers']}")
     print(f"Stages : {summary['stage_classification']}\n")
     for offer in offers:
@@ -177,6 +212,7 @@ def main(argv: list[str] | None = None) -> None:
         ),
         "errors": errors,
         "guichet_searches": searches,
+        "postings": postings,
         "remotive_total_in_api": remotive_total,
         "offer_count": len(offers),
         "summary": summary,

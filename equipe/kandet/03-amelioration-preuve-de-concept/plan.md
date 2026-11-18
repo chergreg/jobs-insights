@@ -77,7 +77,69 @@ python -m unittest discover -s equipe/kandet/03-amelioration-preuve-de-concept -
 
 Résultat : 35 tests OK. Essai réel le 17 novembre : 189 offres récupérées sur 189 annoncées, 195 offres uniques avec Remotive. C'est le même comportement qu'au L2 ; ZipRecruiter apparaît maintenant parmi les sites d'origine.
 
-### Étape 2 — Lire les fiches des offres (RDFa) avec un cache
+### Étape 2 — Lire les fiches des offres (RDFa) avec un cache ✅ (17 novembre)
+
+**Ce qui a été fait :**
+
+- Nouveau module `fiches.py` : `parse_job_posting()` lit les balises RDFa, et `enrich_with_postings()` gère le cache et le délai de 5 s.
+- En plus de ce qui était prévu, j'ai trouvé sur les fiches des partenaires le **titre écrit par l'employeur** (« Appellation affichée sur Jobillico - … »). Il est gardé dans `original_title`. J'ai aussi récupéré la date de début quand elle est indiquée (`start_date`).
+- Le texte caché pour les lecteurs d'écran (« Ce lien ouvrira dans une nouvelle fenêtre ») est retiré du nom de l'employeur.
+- Les montants du salaire sont gardés tels quels dans `source_data.posting`, pour l'étape 3.
+- Dans 10 fiches, le HTML contient `Général` écrit tel quel. Ces séquences sont remplacées par le vrai caractère (« Général »).
+- Quand le site répond 429 ou 503, le script l'affiche avant d'attendre 30 s : on voit qu'il attend, il n'est pas bloqué.
+- Tests : 16 nouveaux tests dans `test_fiches.py`, 1 de plus dans `test_main.py` et 1 dans `test_analyse_fusion.py`. Au total, 52 tests OK.
+
+**Essai réel du 17 novembre :**
+
+- 188 fiches lues sur 188, aucune erreur, en environ 17 minutes.
+- Relance avec le cache : 65 secondes (les 8 pages de résultats + 0 fiche à télécharger).
+- Le site annonçait 189 offres, mais une a été retirée pendant la collecte (page 9 vide).
+
+| Champ (offres du Guichet-Emplois) | L2 | Étape 2 |
+|---|---|---|
+| Description | 0 | 132 / 186 |
+| Titre de l'employeur | 0 | 114 |
+| Date d'expiration | 0 | 184 |
+| Type d'emploi | 0 | 187 |
+| Ville (RDFa) | 0 | 177 |
+| Études, expérience, langues | 0 | 71 |
+| Tâches | 0 | 55 |
+| Lien vers l'annonce d'origine | 0 | 116 |
+
+Les études, l'expérience et les langues ne sont remplies que pour les 71 offres publiées directement sur le Guichet-Emplois : les partenaires ne les donnent pas.
+
+Description remplie selon le site d'origine :
+
+| Site d'origine | Description remplie |
+|---|---|
+| Guichet-Emplois | 71 / 71 |
+| Jobillico | 41 / 41 |
+| JobsMedia.ca | 13 / 13 |
+| Talent.com | 5 / 18 |
+| Québec emploi | 2 / 40 |
+| indeed.com, ZipRecruiter | 0 / 3 |
+
+**Limites observées :**
+
+- Pour Québec emploi, Indeed et ZipRecruiter, le Guichet-Emplois n'affiche presque jamais la description. Il renvoie seulement vers le site d'origine, dont on garde le lien. Je ne vais pas lire Québec emploi tant que ses conditions d'accès ne sont pas vérifiées.
+- Les textes des partenaires contiennent des `?` à la place des apostrophes (« d?ordinateur »). L'erreur vient de la source. Je ne les remplace pas, car un `?` peut aussi être un vrai point d'interrogation.
+- Unités de salaire trouvées : `YEAR` (110), `HOUR` (68), `DAY` (5), `MONTH` (3). L'étape 3 devra gérer les quatre.
+- Le cache ne se périme pas. Pour relire une fiche, il faut supprimer son fichier dans `cache/fiches/`.
+
+**Commandes :**
+
+```powershell
+# Collecte complète avec les fiches (environ 17 min la première fois, rapide ensuite grâce au cache)
+python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py
+
+# Essai court sur 5 fiches
+python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --max-fiches 5
+
+# Sans les fiches (comme au livrable 2)
+python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --sans-fiches
+```
+
+**Plan de départ de l'étape :**
 
 - Nouvelle fonction `parse_job_posting(html)` qui lit les propriétés RDFa du tableau ci-dessus.
 - Pour les partenaires : décoder le HTML encodé deux fois, garder le texte et récupérer le lien vers l'annonce d'origine (`original_url`).

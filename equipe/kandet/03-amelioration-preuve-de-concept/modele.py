@@ -23,10 +23,31 @@ class SourceRecord:
     category: str = ""
     tags: list[str] = field(default_factory=list)
     description: str = ""
+    # Champs lus sur la fiche de l'offre (vides si la fiche n'a pas été lue)
+    original_title: str = ""  # titre écrit par l'employeur (offres des partenaires)
+    tasks: list[str] = field(default_factory=list)
+    expires_at: str = ""
+    start_date: str = ""
+    city: str = ""
+    province: str = ""
+    postal_code: str = ""
+    education: str = ""
+    experience: str = ""
+    conditions: str = ""
+    languages: list[str] = field(default_factory=list)
+    original_url: str = ""  # lien vers l'annonce sur le site partenaire
     stage_status: str = "not_indicated"
     stage_signals: list[str] = field(default_factory=list)
     search_terms: list[str] = field(default_factory=list)
     source_data: dict[str, object] = field(default_factory=dict)
+
+
+# Champs texte et listes copiés d'une annonce vers l'offre regroupée.
+DETAIL_TEXT_FIELDS = (
+    "original_title", "expires_at", "start_date", "city", "province", "postal_code",
+    "education", "experience", "conditions", "original_url",
+)
+DETAIL_LIST_FIELDS = ("tasks", "languages")
 
 
 @dataclass
@@ -47,3 +68,15 @@ class AggregatedOffer:
     stage_signals: list[str]
     search_terms: list[str]
     source_records: list[SourceRecord]
+    original_title: str = ""
+    tasks: list[str] = field(default_factory=list)
+    expires_at: str = ""
+    start_date: str = ""
+    city: str = ""
+    province: str = ""
+    postal_code: str = ""
+    education: str = ""
+    experience: str = ""
+    conditions: str = ""
+    languages: list[str] = field(default_factory=list)
+    original_url: str = ""
