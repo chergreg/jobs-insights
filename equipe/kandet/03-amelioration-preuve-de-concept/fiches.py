@@ -23,7 +23,8 @@ from texte import clean, plain_text
 
 
 START_DATE_PATTERN = re.compile(r"Débute\s+dès\s+le\s*(\d{4}-\d{2}-\d{2})")
-# Certaines fiches contiennent « Général » écrit tel quel dans le HTML.
+# Certaines fiches contiennent des séquences d'échappement Unicode écrites telles quelles
+# dans le HTML : une barre oblique inverse, « u » et 4 chiffres (ex. « u00E9 » pour « é »).
 UNICODE_ESCAPE_PATTERN = re.compile(r"\\u([0-9a-fA-F]{4})")
 
 

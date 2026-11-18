@@ -2,6 +2,101 @@
 
 **Kandet** — 17 novembre 2026
 
+## Tester le projet (guide rapide)
+
+Pour quelqu'un qui veut essayer le prototype sans avoir suivi le travail.
+
+### Ce qu'il faut
+
+- **Python 3.12 ou plus récent.** Vérifier avec `python --version`. Sous Windows, si `python` n'est pas reconnu, essayer `py --version` et remplacer `python` par `py` dans les commandes.
+- **Aucune bibliothèque à installer** : tout est dans la bibliothèque standard, pas de `pip install`.
+- **Une connexion Internet**, seulement pour la collecte. Les tests et l'option `--depuis` fonctionnent sans Internet.
+
+### 1. Se placer dans le dossier du projet
+
+Dans un terminal (PowerShell), à partir du dossier `jobs-insights` :
+
+```powershell
+cd .\equipe\kandet\03-amelioration-preuve-de-concept
+```
+
+Toutes les commandes suivantes se lancent depuis ce dossier.
+
+### 2. Lancer les tests (1 seconde, sans Internet)
+
+```powershell
+python -m unittest discover -p "test_*.py" -v
+```
+
+La dernière ligne doit être `OK`, après `Ran 118 tests`.
+
+### 3. Lancer la collecte
+
+```powershell
+# Essai rapide (environ 1 minute) : pages de résultats + 5 fiches seulement
+python main.py --max-fiches 5
+
+# Collecte complète
+python main.py
+```
+
+**Combien de temps ça prend :**
+
+- **Environ 17 minutes la première fois.** Le script attend 5 secondes entre chaque page, comme le demande le site (`robots.txt`).
+- **Environ 1 minute les fois suivantes**, parce que les fiches déjà lues sont gardées dans `cache/fiches/`.
+
+**Pendant la collecte :**
+
+- Des lignes comme `Fiche 42/188` montrent l'avancement : le script tourne, il ne faut pas l'arrêter.
+- Le message `HTTP 429 : nouvel essai dans 30 s` est normal : le site demande d'attendre, et le script réessaie tout seul.
+
+À la fin, le script affiche les statistiques et la liste des offres, puis enregistre tout dans `offres.json`.
+
+### 4. Chercher des offres précises (sans retélécharger)
+
+Après une collecte, `--depuis offres.json` relit les offres en quelques secondes, sans Internet. On peut combiner plusieurs filtres. Les accents et les majuscules ne comptent pas.
+
+```powershell
+python main.py --depuis offres.json --ville Québec
+python main.py --depuis offres.json --techno Python
+python main.py --depuis offres.json --niveau debutant
+python main.py --depuis offres.json --stages
+python main.py --depuis offres.json --salaire-min 60000
+python main.py --depuis offres.json --salaire-min 30 --unite-salaire heure
+python main.py --depuis offres.json --techno SQL --ville Montréal --csv
+```
+
+| Option | Ce qu'elle garde |
+|---|---|
+| `--ville Montréal` | Les offres de cette ville |
+| `--techno SQL` | Les offres qui mentionnent cette technologie (SQL, Python, C#, Azure…) |
+| `--niveau débutant` | `débutant`, `intermédiaire` ou `avancé` |
+| `--stages` | Les stages confirmés ou possibles |
+| `--salaire-min 60000` | Les offres dont le bas de la fourchette atteint ce montant. L'unité est l'année par défaut ; ajouter `--unite-salaire heure` pour un taux horaire |
+| `--employeur desjardins` | Les offres dont le nom de l'employeur contient ce mot |
+| `--csv` | Enregistre les offres affichées dans `offres.csv`, qui s'ouvre directement dans Excel |
+| `--resume-seulement` | Affiche les statistiques sans la liste |
+
+Les filtres changent ce qui est affiché et ce qui va dans le CSV. `offres.json` garde toujours toutes les offres.
+
+La liste complète des options s'obtient avec `python main.py --help`.
+
+### Fichiers produits
+
+| Fichier | Contenu | Dans Git ? |
+|---|---|---|
+| `offres.json` | Toutes les offres avec tous les champs, et les statistiques | Non |
+| `offres.csv` | Les offres affichées, pour Excel | Non |
+| `echantillon.json` | 10 offres d'exemple | Oui |
+| `cache/fiches/` | Les fiches déjà téléchargées | Non |
+
+### Si ça ne marche pas
+
+- **`python` n'est pas reconnu** : utiliser `py`, ou installer Python depuis python.org en cochant « Add Python to PATH ».
+- **`No such file or directory: main.py`** : la commande n'est pas lancée depuis le dossier du projet (voir l'étape 1).
+- **`Impossible de lire offres.json`** : faire d'abord une collecte (étape 3) avant d'utiliser `--depuis`.
+- **`Offres affichées : 0`** : les filtres sont trop stricts. Par exemple, `--ville` demande le nom exact de la ville, comme `Québec` et non `Qc`.
+
 ## 1. Site choisi
 
 **Guichet-Emplois** (`https://www.guichetemplois.gc.ca/jobsearch/rechercheemplois`), offres TI au Québec : 14 codes CNP, `fprov=QC`. Remotive reste une source d'appoint pour le télétravail.
@@ -41,7 +136,7 @@ Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-d
 **Ce que j'ai modifié :**
 
 - Tout est réécrit avec la bibliothèque standard (`html.parser`) : pas de BeautifulSoup ni de Pydantic, donc aucune installation.
-- Le prototype est découpé en modules : `guichet`, `fiches`, `remotive`, `normalisation`, `competences`, `fusion`, `analyse`, `main`.
+- Le prototype est découpé en modules : `guichet`, `fiches`, `remotive`, `normalisation`, `competences`, `fusion`, `analyse`, `filtres`, `export`, `main`.
 - Nouveaux champs :
   - titre de l'employeur, description, tâches ;
   - date d'expiration et date de début ;
@@ -51,7 +146,10 @@ Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-d
   - technologies, compétences, années d'expérience, niveau et description courte.
 - Stages : le champ « Stage: Ce poste est un stage… » du Guichet-Emplois est reconnu, et la détection se fait aussi sur le vrai titre et la description.
 - Statistiques : top technologies, salaires par unité (jamais mélangés), villes, expirations proches, champs remplis.
-- Deux défauts de la source sont corrigés : `é` écrit tel quel dans 10 fiches, et `&amp;` encodé deux fois.
+- Deux défauts de la source sont corrigés :
+  - dans 10 fiches, des séquences d'échappement Unicode écrites telles quelles (barre oblique inverse + `u00E9` au lieu de « é ») ;
+  - des `&amp;` encodés deux fois.
+- Filtres et export : `--ville`, `--techno`, `--niveau`, `--stages`, `--salaire-min`, `--employeur`, export `--csv` pour Excel, et `--depuis` pour filtrer une collecte déjà faite sans Internet (modules `filtres` et `export`).
 
 Le code est dans ce dossier. Le prototype du L2 reste tel quel dans `02-preuve-de-concept-scraping/`.
 
@@ -68,7 +166,7 @@ Commits sur `main` :
 
 ## 4. Commandes
 
-Depuis la racine du dépôt, avec Python 3.12+ et aucune dépendance :
+Le guide au début de cette note explique tout pas à pas, filtres et CSV compris. Les mêmes commandes, lancées depuis la racine du dépôt :
 
 ```powershell
 # Collecte complète : environ 17 min la première fois (5 s par fiche), environ 1 min ensuite grâce au cache
@@ -80,7 +178,10 @@ python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --max-fiches 5
 # Sans les fiches (comme au L2)
 python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --sans-fiches
 
-# Tests hors ligne (102 tests)
+# Filtrer une collecte déjà faite, sans Internet, et exporter pour Excel
+python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equipe\kandet\03-amelioration-preuve-de-concept\offres.json --techno Python --csv
+
+# Tests hors ligne (118 tests)
 python -m unittest discover -s equipe/kandet/03-amelioration-preuve-de-concept -p "test_*.py" -v
 ```
 
@@ -106,7 +207,7 @@ Sorties :
 | Technologies détectées | 0 | 83 offres |
 | Niveau (débutant, intermédiaire, avancé) | 0 | 124 offres |
 | Stages détectés | 0 | 1 confirmé |
-| Tests hors ligne | 33 | 102 |
+| Tests hors ligne | 33 | 118 |
 
 Les compteurs de la dernière colonne viennent du résumé de `offres.json` (`summary.filled_fields`).
 
@@ -139,6 +240,6 @@ Les compteurs de la dernière colonne viennent du résumé de `offres.json` (`su
 - **Dépendance au site :** si le Guichet-Emplois change ses classes CSS ou ses balises RDFa, il faudra adapter `guichet.py` et `fiches.py`. Les tests utilisent une copie du balisage de novembre 2026.
 
 **À faire ensuite :**
-- filtres en ligne de commande (`--ville`, `--techno`, `--niveau`, `--stages`) ;
-- export CSV pour Excel ;
-- vérifier les conditions de Québec emploi pour récupérer ses descriptions.
+- vérifier les conditions de Québec emploi pour récupérer ses descriptions ;
+- un filtre `--ville` plus souple, qui accepterait aussi une région (ex. « Montérégie »), car il demande aujourd'hui le nom exact de la ville ;
+- une interface simple (piste 3 du projet), pour chercher les offres sans ligne de commande.

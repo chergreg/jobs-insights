@@ -85,7 +85,7 @@ Résultat : 35 tests OK. Essai réel le 17 novembre : 189 offres récupérées s
 - En plus de ce qui était prévu, j'ai trouvé sur les fiches des partenaires le **titre écrit par l'employeur** (« Appellation affichée sur Jobillico - … »). Il est gardé dans `original_title`. J'ai aussi récupéré la date de début quand elle est indiquée (`start_date`).
 - Le texte caché pour les lecteurs d'écran (« Ce lien ouvrira dans une nouvelle fenêtre ») est retiré du nom de l'employeur.
 - Les montants du salaire sont gardés tels quels dans `source_data.posting`, pour l'étape 3.
-- Dans 10 fiches, le HTML contient `Général` écrit tel quel. Ces séquences sont remplacées par le vrai caractère (« Général »).
+- Dans 10 fiches, le HTML contient des séquences d'échappement Unicode écrites telles quelles : une barre oblique inverse suivie de `u00E9` au lieu de « é ». Ces séquences sont remplacées par le vrai caractère (« Général »).
 - Quand le site répond 429 ou 503, le script l'affiche avant d'attendre 30 s : on voit qu'il attend, il n'est pas bloqué.
 - Tests : 16 nouveaux tests dans `test_fiches.py`, 1 de plus dans `test_main.py` et 1 dans `test_analyse_fusion.py`. Au total, 52 tests OK.
 
@@ -341,7 +341,11 @@ J'y ai aussi vérifié le paramètre `fsrc=16` du plan de Mamadou : c'est un fil
 
 Ce sont des pistes 3 et 4 du projet (présenter les offres, aider à la candidature). Je ne les fais pas dans le L3 pour rester centré sur la collecte :
 
-- **Filtres en ligne de commande** : `--ville`, `--techno`, `--salaire-min`, `--niveau`, `--stages`, puis export CSV pour Excel (`utf-8-sig`).
+- **Filtres en ligne de commande et export CSV ✅ (17 novembre)** :
+  - modules `filtres.py` (`--ville`, `--techno`, `--niveau`, `--stages`, `--salaire-min` avec `--unite-salaire`, `--employeur`) et `export.py` (`--csv` en `utf-8-sig` avec `;` pour Excel) ;
+  - `--depuis offres.json` filtre une collecte déjà faite sans Internet ;
+  - 16 nouveaux tests dans `test_filtres_export.py` ; au total, 118 tests OK ;
+  - le guide « Tester le projet » est au début de `note-livrable-3.md`.
 - **Score de pertinence pour un étudiant du DEC** : règles simples et affichées (stage, niveau débutant, technologies vues au cours). Le score doit être expliqué, pas une note magique.
 - **Géolocalisation** : à partir du code postal, seulement avec une source de données autorisée.
 - **Remotive** : l'API publique ne donne que 14 offres, presque toutes hors Québec (télétravail Canada ou international). Elle reste une source d'appoint. Pour avoir plus d'offres québécoises hors Guichet-Emplois, Jobboom est la meilleure piste : JSON-LD sur chaque fiche, déjà testé par Elvira, Mamadou et Gregory.

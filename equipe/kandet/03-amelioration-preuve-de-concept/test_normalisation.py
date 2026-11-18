@@ -26,7 +26,7 @@ class AmountTests(unittest.TestCase):
     def test_french_amounts(self) -> None:
         self.assertEqual(parse_amount("43,27"), 43.27)
         self.assertEqual(parse_amount("52 000,00"), 52000.0)
-        self.assertEqual(parse_amount("123 000"), 123000.0)  # espace insécable
+        self.assertEqual(parse_amount("123\u00a0000"), 123000.0)  # espace insécable
         self.assertEqual(parse_amount("4 337"), 4337.0)
 
     def test_english_amounts(self) -> None:
@@ -104,7 +104,7 @@ class NormalizeRecordTests(unittest.TestCase):
 
     def test_posting_values_are_preferred(self) -> None:
         item = record(salary="texte illisible")
-        item.source_data["posting"] = {"salary_min": "123 000", "salary_max": "", "salary_unit": "YEAR"}
+        item.source_data["posting"] = {"salary_min": "123\u00a0000", "salary_max": "", "salary_unit": "YEAR"}
         normalize_record(item)
 
         self.assertEqual((item.salary_min, item.salary_max, item.salary_unit), (123000.0, None, "année"))

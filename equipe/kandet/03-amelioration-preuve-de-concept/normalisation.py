@@ -32,7 +32,7 @@ TEXT_UNITS = (
 )
 # Un montant : « 52 000,00 », « 123 000 », « 43,27 », « 80,000 », « 3.5k », « 35,3k ».
 AMOUNT_PATTERN = re.compile(
-    r"(?P<number>\d{1,3}(?:[   ,.]\d{3})+(?:[.,]\d{1,2})?|\d+(?:[.,]\d{1,2})?)"
+    r"(?P<number>\d{1,3}(?:[ \u00a0\u202f,.]\d{3})+(?:[.,]\d{1,2})?|\d+(?:[.,]\d{1,2})?)"
     r"\s*(?P<thousands>[kK])?"
 )
 
@@ -56,7 +56,7 @@ def parse_amount(text: str) -> float | None:
 
 
 def _to_number(token: str, thousands: bool) -> float:
-    token = token.replace(" ", "").replace(" ", "").replace(" ", "")
+    token = token.replace(" ", "").replace("\u00a0", "").replace("\u202f", "")
     decimal = re.search(r"[.,](\d{1,2})$", token)
     if decimal:
         # Le dernier séparateur suivi de 1 ou 2 chiffres est la virgule décimale.

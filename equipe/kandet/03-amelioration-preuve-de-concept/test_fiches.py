@@ -88,10 +88,11 @@ class ParseJobPostingTests(unittest.TestCase):
         self.assertEqual(no_salary.expires_at, "")
 
     def test_unicode_escapes_written_in_the_page_are_decoded(self) -> None:
-        # Vu sur 10 fiches : « Général » écrit tel quel dans le HTML.
-        details = parse_job_posting(
-            make_posting(description=r"Études: Maîtrise. Informatique. Général.")
-        )
+        # Vu sur 10 fiches : « G », barre oblique inverse, « u00E9 », « n »... écrit
+        # tel quel dans le HTML au lieu de « Général ». chr(92) est la barre oblique inverse.
+        escaped = "G" + chr(92) + "u00E9n" + chr(92) + "u00E9ral"
+        self.assertEqual(len(escaped), 17)  # la séquence est bien présente avant le décodage
+        details = parse_job_posting(make_posting(description=f"Études: Maîtrise. Informatique. {escaped}."))
         self.assertEqual(details.description, "Études: Maîtrise. Informatique. Général.")
 
     def test_entities_encoded_twice_are_decoded(self) -> None:
