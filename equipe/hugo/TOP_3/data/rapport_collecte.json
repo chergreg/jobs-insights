@@ -1,0 +1,28 @@
+{
+  "date_generation": "2026-11-18T07:50:21.098330",
+  "total_offres": 9,
+  "repartition_sources": {
+    "Guichet-Emplois": 3,
+    "Jobboom": 3,
+    "Remotive": 3
+  },
+  "repartition_modalites": {
+    "Non spécifié": 4,
+    "Sur place": 1,
+    "Hybride": 1,
+    "Télétravail": 3
+  },
+  "top_10_competences": {
+    "Docker": 2,
+    "PostgreSQL": 2,
+    "CSS": 2,
+    "HTML": 2,
+    "MySQL": 2,
+    "Linux": 1,
+    "SQL": 1,
+    "Azure": 1,
+    "JavaScript": 1,
+    "Kubernetes": 1
+  },
+  "nb_avec_description": 9
+}
