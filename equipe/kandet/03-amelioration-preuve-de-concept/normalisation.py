@@ -11,6 +11,7 @@ from __future__ import annotations
 import re
 
 from modele import SourceRecord
+from regions import region_of
 from texte import normalize
 
 
@@ -101,6 +102,9 @@ def normalize_record(record: SourceRecord) -> None:
         city, province = split_location(record.location)
         record.city = record.city or city
         record.province = record.province or province
+    # La liste officielle ne couvre que le Québec : Windsor (ON) n'est pas Windsor (QC).
+    if record.province == "QC" and not record.region:
+        record.region = region_of(record.city)
 
     posting = record.source_data.get("posting")
     if isinstance(posting, dict) and posting.get("salary_min"):

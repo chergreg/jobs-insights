@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 from modele import AggregatedOffer, SourceRecord
+from regions import region_of
 
 
 # Colonnes du CSV : (en-tête, fonction qui donne la valeur)
@@ -17,6 +18,7 @@ CSV_COLUMNS = [
     ("employeur", lambda o: o.employer),
     ("ville", lambda o: o.city),
     ("province", lambda o: o.province),
+    ("region", lambda o: o.region),
     ("salaire_min", lambda o: _number(o.salary_min)),
     ("salaire_max", lambda o: _number(o.salary_max)),
     ("unite_salaire", lambda o: o.salary_unit),
@@ -72,5 +74,9 @@ def load_offers(path: Path) -> list[AggregatedOffer]:
             for record in raw.get("source_records", [])
         ]
         values = {key: value for key, value in raw.items() if key in offer_fields and key != "source_records"}
-        offers.append(AggregatedOffer(**values, source_records=records))
+        offer = AggregatedOffer(**values, source_records=records)
+        # Un offres.json créé avant l'ajout des régions n'a pas ce champ.
+        if not offer.region and offer.province == "QC":
+            offer.region = region_of(offer.city)
+        offers.append(offer)
     return offers

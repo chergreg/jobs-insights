@@ -30,6 +30,7 @@ class SourceRecord:
     start_date: str = ""
     city: str = ""
     province: str = ""
+    region: str = ""  # région administrative du Québec (regions.py)
     postal_code: str = ""
     education: str = ""
     experience: str = ""
@@ -50,7 +51,7 @@ class SourceRecord:
 
 # Champs texte et listes copiés d'une annonce vers l'offre regroupée.
 DETAIL_TEXT_FIELDS = (
-    "original_title", "expires_at", "start_date", "city", "province", "postal_code",
+    "original_title", "expires_at", "start_date", "city", "province", "region", "postal_code",
     "education", "experience", "conditions", "original_url",
 )
 DETAIL_LIST_FIELDS = ("tasks", "languages")
@@ -82,6 +83,7 @@ class AggregatedOffer:
     start_date: str = ""
     city: str = ""
     province: str = ""
+    region: str = ""
     postal_code: str = ""
     education: str = ""
     experience: str = ""

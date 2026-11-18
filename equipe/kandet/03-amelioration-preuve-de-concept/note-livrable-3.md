@@ -28,7 +28,7 @@ Toutes les commandes suivantes se lancent depuis ce dossier.
 python -m unittest discover -p "test_*.py" -v
 ```
 
-La dernière ligne doit être `OK`, après `Ran 118 tests`.
+La dernière ligne doit être `OK`, après `Ran 129 tests`.
 
 ### 3. Lancer la collecte
 
@@ -58,6 +58,7 @@ Après une collecte, `--depuis offres.json` relit les offres en quelques seconde
 
 ```powershell
 python main.py --depuis offres.json --ville Québec
+python main.py --depuis offres.json --region monteregie
 python main.py --depuis offres.json --techno Python
 python main.py --depuis offres.json --niveau debutant
 python main.py --depuis offres.json --stages
@@ -69,6 +70,7 @@ python main.py --depuis offres.json --techno SQL --ville Montréal --csv
 | Option | Ce qu'elle garde |
 |---|---|
 | `--ville Montréal` | Les offres de cette ville |
+| `--region monteregie` | Les offres de cette région administrative. Le début du nom suffit : `capitale`, `chaudiere`, `laurentides`… |
 | `--techno SQL` | Les offres qui mentionnent cette technologie (SQL, Python, C#, Azure…) |
 | `--niveau débutant` | `débutant`, `intermédiaire` ou `avancé` |
 | `--stages` | Les stages confirmés ou possibles |
@@ -88,6 +90,7 @@ La liste complète des options s'obtient avec `python main.py --help`.
 | `offres.json` | Toutes les offres avec tous les champs, et les statistiques | Non |
 | `offres.csv` | Les offres affichées, pour Excel | Non |
 | `echantillon.json` | 10 offres d'exemple | Oui |
+| `regions_quebec.csv` | Municipalités et arrondissements du Québec avec leur région (source officielle, voir plus bas) | Oui |
 | `cache/fiches/` | Les fiches déjà téléchargées | Non |
 
 ### Si ça ne marche pas
@@ -136,7 +139,7 @@ Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-d
 **Ce que j'ai modifié :**
 
 - Tout est réécrit avec la bibliothèque standard (`html.parser`) : pas de BeautifulSoup ni de Pydantic, donc aucune installation.
-- Le prototype est découpé en modules : `guichet`, `fiches`, `remotive`, `normalisation`, `competences`, `fusion`, `analyse`, `filtres`, `export`, `main`.
+- Le prototype est découpé en modules : `guichet`, `fiches`, `remotive`, `normalisation`, `competences`, `fusion`, `analyse`, `regions`, `filtres`, `export`, `main`.
 - Nouveaux champs :
   - titre de l'employeur, description, tâches ;
   - date d'expiration et date de début ;
@@ -149,7 +152,8 @@ Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-d
 - Deux défauts de la source sont corrigés :
   - dans 10 fiches, des séquences d'échappement Unicode écrites telles quelles (barre oblique inverse + `u00E9` au lieu de « é ») ;
   - des `&amp;` encodés deux fois.
-- Filtres et export : `--ville`, `--techno`, `--niveau`, `--stages`, `--salaire-min`, `--employeur`, export `--csv` pour Excel, et `--depuis` pour filtrer une collecte déjà faite sans Internet (modules `filtres` et `export`).
+- Région administrative de chaque offre (module `regions`) : la ville est cherchée dans le Répertoire des municipalités du Québec (ministère des Affaires municipales et de l'Habitation, données ouvertes sous licence CC-BY 4.0). La liste officielle des arrondissements sert pour Saint-Laurent, Lachine, etc. Le fichier `regions_quebec.csv` garde seulement le nom, le type et la région, sans aucun nom d'élu. Il est recréé par `preparer_regions.py`.
+- Filtres et export : `--ville`, `--region`, `--techno`, `--niveau`, `--stages`, `--salaire-min`, `--employeur`, export `--csv` pour Excel, et `--depuis` pour filtrer une collecte déjà faite sans Internet (modules `filtres` et `export`).
 
 Le code est dans ce dossier. Le prototype du L2 reste tel quel dans `02-preuve-de-concept-scraping/`.
 
@@ -181,7 +185,7 @@ python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --sans-fiches
 # Filtrer une collecte déjà faite, sans Internet, et exporter pour Excel
 python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equipe\kandet\03-amelioration-preuve-de-concept\offres.json --techno Python --csv
 
-# Tests hors ligne (118 tests)
+# Tests hors ligne (129 tests)
 python -m unittest discover -s equipe/kandet/03-amelioration-preuve-de-concept -p "test_*.py" -v
 ```
 
@@ -203,11 +207,12 @@ Sorties :
 | Date d'expiration | 0 | 184 |
 | Salaire en chiffres | 0 (texte seulement) | 186 / 186 |
 | Ville et province séparées | 0 | 179 / 186 |
+| Région administrative | 0 | 178 / 179 offres avec ville (Saint-Antoine-Abbé, un hameau, n'est pas une municipalité) |
 | Études, expérience, langues | 0 | 71 |
 | Technologies détectées | 0 | 83 offres |
 | Niveau (débutant, intermédiaire, avancé) | 0 | 124 offres |
 | Stages détectés | 0 | 1 confirmé |
-| Tests hors ligne | 33 | 118 |
+| Tests hors ligne | 33 | 129 |
 
 Les compteurs de la dernière colonne viennent du résumé de `offres.json` (`summary.filled_fields`).
 
@@ -229,7 +234,10 @@ Les compteurs de la dernière colonne viennent du résumé de `offres.json` (`su
 
 ## 6. Limites qui restent
 
-- **Québec emploi, Indeed et ZipRecruiter :** le Guichet-Emplois n'affiche presque jamais leur description (Québec emploi : 2 sur 40). On garde le lien vers l'annonce d'origine. Je n'ai pas lu Québec emploi, car ses conditions d'accès ne sont pas vérifiées.
+- **Québec emploi, Indeed et ZipRecruiter :** le Guichet-Emplois n'affiche presque jamais leur description (Québec emploi : 2 sur 40). On garde le lien vers l'annonce d'origine.
+  - J'ai vérifié Québec emploi le 17 novembre. Techniquement, ce serait facile : ses pages d'offres contiennent un bloc JSON-LD `JobPosting` avec la description complète, et le `robots.txt` les autorise.
+  - Mais ses [conditions d'utilisation](https://www.quebecemploi.gouv.qc.ca/conditions-d-utilisation) disent : « Il est interdit d'avoir recours à des robots ou à tout autre procédé automatisé pour accéder au site Québec emploi ou pour y collecter, extraire, générer ou exploiter des données ».
+  - Je ne l'ai donc pas ajouté. Pour ces offres, il faut lire la description sur Québec emploi en suivant le lien.
 - **Stages :** un seul confirmé sur 194 offres. Il y a très peu de stages TI sur le Guichet-Emplois en ce moment, et `fsrc=16` n'est pas un filtre de stages.
 - **Caractères des partenaires :** des `?` remplacent les apostrophes dans leurs textes (« d?ordinateur »). Ils sont laissés tels quels, car un `?` peut être une vraie question.
 - **Salaires :**
@@ -239,7 +247,7 @@ Les compteurs de la dernière colonne viennent du résumé de `offres.json` (`su
 - **Cache :** il ne se périme pas. Pour relire une fiche, il faut supprimer son fichier dans `cache/fiches/`.
 - **Dépendance au site :** si le Guichet-Emplois change ses classes CSS ou ses balises RDFa, il faudra adapter `guichet.py` et `fiches.py`. Les tests utilisent une copie du balisage de novembre 2026.
 
+- **Régions :** la région est trouvée à partir du nom de la ville. Un lieu qui n'est pas une municipalité ni un arrondissement (hameau, quartier, « Différentes régions ») reste sans région. Un nom porté par des municipalités de deux régions différentes reste aussi sans région, sans qu'on en choisisse une.
+
 **À faire ensuite :**
-- vérifier les conditions de Québec emploi pour récupérer ses descriptions ;
-- un filtre `--ville` plus souple, qui accepterait aussi une région (ex. « Montérégie »), car il demande aujourd'hui le nom exact de la ville ;
 - une interface simple (piste 3 du projet), pour chercher les offres sans ligne de commande.

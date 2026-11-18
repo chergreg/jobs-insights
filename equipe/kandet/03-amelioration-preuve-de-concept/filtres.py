@@ -15,6 +15,7 @@ from texte import normalize
 @dataclass
 class Filters:
     city: str = ""
+    region: str = ""
     technology: str = ""
     level: str = ""
     stages_only: bool = False
@@ -23,13 +24,15 @@ class Filters:
     employer: str = ""
 
     def is_empty(self) -> bool:
-        return not (self.city or self.technology or self.level or self.stages_only
+        return not (self.city or self.region or self.technology or self.level or self.stages_only
                     or self.salary_min is not None or self.employer)
 
     def describe(self) -> str:
         parts = []
         if self.city:
             parts.append(f"ville = {self.city}")
+        if self.region:
+            parts.append(f"région = {self.region}")
         if self.technology:
             parts.append(f"technologie = {self.technology}")
         if self.level:
@@ -46,6 +49,11 @@ class Filters:
 def matches(offer: AggregatedOffer, filters: Filters) -> bool:
     """Vrai si l'offre respecte tous les filtres demandés."""
     if filters.city and normalize(offer.city) != normalize(filters.city):
+        return False
+    # Région : on accepte un début de nom, ex. « monteregie », « capitale », « chaudiere ».
+    if filters.region and (
+        not offer.region or not normalize(offer.region).startswith(normalize(filters.region))
+    ):
         return False
     if filters.technology and normalize(filters.technology) not in {
         normalize(name) for name in offer.technologies

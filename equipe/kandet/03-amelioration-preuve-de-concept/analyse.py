@@ -104,6 +104,7 @@ def build_summary(offers: list[AggregatedOffer], today: date | None = None) -> d
         "top_skills": _top([name for offer in offers for name in offer.skills]),
         "salaries": salary_statistics(offers),
         "top_cities": _top([offer.city for offer in offers]),
+        "regions": dict(Counter(offer.region for offer in offers if offer.region).most_common()),
         "levels": dict(Counter(offer.level or "Non précisé" for offer in offers).most_common()),
         "job_types": dict(Counter(offer.job_type or "Non précisé" for offer in offers).most_common()),
         "expiring_within_7_days": expiring_soon(offers, today),
@@ -128,7 +129,7 @@ def build_summary(offers: list[AggregatedOffer], today: date | None = None) -> d
 
 
 FILLED_FIELDS = (
-    "original_title", "description", "tasks", "expires_at", "job_type", "city", "province",
+    "original_title", "description", "tasks", "expires_at", "job_type", "city", "province", "region",
     "postal_code", "salary_min", "salary_unit", "education", "experience", "languages",
     "original_url", "technologies", "skills", "experience_years_min", "level", "summary",
 )

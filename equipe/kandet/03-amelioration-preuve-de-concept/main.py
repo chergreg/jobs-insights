@@ -97,6 +97,11 @@ def build_parser() -> argparse.ArgumentParser:
 
     filtres = parser.add_argument_group("filtres (affichage et CSV ; offres.json garde toutes les offres)")
     filtres.add_argument("--ville", default="", help="Ex. --ville Montréal (accents facultatifs).")
+    filtres.add_argument(
+        "--region",
+        default="",
+        help="Région administrative ou début de son nom : --region Montérégie, --region capitale.",
+    )
     filtres.add_argument("--techno", default="", help="Ex. --techno Python, --techno SQL, --techno \"C#\".")
     filtres.add_argument("--niveau", default="", help="débutant, intermédiaire ou avancé.")
     filtres.add_argument("--stages", action="store_true", help="Seulement les stages (confirmés ou possibles).")
@@ -162,6 +167,7 @@ def print_summary(summary: dict[str, object]) -> None:
     print(f"Top technologies : {summary['top_technologies']}")
     print(f"Top compétences : {summary['top_skills']}")
     print(f"Top villes : {summary['top_cities']}")
+    print(f"Régions : {summary['regions']}")
     print("Salaires (valeur basse médiane, plus bas, plus haut) :")
     for key, stats in summary["salaries"].items():  # type: ignore[union-attr]
         print(
@@ -302,6 +308,7 @@ def main(argv: list[str] | None = None) -> None:
 
     filters = Filters(
         city=args.ville,
+        region=args.region,
         technology=args.techno,
         level=args.niveau,
         stages_only=args.stages,

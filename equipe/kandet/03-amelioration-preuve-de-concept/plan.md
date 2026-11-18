@@ -346,6 +346,11 @@ Ce sont des pistes 3 et 4 du projet (présenter les offres, aider à la candidat
   - `--depuis offres.json` filtre une collecte déjà faite sans Internet ;
   - 16 nouveaux tests dans `test_filtres_export.py` ; au total, 118 tests OK ;
   - le guide « Tester le projet » est au début de `note-livrable-3.md`.
+- **Région administrative ✅ (17 novembre)** :
+  - essai d'abord : 178 des 179 villes de nos offres sont retrouvées dans le Répertoire des municipalités du Québec (MAMH, CC-BY 4.0), aucune n'est ambiguë ;
+  - ajout ensuite : module `regions.py`, fichier `regions_quebec.csv` (3 colonnes, sans données personnelles), script `preparer_regions.py`, filtre `--region`, colonne `region` dans le CSV ;
+  - 11 nouveaux tests dans `test_regions.py` ; au total, 129 tests OK.
+- **Descriptions de Québec emploi ❌ (vérifié le 17 novembre)** : techniquement possible (JSON-LD `JobPosting`, `robots.txt` permissif), mais interdit par les conditions d'utilisation du site. Non ajouté.
 - **Score de pertinence pour un étudiant du DEC** : règles simples et affichées (stage, niveau débutant, technologies vues au cours). Le score doit être expliqué, pas une note magique.
 - **Géolocalisation** : à partir du code postal, seulement avec une source de données autorisée.
 - **Remotive** : l'API publique ne donne que 14 offres, presque toutes hors Québec (télétravail Canada ou international). Elle reste une source d'appoint. Pour avoir plus d'offres québécoises hors Guichet-Emplois, Jobboom est la meilleure piste : JSON-LD sur chaque fiche, déjà testé par Elvira, Mamadou et Gregory.
