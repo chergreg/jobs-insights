@@ -1,0 +1,258 @@
+From 240019875d3e9b56a18823b427baeaebd0732f52 Mon Sep 17 00:00:00 2001
+From: Dan <dan@users.noreply.github.com>
+Date: Tue, 17 Nov 2026 12:45:29 -0500
+Subject: [PATCH] docs(dan-livrable3): Lot 1 - analyse de l'existant, top 3 des
+ sites et plan
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- equipe/dan/livrable3/plan.md : analyse, top 3 (Guichet-Emplois, Jobboom,
+  Talent.com avec Remotive en plan B), décisions techniques, 7 lots
+- equipe/dan/README.md : section Scripts Python (entrée, sortie, configuration)
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01YSi771V6yUwNsLBzEqieCy
+---
+ equipe/dan/README.md         |  73 +++++++++++++++++
+ equipe/dan/livrable3/plan.md | 148 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 221 insertions(+)
+ create mode 100644 equipe/dan/livrable3/plan.md
+
+diff --git a/equipe/dan/README.md b/equipe/dan/README.md
+index 02095c1..6da2a3a 100644
+--- a/equipe/dan/README.md
++++ b/equipe/dan/README.md
+@@ -1,2 +1,75 @@
+ Espace personnel de partage de l'enseignant Gregory
+ Daniel
++
++## Livrables
++
++| Livrable | Dossier |
++| --- | --- |
++| 1 — Inventaire des sites | [`01-inventaire-des-sites/`](01-inventaire-des-sites/sites.md) |
++| 2 — Preuve de concept | [`02-preuve-de-concept-scraping/`](02-preuve-de-concept-scraping/compte-rendu.md) |
++| 3 — Amélioration (plan par lots) | [`livrable3/plan.md`](livrable3/plan.md) |
++
++## Scripts Python
++
++### Installation
++
++Python 3.10 ou plus récent. Depuis le dossier du script :
++
++```bash
++pip install -r requirements.txt
++```
++
++### Résumé
++
++| Script | Rôle | Commande |
++| --- | --- | --- |
++| [`poc_guichetemplois.py`](02-preuve-de-concept-scraping/poc_guichetemplois.py) | Offres TI au Québec du Guichet-Emplois (1 page) | `python poc_guichetemplois.py "developpeur"` |
++| Scrapers du livrable 3 | Ajoutés lot par lot | Voir [`livrable3/plan.md`](livrable3/plan.md) |
++
++### `poc_guichetemplois.py` (livrable 2)
++
++Dossier : `02-preuve-de-concept-scraping/`. Lancer le script **depuis ce dossier**, car le CSV est écrit dans le dossier courant.
++
++```bash
++cd equipe/dan/02-preuve-de-concept-scraping
++python poc_guichetemplois.py                  # tous les postes TI au Québec
++python poc_guichetemplois.py "developpeur"    # avec un mot-clé
++```
++
++**Entrée**
++
++| Entrée | Obligatoire | Défaut | Rôle |
++| --- | --- | --- | --- |
++| 1er argument | Non | aucun | Mot-clé ajouté à la recherche (`searchstring`) |
++
++Aucune autre saisie : le script ne pose pas de question.
++
++**Sortie**
++
++- Console : URL de la page lue, nombre d'offres, les 10 premières offres.
++- Fichier `offres_guichetemplois.csv` (`utf-8-sig`, lisible dans Excel), **remplacé** à chaque exécution :
++
++| Colonne | Contenu |
++| --- | --- |
++| `source` | Toujours `guichetemplois` |
++| `titre` | Titre du poste |
++| `employeur` | Nom de l'employeur |
++| `lieu` | Ville et province, ex. `Québec (QC)` |
++| `date` | Date de publication, ex. `16 novembre 2026` |
++| `salaire` | Texte du salaire, vide s'il n'est pas affiché |
++| `lien` | URL de la fiche, sans `;jsessionid` |
++
++- Si `robots.txt` interdit la page : message d'arrêt, aucun fichier écrit.
++- Si 0 offre : message invitant à vérifier les sélecteurs.
++
++**Configuration** (constantes en haut du script)
++
++| Constante | Valeur | Rôle |
++| --- | --- | --- |
++| `PROVINCE` | `"QC"` | Province filtrée (`fprov`) |
++| `CODES_CNP_TI` | 14 codes | Professions TI filtrées (`fn21`), liste de Kandet |
++| `DELAI` | `5` | Secondes d'attente (`Crawl-delay` du site) |
++| `ENTETES` | `User-Agent` du projet | Identification honnête du robot |
++| `SELECTEURS` | Sélecteurs CSS | À corriger si le site change son HTML |
++
++**Réseau :** 2 requêtes par exécution (`robots.txt`, puis 1 page de résultats), séparées de 5 s.
+diff --git a/equipe/dan/livrable3/plan.md b/equipe/dan/livrable3/plan.md
+new file mode 100644
+index 0000000..4ea594d
+--- /dev/null
++++ b/equipe/dan/livrable3/plan.md
+@@ -0,0 +1,148 @@
++# Plan — Livrable 3 (Dan)
++
++> **Rôle de ce fichier :** repère commun entre les conversations avec l'assistant IA.
++> On travaille **par lot** : 1 lot = 1 conversation = 1 commit.
++> **Dossier de travail :** `equipe/dan/livrable3/`
++> **Début d'une conversation :** lire ce plan, puis travailler seulement sur le lot indiqué « ⏳ Prochain lot ».
++
++---
++
++## 1. Objectif
++
++1. Analyser ce que l'équipe a déjà fait en scraping : ce qui marche, les limites.
++2. Choisir un **top 3 des sites** à scraper.
++3. Écrire un scraper Python pour ces 3 sites, en réutilisant ce qui a déjà été testé et en ajoutant des bonifications.
++
++Cible du projet : **stages et postes TI en début de carrière au Québec** (DEC en informatique, Collège O'Sullivan de Québec).
++
++---
++
++## 2. Analyse de l'existant (dépôt au 2026-11-17)
++
++| Auteur | Site | Méthode | Résultat | Tests | Ce qui marche | Limites |
++| --- | --- | --- | --- | --- | --- | --- |
++| **Dan** (L2) | Guichet-Emplois | HTML, `requests` + BS4 | 25 offres QC (1 page) | Non | Filtres QC + CNP TI, délai 5 s | 1 page, pas de description, pas de site d'origine |
++| **Dan** (L2) | CareerBeacon | HTML | 0 (403) | Non | Arrêt propre, aucun contournement | Bloqué par Cloudflare |
++| **Kandet** | Guichet-Emplois, Remotive | HTML + pagination, API | 191 + 8 offres | 33 | Pagination complète, 14 codes CNP, site d'origine, doublons | Pas de fiches : titres CNP, pas de description |
++| **Hugo** | Guichet-Emplois | Atom + HTML + RDFa | 87 offres | 6 | 100 % des descriptions, compétences sans faux positifs | Mots-clés fixes au lieu de la pagination CNP |
++| **Elvira** | Jobboom | HTML + JSON-LD | 20 offres | Non | JSON-LD `JobPosting` complet | Recherche par mots-clés seulement |
++| **Mamadou** (L3) | 5 sources dont Talent.com | JSON-LD, RDFa, API | 22 offres | 17 | Talent.com `@graph` + GPS, cache 24 h | `RobotFileParser` (ne comprend pas les `*`) |
++| **Gregory** (démo L3) | Guichet, Jobboom, Remotive | RDFa, JSON-LD, API | 140 offres unifiées | 110 | Modèle `JobOffer`, pipeline, doublons, CSV Excel | Délais fixés dans le code, `robots.txt` non relu |
++
++### Constats
++
++- **Guichet-Emplois** est le site le mieux maîtrisé. La meilleure combinaison connue : pagination CNP (Kandet) + fiches RDFa (Hugo).
++- **JSON-LD `JobPosting`** est la méthode la plus fiable sur Jobboom et Talent.com : données structurées, pas de sélecteurs CSS fragiles.
++- **Conformité :** personne ne lit vraiment toutes les règles de `robots.txt`. `RobotFileParser` ignore les `*`, ce qui a fait mal conclure plusieurs scripts. Leçon de CareerBeacon : `robots.txt` peut permettre une page que le serveur refuse quand même (403).
++- **Temps :** à 5 s par requête, lire 190 fiches prend environ 16 minutes → **cache disque** nécessaire.
++
++Analyse détaillée de L2 : [`../03-amelioration-preuve-de-concept/note.md`](../03-amelioration-preuve-de-concept/note.md).
++
++---
++
++## 3. Top 3 des sites
++
++| Rang | Site | Méthode | Pourquoi | Code repris |
++| :-: | --- | --- | --- | --- |
++| 1 | **Guichet-Emplois** | Pagination CNP + fiches RDFa | Mon site du L2, le plus de volume au Québec, reprend des partenaires (Jobillico, Talent.com, CareerBeacon…) | Mon POC, Kandet, Hugo |
++| 2 | **Jobboom** | Catégorie TI `_i10lfr` + JSON-LD | Portail québécois, PME absentes du Guichet | Elvira, Mamadou |
++| 3 | **Talent.com** | JSON-LD `@graph` (`ItemList` → `JobPosting`) | Agrégateur canadien avec GPS ; le prof l'a proposé comme 3e site possible | Mamadou |
++
++**Plan B pour le site 3 :** si `robots.txt` de Talent.com interdit les pages visées, ou si le serveur répond 403, on passe à **Remotive** (API officielle, code de Kandet et de Gregory). Aucun contournement.
++
++---
++
++## 4. Décisions techniques
++
++- **Bibliothèques :** `requests` + `beautifulsoup4` (déjà utilisées dans mon POC), listées dans `requirements.txt`. Pas de Pydantic : une `dataclass` suffit.
++- **Modèle commun `Offre`** (une seule forme pour les 3 sites, champ absent = `None`, jamais deviné) :
++  `id`, `source`, `source_partenaire`, `titre`, `entreprise`, `lieu`, `province`, `latitude`, `longitude`, `date_publication` (ISO), `type_poste`, `modalite`, `est_stage`, `salaire`, `description`, `competences`, `url`.
++- **Bonifications de Dan :**
++  1. **Vérificateur `robots.txt` complet** (règle la plus longue, `*` et `$`, `Crawl-delay` lu dans le fichier) partagé par les 3 scrapers.
++  2. **Arrêt propre sur 401, 403 et 429**, avec un message clair (leçon de CareerBeacon).
++  3. **Cache disque 24 h** des pages déjà lues (dans `cache/`, ignoré par Git).
++- **Tests :** hors ligne seulement (fixtures HTML/JSON locales, zéro appel réseau).
++- **Sorties :** `data/offres_<site>.json` par site, puis `data/offres_unifiees.json` et `.csv` (`utf-8-sig`, séparateur `;`).
++
++Structure visée :
++
++```
++equipe/dan/livrable3/
++├── plan.md
++├── requirements.txt
++├── outils.py              # robots.txt, délai, cache, téléchargement
++├── modele.py              # dataclass Offre
++├── scrapers/
++│   ├── guichet_emplois.py
++│   ├── jobboom.py
++│   └── talent.py          # ou remotive.py (plan B)
++├── main.py                # lance les 3 scrapers + doublons + exports
++├── tests/                 # tests hors ligne + fixtures/
++└── data/                  # petits échantillons documentés
++```
++
++---
++
++## 5. Lots
++
++### Lot 1 — Analyse, top 3 et plan *(✅ Terminé)*
++- [x] Lire les travaux du dépôt (Dan, Kandet, Hugo, Elvira, Mamadou, Gregory) et la synthèse du L3.
++- [x] Choisir le top 3 avec un plan B.
++- [x] Créer ce `plan.md`.
++- [x] Ajouter la section « Scripts Python » dans [`../README.md`](../README.md).
++
++### Lot 2 — Socle commun *(⏳ Prochain lot)*
++- [ ] `requirements.txt`, `.gitignore` (`cache/`, `__pycache__/`).
++- [ ] `modele.py` : dataclass `Offre` + export JSON/CSV.
++- [ ] `outils.py` : vérificateur `robots.txt` (règle la plus longue, `*`, `$`, `Crawl-delay`), téléchargement avec `User-Agent` honnête, délai, arrêt propre sur 401/403/429, cache disque 24 h.
++- [ ] Tests hors ligne (dont le vrai `robots.txt` de CareerBeacon comme fixture).
++- [ ] Mettre à jour la section « Scripts Python » du README.
++
++### Lot 3 — Guichet-Emplois
++- [ ] `scrapers/guichet_emplois.py` : pagination CNP TI au Québec (`fprov=QC`, `fn21`, `page`), site d'origine, `jsessionid` retiré.
++- [ ] Lecture des fiches par RDFa (`property="description"`…) avec repli DOM, limite `--fiches N`, cache.
++- [ ] Tests hors ligne + `data/offres_guichet_emplois.json` (petit échantillon vérifié à la main).
++
++### Lot 4 — Jobboom
++- [ ] Vérifier `robots.txt`.
++- [ ] `scrapers/jobboom.py` : catégorie TI `_i10lfr?sortBy=date&page=N`, offres commanditées exclues, fiches JSON-LD avec `json.loads` (pas de regex).
++- [ ] Tests hors ligne + `data/offres_jobboom.json`.
++
++### Lot 5 — Talent.com (ou Remotive)
++- [ ] **Porte d'entrée :** vérifier `robots.txt` et une requête test. Si interdit ou 403 → Remotive, et le noter ici.
++- [ ] `scrapers/talent.py` : JSON-LD `@graph` (`ItemList` → `JobPosting`), GPS.
++- [ ] Tests hors ligne + `data/offres_talent.json`.
++
++### Lot 6 — Regroupement et exports
++- [ ] `main.py` : lancer les 3 scrapers (`--sites`, `--pages`, `--fiches`), doublons (même id, ou titre + entreprise + ville), garder la fiche la plus complète.
++- [ ] `data/offres_unifiees.json` et `.csv` (`utf-8-sig`, `;`).
++- [ ] Tests hors ligne des doublons.
++
++### Lot 7 — Compte rendu et démo
++- [ ] `compte-rendu.md` : sites, code repris (avec liens), améliorations, commande, résultat avant/après, limites.
++- [ ] README final et vérification de tous les tests.
++
++---
++
++## 6. Suivi
++
++| Lot | Statut | Fichiers | Tests |
++| --- | --- | --- | --- |
++| 1 — Analyse et plan | ✅ | `plan.md`, `../README.md` | — |
++| 2 — Socle commun | ⏳ | `outils.py`, `modele.py` | — |
++| 3 — Guichet-Emplois | ⬜ | `scrapers/guichet_emplois.py` | — |
++| 4 — Jobboom | ⬜ | `scrapers/jobboom.py` | — |
++| 5 — Talent.com / Remotive | ⬜ | `scrapers/talent.py` | — |
++| 6 — Regroupement | ⬜ | `main.py` | — |
++| 7 — Compte rendu | ⬜ | `compte-rendu.md` | — |
++
++---
++
++## 7. Fin d'un lot
++
++1. Lancer tous les tests :
++   `python -m unittest discover -s equipe/dan/livrable3 -p "test_*.py" -v`
++2. Mettre à jour ce plan (cases cochées, statut, tableau de suivi).
++3. Mettre à jour la section « Scripts Python » du README si un script a changé.
++4. Commit : `feat(dan-livrable3): Lot N - <résumé>`.
++5. Écrire le prompt du lot suivant.
+-- 
+2.43.0
+
