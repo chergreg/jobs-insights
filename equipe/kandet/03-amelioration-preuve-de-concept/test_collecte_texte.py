@@ -1,5 +1,6 @@
 """Tests hors ligne des modules collecte (HTTP) et texte (dates)."""
 
+import io
 import unittest
 from email.message import Message
 from unittest.mock import MagicMock, patch
@@ -17,11 +18,13 @@ class FetchUrlTests(unittest.TestCase):
         with (
             patch("collecte.urlopen", side_effect=[error, response]) as opener,
             patch("collecte.time.sleep") as sleep,
+            patch("collecte.sys.stderr", new_callable=io.StringIO) as stderr,
         ):
             self.assertEqual(fetch_url("https://example.test", "text/html"), b"ok")
 
         self.assertEqual(opener.call_count, 2)
         sleep.assert_called_once()
+        self.assertIn("HTTP 429 : nouvel essai dans 30 s", stderr.getvalue())
 
     def test_other_http_errors_are_not_retried(self) -> None:
         error = HTTPError("https://example.test", 404, "Not Found", Message(), None)

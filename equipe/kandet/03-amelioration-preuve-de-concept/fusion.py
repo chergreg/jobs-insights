@@ -2,7 +2,13 @@
 
 from __future__ import annotations
 
-from modele import DETAIL_LIST_FIELDS, DETAIL_TEXT_FIELDS, AggregatedOffer, SourceRecord
+from modele import (
+    DETAIL_LIST_FIELDS,
+    DETAIL_TEXT_FIELDS,
+    SALARY_FIELDS,
+    AggregatedOffer,
+    SourceRecord,
+)
 from texte import normalize
 
 
@@ -41,7 +47,7 @@ def _republished_match(left: SourceRecord, right: SourceRecord) -> bool:
 
 
 def _new_aggregated_offer(record: SourceRecord) -> AggregatedOffer:
-    details = {name: getattr(record, name) for name in DETAIL_TEXT_FIELDS}
+    details = {name: getattr(record, name) for name in (*DETAIL_TEXT_FIELDS, *SALARY_FIELDS)}
     details.update({name: list(getattr(record, name)) for name in DETAIL_LIST_FIELDS})
     return AggregatedOffer(
         **details,
@@ -72,6 +78,9 @@ def _merge_record(offer: AggregatedOffer, record: SourceRecord) -> None:
         if not getattr(offer, field_name) and getattr(record, field_name):
             value = getattr(record, field_name)
             setattr(offer, field_name, list(value) if isinstance(value, list) else value)
+    if offer.salary_min is None and record.salary_min is not None:
+        for field_name in SALARY_FIELDS:
+            setattr(offer, field_name, getattr(record, field_name))
     offer.tags = list(dict.fromkeys(offer.tags + record.tags))
     offer.stage_signals = list(dict.fromkeys(offer.stage_signals + record.stage_signals))
     offer.search_terms = list(dict.fromkeys(offer.search_terms + record.search_terms))

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18T00:08:02.402207+00:00",
+  "generated_at": "2026-11-18T02:33:12.688110+00:00",
   "offers": [
     {
       "title": "développeur/développeuse de logiciels",
@@ -43,6 +43,11 @@
           "conditions": "",
           "languages": [],
           "original_url": "https://ca.talent.com/redirect?id=646463664782055744&source=&utm_medium=xml&utm_campaign=arbitrage&utm_product=jobbank&puid=edaaaddcbdaaaddcfddaadddeddaaddaeddcadd9ada8addefdagaddb6ddbgd99bd9c3dec3ee33deg3ee23deg3deg3deg3deg3deg3deg3ee33ced3cef3cec3ee33def3de93de73dec3de73deb3ded3def3def3deg3ee33ee3&pos=0&xml_batch_generation_id=f5b86888-3fd1-4239-ac20-32f57d2fef68&falcon=1&pid=2e539c0fb9ec&bpid=af23982d62f15be8d71162ae193097ef",
+          "salary_min": 101.0,
+          "salary_max": null,
+          "salary_unit": "jour",
+          "salary_currency": "CAD",
+          "salary_negotiable": false,
           "stage_status": "not_indicated",
           "stage_signals": [],
           "search_terms": [],
@@ -71,7 +76,12 @@
       "experience": "",
       "conditions": "",
       "languages": [],
-      "original_url": "https://ca.talent.com/redirect?id=646463664782055744&source=&utm_medium=xml&utm_campaign=arbitrage&utm_product=jobbank&puid=edaaaddcbdaaaddcfddaadddeddaaddaeddcadd9ada8addefdagaddb6ddbgd99bd9c3dec3ee33deg3ee23deg3deg3deg3deg3deg3deg3ee33ced3cef3cec3ee33def3de93de73dec3de73deb3ded3def3def3deg3ee33ee3&pos=0&xml_batch_generation_id=f5b86888-3fd1-4239-ac20-32f57d2fef68&falcon=1&pid=2e539c0fb9ec&bpid=af23982d62f15be8d71162ae193097ef"
+      "original_url": "https://ca.talent.com/redirect?id=646463664782055744&source=&utm_medium=xml&utm_campaign=arbitrage&utm_product=jobbank&puid=edaaaddcbdaaaddcfddaadddeddaaddaeddcadd9ada8addefdagaddb6ddbgd99bd9c3dec3ee33deg3ee23deg3deg3deg3deg3deg3deg3ee33ced3cef3cec3ee33def3de93de73dec3de73deb3ded3def3def3deg3ee33ee3&pos=0&xml_batch_generation_id=f5b86888-3fd1-4239-ac20-32f57d2fef68&falcon=1&pid=2e539c0fb9ec&bpid=af23982d62f15be8d71162ae193097ef",
+      "salary_min": 101.0,
+      "salary_max": null,
+      "salary_unit": "jour",
+      "salary_currency": "CAD",
+      "salary_negotiable": false
     },
     {
       "title": "développeur/développeuse de logiciels",
@@ -121,6 +131,11 @@
             "Anglais ou français"
           ],
           "original_url": "",
+          "salary_min": 42000.0,
+          "salary_max": 55000.0,
+          "salary_unit": "année",
+          "salary_currency": "CAD",
+          "salary_negotiable": true,
           "stage_status": "not_indicated",
           "stage_signals": [],
           "search_terms": [],
@@ -155,7 +170,12 @@
       "languages": [
         "Anglais ou français"
       ],
-      "original_url": ""
+      "original_url": "",
+      "salary_min": 42000.0,
+      "salary_max": 55000.0,
+      "salary_unit": "année",
+      "salary_currency": "CAD",
+      "salary_negotiable": true
     },
     {
       "title": "technicien/technicienne de réseau informatique",
@@ -208,6 +228,11 @@
             "Français"
           ],
           "original_url": "",
+          "salary_min": 37.0,
+          "salary_max": null,
+          "salary_unit": "heure",
+          "salary_currency": "CAD",
+          "salary_negotiable": false,
           "stage_status": "not_indicated",
           "stage_signals": [],
           "search_terms": [],
@@ -245,7 +270,12 @@
       "languages": [
         "Français"
       ],
-      "original_url": ""
+      "original_url": "",
+      "salary_min": 37.0,
+      "salary_max": null,
+      "salary_unit": "heure",
+      "salary_currency": "CAD",
+      "salary_negotiable": false
     },
     {
       "title": "technicien/technicienne en informatique",
@@ -291,6 +321,11 @@
             "Français"
           ],
           "original_url": "",
+          "salary_min": 44.21,
+          "salary_max": null,
+          "salary_unit": "heure",
+          "salary_currency": "CAD",
+          "salary_negotiable": false,
           "stage_status": "not_indicated",
           "stage_signals": [],
           "search_terms": [],
@@ -334,6 +369,11 @@
           "conditions": "",
           "languages": [],
           "original_url": "https://quebecemploi.gouv.qc.ca/09702be8-a0ed-420c-87e2-b6d675c7dec7-technicien-ou-technicienne-en-informatique-profil-bureautique--concours-262719-quebec/visualisation-de-l-offre",
+          "salary_min": 27.64,
+          "salary_max": 44.21,
+          "salary_unit": "heure",
+          "salary_currency": "CAD",
+          "salary_negotiable": false,
           "stage_status": "not_indicated",
           "stage_signals": [],
           "search_terms": [],
@@ -364,7 +404,12 @@
       "languages": [
         "Français"
       ],
-      "original_url": "https://quebecemploi.gouv.qc.ca/09702be8-a0ed-420c-87e2-b6d675c7dec7-technicien-ou-technicienne-en-informatique-profil-bureautique--concours-262719-quebec/visualisation-de-l-offre"
+      "original_url": "https://quebecemploi.gouv.qc.ca/09702be8-a0ed-420c-87e2-b6d675c7dec7-technicien-ou-technicienne-en-informatique-profil-bureautique--concours-262719-quebec/visualisation-de-l-offre",
+      "salary_min": 44.21,
+      "salary_max": null,
+      "salary_unit": "heure",
+      "salary_currency": "CAD",
+      "salary_negotiable": false
     },
     {
       "title": "architecte de systèmes commerciaux",
@@ -408,6 +453,11 @@
           "conditions": "",
           "languages": [],
           "original_url": "https://emploisti.com/fr/offre/conseillere-ou-conseiller-en-architecture-des-technologies-de-linformation/279724?utm_campaign=jobbank_jobs_apply&utm_source=jobbank_jobs_apply&utm_medium=organic&source=jobbank_jobs_apply",
+          "salary_min": 63888.0,
+          "salary_max": 108751.0,
+          "salary_unit": "année",
+          "salary_currency": "CAD",
+          "salary_negotiable": false,
           "stage_status": "not_indicated",
           "stage_signals": [],
           "search_terms": [],
@@ -436,7 +486,12 @@
       "experience": "",
       "conditions": "",
       "languages": [],
-      "original_url": "https://emploisti.com/fr/offre/conseillere-ou-conseiller-en-architecture-des-technologies-de-linformation/279724?utm_campaign=jobbank_jobs_apply&utm_source=jobbank_jobs_apply&utm_medium=organic&source=jobbank_jobs_apply"
+      "original_url": "https://emploisti.com/fr/offre/conseillere-ou-conseiller-en-architecture-des-technologies-de-linformation/279724?utm_campaign=jobbank_jobs_apply&utm_source=jobbank_jobs_apply&utm_medium=organic&source=jobbank_jobs_apply",
+      "salary_min": 63888.0,
+      "salary_max": 108751.0,
+      "salary_unit": "année",
+      "salary_currency": "CAD",
+      "salary_negotiable": false
     },
     {
       "title": "ingénieur concepteur/ingénieure conceptrice en logiciels",
@@ -480,6 +535,11 @@
           "conditions": "",
           "languages": [],
           "original_url": "https://www.jobillico.com/fr/offre-d-emploi/nord-quantique/developpeur-euse-d-outils-et-d-infrastructure-de-conception-electromagnetique-niveau-intermediaire/17541036?ji_visitsrc=136",
+          "salary_min": 123000.0,
+          "salary_max": 142000.0,
+          "salary_unit": "année",
+          "salary_currency": "CAD",
+          "salary_negotiable": false,
           "stage_status": "not_indicated",
           "stage_signals": [],
           "search_terms": [],
@@ -508,7 +568,12 @@
       "experience": "",
       "conditions": "",
       "languages": [],
-      "original_url": "https://www.jobillico.com/fr/offre-d-emploi/nord-quantique/developpeur-euse-d-outils-et-d-infrastructure-de-conception-electromagnetique-niveau-intermediaire/17541036?ji_visitsrc=136"
+      "original_url": "https://www.jobillico.com/fr/offre-d-emploi/nord-quantique/developpeur-euse-d-outils-et-d-infrastructure-de-conception-electromagnetique-niveau-intermediaire/17541036?ji_visitsrc=136",
+      "salary_min": 123000.0,
+      "salary_max": 142000.0,
+      "salary_unit": "année",
+      "salary_currency": "CAD",
+      "salary_negotiable": false
     },
     {
       "title": "administrateur/administratrice réseau",
@@ -552,6 +617,11 @@
           "conditions": "",
           "languages": [],
           "original_url": "https://www.jobillico.com/fr/offre-d-emploi/fed-it-jmfyib/administrateur-reseaux/17704083?ji_visitsrc=136",
+          "salary_min": 100000.0,
+          "salary_max": 120000.0,
+          "salary_unit": "année",
+          "salary_currency": "CAD",
+          "salary_negotiable": false,
           "stage_status": "not_indicated",
           "stage_signals": [],
           "search_terms": [],
@@ -580,7 +650,12 @@
       "experience": "",
       "conditions": "",
       "languages": [],
-      "original_url": "https://www.jobillico.com/fr/offre-d-emploi/fed-it-jmfyib/administrateur-reseaux/17704083?ji_visitsrc=136"
+      "original_url": "https://www.jobillico.com/fr/offre-d-emploi/fed-it-jmfyib/administrateur-reseaux/17704083?ji_visitsrc=136",
+      "salary_min": 100000.0,
+      "salary_max": 120000.0,
+      "salary_unit": "année",
+      "salary_currency": "CAD",
+      "salary_negotiable": false
     },
     {
       "title": "analyste programmeur/analyste programmeuse",
@@ -632,6 +707,11 @@
             "Français"
           ],
           "original_url": "",
+          "salary_min": 75000.0,
+          "salary_max": 85000.0,
+          "salary_unit": "année",
+          "salary_currency": "CAD",
+          "salary_negotiable": true,
           "stage_status": "not_indicated",
           "stage_signals": [],
           "search_terms": [],
@@ -668,7 +748,12 @@
       "languages": [
         "Français"
       ],
-      "original_url": ""
+      "original_url": "",
+      "salary_min": 75000.0,
+      "salary_max": 85000.0,
+      "salary_unit": "année",
+      "salary_currency": "CAD",
+      "salary_negotiable": true
     },
     {
       "title": "technicien/technicienne de réseau informatique",
@@ -725,6 +810,11 @@
             "Français"
           ],
           "original_url": "",
+          "salary_min": 36.0,
+          "salary_max": null,
+          "salary_unit": "heure",
+          "salary_currency": "CAD",
+          "salary_negotiable": false,
           "stage_status": "not_indicated",
           "stage_signals": [],
           "search_terms": [],
@@ -766,7 +856,12 @@
       "languages": [
         "Français"
       ],
-      "original_url": ""
+      "original_url": "",
+      "salary_min": 36.0,
+      "salary_max": null,
+      "salary_unit": "heure",
+      "salary_currency": "CAD",
+      "salary_negotiable": false
     },
     {
       "title": "analyste d'applications informatiques",
@@ -810,6 +905,11 @@
           "conditions": "",
           "languages": [],
           "original_url": "https://www.jobillico.com/fr/offre-d-emploi/coractive-high-tech-inc-ylhxuz/analyste-applicatif-/17703351?ji_visitsrc=136",
+          "salary_min": 70000.0,
+          "salary_max": 80000.0,
+          "salary_unit": "année",
+          "salary_currency": "CAD",
+          "salary_negotiable": false,
           "stage_status": "not_indicated",
           "stage_signals": [],
           "search_terms": [],
@@ -838,7 +938,12 @@
       "experience": "",
       "conditions": "",
       "languages": [],
-      "original_url": "https://www.jobillico.com/fr/offre-d-emploi/coractive-high-tech-inc-ylhxuz/analyste-applicatif-/17703351?ji_visitsrc=136"
+      "original_url": "https://www.jobillico.com/fr/offre-d-emploi/coractive-high-tech-inc-ylhxuz/analyste-applicatif-/17703351?ji_visitsrc=136",
+      "salary_min": 70000.0,
+      "salary_max": 80000.0,
+      "salary_unit": "année",
+      "salary_currency": "CAD",
+      "salary_negotiable": false
     }
   ]
 }

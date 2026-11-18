@@ -36,6 +36,12 @@ class SourceRecord:
     conditions: str = ""
     languages: list[str] = field(default_factory=list)
     original_url: str = ""  # lien vers l'annonce sur le site partenaire
+    # Salaire en chiffres (rempli par normalisation.py)
+    salary_min: float | None = None
+    salary_max: float | None = None
+    salary_unit: str = ""  # heure, jour, semaine, mois, année
+    salary_currency: str = ""
+    salary_negotiable: bool = False
     stage_status: str = "not_indicated"
     stage_signals: list[str] = field(default_factory=list)
     search_terms: list[str] = field(default_factory=list)
@@ -48,6 +54,8 @@ DETAIL_TEXT_FIELDS = (
     "education", "experience", "conditions", "original_url",
 )
 DETAIL_LIST_FIELDS = ("tasks", "languages")
+# Copiés ensemble, pour ne pas mélanger le montant d'une annonce et l'unité d'une autre.
+SALARY_FIELDS = ("salary_min", "salary_max", "salary_unit", "salary_currency", "salary_negotiable")
 
 
 @dataclass
@@ -80,3 +88,8 @@ class AggregatedOffer:
     conditions: str = ""
     languages: list[str] = field(default_factory=list)
     original_url: str = ""
+    salary_min: float | None = None
+    salary_max: float | None = None
+    salary_unit: str = ""
+    salary_currency: str = ""
+    salary_negotiable: bool = False

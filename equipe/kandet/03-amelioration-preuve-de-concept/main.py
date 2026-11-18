@@ -22,6 +22,7 @@ from fiches import enrich_with_postings
 from fusion import aggregate_records
 from guichet import CNP_CODES_TI, GUICHET_DELAY_SECONDS, GUICHET_SEARCH_URL, fetch_guichet
 from modele import AggregatedOffer, SourceRecord
+from normalisation import normalize_record
 from remotive import (
     REMOTIVE_API_URL,
     REMOTIVE_MAX_REQUESTS_PER_DAY,
@@ -172,6 +173,8 @@ def main(argv: list[str] | None = None) -> None:
         print("Aucune offre ne correspond aux critères.")
         return
 
+    for record in source_records:
+        normalize_record(record)
     offers = aggregate_records(source_records)
     summary = build_summary(offers)
     print(f"\n{len(offers)} offres uniques ({len(source_records)} annonces lues).")
@@ -189,7 +192,7 @@ def main(argv: list[str] | None = None) -> None:
             f"Fiches lues : {postings['read']} ({postings['from_cache']} du cache, "
             f"{postings['downloaded']} téléchargées), erreurs : {len(postings['errors'])}"
         )
-        print(f"Champs remplis : {summary['filled_fields']}")
+    print(f"Champs remplis : {summary['filled_fields']}")
     print(f"Offres publiées sur plusieurs sites (fusionnées) : {summary['merged_offers']}")
     print(f"Stages : {summary['stage_classification']}\n")
     for offer in offers:

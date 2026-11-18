@@ -157,7 +157,38 @@ Tests (fixtures = vraies fiches réduites, une par type) :
 - le délai de 5 s est respecté entre deux fiches non cachées, mais aucun délai n'est ajouté pour une fiche en cache ;
 - `--max-fiches 3` ne lit que 3 fiches.
 
-### Étape 3 — Nettoyer et séparer les champs
+### Étape 3 — Nettoyer et séparer les champs ✅ (17 novembre)
+
+**Ce qui a été fait :**
+
+- Nouveau module `normalisation.py` :
+  - `split_location()` sépare la ville et la province ;
+  - `parse_amount()` et `parse_salary_text()` lisent les montants ;
+  - `normalize_record()` applique tout à chaque annonce, juste avant la fusion des doublons.
+- Nouveaux champs :
+  - `salary_min` et `salary_max` (nombres) ;
+  - `salary_unit` : heure, jour, semaine, mois ou année ;
+  - `salary_currency` : `CAD` pour le Guichet-Emplois, vide pour Remotive, où la devise n'est pas écrite ;
+  - `salary_negotiable` : vrai si le salaire est « à négocier ».
+- Pour le Guichet-Emplois, le salaire vient des balises RDFa de la fiche. Sans fiche, il est lu dans le texte de la liste.
+- Lors d'une fusion, les champs du salaire sont copiés ensemble depuis la même annonce, pour ne pas mélanger le montant d'une annonce et l'unité d'une autre.
+- Tests : 18 nouveaux tests dans `test_normalisation.py`. Au total, 70 tests OK.
+- Un de ces tests a d'abord échoué à cause d'une erreur dans le test lui-même : deux annonces avaient le même lien. Corrigé.
+
+**Vérification sur les vraies données (17 novembre) :**
+
+- Pour les 188 offres, j'ai comparé le salaire lu dans le texte de la liste avec celui des balises RDFa de la fiche : **0 différence**.
+- Salaire en chiffres pour les 186 offres du Guichet-Emplois. Côté Remotive, 3 offres sur 8 : les 5 autres n'indiquent pas de salaire.
+- Unités : année (110), heure (68), jour (5), mois (4). L'unité reste vide pour 2 offres Remotive (`$170k - $200k`, `70K-80K`) : elle n'est pas devinée.
+- Ville et province pour 179 offres du Guichet-Emplois. Les 7 autres sont « Différentes régions » ou « Lieu de travail indéterminé » et restent vides.
+- 32 salaires « à négocier ».
+
+**Limites :**
+
+- On ne convertit pas un taux horaire, journalier ou mensuel en salaire annuel. Les statistiques de l'étape 5 seront donc faites unité par unité.
+- Les montants Remotive peuvent être en dollars américains. La devise reste vide parce qu'elle n'est pas écrite.
+
+**Plan de départ de l'étape :**
 
 - **Ville et province :** depuis `addressLocality` / `addressRegion`, sinon depuis la liste (« Montréal (QC) », « Longueuil, QC »). « Différentes régions » donne une ville vide, pas inventée.
 - **Salaire en chiffres :** `salary_min`, `salary_max` (nombres), `salary_unit` (`heure`, `année`, `semaine`…).
