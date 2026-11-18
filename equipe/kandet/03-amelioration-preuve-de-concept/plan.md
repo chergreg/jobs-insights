@@ -269,7 +269,7 @@ Tests :
   - le nombre d'offres où chaque champ est rempli.
 - Salaires : pour chaque groupe (ex. « CAD / année »), le nombre d'offres, le plus bas, le plus haut et la médiane de la valeur basse.
   - On ne mélange jamais les unités ni les devises.
-  - Un salaire sans unité (ex. `$170k - $200k`) n'entre pas dans les statistiques.
+  - Un salaire sans unité (ex. `$170k - $200k`) n'entre pas dans le tableau des salaires, parce qu'on ne sait pas si c'est par année ou par heure. L'offre, elle, reste comptée partout ailleurs, et son montant est gardé dans `offres.json`.
 - La date du jour est un paramètre de `build_summary()`, pour que les tests donnent toujours le même résultat.
 - Tests : 10 nouveaux tests dans `test_statistiques.py` (médiane paire et impaire, unités séparées, aucune offre avec salaire, expirations, liste vide). Au total, 102 tests OK.
 
@@ -306,7 +306,17 @@ Tests :
 - médiane avec un nombre pair et impair d'offres ;
 - aucune offre avec salaire : pas d'erreur, valeurs vides.
 
-### Étape 6 — Vérification et note du livrable 3
+### Étape 6 — Vérification et note du livrable 3 ✅ (17 novembre)
+
+La note est dans [`note-livrable-3.md`](note-livrable-3.md). Elle contient :
+- le tableau avant/après ;
+- le contrôle de 5 fiches en ligne, toutes correctes ;
+- les liens vers les contributions consultées et vers les commits ;
+- les limites qui restent.
+
+J'y ai aussi vérifié le paramètre `fsrc=16` du plan de Mamadou : c'est un filtre de source (offres publiées sur le Guichet-Emplois), pas un filtre de stages.
+
+**Plan de départ de l'étape :**
 
 - Collecte complète avec fiches, puis comparaison avant/après :
 
