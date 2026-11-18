@@ -71,5 +71,5 @@ def build_summary(offers: list[AggregatedOffer]) -> dict[str, object]:
 FILLED_FIELDS = (
     "original_title", "description", "tasks", "expires_at", "job_type", "city", "province",
     "postal_code", "salary_min", "salary_unit", "education", "experience", "languages",
-    "original_url",
+    "original_url", "technologies", "skills", "experience_years_min", "level", "summary",
 )

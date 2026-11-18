@@ -94,6 +94,10 @@ class ParseJobPostingTests(unittest.TestCase):
         )
         self.assertEqual(details.description, "Études: Maîtrise. Informatique. Général.")
 
+    def test_entities_encoded_twice_are_decoded(self) -> None:
+        details = parse_job_posting(make_posting(description="FONCTION &amp;amp; TÂCHES : analyser"))
+        self.assertEqual(details.description, "FONCTION & TÂCHES : analyser")
+
     def test_empty_description_on_guichet(self) -> None:
         # Cas observé pour Québec emploi : la description est vide sur le Guichet-Emplois.
         details = parse_job_posting(make_posting(description=""))

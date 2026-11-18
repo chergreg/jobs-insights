@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-11-18T02:33:12.688110+00:00",
+  "generated_at": "2026-11-18T02:46:29.117196+00:00",
   "offers": [
     {
       "title": "développeur/développeuse de logiciels",
@@ -81,7 +81,12 @@
       "salary_max": null,
       "salary_unit": "jour",
       "salary_currency": "CAD",
-      "salary_negotiable": false
+      "salary_negotiable": false,
+      "technologies": [],
+      "skills": [],
+      "experience_years_min": null,
+      "level": "avancé",
+      "summary": ""
     },
     {
       "title": "développeur/développeuse de logiciels",
@@ -175,7 +180,17 @@
       "salary_max": 55000.0,
       "salary_unit": "année",
       "salary_currency": "CAD",
-      "salary_negotiable": true
+      "salary_negotiable": true,
+      "technologies": [
+        "Java",
+        "JavaScript",
+        "Spring",
+        "MySQL"
+      ],
+      "skills": [],
+      "experience_years_min": 1.0,
+      "level": "débutant",
+      "summary": "Écrire, modifier, intégrer et mettre à l'essai le code des logiciels; Communiquer les problèmes techniques, les processus et les solutions"
     },
     {
       "title": "technicien/technicienne de réseau informatique",
@@ -275,7 +290,14 @@
       "salary_max": null,
       "salary_unit": "heure",
       "salary_currency": "CAD",
-      "salary_negotiable": false
+      "salary_negotiable": false,
+      "technologies": [],
+      "skills": [
+        "Réseaux"
+      ],
+      "experience_years_min": 2.0,
+      "level": "intermédiaire",
+      "summary": "Installer des logiciels; Assurer l'entretien et gérer l'utilisation de réseaux locaux d'entreprise (RLE), de réseaux étendus (RE), de réseaux d'ordinateurs centraux et d'équipements de périphériques et de postes de travail informatisés et les mettre au point"
     },
     {
       "title": "technicien/technicienne en informatique",
@@ -409,7 +431,12 @@
       "salary_max": null,
       "salary_unit": "heure",
       "salary_currency": "CAD",
-      "salary_negotiable": false
+      "salary_negotiable": false,
+      "technologies": [],
+      "skills": [],
+      "experience_years_min": 2.0,
+      "level": "intermédiaire",
+      "summary": "Études: Certificat ou diplôme d'un collège, d'un cégep ou d'un autre établissement d'enseignement non universitaire d'un programme d'une durée de 1 an à 2 ans. Questions de sélection: Êtes-vous disponible pour commencer à la date indiquée dans l'offre d'emploi?."
     },
     {
       "title": "architecte de systèmes commerciaux",
@@ -491,7 +518,14 @@
       "salary_max": 108751.0,
       "salary_unit": "année",
       "salary_currency": "CAD",
-      "salary_negotiable": false
+      "salary_negotiable": false,
+      "technologies": [],
+      "skills": [
+        "Architecture"
+      ],
+      "experience_years_min": null,
+      "level": "",
+      "summary": "VOTRE QUOTIDIEN À REVENU QUÉBECLes personnes qui répondent à cet appel de candidatures pourraient être considérées pour les emplois suivants :? Architecture d?entreprise?"
     },
     {
       "title": "ingénieur concepteur/ingénieure conceptrice en logiciels",
@@ -573,7 +607,12 @@
       "salary_max": 142000.0,
       "salary_unit": "année",
       "salary_currency": "CAD",
-      "salary_negotiable": false
+      "salary_negotiable": false,
+      "technologies": [],
+      "skills": [],
+      "experience_years_min": null,
+      "level": "intermédiaire",
+      "summary": "Poste offert Développeur(euse) d?outils et d?infrastructure de Conception Électromagnétique - Niveau Intermédiaire (Poste permanent, 40 heures par semaine) À propos de Nord Quantique Chez Nord Quantique, nous cherchons à développer une technologie transformatrice en repoussant sans relâche les …"
     },
     {
       "title": "administrateur/administratrice réseau",
@@ -655,7 +694,20 @@
       "salary_max": 120000.0,
       "salary_unit": "année",
       "salary_currency": "CAD",
-      "salary_negotiable": false
+      "salary_negotiable": false,
+      "technologies": [
+        "Azure",
+        "Windows",
+        "Active Directory",
+        "VMware"
+      ],
+      "skills": [
+        "Réseaux",
+        "Cybersécurité"
+      ],
+      "experience_years_min": 7.0,
+      "level": "avancé",
+      "summary": "Je suis Marian Babin, Directeur au sein de FED IT, spécialisée dans le recrutement permanent et temporaire de professionnels en technologies de l?information. Nous recherchons un(e) Chef d'équipe - Systèmes et Infrastructure TI pour rejoindre l'équipe TI d'une organisation bien établie à Montréal."
     },
     {
       "title": "analyste programmeur/analyste programmeuse",
@@ -753,7 +805,12 @@
       "salary_max": 85000.0,
       "salary_unit": "année",
       "salary_currency": "CAD",
-      "salary_negotiable": true
+      "salary_negotiable": true,
+      "technologies": [],
+      "skills": [],
+      "experience_years_min": 1.0,
+      "level": "débutant",
+      "summary": "Assurer la mise à jour des programmes informatiques existants en effectuant les modifications de manière spécifiée; Préparer les rapports, manuels et autres documents sur l'état, l'exploitation et l'entretien des logiciels"
     },
     {
       "title": "technicien/technicienne de réseau informatique",
@@ -861,7 +918,14 @@
       "salary_max": null,
       "salary_unit": "heure",
       "salary_currency": "CAD",
-      "salary_negotiable": false
+      "salary_negotiable": false,
+      "technologies": [],
+      "skills": [
+        "Réseaux"
+      ],
+      "experience_years_min": 3.0,
+      "level": "intermédiaire",
+      "summary": "Assurer l'entretien et gérer l'utilisation de réseaux locaux d'entreprise (RLE), de réseaux étendus (RE), de réseaux d'ordinateurs centraux et d'équipements de périphériques et de postes de travail informatisés et les mettre au point; Contrôler le rendement des systèmes et réseaux informatiques"
     },
     {
       "title": "analyste d'applications informatiques",
@@ -943,7 +1007,17 @@
       "salary_max": 80000.0,
       "salary_unit": "année",
       "salary_currency": "CAD",
-      "salary_negotiable": false
+      "salary_negotiable": false,
+      "technologies": [
+        "SQL",
+        "Power BI"
+      ],
+      "skills": [
+        "Cybersécurité"
+      ],
+      "experience_years_min": null,
+      "level": "",
+      "summary": "Vous souhaitez évoluer au sein d'une entreprise de haute technologie où l'innovation, la collaboration et le développement professionnel sont au c?ur de chaque projet? Vous aimez relever des défis, proposer des idées, améliorer les façons de faire et contribuer concrètement au succès d'une équipe?"
     }
   ]
 }

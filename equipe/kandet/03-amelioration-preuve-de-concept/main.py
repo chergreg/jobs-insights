@@ -18,6 +18,7 @@ import sys
 import time
 
 from analyse import build_summary
+from competences import enrich_offer
 from fiches import enrich_with_postings
 from fusion import aggregate_records
 from guichet import CNP_CODES_TI, GUICHET_DELAY_SECONDS, GUICHET_SEARCH_URL, fetch_guichet
@@ -176,6 +177,8 @@ def main(argv: list[str] | None = None) -> None:
     for record in source_records:
         normalize_record(record)
     offers = aggregate_records(source_records)
+    for offer in offers:
+        enrich_offer(offer)
     summary = build_summary(offers)
     print(f"\n{len(offers)} offres uniques ({len(source_records)} annonces lues).")
     for search in searches:

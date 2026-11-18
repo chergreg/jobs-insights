@@ -202,7 +202,41 @@ Tests :
 - textes Remotive : « $80k - $100k », « Competitive », vide ;
 - `validThrough` absent.
 
-### Étape 4 — Compétences, technologies, expérience, stages
+### Étape 4 — Compétences, technologies, expérience, stages ✅ (17 novembre)
+
+**Ce qui a été fait :**
+
+- Nouveau module `competences.py`, appliqué à chaque offre après la fusion des doublons :
+  - `technologies` : 51 technologies. La liste reprend l'idée de `TECH_PATTERNS` de Hugo et l'élargit à ce qu'on voit dans nos offres (.NET, Active Directory, SharePoint, Power BI, SAP…).
+  - `skills` : 14 compétences générales (soutien aux utilisateurs, réseaux, cybersécurité, bases de données, Agile / Scrum…).
+  - `experience_years_min` : lu dans le champ du Guichet-Emplois (« 5 ans ou plus », « 7 mois à moins d'un an »), sinon dans la description (« minimum de 3 ans d'expérience », « 5+ years of experience »).
+  - `level` : débutant (moins de 2 ans), intermédiaire (2 à moins de 5 ans), avancé (5 ans et plus). Un mot du titre (junior, stagiaire, senior, lead, architecte) l'emporte sur les années. Sans information, le niveau reste vide.
+  - `summary` : les 2 premières tâches, ou les 2 premières phrases de la description, 300 caractères au maximum. Le texte est coupé, jamais réécrit. Le titre répété au début de la description est retiré.
+  - Stages : le champ « Stage: Ce poste est un stage… » écrit par le Guichet-Emplois donne un stage confirmé. Sinon, `classify_stage` est appliqué au vrai titre de l'employeur et à la description.
+- Correction dans `fiches.py` : les entités encodées deux fois (`&amp;`) sont décodées.
+- Tests : 22 nouveaux tests dans `test_competences.py` et 1 dans `test_fiches.py`. Au total, 92 tests OK.
+
+**Essai réel du 17 novembre (194 offres) :**
+
+| Champ | Offres |
+|---|---|
+| Technologies détectées | 83 |
+| Compétences générales | 112 |
+| Années d'expérience | 81 |
+| Niveau | 124 (avancé 63, intermédiaire 34, débutant 27) |
+| Description courte | 140 |
+| Stage confirmé | 1 |
+
+- Technologies les plus demandées : SQL (32), JavaScript (21), Windows (19), HTML/CSS (19), Azure (18), Python (18), Git (16), Jira (16), .NET (15), React (13).
+- Vérification à la main des détections les plus risquées (Windows, Oracle, SAP, Swift, Rust, Cisco, Git, Java) : le texte autour de chaque détection confirme qu'il s'agit bien de la technologie.
+
+**Limites :**
+
+- Un seul stage sur 194 offres. Le Guichet-Emplois publie très peu de stages en TI au Québec, et les descriptions de Québec emploi ne sont pas disponibles.
+- Les technologies sont trouvées seulement si elles sont écrites. Les 54 offres du Guichet-Emplois sans description en ont rarement.
+- Le niveau est une règle simple. « Architecte » dans un titre CNP donne « avancé », même si l'offre ne le précise pas.
+
+**Plan de départ de l'étape :**
 
 - **Technologies** (`technologies`) : liste inspirée de `TECH_PATTERNS` de Hugo (Python, Java, C#, React, SQL, Docker, AWS…), cherchée dans le titre, la description et les tags Remotive.
 - **Compétences générales** (`skills`) : quelques mots repérables (soutien aux utilisateurs, réseaux, cybersécurité, bases de données, Agile…), à partir des tâches et exigences de la fiche.

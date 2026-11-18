@@ -10,6 +10,7 @@ from __future__ import annotations
 
 from collections.abc import Callable
 from dataclasses import dataclass, field
+import html as html_module
 from html.parser import HTMLParser
 from pathlib import Path
 import re
@@ -148,7 +149,9 @@ def _description_text(raw: str) -> str:
     Après décodage des entités, il reste des balises <p>, <strong>... dans le
     texte : on les retire une deuxième fois.
     """
-    return plain_text(raw) if "<" in raw and ">" in raw else raw
+    text = plain_text(raw) if "<" in raw and ">" in raw else raw
+    # Il peut rester des entités encodées deux fois, comme « &amp; ».
+    return clean(html_module.unescape(text))
 
 
 def parse_job_posting(html: str) -> JobPostingDetails:

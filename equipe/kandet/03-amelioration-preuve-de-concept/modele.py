@@ -93,3 +93,9 @@ class AggregatedOffer:
     salary_unit: str = ""
     salary_currency: str = ""
     salary_negotiable: bool = False
+    # Calculés par competences.py à partir du titre, de la description et des tâches
+    technologies: list[str] = field(default_factory=list)
+    skills: list[str] = field(default_factory=list)
+    experience_years_min: float | None = None
+    level: str = ""  # débutant, intermédiaire, avancé
+    summary: str = ""
