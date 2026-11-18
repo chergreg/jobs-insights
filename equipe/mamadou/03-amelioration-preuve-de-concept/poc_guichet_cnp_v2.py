@@ -126,7 +126,39 @@ TECH_PATTERNS: list[tuple[str, re.Pattern[str]]] = [
     ("Agile / Scrum", re.compile(r"\b(?:agile|scrum)\b", re.I)),
     ("QA / Tests", re.compile(r"\b(?:assurance\s+qualit[eé]|selenium|cypress|pytest)\b", re.I)),
     ("IA / Machine Learning", re.compile(r"\b(?:intelligence\s+artificielle|machine\s+learning|llm|copilot|pytorch|tensorflow)\b", re.I)),
+    ("HTML/CSS", re.compile(r"\b(?:html5?|css3?|tailwind|bootstrap|sass)\b", re.I)),
+    ("Power BI / Tableau", re.compile(r"\b(?:power\s*bi|tableau\s+(?:software|desktop|server)|dax|ssrs|ssis)\b", re.I)),
+    ("Microsoft 365 / SharePoint", re.compile(r"\b(?:(?:microsoft|office)\s*365|sharepoint|power\s*(?:apps|automate|platform)|exchange)\b", re.I)),
+    ("SAP / ERP", re.compile(r"\b(?:sap|s\/4hana|abap|erp|netsuite)\b", re.I)),
+    ("CRM (Salesforce / Dynamics)", re.compile(r"\b(?:salesforce|dynamics\s*365|d365|crm)\b", re.I)),
+    ("ServiceNow / Jira / ITIL", re.compile(r"\b(?:servicenow|jira|confluence|glpi|itil)\b", re.I)),
+    ("SQL Server / Oracle", re.compile(r"\b(?:sql\s+server|mssql|oracle|pl\/sql|t-sql)\b", re.I)),
+    ("Terraform / Ansible", re.compile(r"\b(?:terraform|ansible|helm|openshift)\b", re.I)),
+    ("PowerShell / Bash", re.compile(r"\b(?:powershell|bash)\b", re.I)),
+    ("API REST / GraphQL", re.compile(r"\b(?:api\s+rest|rest(?:ful)?\s*api|graphql|microservices?)\b", re.I)),
+    ("Mobile (iOS / Android)", re.compile(r"\b(?:android|ios|kotlin|swift|flutter|react\s+native)\b", re.I)),
+    ("Cybersécurité (SIEM / SOC)", re.compile(r"\b(?:cybersecurit[eé]|cybersecurity|siem|iso\s*27001|soc|pentest\w*|zero\s+trust|edr|cisco)\b", re.I)),
+    ("Soutien TI / Helpdesk", re.compile(r"\b(?:help\s*desk|service\s+desk|soutien\s+technique|soutien\s+aux\s+utilisateurs|bureau\s+de\s+d[eé]pannage|desktop\s+support)\b", re.I)),
 ]
+
+# Compétences de base par code CNP 2021 TI lorsque l'annonce est un résumé partenaire sans liste d'outils
+# (repris de la logique domain_hint de JobTailor_V3/src/pipeline/skills_catalog.py lignes 149-156)
+CNP_DEFAULT_SKILLS: dict[str, list[str]] = {
+    "20012": ["Agile / Scrum", "Gestion TI"],
+    "21211": ["IA / Machine Learning", "SQL"],
+    "21220": ["Cybersécurité (SIEM / SOC)", "Réseaux (TCP/IP, VLAN, VPN)"],
+    "21221": ["SAP / ERP", "SQL"],
+    "21222": ["SQL", "Windows Server"],
+    "21223": ["SQL", "SQL Server / Oracle"],
+    "21230": ["Linux", "SQL"],
+    "21231": ["CI/CD", "Git"],
+    "21232": ["Git", "SQL"],
+    "21233": ["HTML/CSS", "JavaScript"],
+    "21234": ["HTML/CSS", "JavaScript"],
+    "22220": ["Réseaux (TCP/IP, VLAN, VPN)", "Windows Server"],
+    "22221": ["Soutien TI / Helpdesk", "Windows Server"],
+    "22222": ["QA / Tests", "Agile / Scrum"],
+}
 
 MONTHS_FR_EN: dict[str, int] = {
     "janvier": 1, "fevrier": 2, "mars": 3, "avril": 4, "mai": 5, "juin": 6,
@@ -1413,6 +1445,10 @@ def enrich_offer_metadata(
         offer.code_cnp = cnp_res[0]
         if not offer.cnp_title:
             offer.cnp_title = cnp_res[1]
+
+    # Repli domain_hint (JobTailor_V3/src/pipeline/skills_catalog.py) si aucun outil explicite n'était cité dans l'annonce
+    if not offer.competences_cles and offer.code_cnp and offer.code_cnp in CNP_DEFAULT_SKILLS:
+        offer.competences_cles = list(CNP_DEFAULT_SKILLS[offer.code_cnp])
 
     offer.domaine_ti = detect_ti_domain(
         title=offer.titre_employeur or offer.titre,
@@ -2804,6 +2840,312 @@ def consolidate_data_directory(data_dir: Path = DATA_DIR) -> dict[str, Any]:
     return report
 
 
+def run_autonomous_full_collection(
+    data_dir: Path = DATA_DIR,
+    cache_dir: Path = CACHE_DIR,
+    guichet_pages: int = 9,
+    jobboom_pages: int = 10,
+    delay: float = 0.25,
+    use_cache: bool = True,
+) -> dict[str, Any]:
+    """
+    Exécute la collecte autonome de bout en bout par notre propre système (`poc_guichet_cnp_v2.py`)
+    sur les 5 plateformes (Guichet-Emplois, Jobboom, Talent.com, Jobillico, Remotive) avec cache disque 24 h :
+    1. Guichet-Emplois : parcourt les pages CNP TI (`fn21`) ET télécharge chaque fiche individuelle (`offredemploi/<id>`)
+       pour extraire la description RDFa/DOM, le vrai titre employeur, l'URL partenaire, les tâches et compétences.
+    2. Jobboom : parcourt les pages de la catégorie TI (`_i10lfr`), télécharge chaque fiche JSON-LD et filtre par CNP TI.
+    3. Talent.com : interroge plusieurs requêtes/villes TI au Québec, télécharge chaque fiche JSON-LD (avec GPS) et filtre par CNP TI.
+    4. Jobillico : interroge plusieurs requêtes/villes TI au Québec, télécharge chaque fiche JSON-LD et filtre par CNP TI.
+    5. Remotive : interroge l'API REST par catégories TI et filtre les postes ouverts au Canada et classifiés CNP TI.
+    Enregistre sous `data/` les 5 fichiers JSON par source, `offres_unifiees.json`, `offres_unifiees.csv` et `rapport_collecte.json`.
+    """
+    session = requests.Session()
+    session.headers.update({"User-Agent": USER_AGENT, "Accept-Language": "fr-CA,fr;q=0.9"})
+    data_dir.mkdir(parents=True, exist_ok=True)
+    cache_dir.mkdir(parents=True, exist_ok=True)
+
+    per_source_counts: dict[str, dict[str, int]] = {}
+    total_intra_merged = 0
+
+    # --------------------------------------------------------------------------
+    # 1. GUICHET-EMPLOIS CANADA (Pagination CNP TI + Lecture de TOUTES les fiches)
+    # --------------------------------------------------------------------------
+    print("\n==================================================================")
+    print(" [1/5] Collecte autonome Guichet-Emplois Canada (14 codes CNP TI)")
+    print("==================================================================")
+    ge_cards: list[JobBankOffer] = []
+    seen_ge_ids: set[str] = set()
+    for page_num in range(1, max(1, guichet_pages) + 1):
+        page_url = build_cnp_search_url(province="QC", page=page_num)
+        try:
+            page_html, _ = get_cached_or_fetch(session, page_url, cache_dir=cache_dir, delay=delay, use_cache=use_cache)
+            page_offers = parse_search_results_html(page_html)
+            if not page_offers:
+                break
+            new_on_page = 0
+            for off in page_offers:
+                if off.id not in seen_ge_ids:
+                    seen_ge_ids.add(off.id)
+                    ge_cards.append(off)
+                    new_on_page += 1
+            print(f"  -> Page {page_num} : {len(page_offers)} cartes lues ({new_on_page} nouvelles, total: {len(ge_cards)})")
+            if new_on_page == 0:
+                break
+        except requests.RequestException as exc:
+            print(f"  ! Erreur page {page_num} Guichet-Emplois : {exc}")
+            break
+
+    ge_enriched: list[JobBankOffer] = []
+    for idx, off in enumerate(ge_cards, start=1):
+        try:
+            detail_html, from_cache = get_cached_or_fetch(
+                session,
+                off.url,
+                cache_dir=cache_dir,
+                delay=0.0 if from_cache_check(off.url, cache_dir) else delay,
+                use_cache=use_cache,
+            )
+            parse_job_detail_html(detail_html, off)
+            ge_enriched.append(off)
+            if idx % 25 == 0 or idx == len(ge_cards):
+                tag = "CACHE" if from_cache else "HTTP"
+                print(f"  ✓ Fiches Guichet-Emplois enrichies : {idx}/{len(ge_cards)} (dernière [{tag}] : {off.id})")
+        except requests.RequestException as exc:
+            print(f"  ! Erreur fiche {off.url} : {exc}")
+            enrich_offer_metadata(off)
+            ge_enriched.append(off)
+
+    ge_dedup, ge_dstats = unify_and_deduplicate_offers(ge_enriched)
+    total_intra_merged += ge_dstats["doublons_intra_fusionnes"]
+    per_source_counts["guichet-emplois"] = {
+        "brutes_lues": len(ge_enriched),
+        "retenues_ti_cnp": len(ge_dedup),
+        "rejetees_hors_ti": 0,
+    }
+
+    # --------------------------------------------------------------------------
+    # 2. JOBBOOM QUÉBEC (Pagination _i10lfr + Fiches JSON-LD + Filtre CNP TI)
+    # --------------------------------------------------------------------------
+    print("\n==================================================================")
+    print(" [2/5] Collecte autonome Jobboom Québec (Secteur TI _i10lfr)")
+    print("==================================================================")
+    jb_urls: list[str] = []
+    for page_num in range(1, max(1, jobboom_pages) + 1):
+        jb_list_url = build_jobboom_listing_url(page=page_num)
+        try:
+            list_html, _ = get_cached_or_fetch(session, jb_list_url, cache_dir=cache_dir, delay=delay, use_cache=use_cache)
+            p_urls = parse_jobboom_listing_html(list_html)
+            if not p_urls:
+                break
+            new_u = [u for u in p_urls if u not in jb_urls]
+            jb_urls.extend(new_u)
+            print(f"  -> Page {page_num} : {len(p_urls)} cartes organiques ({len(new_u)} nouvelles, total: {len(jb_urls)})")
+            if not new_u:
+                break
+        except requests.RequestException as exc:
+            print(f"  ! Erreur page {page_num} Jobboom : {exc}")
+            break
+
+    jb_offers: list[JobBankOffer] = []
+    jb_rejected = 0
+    for idx, u in enumerate(jb_urls, start=1):
+        try:
+            d_html, _ = get_cached_or_fetch(session, u, cache_dir=cache_dir, delay=delay, use_cache=use_cache)
+            parsed = parse_json_ld_job_posting(d_html, u, source_name="jobboom", id_prefix="jb")
+            if parsed is not None:
+                jb_offers.append(parsed)
+            else:
+                jb_rejected += 1
+        except requests.RequestException:
+            continue
+
+    jb_dedup, jb_dstats = unify_and_deduplicate_offers(jb_offers)
+    total_intra_merged += jb_dstats["doublons_intra_fusionnes"]
+    per_source_counts["jobboom"] = {
+        "brutes_lues": len(jb_offers) + jb_rejected,
+        "retenues_ti_cnp": len(jb_dedup),
+        "rejetees_hors_ti": jb_rejected,
+    }
+    print(f"  ✓ Jobboom : {len(jb_dedup)} offres TI uniques retenues ({jb_rejected} hors-TI rejetées)")
+
+    # --------------------------------------------------------------------------
+    # 3. TALENT.COM CANADA (Multi-requêtes TI QC + JSON-LD @graph + GPS)
+    # --------------------------------------------------------------------------
+    print("\n==================================================================")
+    print(" [3/5] Collecte autonome Talent.com Canada (JSON-LD + GPS)")
+    print("==================================================================")
+    tc_queries = [
+        ("développeur informatique", "Québec, QC"),
+        ("programmeur analyste", "Montréal, QC"),
+        ("technicien informatique", "Québec, QC"),
+        ("cybersécurité", "Montréal, QC"),
+        ("stage informatique", "Québec, QC"),
+        ("administrateur système réseau", "Montréal, QC"),
+        ("data analyst", "Montréal, QC"),
+        ("devops cloud", "Montréal, QC"),
+    ]
+    tc_urls: list[str] = []
+    for q_kw, q_loc in tc_queries:
+        s_url = f"https://ca.talent.com/fr/jobs?k={quote_plus(q_kw)}&l={quote_plus(q_loc)}"
+        try:
+            s_html, _ = get_cached_or_fetch(session, s_url, cache_dir=cache_dir, delay=delay, use_cache=use_cache)
+            for u in parse_talent_search_json_ld(s_html):
+                if u not in tc_urls:
+                    tc_urls.append(u)
+        except requests.RequestException:
+            continue
+
+    tc_offers: list[JobBankOffer] = []
+    tc_rejected = 0
+    for u in tc_urls:
+        try:
+            d_html, _ = get_cached_or_fetch(session, u, cache_dir=cache_dir, delay=delay, use_cache=use_cache)
+            parsed = parse_talent_job_detail_html(d_html, u)
+            if parsed is not None:
+                tc_offers.append(parsed)
+            else:
+                tc_rejected += 1
+        except requests.RequestException:
+            continue
+
+    tc_dedup, tc_dstats = unify_and_deduplicate_offers(tc_offers)
+    total_intra_merged += tc_dstats["doublons_intra_fusionnes"]
+    per_source_counts["talent-canada"] = {
+        "brutes_lues": len(tc_offers) + tc_rejected,
+        "retenues_ti_cnp": len(tc_dedup),
+        "rejetees_hors_ti": tc_rejected,
+    }
+    print(f"  ✓ Talent.com : {len(tc_dedup)} offres TI uniques avec GPS retenues ({tc_rejected} hors-TI rejetées)")
+
+    # --------------------------------------------------------------------------
+    # 4. JOBILLICO QUÉBEC (Multi-requêtes TI QC + JSON-LD + Filtre CNP TI)
+    # --------------------------------------------------------------------------
+    print("\n==================================================================")
+    print(" [4/5] Collecte autonome Jobillico Québec (JSON-LD JobPosting)")
+    print("==================================================================")
+    ji_queries = [
+        ("développeur", "Québec, QC"),
+        ("technicien informatique", "Québec, QC"),
+        ("analyste programmeur", "Montréal, QC"),
+        ("stage informatique", "Montréal, QC"),
+        ("administrateur système", "Québec, QC"),
+        ("cybersécurité", "Montréal, QC"),
+    ]
+    ji_urls: list[str] = []
+    for q_kw, q_loc in ji_queries:
+        s_url = f"https://www.jobillico.com/recherche-emploi?skwd={quote(q_kw)}&scty={quote(q_loc)}"
+        try:
+            s_html, _ = get_cached_or_fetch(session, s_url, cache_dir=cache_dir, delay=delay, use_cache=use_cache)
+            for u in parse_jobillico_listing_html(s_html):
+                if u not in ji_urls:
+                    ji_urls.append(u)
+        except requests.RequestException:
+            continue
+
+    ji_offers: list[JobBankOffer] = []
+    ji_rejected = 0
+    for u in ji_urls:
+        try:
+            d_html, _ = get_cached_or_fetch(session, u, cache_dir=cache_dir, delay=delay, use_cache=use_cache)
+            parsed = parse_json_ld_job_posting(d_html, u, source_name="jobillico", id_prefix="ji")
+            if parsed is not None:
+                ji_offers.append(parsed)
+            else:
+                ji_rejected += 1
+        except requests.RequestException:
+            continue
+
+    ji_dedup, ji_dstats = unify_and_deduplicate_offers(ji_offers)
+    total_intra_merged += ji_dstats["doublons_intra_fusionnes"]
+    per_source_counts["jobillico"] = {
+        "brutes_lues": len(ji_offers) + ji_rejected,
+        "retenues_ti_cnp": len(ji_dedup),
+        "rejetees_hors_ti": ji_rejected,
+    }
+    print(f"  ✓ Jobillico : {len(ji_dedup)} offres TI uniques retenues ({ji_rejected} hors-TI rejetées)")
+
+    # --------------------------------------------------------------------------
+    # 5. REMOTIVE API (API REST officielle - Télétravail Canada + CNP TI)
+    # --------------------------------------------------------------------------
+    print("\n==================================================================")
+    print(" [5/5] Collecte autonome Remotive API (Télétravail Canada TI)")
+    print("==================================================================")
+    rem_offers: list[JobBankOffer] = []
+    rem_rejected = 0
+    for cat in ("software-dev", "data", "devops", "qa"):
+        api_u = f"https://remotive.com/api/remote-jobs?category={cat}&limit=60"
+        try:
+            raw_json, _ = get_cached_or_fetch(session, api_u, cache_dir=cache_dir, delay=delay, use_cache=use_cache)
+            payload = json.loads(raw_json)
+            for job_item in payload.get("jobs", []):
+                parsed = parse_remotive_job_item(job_item)
+                if parsed is not None:
+                    rem_offers.append(parsed)
+                else:
+                    rem_rejected += 1
+        except (requests.RequestException, json.JSONDecodeError):
+            continue
+
+    rem_dedup, rem_dstats = unify_and_deduplicate_offers(rem_offers)
+    total_intra_merged += rem_dstats["doublons_intra_fusionnes"]
+    per_source_counts["remotive"] = {
+        "brutes_lues": len(rem_offers) + rem_rejected,
+        "retenues_ti_cnp": len(rem_dedup),
+        "rejetees_hors_ti": rem_rejected,
+    }
+    print(f"  ✓ Remotive : {len(rem_dedup)} offres TI uniques retenues ({rem_rejected} hors-TI/hors-Canada filtrées)")
+
+    # --------------------------------------------------------------------------
+    # Sauvegarde des 5 JSON par source + Unification + CSV + Rapport
+    # --------------------------------------------------------------------------
+    datasets = [
+        ("offres_guichet_emplois.json", ge_dedup),
+        ("offres_jobboom.json", jb_dedup),
+        ("offres_talent.json", tc_dedup),
+        ("offres_jobillico.json", ji_dedup),
+        ("offres_remotive.json", rem_dedup),
+    ]
+    all_combined: list[JobBankOffer] = []
+    for fname, dset in datasets:
+        (data_dir / fname).write_text(
+            json.dumps([asdict(o) for o in dset], indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
+        all_combined.extend(dset)
+
+    unified, cross_dstats = unify_and_deduplicate_offers(all_combined)
+    dedup_stats = {
+        "total_entree": len(all_combined) + total_intra_merged,
+        "doublons_intra_fusionnes": total_intra_merged + cross_dstats["doublons_intra_fusionnes"],
+        "doublons_inter_fusionnes": cross_dstats["doublons_inter_fusionnes"],
+        "total_unifie": len(unified),
+    }
+
+    (data_dir / "offres_unifiees.json").write_text(
+        json.dumps([asdict(o) for o in unified], indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    export_offers_to_csv(unified, data_dir / "offres_unifiees.csv")
+    report = build_collection_report(per_source_counts, dedup_stats, unified)
+    (data_dir / "rapport_collecte.json").write_text(
+        json.dumps(report, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    return report
+
+
+def from_cache_check(url: str, cache_dir: Path = CACHE_DIR, ttl_seconds: int = DEFAULT_CACHE_TTL_SECONDS) -> bool:
+    """Vérifie rapidement si une URL est déjà présente et valide dans le cache disque local."""
+    cf = _cache_file_for_url(url, cache_dir=cache_dir)
+    if not cf.exists():
+        return False
+    try:
+        payload = json.loads(cf.read_text(encoding="utf-8"))
+        return (time.time() - float(payload.get("fetched_at", 0.0))) < ttl_seconds
+    except (OSError, ValueError, TypeError, json.JSONDecodeError):
+        return False
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description="Collecteur Multi-Sources Enrichi (5 sites Québec/Canada - Livrable 3 Lot 4)")
     parser.add_argument("--limite-guichet", type=int, default=8, help="Offres Guichet-Emplois CNP à enrichir (défaut: 8)")
@@ -2813,9 +3155,24 @@ def main() -> None:
     parser.add_argument("--mot-cle", type=str, default=None, help="Mot-clé optionnel")
     parser.add_argument("--delai", type=float, default=2.0, help="Délai en secondes entre les nouvelles fiches HTTP (défaut: 2.0s)")
     parser.add_argument("--sans-cache", action="store_true", help="Désactiver le cache disque local 24 h")
+    parser.add_argument("--collecte-complete", action="store_true", help="Lancer la collecte autonome complète par notre système sur les 5 sources (avec lecture de toutes les fiches détaillées) vers data/*.json et .csv")
     parser.add_argument("--consolider-data", action="store_true", help="Unifier et dédupliquer hors ligne les 5 fichiers data/offres_*.json vers offres_unifiees.json/.csv et rapport_collecte.json")
     parser.add_argument("--sortie", type=str, default="echantillon_v2.json", help="Fichier JSON de sortie")
     args = parser.parse_args()
+
+    if args.collecte_complete:
+        report = run_autonomous_full_collection(
+            data_dir=DATA_DIR,
+            cache_dir=CACHE_DIR,
+            delay=args.delai if args.delai != 2.0 else 0.25,
+            use_cache=not args.sans_cache,
+        )
+        print(
+            f"\nCollecte autonome complète terminée : {report['total_offres_unifiees_ti']} offres TI uniques "
+            f"(descriptions: {report['offres_avec_description_complete']}/{report['total_offres_unifiees_ti']}) "
+            f"enregistrées sous data/"
+        )
+        return
 
     if args.consolider_data:
         report = consolidate_data_directory(DATA_DIR)
