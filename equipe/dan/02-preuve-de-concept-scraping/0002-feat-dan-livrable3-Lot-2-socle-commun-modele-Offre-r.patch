@@ -1,0 +1,967 @@
+From 9b0498af5f2ac32fbb56bd7522fe35f4f526c9bb Mon Sep 17 00:00:00 2001
+From: Dan <dan@users.noreply.github.com>
+Date: Tue, 17 Nov 2026 12:59:52 -0500
+Subject: [PATCH 2/2] feat(dan-livrable3): Lot 2 - socle commun (modele Offre,
+ robots.txt RFC 9309, cache 24h) et 30 tests hors ligne
+
+- modele.py : dataclass Offre, exporter_json (utf-8), exporter_csv (utf-8-sig, ;), lire_json
+- outils.py : Robots (groupe applicable, regle la plus longue, * et $, Crawl-delay),
+  Client (User-Agent honnete, delai par site, AccesRefuse sur 401/403/429, cache disque 24 h)
+- tests/ : 30 tests hors ligne, fixture robots.txt reel de CareerBeacon
+- requirements.txt, .gitignore, README (Scripts Python) et plan mis a jour
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01YSi771V6yUwNsLBzEqieCy
+---
+ equipe/dan/README.md                          |  78 ++++++
+ equipe/dan/livrable3/.gitignore               |   6 +
+ equipe/dan/livrable3/modele.py                |  84 ++++++
+ equipe/dan/livrable3/outils.py                | 264 ++++++++++++++++++
+ equipe/dan/livrable3/plan.md                  |  25 +-
+ equipe/dan/livrable3/requirements.txt         |   4 +
+ equipe/dan/livrable3/tests/__init__.py        |   0
+ .../tests/fixtures/robots_careerbeacon.txt    |  73 +++++
+ equipe/dan/livrable3/tests/test_modele.py     |  70 +++++
+ equipe/dan/livrable3/tests/test_outils.py     | 245 ++++++++++++++++
+ 10 files changed, 839 insertions(+), 10 deletions(-)
+ create mode 100644 equipe/dan/livrable3/.gitignore
+ create mode 100644 equipe/dan/livrable3/modele.py
+ create mode 100644 equipe/dan/livrable3/outils.py
+ create mode 100644 equipe/dan/livrable3/requirements.txt
+ create mode 100644 equipe/dan/livrable3/tests/__init__.py
+ create mode 100644 equipe/dan/livrable3/tests/fixtures/robots_careerbeacon.txt
+ create mode 100644 equipe/dan/livrable3/tests/test_modele.py
+ create mode 100644 equipe/dan/livrable3/tests/test_outils.py
+
+diff --git a/equipe/dan/README.md b/equipe/dan/README.md
+index 6da2a3a..363e0fe 100644
+--- a/equipe/dan/README.md
++++ b/equipe/dan/README.md
+@@ -24,8 +24,18 @@ pip install -r requirements.txt
+ | Script | Rôle | Commande |
+ | --- | --- | --- |
+ | [`poc_guichetemplois.py`](02-preuve-de-concept-scraping/poc_guichetemplois.py) | Offres TI au Québec du Guichet-Emplois (1 page) | `python poc_guichetemplois.py "developpeur"` |
++| [`livrable3/modele.py`](livrable3/modele.py) | Modèle `Offre` + exports JSON / CSV | Module importé par les scrapers |
++| [`livrable3/outils.py`](livrable3/outils.py) | robots.txt, délai, cache 24 h, arrêt sur 401/403/429 | Module importé par les scrapers |
+ | Scrapers du livrable 3 | Ajoutés lot par lot | Voir [`livrable3/plan.md`](livrable3/plan.md) |
+ 
++### Tests (livrable 3)
++
++Hors ligne, aucun appel réseau. Depuis la racine du dépôt :
++
++```bash
++python -m unittest discover -s equipe/dan/livrable3 -p "test_*.py" -v
++```
++
+ ### `poc_guichetemplois.py` (livrable 2)
+ 
+ Dossier : `02-preuve-de-concept-scraping/`. Lancer le script **depuis ce dossier**, car le CSV est écrit dans le dossier courant.
+@@ -73,3 +83,71 @@ Aucune autre saisie : le script ne pose pas de question.
+ | `SELECTEURS` | Sélecteurs CSS | À corriger si le site change son HTML |
+ 
+ **Réseau :** 2 requêtes par exécution (`robots.txt`, puis 1 page de résultats), séparées de 5 s.
++
++### `livrable3/modele.py` (socle du livrable 3)
++
++Module sans réseau, importé par les scrapers. Dépendances : bibliothèque standard.
++
++```python
++from modele import Offre, exporter_json, exporter_csv, lire_json
++
++offre = Offre(id="ge-50738681", source="guichet-emplois", titre="développeur Web", url="https://…")
++exporter_json([offre], "data/offres.json")
++exporter_csv([offre], "data/offres.csv")
++```
++
++**Entrée :** des objets `Offre`. Seuls `id`, `source`, `titre` et `url` sont obligatoires ; les autres champs valent `None` (ou `[]` pour `competences`) si la source ne les donne pas.
++
++**Sortie**
++
++| Fonction | Fichier produit | Format |
++| --- | --- | --- |
++| `exporter_json` | `.json` | UTF-8, accents lisibles, `date_export`, `nombre`, `offres` |
++| `exporter_csv` | `.csv` | `utf-8-sig` + séparateur `;` (Excel Windows) |
++| `lire_json` | — | Relit un `.json` en liste d'`Offre` |
++
++Dans le CSV : `None` → cellule vide, `est_stage` → `oui` / `non`, `competences` → `Python, SQL`.
++
++**Configuration :** aucune. Les dossiers de sortie sont créés au besoin.
++
++### `livrable3/outils.py` (socle du livrable 3)
++
++Module importé par les scrapers. Dépendance : `requests`.
++
++```python
++from outils import AccesRefuse, Client
++
++client = Client()
++try:
++    html = client.telecharger("https://www.guichetemplois.gc.ca/jobsearch/rechercheemplois?fprov=QC")
++except AccesRefuse as refus:
++    print(refus)          # message clair, puis on arrête cette source
++```
++
++**Entrée :** une URL. `telecharger(url, utiliser_cache=False)` force un nouveau téléchargement.
++
++**Sortie**
++
++- Le texte de la page (`str`).
++- Ou l'exception `AccesRefuse`, sans contournement, si :
++  - `robots.txt` interdit l'URL ;
++  - le serveur répond 401 (connexion), 403 (ex. Cloudflare) ou 429 (trop de requêtes, avec `Retry-After`) ;
++  - `robots.txt` lui-même est refusé (401/403/429) ou en erreur (5xx).
++- Fichiers de cache dans `livrable3/cache/` (ignoré par Git).
++
++**Ce que fait `telecharger`, dans l'ordre**
++
++1. Cherche la page dans le cache (moins de 24 h) : si elle y est, aucune requête.
++2. Lit `robots.txt` du site une seule fois : groupe qui nomme notre robot, sinon `*` ; règle la plus longue gagne ; `*` et `$` compris ; `Crawl-delay` lu.
++3. Attend le délai du site : le plus grand entre 2 s et le `Crawl-delay`.
++4. Envoie la requête avec notre `User-Agent`, puis met la page en cache.
++
++**Configuration** (constantes en haut du module, ou arguments de `Client`)
++
++| Constante | Valeur | Rôle |
++| --- | --- | --- |
++| `USER_AGENT` | `jobs-insights-dan/0.3 (…)` | Identification honnête |
++| `DELAI_MIN` | `2.0` | Délai minimal entre deux requêtes au même site (s) |
++| `CACHE_DOSSIER` | `livrable3/cache/` | Dossier du cache (`None` = pas de cache) |
++| `CACHE_DUREE` | `86400` | Durée de validité du cache (s) |
++| `TIMEOUT` | `20` | Délai maximal d'une requête (s) |
+diff --git a/equipe/dan/livrable3/.gitignore b/equipe/dan/livrable3/.gitignore
+new file mode 100644
+index 0000000..c97a8de
+--- /dev/null
++++ b/equipe/dan/livrable3/.gitignore
+@@ -0,0 +1,6 @@
++# Cache disque des pages téléchargées (outils.py)
++cache/
++
++# Python
++__pycache__/
++*.pyc
+diff --git a/equipe/dan/livrable3/modele.py b/equipe/dan/livrable3/modele.py
+new file mode 100644
+index 0000000..8a25995
+--- /dev/null
++++ b/equipe/dan/livrable3/modele.py
+@@ -0,0 +1,84 @@
++"""Modèle commun ``Offre`` et exports JSON / CSV.
++
++Les trois scrapers (Guichet-Emplois, Jobboom, Talent.com) produisent tous des ``Offre``.
++Règle d'intégrité (AGENTS.md) : une information absente reste ``None``, jamais devinée.
++"""
++
++from __future__ import annotations
++
++import csv
++import json
++from dataclasses import asdict, dataclass, field, fields
++from datetime import datetime, timezone
++from pathlib import Path
++
++
++@dataclass
++class Offre:
++    """Une offre d'emploi ou de stage, quelle que soit sa source."""
++
++    # Obligatoires : sans eux, l'offre n'est pas exploitable.
++    id: str                                   # préfixe de source + numéro, ex. "ge-50738681"
++    source: str                               # "guichet-emplois", "jobboom", "talent"
++    titre: str
++    url: str
++
++    # Facultatifs : None si la source ne les donne pas.
++    source_partenaire: str | None = None      # site d'origine si l'offre est reprise (ex. "Jobillico")
++    entreprise: str | None = None
++    lieu: str | None = None                   # texte affiché, ex. "Québec (QC)"
++    province: str | None = None               # code, ex. "QC"
++    latitude: float | None = None
++    longitude: float | None = None
++    date_publication: str | None = None       # ISO AAAA-MM-JJ
++    type_poste: str | None = None             # ex. "Temps plein"
++    modalite: str | None = None               # "Sur place", "Hybride", "Télétravail"
++    est_stage: bool | None = None             # None = la source ne permet pas de le savoir
++    salaire: str | None = None                # texte tel qu'affiché
++    description: str | None = None            # texte sans balises HTML
++    competences: list[str] = field(default_factory=list)
++
++
++CHAMPS = [f.name for f in fields(Offre)]
++
++
++def exporter_json(offres: list[Offre], chemin: str | Path) -> Path:
++    """Écrit les offres en JSON UTF-8 lisible, avec la date d'export et le nombre d'offres."""
++    chemin = Path(chemin)
++    chemin.parent.mkdir(parents=True, exist_ok=True)
++    contenu = {
++        "date_export": datetime.now(timezone.utc).isoformat(timespec="seconds"),
++        "nombre": len(offres),
++        "offres": [asdict(o) for o in offres],
++    }
++    chemin.write_text(json.dumps(contenu, ensure_ascii=False, indent=2), encoding="utf-8")
++    return chemin
++
++
++def lire_json(chemin: str | Path) -> list[Offre]:
++    """Relit un fichier produit par ``exporter_json`` (utile pour regrouper les sources)."""
++    contenu = json.loads(Path(chemin).read_text(encoding="utf-8"))
++    return [Offre(**o) for o in contenu["offres"]]
++
++
++def _cellule(valeur: object) -> str:
++    """Valeur d'une cellule CSV : vide si None, liste jointe par des virgules, booléen en oui/non."""
++    if valeur is None:
++        return ""
++    if isinstance(valeur, bool):
++        return "oui" if valeur else "non"
++    if isinstance(valeur, list):
++        return ", ".join(str(v) for v in valeur)
++    return str(valeur)
++
++
++def exporter_csv(offres: list[Offre], chemin: str | Path) -> Path:
++    """Écrit les offres en CSV pour Excel sous Windows : ``utf-8-sig`` et séparateur ``;``."""
++    chemin = Path(chemin)
++    chemin.parent.mkdir(parents=True, exist_ok=True)
++    with chemin.open("w", newline="", encoding="utf-8-sig") as f:
++        ecrivain = csv.writer(f, delimiter=";")
++        ecrivain.writerow(CHAMPS)
++        for offre in offres:
++            ecrivain.writerow(_cellule(getattr(offre, nom)) for nom in CHAMPS)
++    return chemin
+diff --git a/equipe/dan/livrable3/outils.py b/equipe/dan/livrable3/outils.py
+new file mode 100644
+index 0000000..2a3c2d0
+--- /dev/null
++++ b/equipe/dan/livrable3/outils.py
+@@ -0,0 +1,264 @@
++"""Outils réseau communs aux trois scrapers : robots.txt, délai, cache disque, arrêt propre.
++
++Pourquoi un vérificateur maison plutôt que ``urllib.robotparser`` ?
++- ``RobotFileParser`` ne comprend pas les jokers ``*`` et ``$`` : avec le robots.txt de
++  CareerBeacon, il autorise ``/fr/rechercher?filter-salary_min=40000`` alors que la règle
++  ``Disallow: /*filter-salary_min=`` l'interdit ;
++- sa méthode ``read()`` se présente comme « Python-urllib » : si le serveur refuse ce nom,
++  il conclut à tort que tout est interdit (constaté avec CareerBeacon au livrable 2).
++
++Ce module suit la norme RFC 9309 : la règle la plus longue gagne, ``Allow`` gagne à égalité.
++
++Usage dans un scraper :
++    client = Client()
++    html = client.telecharger("https://www.guichetemplois.gc.ca/jobsearch/rechercheemplois?fprov=QC")
++    # → AccesRefuse si robots.txt interdit l'URL ou si le serveur répond 401, 403 ou 429.
++"""
++
++from __future__ import annotations
++
++import hashlib
++import json
++import re
++import time
++from dataclasses import dataclass, field
++from pathlib import Path
++from typing import Callable
++from urllib.parse import urlsplit
++
++import requests
++
++USER_AGENT = "jobs-insights-dan/0.3 (projet etudiant, College O'Sullivan de Quebec)"
++DELAI_MIN = 2.0                                 # secondes entre deux requêtes au même site
++CACHE_DOSSIER = Path(__file__).with_name("cache")
++CACHE_DUREE = 24 * 3600                         # secondes (24 h)
++TIMEOUT = 20
++
++
++# --- Erreur d'accès --------------------------------------------------------------
++
++class AccesRefuse(Exception):
++    """Le site ne veut pas de notre robot : on s'arrête, sans contourner."""
++
++    def __init__(self, url: str, raison: str) -> None:
++        self.url = url
++        self.raison = raison
++        super().__init__(f"Accès refusé : {url}\n  {raison}\n  On s'arrête, sans contournement.")
++
++
++# --- robots.txt --------------------------------------------------------------------
++
++@dataclass
++class _Groupe:
++    agents: list[str] = field(default_factory=list)
++    regles: list[tuple[bool, str]] = field(default_factory=list)   # (permis, motif)
++    crawl_delay: float | None = None
++
++
++def _motif_vers_regex(motif: str) -> re.Pattern[str]:
++    """``*`` = n'importe quelle suite de caractères ; ``$`` final = fin de l'URL."""
++    fin = motif.endswith("$")
++    if fin:
++        motif = motif[:-1]
++    corps = ".*".join(re.escape(morceau) for morceau in motif.split("*"))
++    return re.compile("^" + corps + ("$" if fin else ""))
++
++
++class Robots:
++    """Règles d'un robots.txt qui s'appliquent à notre User-Agent."""
++
++    def __init__(self, texte: str, user_agent: str = USER_AGENT) -> None:
++        groupes = self._lire_groupes(texte)
++        jeton = user_agent.split("/")[0].strip().lower()       # « jobs-insights-dan »
++
++        # Groupe applicable : celui qui nous nomme, sinon celui de « * » (RFC 9309, §2.2.1).
++        choisis = [g for g in groupes if jeton in (a.lower() for a in g.agents)]
++        if not choisis:
++            choisis = [g for g in groupes if "*" in g.agents]
++
++        self.regles = [(permis, motif, _motif_vers_regex(motif))
++                       for g in choisis for permis, motif in g.regles]
++        delais = [g.crawl_delay for g in choisis if g.crawl_delay is not None]
++        self.crawl_delay: float | None = max(delais) if delais else None
++
++    @staticmethod
++    def _lire_groupes(texte: str) -> list[_Groupe]:
++        groupes: list[_Groupe] = []
++        courant: _Groupe | None = None
++        regles_commencees = False
++        for ligne in texte.splitlines():
++            ligne = ligne.split("#", 1)[0].strip()
++            if ":" not in ligne:
++                continue
++            cle, valeur = (x.strip() for x in ligne.split(":", 1))
++            cle = cle.lower()
++            if cle == "user-agent":
++                # Plusieurs « User-agent » de suite partagent le même groupe.
++                if courant is None or regles_commencees:
++                    courant = _Groupe()
++                    groupes.append(courant)
++                    regles_commencees = False
++                courant.agents.append(valeur)
++            elif courant is None:
++                continue                                       # ligne hors groupe (ex. Sitemap)
++            elif cle in ("allow", "disallow"):
++                regles_commencees = True
++                if valeur:                                     # « Disallow: » vide = rien d'interdit
++                    courant.regles.append((cle == "allow", valeur))
++            elif cle == "crawl-delay":
++                regles_commencees = True
++                try:
++                    courant.crawl_delay = float(valeur)
++                except ValueError:
++                    pass
++        return groupes
++
++    def autorise(self, url: str) -> bool:
++        morceaux = urlsplit(url)
++        chemin = (morceaux.path or "/") + (f"?{morceaux.query}" if morceaux.query else "")
++        if chemin == "/robots.txt":
++            return True
++        meilleure: tuple[int, bool] | None = None              # (longueur du motif, permis)
++        for permis, motif, regex in self.regles:
++            if regex.match(chemin):
++                candidat = (len(motif), permis)                # à longueur égale, True > False
++                if meilleure is None or candidat > meilleure:
++                    meilleure = candidat
++        return meilleure is None or meilleure[1]
++
++
++# --- Client HTTP --------------------------------------------------------------------
++
++def _site(url: str) -> str:
++    morceaux = urlsplit(url)
++    return f"{morceaux.scheme}://{morceaux.netloc}"
++
++
++def _raison_refus(reponse: requests.Response) -> str:
++    code = reponse.status_code
++    serveur = reponse.headers.get("Server", "")
++    if "cf-ray" in {k.lower() for k in reponse.headers} or "cloudflare" in serveur.lower():
++        serveur = "Cloudflare (protection anti-robot)"
++    if code == 429:
++        attente = reponse.headers.get("Retry-After", "non précisé")
++        return f"HTTP 429 : trop de requêtes (réessayer après : {attente} s)."
++    if code == 401:
++        return "HTTP 401 : la page demande une connexion."
++    return f"HTTP 403 : le serveur refuse les robots{f' — {serveur}' if serveur else ''}."
++
++
++class Client:
++    """Téléchargeur poli : robots.txt vérifié, délai par site, cache 24 h, arrêt sur 401/403/429.
++
++    ``session``, ``attendre``, ``horloge`` et ``maintenant`` sont remplaçables pour les tests
++    hors ligne (aucun appel réseau).
++    """
++
++    def __init__(
++        self,
++        user_agent: str = USER_AGENT,
++        delai_min: float = DELAI_MIN,
++        cache_dossier: Path | None = CACHE_DOSSIER,
++        cache_duree: float = CACHE_DUREE,
++        session: requests.Session | None = None,
++        attendre: Callable[[float], None] = time.sleep,
++        horloge: Callable[[], float] = time.monotonic,
++        maintenant: Callable[[], float] = time.time,
++    ) -> None:
++        self.user_agent = user_agent
++        self.delai_min = delai_min
++        self.cache_dossier = cache_dossier
++        self.cache_duree = cache_duree
++        self.session = session or requests.Session()
++        self.attendre = attendre
++        self.horloge = horloge
++        self.maintenant = maintenant
++        self._robots: dict[str, Robots] = {}
++        self._derniere_requete: dict[str, float] = {}
++
++    # robots.txt ---------------------------------------------------------------
++    def robots(self, url: str) -> Robots:
++        """Lit (une fois par site) le robots.txt qui s'applique à ``url``."""
++        site = _site(url)
++        if site not in self._robots:
++            adresse = site + "/robots.txt"
++            try:
++                reponse = self._requete(adresse)
++            except requests.RequestException as erreur:
++                raise AccesRefuse(adresse, f"robots.txt illisible ({erreur}).") from erreur
++            code = reponse.status_code
++            if code == 200:
++                self._robots[site] = Robots(reponse.text, self.user_agent)
++            elif code in (401, 403, 429):
++                raise AccesRefuse(adresse, _raison_refus(reponse))
++            elif 400 <= code < 500:                            # 404, 410… : aucune règle déclarée
++                self._robots[site] = Robots("", self.user_agent)
++            else:                                              # 5xx : par prudence, tout interdit
++                raise AccesRefuse(adresse, f"robots.txt indisponible (HTTP {code}).")
++        return self._robots[site]
++
++    def delai(self, url: str) -> float:
++        """Délai à respecter pour ce site : le plus grand entre DELAI_MIN et Crawl-delay."""
++        return max(self.delai_min, self.robots(url).crawl_delay or 0.0)
++
++    # téléchargement -------------------------------------------------------------
++    def telecharger(self, url: str, utiliser_cache: bool = True) -> str:
++        """Renvoie le contenu texte de ``url``. Lève ``AccesRefuse`` si le site nous refuse."""
++        if utiliser_cache:
++            contenu = self._lire_cache(url)
++            if contenu is not None:
++                return contenu                                 # aucune requête, aucune attente
++
++        if not self.robots(url).autorise(url):
++            raise AccesRefuse(url, "robots.txt interdit cette adresse.")
++
++        reponse = self._requete(url, delai=self.delai(url))
++        if reponse.status_code in (401, 403, 429):
++            raise AccesRefuse(url, _raison_refus(reponse))
++        reponse.raise_for_status()
++        if not reponse.encoding:
++            reponse.encoding = "utf-8"
++        contenu = reponse.text
++        if utiliser_cache:
++            self._ecrire_cache(url, contenu)
++        return contenu
++
++    def _requete(self, url: str, delai: float = 0.0) -> requests.Response:
++        """Attend ce qu'il faut depuis la dernière requête au même site, puis envoie le GET."""
++        site = _site(url)
++        derniere = self._derniere_requete.get(site)
++        if derniere is not None:
++            reste = delai - (self.horloge() - derniere)
++            if reste > 0:
++                self.attendre(reste)
++        try:
++            return self.session.get(url, headers={"User-Agent": self.user_agent}, timeout=TIMEOUT)
++        finally:
++            self._derniere_requete[site] = self.horloge()
++
++    # cache disque ---------------------------------------------------------------
++    def _fichier_cache(self, url: str) -> Path | None:
++        if self.cache_dossier is None:
++            return None
++        cle = hashlib.sha256(url.encode("utf-8")).hexdigest()[:32]
++        return self.cache_dossier / f"{cle}.json"
++
++    def _lire_cache(self, url: str) -> str | None:
++        fichier = self._fichier_cache(url)
++        if fichier is None or not fichier.exists():
++            return None
++        try:
++            donnees = json.loads(fichier.read_text(encoding="utf-8"))
++        except (OSError, json.JSONDecodeError):
++            return None                                        # cache abîmé : on retélécharge
++        if donnees.get("url") != url or self.maintenant() - donnees.get("date", 0) > self.cache_duree:
++            return None
++        return donnees.get("contenu")
++
++    def _ecrire_cache(self, url: str, contenu: str) -> None:
++        fichier = self._fichier_cache(url)
++        if fichier is None:
++            return
++        fichier.parent.mkdir(parents=True, exist_ok=True)
++        donnees = {"url": url, "date": self.maintenant(), "contenu": contenu}
++        fichier.write_text(json.dumps(donnees, ensure_ascii=False), encoding="utf-8")
+diff --git a/equipe/dan/livrable3/plan.md b/equipe/dan/livrable3/plan.md
+index 4ea594d..16c42d5 100644
+--- a/equipe/dan/livrable3/plan.md
++++ b/equipe/dan/livrable3/plan.md
+@@ -91,14 +91,19 @@ equipe/dan/livrable3/
+ - [x] Créer ce `plan.md`.
+ - [x] Ajouter la section « Scripts Python » dans [`../README.md`](../README.md).
+ 
+-### Lot 2 — Socle commun *(⏳ Prochain lot)*
+-- [ ] `requirements.txt`, `.gitignore` (`cache/`, `__pycache__/`).
+-- [ ] `modele.py` : dataclass `Offre` + export JSON/CSV.
+-- [ ] `outils.py` : vérificateur `robots.txt` (règle la plus longue, `*`, `$`, `Crawl-delay`), téléchargement avec `User-Agent` honnête, délai, arrêt propre sur 401/403/429, cache disque 24 h.
+-- [ ] Tests hors ligne (dont le vrai `robots.txt` de CareerBeacon comme fixture).
+-- [ ] Mettre à jour la section « Scripts Python » du README.
+-
+-### Lot 3 — Guichet-Emplois
++### Lot 2 — Socle commun *(✅ Terminé)*
++- [x] `requirements.txt`, `.gitignore` (`cache/`, `__pycache__/`).
++- [x] `modele.py` : dataclass `Offre` + `exporter_json`, `exporter_csv`, `lire_json`.
++- [x] `outils.py` : classe `Robots` (groupe qui nous nomme sinon `*`, règle la plus longue, `*`, `$`, `Crawl-delay`) et classe `Client` (`User-Agent` honnête, délai par site = max(2 s, `Crawl-delay`), exception `AccesRefuse` sur 401/403/429 et sur robots.txt refusé ou en 5xx, cache disque 24 h).
++- [x] 30 tests hors ligne (`tests/test_outils.py`, `tests/test_modele.py`), dont le vrai `robots.txt` de CareerBeacon (`tests/fixtures/`). Un test prouve que `RobotFileParser` autorise à tort `?filter-salary_min=`.
++- [x] Section « Scripts Python » du README mise à jour (`modele.py`, `outils.py`, commande des tests).
++
++**Notes pour la suite**
++- Un scraper crée un seul `Client()` et le réutilise : le délai et `robots.txt` sont gérés par site.
++- Intercepter `AccesRefuse` par source : une source refusée s'arrête, les autres continuent.
++- Choix prudent : `robots.txt` en 401/403 = arrêt (la norme RFC 9309 permettrait de tout lire).
++
++### Lot 3 — Guichet-Emplois *(⏳ Prochain lot)*
+ - [ ] `scrapers/guichet_emplois.py` : pagination CNP TI au Québec (`fprov=QC`, `fn21`, `page`), site d'origine, `jsessionid` retiré.
+ - [ ] Lecture des fiches par RDFa (`property="description"`…) avec repli DOM, limite `--fiches N`, cache.
+ - [ ] Tests hors ligne + `data/offres_guichet_emplois.json` (petit échantillon vérifié à la main).
+@@ -129,8 +134,8 @@ equipe/dan/livrable3/
+ | Lot | Statut | Fichiers | Tests |
+ | --- | --- | --- | --- |
+ | 1 — Analyse et plan | ✅ | `plan.md`, `../README.md` | — |
+-| 2 — Socle commun | ⏳ | `outils.py`, `modele.py` | — |
+-| 3 — Guichet-Emplois | ⬜ | `scrapers/guichet_emplois.py` | — |
++| 2 — Socle commun | ✅ | `outils.py`, `modele.py` | 30 OK (0,01 s) |
++| 3 — Guichet-Emplois | ⏳ | `scrapers/guichet_emplois.py` | — |
+ | 4 — Jobboom | ⬜ | `scrapers/jobboom.py` | — |
+ | 5 — Talent.com / Remotive | ⬜ | `scrapers/talent.py` | — |
+ | 6 — Regroupement | ⬜ | `main.py` | — |
+diff --git a/equipe/dan/livrable3/requirements.txt b/equipe/dan/livrable3/requirements.txt
+new file mode 100644
+index 0000000..2f24415
+--- /dev/null
++++ b/equipe/dan/livrable3/requirements.txt
+@@ -0,0 +1,4 @@
++# Livrable 3 (Dan) — Python 3.12+
++# Les tests (tests/) n'utilisent que la bibliothèque standard.
++requests>=2.31
++beautifulsoup4>=4.12
+diff --git a/equipe/dan/livrable3/tests/__init__.py b/equipe/dan/livrable3/tests/__init__.py
+new file mode 100644
+index 0000000..e69de29
+diff --git a/equipe/dan/livrable3/tests/fixtures/robots_careerbeacon.txt b/equipe/dan/livrable3/tests/fixtures/robots_careerbeacon.txt
+new file mode 100644
+index 0000000..77476c6
+--- /dev/null
++++ b/equipe/dan/livrable3/tests/fixtures/robots_careerbeacon.txt
+@@ -0,0 +1,73 @@
++User-agent: *
++User-agent: Googlebot
++User-agent: Bingbot
++User-agent: OAI-SearchBot
++User-agent: GPTBot
++User-agent: Google-Extended
++User-agent: ClaudeBot
++User-agent: Claude-Web
++User-agent: Claude-User
++User-agent: Claude-SearchBot
++Allow: /
++Disallow: /uikit
++Disallow: /change_language
++Disallow: /404_override
++Disallow: /mettez-a-jour-votre-navigateur
++Disallow: /job_board_core/
++Disallow: /job_board_feed/
++Disallow: /job_board_cron/
++Disallow: /rss/
++Disallow: /admin/
++Disallow: /stats/
++Disallow: /backend/
++Disallow: /autocomplete/
++Disallow: /beta/
++Disallow: /company/
++Disallow: /cron/
++Disallow: /ecommerce/
++Disallow: /employers/
++Disallow: /engine/
++Disallow: /export/
++Disallow: /facebook/
++Disallow: /feed/
++Disallow: /home/
++Disallow: /invoice/
++Disallow: /irving/
++Disallow: /job_processing/
++Disallow: /jobs/
++Disallow: /linkedin_import/
++Disallow: /login/
++Disallow: /logout/
++Disallow: /message/
++Disallow: /partner/
++Disallow: /profile/
++Disallow: /sales/
++Disallow: /seo/
++Disallow: /signup/
++Disallow: /skills/
++Disallow: /solr/
++Disallow: /survey/
++Disallow: /trackingpixel/
++Disallow: /webhooks/
++Disallow: /widgets/
++Disallow: /en/apply
++Disallow: /fr/appliquer
++Disallow: /*filter-est_salary_min=
++Disallow: /*filter-est_salary_max=
++Disallow: /*filter-salary_min=
++Disallow: /*filter-salary_max=
++
++# AdSense crawler must see every page that shows ads
++User-agent: Mediapartners-Google
++Allow: /
++
++User-agent: ia_archiver
++Disallow: /
++
++User-Agent: OmniExplorer_Bot
++Disallow: /
++
++User-agent: Baiduspider
++Disallow: /
++
++Sitemap: https://www.careerbeacon.com/sitemap-index.xml
+diff --git a/equipe/dan/livrable3/tests/test_modele.py b/equipe/dan/livrable3/tests/test_modele.py
+new file mode 100644
+index 0000000..37a91b5
+--- /dev/null
++++ b/equipe/dan/livrable3/tests/test_modele.py
+@@ -0,0 +1,70 @@
++"""Tests hors ligne de modele.py (dataclass Offre et exports JSON / CSV)."""
++
++import csv
++import json
++import tempfile
++import unittest
++from pathlib import Path
++
++from modele import CHAMPS, Offre, exporter_csv, exporter_json, lire_json
++
++
++def offre_complete():
++    return Offre(
++        id="ge-50738681", source="guichet-emplois",
++        titre="développeur Web/développeuse Web",
++        url="https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50738681",
++        source_partenaire="Jobillico", entreprise="Mewlogic Inc.", lieu="Vaudreuil-Dorion (QC)",
++        province="QC", latitude=45.4, longitude=-74.03, date_publication="2026-11-16",
++        type_poste="Temps plein", modalite="Hybride", est_stage=False,
++        salaire="43,27 $ de l'heure", description="Tâches ; développer", competences=["Python", "SQL"],
++    )
++
++
++class TestOffre(unittest.TestCase):
++    def test_champs_facultatifs_none_par_defaut(self):
++        offre = Offre(id="jb-1", source="jobboom", titre="Stagiaire", url="https://x/1")
++        self.assertIsNone(offre.entreprise)
++        self.assertIsNone(offre.est_stage)
++        self.assertEqual(offre.competences, [])
++
++    def test_listes_non_partagees_entre_offres(self):
++        a = Offre(id="a", source="s", titre="t", url="u")
++        b = Offre(id="b", source="s", titre="t", url="u")
++        a.competences.append("Java")
++        self.assertEqual(b.competences, [])
++
++
++class TestExports(unittest.TestCase):
++    def setUp(self):
++        self.dossier = tempfile.TemporaryDirectory()
++        self.racine = Path(self.dossier.name)
++        self.offres = [offre_complete(), Offre(id="tc-2", source="talent", titre="Stage TI", url="https://x/2")]
++
++    def tearDown(self):
++        self.dossier.cleanup()
++
++    def test_json_aller_retour_et_accents(self):
++        chemin = exporter_json(self.offres, self.racine / "data" / "offres.json")
++        texte = chemin.read_text(encoding="utf-8")
++        self.assertIn("développeur", texte)                     # accents lisibles, pas é
++        self.assertEqual(json.loads(texte)["nombre"], 2)
++        self.assertEqual(lire_json(chemin), self.offres)
++
++    def test_csv_excel_bom_et_point_virgule(self):
++        chemin = exporter_csv(self.offres, self.racine / "offres.csv")
++        self.assertTrue(chemin.read_bytes().startswith(b"\xef\xbb\xbf"))   # BOM utf-8-sig
++        with chemin.open(encoding="utf-8-sig", newline="") as f:
++            lignes = list(csv.reader(f, delimiter=";"))
++        self.assertEqual(lignes[0], CHAMPS)
++        ligne = dict(zip(CHAMPS, lignes[1]))
++        self.assertEqual(ligne["competences"], "Python, SQL")
++        self.assertEqual(ligne["est_stage"], "non")
++        self.assertEqual(ligne["description"], "Tâches ; développer")  # « ; » protégé par des guillemets
++        vide = dict(zip(CHAMPS, lignes[2]))
++        self.assertEqual(vide["entreprise"], "")                # None → cellule vide
++        self.assertEqual(vide["est_stage"], "")
++
++
++if __name__ == "__main__":
++    unittest.main()
+diff --git a/equipe/dan/livrable3/tests/test_outils.py b/equipe/dan/livrable3/tests/test_outils.py
+new file mode 100644
+index 0000000..225a7cb
+--- /dev/null
++++ b/equipe/dan/livrable3/tests/test_outils.py
+@@ -0,0 +1,245 @@
++"""Tests hors ligne de outils.py (aucun appel réseau : session, horloge et attente simulées).
++
++Depuis la racine du dépôt :
++    python -m unittest discover -s equipe/dan/livrable3 -p "test_*.py" -v
++"""
++
++import tempfile
++import unittest
++from pathlib import Path
++from urllib.robotparser import RobotFileParser
++
++from requests.structures import CaseInsensitiveDict
++
++from outils import AccesRefuse, Client, Robots
++
++FIXTURES = Path(__file__).with_name("fixtures")
++CB = "https://www.careerbeacon.com"
++GE = "https://www.guichetemplois.gc.ca"
++
++
++class TestRobotsCareerBeacon(unittest.TestCase):
++    """Le vrai robots.txt de CareerBeacon (lu le 2026-11-16)."""
++
++    def setUp(self):
++        self.texte = (FIXTURES / "robots_careerbeacon.txt").read_text(encoding="utf-8")
++        self.robots = Robots(self.texte)
++
++    def test_recherche_et_fiches_permises(self):
++        self.assertTrue(self.robots.autorise(CB + "/fr/rechercher/jobs-in-New-Brunswick?page=2"))
++        self.assertTrue(self.robots.autorise(CB + "/en/job/2190965/nb-power/engineer/fredericton-nb"))
++
++    def test_pages_interdites(self):
++        for chemin in ("/jobs/123", "/en/apply/2190965", "/fr/appliquer/1", "/rss/jobs", "/login/"):
++            with self.subTest(chemin=chemin):
++                self.assertFalse(self.robots.autorise(CB + chemin))
++
++    def test_joker_filtre_salaire(self):
++        url = CB + "/fr/rechercher/jobs-in-New-Brunswick?filter-salary_min=40000"
++        self.assertFalse(self.robots.autorise(url))
++        self.assertFalse(self.robots.autorise(CB + "/en/search/x?a=1&filter-est_salary_max=9"))
++
++    def test_robotparser_de_python_se_trompe_sur_le_joker(self):
++        """Pourquoi on n'utilise pas urllib.robotparser : il autorise cette URL interdite."""
++        python = RobotFileParser()
++        python.parse(self.texte.splitlines())
++        url = CB + "/fr/rechercher/jobs-in-New-Brunswick?filter-salary_min=40000"
++        self.assertTrue(python.can_fetch("jobs-insights-dan", url))
++        self.assertFalse(self.robots.autorise(url))
++
++    def test_groupe_dun_autre_robot_ignore_pour_nous(self):
++        self.assertTrue(self.robots.autorise(CB + "/fr/rechercher/x"))     # ia_archiver : Disallow /
++        robots_archiver = Robots(self.texte, user_agent="ia_archiver/1.0")
++        self.assertFalse(robots_archiver.autorise(CB + "/fr/rechercher/x"))
++
++    def test_pas_de_crawl_delay(self):
++        self.assertIsNone(self.robots.crawl_delay)
++
++
++class TestRobotsRegles(unittest.TestCase):
++    def test_regle_la_plus_longue_gagne(self):
++        robots = Robots("User-agent: *\nDisallow: /prive\nAllow: /prive/public\n")
++        self.assertFalse(robots.autorise("https://x/prive/secret"))
++        self.assertTrue(robots.autorise("https://x/prive/public/page"))
++
++    def test_allow_gagne_a_egalite(self):
++        robots = Robots("User-agent: *\nDisallow: /page\nAllow: /page\n")
++        self.assertTrue(robots.autorise("https://x/page"))
++
++    def test_dollar_fin_url(self):
++        robots = Robots("User-agent: *\nDisallow: /*.pdf$\n")
++        self.assertFalse(robots.autorise("https://x/doc/a.pdf"))
++        self.assertTrue(robots.autorise("https://x/doc/a.pdf?v=2"))
++
++    def test_groupe_qui_nous_nomme_prioritaire(self):
++        texte = "User-agent: *\nDisallow: /\n\nUser-agent: Jobs-Insights-Dan\nDisallow: /admin\n"
++        robots = Robots(texte)
++        self.assertTrue(robots.autorise("https://x/offres"))
++        self.assertFalse(robots.autorise("https://x/admin/1"))
++
++    def test_crawl_delay_lu(self):
++        robots = Robots("User-agent: *\nCrawl-delay: 5\nDisallow: /admin\n")
++        self.assertEqual(robots.crawl_delay, 5.0)
++
++    def test_fichier_vide_tout_permis(self):
++        robots = Robots("")
++        self.assertTrue(robots.autorise("https://x/nimporte"))
++        self.assertIsNone(robots.crawl_delay)
++
++    def test_disallow_vide_ne_bloque_rien(self):
++        self.assertTrue(Robots("User-agent: *\nDisallow:\n").autorise("https://x/a"))
++
++
++# --- Client -------------------------------------------------------------------------
++
++class FausseReponse:
++    def __init__(self, code=200, texte="", entetes=None):
++        self.status_code = code
++        self.text = texte
++        self.headers = CaseInsensitiveDict(entetes or {})
++        self.encoding = "utf-8"
++
++    def raise_for_status(self):
++        if self.status_code >= 400:
++            raise RuntimeError(f"HTTP {self.status_code}")
++
++
++class FausseSession:
++    """Répond à partir d'un dictionnaire url → FausseReponse et note chaque appel."""
++
++    def __init__(self, reponses):
++        self.reponses = reponses
++        self.appels = []
++
++    def get(self, url, headers=None, timeout=None):
++        self.appels.append((url, headers))
++        return self.reponses.get(url, FausseReponse(404))
++
++
++class FausseHorloge:
++    def __init__(self):
++        self.t = 1000.0
++        self.attentes = []
++
++    def __call__(self):
++        return self.t
++
++    def attendre(self, secondes):
++        self.attentes.append(round(secondes, 3))
++        self.t += secondes
++
++
++class TestClient(unittest.TestCase):
++    def setUp(self):
++        self.dossier = tempfile.TemporaryDirectory()
++        self.horloge = FausseHorloge()
++        self.temps_reel = [5_000_000.0]
++
++    def tearDown(self):
++        self.dossier.cleanup()
++
++    def client(self, reponses, cache=False):
++        self.session = FausseSession(reponses)
++        return Client(
++            session=self.session,
++            attendre=self.horloge.attendre,
++            horloge=self.horloge,
++            maintenant=lambda: self.temps_reel[0],
++            cache_dossier=Path(self.dossier.name) if cache else None,
++        )
++
++    def test_user_agent_honnete_envoye(self):
++        client = self.client({GE + "/robots.txt": FausseReponse(200, ""), GE + "/a": FausseReponse(200, "ok")})
++        client.telecharger(GE + "/a")
++        self.assertTrue(all("jobs-insights-dan" in h["User-Agent"] for _, h in self.session.appels))
++
++    def test_crawl_delay_respecte_entre_deux_pages(self):
++        client = self.client({
++            GE + "/robots.txt": FausseReponse(200, "User-agent: *\nCrawl-delay: 5\n"),
++            GE + "/p1": FausseReponse(200, "1"),
++            GE + "/p2": FausseReponse(200, "2"),
++        })
++        client.telecharger(GE + "/p1")
++        client.telecharger(GE + "/p2")
++        self.assertEqual(self.horloge.attentes, [5.0, 5.0])   # après robots.txt, puis après p1
++
++    def test_delai_minimum_si_pas_de_crawl_delay(self):
++        client = self.client({CB + "/robots.txt": FausseReponse(200, ""), CB + "/a": FausseReponse(200, "")})
++        client.telecharger(CB + "/a")
++        self.assertEqual(self.horloge.attentes, [2.0])
++
++    def test_robots_interdit_aucune_requete_page(self):
++        client = self.client({CB + "/robots.txt": FausseReponse(200, "User-agent: *\nDisallow: /jobs/\n")})
++        with self.assertRaises(AccesRefuse) as ctx:
++            client.telecharger(CB + "/jobs/1")
++        self.assertIn("robots.txt interdit", str(ctx.exception))
++        self.assertEqual([u for u, _ in self.session.appels], [CB + "/robots.txt"])
++
++    def test_403_cloudflare_arret_propre(self):
++        client = self.client({
++            CB + "/robots.txt": FausseReponse(200, ""),
++            CB + "/fr/rechercher/x": FausseReponse(403, "", {"Server": "cloudflare", "CF-RAY": "abc"}),
++        })
++        with self.assertRaises(AccesRefuse) as ctx:
++            client.telecharger(CB + "/fr/rechercher/x")
++        self.assertIn("Cloudflare", str(ctx.exception))
++        self.assertIn("sans contournement", str(ctx.exception))
++
++    def test_429_indique_retry_after(self):
++        client = self.client({
++            GE + "/robots.txt": FausseReponse(200, ""),
++            GE + "/a": FausseReponse(429, "", {"Retry-After": "30"}),
++        })
++        with self.assertRaises(AccesRefuse) as ctx:
++            client.telecharger(GE + "/a")
++        self.assertIn("429", str(ctx.exception))
++        self.assertIn("30", str(ctx.exception))
++
++    def test_401_connexion_requise(self):
++        client = self.client({GE + "/robots.txt": FausseReponse(200, ""), GE + "/a": FausseReponse(401)})
++        with self.assertRaisesRegex(AccesRefuse, "connexion"):
++            client.telecharger(GE + "/a")
++
++    def test_robots_absent_404_tout_permis(self):
++        client = self.client({GE + "/a": FausseReponse(200, "ok")})       # robots.txt → 404
++        self.assertEqual(client.telecharger(GE + "/a"), "ok")
++
++    def test_robots_refuse_403_arret(self):
++        client = self.client({GE + "/robots.txt": FausseReponse(403)})
++        with self.assertRaises(AccesRefuse):
++            client.telecharger(GE + "/a")
++
++    def test_robots_erreur_serveur_arret(self):
++        client = self.client({GE + "/robots.txt": FausseReponse(503)})
++        with self.assertRaisesRegex(AccesRefuse, "indisponible"):
++            client.telecharger(GE + "/a")
++
++    def test_cache_evite_la_requete(self):
++        client = self.client({GE + "/robots.txt": FausseReponse(200, ""), GE + "/a": FausseReponse(200, "page")},
++                             cache=True)
++        self.assertEqual(client.telecharger(GE + "/a"), "page")
++        nb_appels = len(self.session.appels)
++        attentes = list(self.horloge.attentes)
++        self.assertEqual(client.telecharger(GE + "/a"), "page")
++        self.assertEqual(len(self.session.appels), nb_appels)          # aucune nouvelle requête
++        self.assertEqual(self.horloge.attentes, attentes)              # aucune attente
++
++    def test_cache_expire_apres_24h(self):
++        client = self.client({GE + "/robots.txt": FausseReponse(200, ""), GE + "/a": FausseReponse(200, "page")},
++                             cache=True)
++        client.telecharger(GE + "/a")
++        self.temps_reel[0] += 24 * 3600 + 1
++        client.telecharger(GE + "/a")
++        self.assertEqual([u for u, _ in self.session.appels].count(GE + "/a"), 2)
++
++    def test_cache_desactivable(self):
++        client = self.client({GE + "/robots.txt": FausseReponse(200, ""), GE + "/a": FausseReponse(200, "page")},
++                             cache=True)
++        client.telecharger(GE + "/a", utiliser_cache=False)
++        client.telecharger(GE + "/a", utiliser_cache=False)
++        self.assertEqual([u for u, _ in self.session.appels].count(GE + "/a"), 2)
++        self.assertEqual(list(Path(self.dossier.name).iterdir()), [])  # rien écrit
++
++
++if __name__ == "__main__":
++    unittest.main()
+-- 
+2.43.0
+

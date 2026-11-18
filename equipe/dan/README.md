@@ -24,7 +24,17 @@ pip install -r requirements.txt
 | Script | Rôle | Commande |
 | --- | --- | --- |
 | [`poc_guichetemplois.py`](02-preuve-de-concept-scraping/poc_guichetemplois.py) | Offres TI au Québec du Guichet-Emplois (1 page) | `python poc_guichetemplois.py "developpeur"` |
+| [`livrable3/modele.py`](livrable3/modele.py) | Modèle `Offre` + exports JSON / CSV | Module importé par les scrapers |
+| [`livrable3/outils.py`](livrable3/outils.py) | robots.txt, délai, cache 24 h, arrêt sur 401/403/429 | Module importé par les scrapers |
 | Scrapers du livrable 3 | Ajoutés lot par lot | Voir [`livrable3/plan.md`](livrable3/plan.md) |
+
+### Tests (livrable 3)
+
+Hors ligne, aucun appel réseau. Depuis la racine du dépôt :
+
+```bash
+python -m unittest discover -s equipe/dan/livrable3 -p "test_*.py" -v
+```
 
 ### `poc_guichetemplois.py` (livrable 2)
 
@@ -73,3 +83,71 @@ Aucune autre saisie : le script ne pose pas de question.
 | `SELECTEURS` | Sélecteurs CSS | À corriger si le site change son HTML |
 
 **Réseau :** 2 requêtes par exécution (`robots.txt`, puis 1 page de résultats), séparées de 5 s.
+
+### `livrable3/modele.py` (socle du livrable 3)
+
+Module sans réseau, importé par les scrapers. Dépendances : bibliothèque standard.
+
+```python
+from modele import Offre, exporter_json, exporter_csv, lire_json
+
+offre = Offre(id="ge-50738681", source="guichet-emplois", titre="développeur Web", url="https://…")
+exporter_json([offre], "data/offres.json")
+exporter_csv([offre], "data/offres.csv")
+```
+
+**Entrée :** des objets `Offre`. Seuls `id`, `source`, `titre` et `url` sont obligatoires ; les autres champs valent `None` (ou `[]` pour `competences`) si la source ne les donne pas.
+
+**Sortie**
+
+| Fonction | Fichier produit | Format |
+| --- | --- | --- |
+| `exporter_json` | `.json` | UTF-8, accents lisibles, `date_export`, `nombre`, `offres` |
+| `exporter_csv` | `.csv` | `utf-8-sig` + séparateur `;` (Excel Windows) |
+| `lire_json` | — | Relit un `.json` en liste d'`Offre` |
+
+Dans le CSV : `None` → cellule vide, `est_stage` → `oui` / `non`, `competences` → `Python, SQL`.
+
+**Configuration :** aucune. Les dossiers de sortie sont créés au besoin.
+
+### `livrable3/outils.py` (socle du livrable 3)
+
+Module importé par les scrapers. Dépendance : `requests`.
+
+```python
+from outils import AccesRefuse, Client
+
+client = Client()
+try:
+    html = client.telecharger("https://www.guichetemplois.gc.ca/jobsearch/rechercheemplois?fprov=QC")
+except AccesRefuse as refus:
+    print(refus)          # message clair, puis on arrête cette source
+```
+
+**Entrée :** une URL. `telecharger(url, utiliser_cache=False)` force un nouveau téléchargement.
+
+**Sortie**
+
+- Le texte de la page (`str`).
+- Ou l'exception `AccesRefuse`, sans contournement, si :
+  - `robots.txt` interdit l'URL ;
+  - le serveur répond 401 (connexion), 403 (ex. Cloudflare) ou 429 (trop de requêtes, avec `Retry-After`) ;
+  - `robots.txt` lui-même est refusé (401/403/429) ou en erreur (5xx).
+- Fichiers de cache dans `livrable3/cache/` (ignoré par Git).
+
+**Ce que fait `telecharger`, dans l'ordre**
+
+1. Cherche la page dans le cache (moins de 24 h) : si elle y est, aucune requête.
+2. Lit `robots.txt` du site une seule fois : groupe qui nomme notre robot, sinon `*` ; règle la plus longue gagne ; `*` et `$` compris ; `Crawl-delay` lu.
+3. Attend le délai du site : le plus grand entre 2 s et le `Crawl-delay`.
+4. Envoie la requête avec notre `User-Agent`, puis met la page en cache.
+
+**Configuration** (constantes en haut du module, ou arguments de `Client`)
+
+| Constante | Valeur | Rôle |
+| --- | --- | --- |
+| `USER_AGENT` | `jobs-insights-dan/0.3 (…)` | Identification honnête |
+| `DELAI_MIN` | `2.0` | Délai minimal entre deux requêtes au même site (s) |
+| `CACHE_DOSSIER` | `livrable3/cache/` | Dossier du cache (`None` = pas de cache) |
+| `CACHE_DUREE` | `86400` | Durée de validité du cache (s) |
+| `TIMEOUT` | `20` | Délai maximal d'une requête (s) |
