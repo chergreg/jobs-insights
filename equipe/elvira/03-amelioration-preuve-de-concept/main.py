@@ -756,6 +756,24 @@ def main() -> None:
         print(f"[*] Collecte en direct sur Jobboom (max {args.max_live} offres)...")
         live_offers = JobboomCollector().collect_live(max_offers=args.max_live)
         offers = MultiSourcePipeline.deduplicate_and_merge(offers + live_offers)
+        offers.sort(key=lambda o: (o.date_publication or "", o.id), reverse=True)
+
+    # Sauvegarde cumulative : si le fichier de sortie existe déjà, on fusionne ses offres valides
+    # avec la collecte courante pour ne JAMAIS effacer les offres existantes toujours valides.
+    if args.output_json.exists():
+        try:
+            existing_raw = json.loads(args.output_json.read_text(encoding="utf-8"))
+            if isinstance(existing_raw, list):
+                existing_offers = [
+                    o
+                    for item in existing_raw
+                    if isinstance(item, dict) and (o := MultiSourcePipeline.dict_to_job_offer(item)) is not None
+                ]
+                valid_existing = MultiSourcePipeline.filter_valid_recent_it_offers(existing_offers)
+                offers = MultiSourcePipeline.deduplicate_and_merge(valid_existing + offers)
+                offers.sort(key=lambda o: (o.date_publication or "", o.id), reverse=True)
+        except json.JSONDecodeError:
+            pass
 
     filtered = MultiSourcePipeline.filter_offers(
         offers,
@@ -773,25 +791,25 @@ def main() -> None:
     min_date = min(dates) if dates else "N/A"
     max_date = max(dates) if dates else "N/A"
 
-    print(f"[1/3] Offres TI 2026 valides et dédupliquées : {len(filtered)} offres")
+    print(f"[1/3] Base cumulative : {len(offers)} offres TI 2026 valides | Affichage filtré : {len(filtered)} offres")
     for src_name, count in sorted(by_source.items(), key=lambda x: -x[1]):
         print(f"      - {src_name:<18} : {count} offres")
     print(f"      - Stages détectés    : {stages_count} offres")
     print(f"      - Période couverte   : {min_date} au {max_date} (0 offre des années passées)")
 
-    MultiSourcePipeline.export_json(filtered, args.output_json)
-    # Maintenir aussi offres_jobboom_v2.json avec les offres Jobboom 2026 valides
+    # Le fichier JSON principal et le visualiseur HTML conservent TOUJOURS l'intégralité des offres cumulées
+    MultiSourcePipeline.export_json(offers, args.output_json)
     jobboom_only = [o for o in offers if o.source == "Jobboom"]
     MultiSourcePipeline.export_json(jobboom_only, HERE / "offres_jobboom_v2.json")
 
     MultiSourcePipeline.export_csv(filtered, args.output_csv)
-    generate_html_viewer(filtered, args.output_html)
+    generate_html_viewer(offers, args.output_html)
 
-    print(f"[2/3] Exports générés :")
-    print(f"      - JSON multi-sources : {args.output_json.name} ({len(filtered)} offres)")
+    print(f"[2/3] Exports mis à jour (mode cumulatif sans perte) :")
+    print(f"      - JSON multi-sources : {args.output_json.name} ({len(offers)} offres cumulées)")
     print(f"      - JSON Jobboom (v2)  : offres_jobboom_v2.json ({len(jobboom_only)} offres)")
-    print(f"      - CSV (Excel)        : {args.output_csv.name}")
-    print(f"      - Visualiseur Web    : {args.output_html.name}")
+    print(f"      - CSV (Excel)        : {args.output_csv.name} ({len(filtered)} offres)")
+    print(f"      - Visualiseur Web    : {args.output_html.name} ({len(offers)} offres)")
     print("[3/3] Terminé avec succès !")
 
 

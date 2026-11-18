@@ -13,7 +13,7 @@ Ce dépôt regroupe l’ensemble de mon projet pour **`job-insights`** : une pla
 | :--- | :--- |
 | **[`01-inventaire-des-sites/sites.md`](01-inventaire-des-sites/sites.md)** | **Livrable 1 :** Recensement et étude technique de 8 plateformes d’emploi québécoises et canadiennes |
 | **[`02-preuve-de-concept-scraping/`](02-preuve-de-concept-scraping/README.md)** | **Livrable 2 :** Premier collecteur Python sur Jobboom (`Scraper.py`, 12 offres TI de 2026 valides) |
-| **[`03-amelioration-preuve-de-concept/`](03-amelioration-preuve-de-concept/README.md)** | **Livrable 3 (Projet global Multi-Sources) :** Architecture modulaire unifiant **4 sources** (**118 offres TI de 2026**), tests unitaires hors ligne, export CSV Excel et visualiseur Web |
+| **[`03-amelioration-preuve-de-concept/`](03-amelioration-preuve-de-concept/README.md)** | **Livrable 3 (Projet global Multi-Sources) :** Architecture modulaire unifiant **4 sources** (**228 offres TI de 2026**), tests unitaires hors ligne, export CSV Excel et visualiseur Web |
 | **[`03-amelioration-preuve-de-concept/note.md`](03-amelioration-preuve-de-concept/note.md)** | **Note d’évolution :** Trace la progression complète du projet **de L1 à L2, puis de L2 à L3** |
 
 ---
@@ -47,7 +47,7 @@ pip install -r equipe/elvira/03-amelioration-preuve-de-concept/requirements.txt
 
 ### Exécution du pipeline Multi-Sources et des filtres CLI
 ```powershell
-# Générer les 118 offres TI 2026 unifiées (JSON + CSV Excel + visualiseur.html)
+# Générer et mettre à jour en mode cumulatif les 228 offres TI 2026 unifiées (JSON + CSV Excel + visualiseur.html)
 python equipe/elvira/03-amelioration-preuve-de-concept/main.py
 
 # Filtrer par source, ville, compétence ou stage

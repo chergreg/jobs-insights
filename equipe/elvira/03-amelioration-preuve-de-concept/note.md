@@ -77,7 +77,7 @@ Conformément à l’[énoncé du Livrable 3](../../../livrables/03-amelioration
 | :--- | :--- | :--- | :--- |
 | **Objectif atteint** | Inventaire de 8 sites + analyse DevTools Jobboom | Premier prototype Python sur 1 site (Jobboom) | **Agrégateur modulaire sur 4 sources + Visualiseur Web** |
 | **Sources automatisées** | 0 (analyse manuelle) | 1 source (Jobboom par mots-clés) | **4 sources** (Guichet-Emplois, Jobboom, Remotive, Jobillico) |
-| **Offres TI 2026 valides** | Exemples manuels | **12 offres** Jobboom (2026) | **118 offres uniques de 2026** (dont **6 stages**) |
+| **Offres TI 2026 valides** | Exemples manuels | **12 offres** Jobboom (2026) | **228 offres uniques de 2026** (dont **6 stages**) |
 | **Offres des années passées** | — | 7 offres de 2023 filtrées | **0 offre** (filtre strict `date_publication >= 2026`) |
 | **Architecture du code** | Document Markdown | 1 script monolithique (`Scraper.py`) | **4 modules découplés** (`models`, `collecteurs`, `pipeline`, `main`) |
 | **Déduplication** | — | Par URL sur Jobboom uniquement | **Intra-source (ID) + Inter-sources (`titre + entreprise + ville`)** |

@@ -16,7 +16,7 @@ Ce dossier contient l’implémentation complète et modulaire du projet d’agr
 | **[`main.py`](main.py)** | Script CLI | Point d’entrée principal (options `--source`, `--ville`, `--modalite`, `--competence`, `--stage`, `--recherche`, `--live`) et générateur de `visualiseur.html` |
 | **[`scraper_jobboom_v2.py`](scraper_jobboom_v2.py)** | Script CLI | Collecteur autonome ciblé sur Jobboom (Catégorie TI `_i10lfr` + Mots-clés) |
 | **[`test_scraper_jobboom_v2.py`](test_scraper_jobboom_v2.py)** | Tests `unittest` | **11 tests unitaires 100 % hors ligne** appuyés sur [`fixtures/jobboom_fixture.json`](fixtures/jobboom_fixture.json) |
-| **[`offres_multi_sources.json`](offres_multi_sources.json)** | Données JSON | **118 offres TI de 2026 valides et dédupliquées** (Guichet-Emplois : 79, Jobboom : 26, Remotive : 11, Jobillico : 2) |
+| **[`offres_multi_sources.json`](offres_multi_sources.json)** | Données JSON | **228 offres TI de 2026 valides et dédupliquées** en mode cumulatif (Guichet-Emplois : 148, Jobboom : 67, Remotive : 11, Jobillico : 2) |
 | **[`offres_multi_sources.csv`](offres_multi_sources.csv)** | Données CSV | Export encodé en `utf-8-sig` (séparateur `;`) directement ouvrable dans Microsoft Excel |
 | **[`visualiseur.html`](visualiseur.html)** | Interface Web | Tableau de bord interactif ouvrable d’un double-clic dans le navigateur (filtres par source, ville, modalité, compétence, stage et inspecteur JSON) |
 | **[`note.md`](note.md)** | Note L1 → L2 → L3 | Bilan détaillé de l’évolution du projet du Livrable 1 au Livrable 2, puis du Livrable 2 au Livrable 3 |

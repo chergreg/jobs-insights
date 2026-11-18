@@ -298,6 +298,14 @@ class MultiSourcePipeline:
         des 4 sources (Jobboom, Guichet-Emplois, Jobillico, Remotive) présentes dans le dépôt.
         """
         candidate_files: list[tuple[Path, str]] = [
+            (
+                repo_root / "equipe" / "elvira" / "03-amelioration-preuve-de-concept" / "offres_multi_sources.json",
+                " cumul_existant",
+            ),
+            (
+                repo_root / "equipe" / "elvira" / "03-amelioration-preuve-de-concept" / "offres_jobboom_v2.json",
+                "Jobboom:v2_existant",
+            ),
             (repo_root / "equipe" / "elvira" / "02-preuve-de-concept-scraping" / "offres_jobboom.json", "Jobboom:mots_cles_elvira"),
             (repo_root / "equipe" / "gregory" / "livrable3" / "data" / "offres_jobboom.json", "Jobboom:secteur_ti"),
             (repo_root / "equipe" / "mamadou" / "03-amelioration-preuve-de-concept" / "echantillon_v2.json", "Multi:mamadou_v2"),

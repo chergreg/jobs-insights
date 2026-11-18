@@ -712,6 +712,12 @@ def main() -> None:
                 if not is_it_job(normalized["titre"], url):
                     print(f"      [-] Ignorée (hors TI) : {normalized['titre']}")
                     continue
+                if not is_recent_and_valid_offer(
+                    normalized.get("date_publication"),
+                    normalized.get("date_expiration"),
+                ):
+                    print(f"      [-] Ignorée (ancienne ou expirée) : {normalized['titre']}")
+                    continue
                 results.append(normalized)
                 print(
                     f"      ✓ {normalized['titre']} — {normalized['entreprise']} "
@@ -723,9 +729,26 @@ def main() -> None:
         if idx < total and effective_delay > 0:
             time.sleep(effective_delay)
 
+    # Sauvegarde cumulative (Choix 1) : on conserve les offres 2026 valides déjà présentes dans le fichier
+    if args.output.exists():
+        try:
+            existing_items = json.loads(args.output.read_text(encoding="utf-8"))
+            seen_ids = {r["id"] for r in results if "id" in r}
+            for item in existing_items:
+                if (
+                    isinstance(item, dict)
+                    and item.get("id") not in seen_ids
+                    and is_it_job(str(item.get("titre") or ""), str(item.get("url") or ""))
+                    and is_recent_and_valid_offer(item.get("date_publication"), item.get("date_expiration"))
+                ):
+                    results.append(item)
+                    seen_ids.add(item["id"])
+        except json.JSONDecodeError:
+            pass
+
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"[3/3] Terminé ! {len(results)} offres TI sauvegardées dans {args.output}.")
+    print(f"[3/3] Terminé ! {len(results)} offres TI cumulées sauvegardées dans {args.output}.")
 
 
 if __name__ == "__main__":
