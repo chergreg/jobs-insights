@@ -1,0 +1,142 @@
+{
+  "date_generation": "2026-11-18T16:46:50.505425+00:00",
+  "auteur": "Mamadou (Livrable 3 - Lot 4 final)",
+  "total_offres_unifiees_ti": 368,
+  "deduplication": {
+    "total_entree": 462,
+    "doublons_intra_fusionnes": 89,
+    "doublons_inter_fusionnes": 5,
+    "total_unifie": 368
+  },
+  "collecte_par_source": {
+    "guichet-emplois": {
+      "brutes_lues": 278,
+      "retenues_ti_cnp": 212,
+      "rejetees_hors_ti": 0
+    },
+    "jobboom": {
+      "brutes_lues": 160,
+      "retenues_ti_cnp": 109,
+      "rejetees_hors_ti": 26
+    },
+    "talent-canada": {
+      "brutes_lues": 19,
+      "retenues_ti_cnp": 15,
+      "rejetees_hors_ti": 0
+    },
+    "jobillico": {
+      "brutes_lues": 57,
+      "retenues_ti_cnp": 26,
+      "rejetees_hors_ti": 31
+    },
+    "remotive": {
+      "brutes_lues": 39,
+      "retenues_ti_cnp": 11,
+      "rejetees_hors_ti": 28
+    }
+  },
+  "repartition_sources_unifiees": {
+    "guichet-emplois": 210,
+    "jobboom": 108,
+    "jobillico": 26,
+    "talent-canada": 13,
+    "remotive": 11
+  },
+  "repartition_codes_cnp_2021": {
+    "21232 - Développeurs et programmeurs de logiciels": 66,
+    "21222 - Spécialistes en informatique": 62,
+    "22221 - Agents de soutien aux utilisateurs": 40,
+    "22220 - Techniciens de réseaux informatiques": 37,
+    "21211 - Spécialistes des données": 29,
+    "21221 - Spécialistes des systèmes d'affaires": 29,
+    "21234 - Développeurs et programmeurs Web": 25,
+    "21231 - Ingénieurs et concepteurs en logiciel": 23,
+    "20012 - Gestionnaires des systèmes informatiques": 17,
+    "21220 - Spécialistes en cybersécurité": 17,
+    "22222 - Évaluateurs de systèmes informatiques": 8,
+    "21223 - Analystes de bases de données et administrateurs de données": 6,
+    "21233 - Concepteurs Web": 5,
+    "21230 - Développeurs de systèmes informatiques et programmeurs": 4
+  },
+  "repartition_domaines_ti": {
+    "tech_backend": 192,
+    "tech_support": 85,
+    "data_ia": 44,
+    "devops_cloud": 20,
+    "cybersecurite": 17,
+    "tech_frontend": 10
+  },
+  "repartition_regions_administratives_qc": {
+    "Montréal": 152,
+    "Montérégie": 61,
+    "Capitale-Nationale": 46,
+    "Hors QC / Télétravail": 40,
+    "Estrie": 22,
+    "Chaudière-Appalaches": 13,
+    "Laurentides": 10,
+    "Laval": 7,
+    "Abitibi-Témiscamingue": 4,
+    "Centre-du-Québec": 3,
+    "Outaouais": 2,
+    "Mauricie": 2,
+    "Bas-Saint-Laurent": 2,
+    "Nord-du-Québec": 1,
+    "Lanaudière": 1,
+    "Côte-Nord": 1,
+    "Saguenay--Lac-Saint-Jean": 1
+  },
+  "repartition_niveaux_seniorite": {
+    "Intermédiaire": 205,
+    "Senior": 107,
+    "Junior / DEC": 47,
+    "Étudiant / Stage": 9
+  },
+  "repartition_statuts_stage": {
+    "not_indicated": 359,
+    "confirmed_stage": 9
+  },
+  "repartition_modalites": {
+    "Sur place": 140,
+    "Non spécifié": 109,
+    "Hybride": 67,
+    "Télétravail": 47,
+    "Sur la route": 3,
+    "À distance": 2
+  },
+  "top_technologies_ti": {
+    "IA / Machine Learning": 62,
+    "SQL": 58,
+    "CI/CD": 47,
+    "Agile / Scrum": 44,
+    "JavaScript": 43,
+    "Python": 42,
+    "C#": 36,
+    ".NET": 35,
+    "Git": 35,
+    "Azure": 35,
+    "Réseaux (TCP/IP, VLAN, VPN)": 31,
+    "Windows Server": 30,
+    "Linux": 27,
+    "Java": 26,
+    "React": 20,
+    "AWS": 19,
+    "C++": 18,
+    "VMware": 15,
+    "MySQL": 14,
+    "PostgreSQL": 14,
+    "QA / Tests": 14,
+    "Docker": 14,
+    "TypeScript": 13,
+    "Angular": 13,
+    "PHP": 12,
+    "Kubernetes": 9,
+    "GCP": 7,
+    "Node.js": 7,
+    "Rust": 5,
+    "Vue.js": 4
+  },
+  "score_pertinence_dec_moyen": 52.0,
+  "offres_avec_coordonnees_gps": 34,
+  "offres_avec_salaire_chiffre": 231,
+  "offres_avec_description_complete": 230
+}
