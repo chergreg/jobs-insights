@@ -16,7 +16,7 @@ J'ai choisi ce site parce que c'est celui qui a été le plus exploré dans la c
 | [Hugo](../../hugo/02-preuve-de-concept-scraping/COMPTE_RENDU_LIVRABLE_2.md) | Atom + recherche par mots-clés + fiches (RDFa, repli DOM) | 87 offres avec description | Liste fixe de mots-clés, pas toutes les pages |
 | [Mamadou (L3)](../../mamadou/03-amelioration-preuve-de-concept/poc_guichet_cnp_v2.py) | Codes CNP + fiches RDFa (BeautifulSoup), cache 24 h | Échantillon de 22 offres (5 sources) | Nombre de pages à choisir (`--pages N`), dépendances externes |
 | [Gregory (démo L3)](../../gregory/livrable3/scrapers/guichet_emplois.py) | Ma pagination + l'enrichissement de Hugo, cache des fiches | 140 offres unifiées (3 sources) | Démonstration du prof |
-| [Dan](../../dan/02-preuve-de-concept-scraping/Poc%20guichetemploi.py) | Sélecteurs CSS | Aucune sortie | Sélecteurs non vérifiés |
+| [Dan](../../dan/02-preuve-de-concept-scraping/compte-rendu.md) | Page de résultats HTML (BeautifulSoup), mes 14 codes CNP | 25 offres (1re page, CSV) | Pas de pagination, pas de description ni de site d'origine |
 
 Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-de-concept-scraping/synthese.md), la [synthèse du L3](../../../livrables/03-amelioration-preuve-de-concept/synthese.md) et le [plan de Gregory](../../gregory/livrable3/plan.md). Tous ces documents relèvent la même limite pour mon L2 : les fiches n'étaient pas lues.
 
