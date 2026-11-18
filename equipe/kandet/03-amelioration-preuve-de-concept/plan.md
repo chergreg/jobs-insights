@@ -257,7 +257,41 @@ Tests :
 - une description « stage rémunéré en développement » → `possible_stage` ;
 - la description courte coupe à la fin d'une phrase et ne dépasse pas 300 caractères.
 
-### Étape 5 — Statistiques sur les offres
+### Étape 5 — Statistiques sur les offres ✅ (17 novembre)
+
+**Ce qui a été fait :**
+
+- `analyse.py` calcule maintenant, dans le résumé de `offres.json` et à l'affichage :
+  - le top 10 des technologies, des compétences et des villes ;
+  - les niveaux et les types d'emploi ;
+  - les salaires par devise et par unité ;
+  - les offres qui expirent dans les 7 jours ;
+  - le nombre d'offres où chaque champ est rempli.
+- Salaires : pour chaque groupe (ex. « CAD / année »), le nombre d'offres, le plus bas, le plus haut et la médiane de la valeur basse.
+  - On ne mélange jamais les unités ni les devises.
+  - Un salaire sans unité (ex. `$170k - $200k`) n'entre pas dans les statistiques.
+- La date du jour est un paramètre de `build_summary()`, pour que les tests donnent toujours le même résultat.
+- Tests : 10 nouveaux tests dans `test_statistiques.py` (médiane paire et impaire, unités séparées, aucune offre avec salaire, expirations, liste vide). Au total, 102 tests OK.
+
+**Résultats du 17 novembre (194 offres) :**
+
+| Salaire | Offres | Médiane (valeur basse) | Plus bas | Plus haut |
+|---|---|---|---|---|
+| CAD / année | 111 | 70 000 $ | 42 000 $ | 230 000 $ |
+| CAD / heure | 68 | 36 $ | 19 $ | 105 $ |
+| CAD / jour | 4 | 118 $ | 101 $ | 135 $ |
+| CAD / mois | 3 | 10 000 $ | 4 337 $ | 10 000 $ |
+
+- Top villes : Montréal (50), Brossard (39), Québec (20), Sherbrooke (13), Saint-Laurent (6).
+- Top compétences : réseaux (25), soutien aux utilisateurs (23), bases de données (23), DevOps (19), développement Web (17).
+- 71 offres expirent d'ici le 24 novembre. J'ai vérifié que ce sont bien les dates des fiches : par exemple, les 18 offres Talent.com et 15 offres de Fop experts conseils expirent toutes cette semaine.
+
+**Limites :**
+
+- Brossard arrive 2e seulement à cause d'une firme de recrutement (Fop experts conseils) qui publie beaucoup d'offres. Les statistiques comptent des offres, pas des employeurs.
+- La médiane porte sur la valeur basse de chaque fourchette. C'est un choix simple : il n'y a pas de « vrai » salaire moyen pour une fourchette.
+
+**Plan de départ de l'étape :**
 
 Ajoutées au résumé de `offres.json` et à l'affichage :
 

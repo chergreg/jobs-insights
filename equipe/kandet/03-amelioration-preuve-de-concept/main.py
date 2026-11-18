@@ -197,7 +197,18 @@ def main(argv: list[str] | None = None) -> None:
         )
     print(f"Champs remplis : {summary['filled_fields']}")
     print(f"Offres publiées sur plusieurs sites (fusionnées) : {summary['merged_offers']}")
-    print(f"Stages : {summary['stage_classification']}\n")
+    print(f"Stages : {summary['stage_classification']}")
+    print(f"Niveaux : {summary['levels']}")
+    print(f"Top technologies : {summary['top_technologies']}")
+    print(f"Top compétences : {summary['top_skills']}")
+    print(f"Top villes : {summary['top_cities']}")
+    print("Salaires (valeur basse médiane, plus bas, plus haut) :")
+    for key, stats in summary["salaries"].items():
+        print(
+            f"  {key} : {stats['offers']} offres, médiane {stats['median_low']}, "
+            f"de {stats['lowest']} à {stats['highest']}"
+        )
+    print(f"Offres qui expirent dans 7 jours : {len(summary['expiring_within_7_days'])}\n")
     for offer in offers:
         print_offer(offer)
 
