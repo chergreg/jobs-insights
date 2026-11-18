@@ -133,7 +133,9 @@ class LoadOffersTests(unittest.TestCase):
                 load_offers(path)
 
 
-class MainFiltersTests(unittest.TestCase):
+class CollecteSimulee:
+    """Aide pour les tests : une collecte avec réponses simulées, puis des relectures sans réseau."""
+
     def collect_into(self, folder: str) -> Path:
         result_path = Path(folder) / "offres.json"
         with (
@@ -160,6 +162,8 @@ class MainFiltersTests(unittest.TestCase):
             main.main(list(args))
         return output.getvalue()
 
+
+class MainFiltersTests(CollecteSimulee, unittest.TestCase):
     def test_reread_and_filter_without_network(self) -> None:
         with TemporaryDirectory() as folder:
             result_path = self.collect_into(folder)

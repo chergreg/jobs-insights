@@ -28,7 +28,7 @@ Toutes les commandes suivantes se lancent depuis ce dossier.
 python -m unittest discover -p "test_*.py" -v
 ```
 
-La dernière ligne doit être `OK`, après `Ran 129 tests`.
+La dernière ligne doit être `OK`, après `Ran 140 tests`.
 
 ### 3. Lancer la collecte
 
@@ -52,7 +52,25 @@ python main.py
 
 À la fin, le script affiche les statistiques et la liste des offres, puis enregistre tout dans `offres.json`.
 
-### 4. Chercher des offres précises (sans retélécharger)
+### 4. Chercher les offres dans le navigateur (le plus simple)
+
+```powershell
+python main.py --depuis offres.json --html
+```
+
+Cette commande crée `offres.html`. On l'ouvre d'un **double-clic** : la page s'affiche dans le navigateur (Edge, Chrome, Firefox), sans Internet et sans rien installer.
+
+Dans la page :
+
+- **Recherche par mots** (titre, employeur, technologie, ville…) et **filtres** : région, ville, technologie, niveau, salaire minimum, stages seulement, salaire indiqué, offres expirées cachées.
+- **Tri** : plus récentes, salaire le plus élevé, expire bientôt, titre.
+- **Technologies demandées** : un clic sur une technologie filtre les offres.
+- **Chaque offre** affiche le titre de l'employeur, le salaire, le niveau, les badges (« Stage », « Expire dans 3 j »…), un résumé, les technologies et « Plus de détails » (études, expérience, langues). Elle donne aussi le lien vers l'offre et vers l'annonce d'origine.
+- **« Exporter en CSV »** enregistre les offres affichées pour Excel.
+- **« Copier le lien de cette recherche »** garde les filtres dans l'adresse de la page. Par exemple, `offres.html#region=Estrie&techno=SQL` rouvre la page avec ces filtres.
+- La page s'adapte au téléphone (filtres repliables) et au mode sombre.
+
+### 5. Chercher des offres précises dans le terminal (sans retélécharger)
 
 Après une collecte, `--depuis offres.json` relit les offres en quelques secondes, sans Internet. On peut combiner plusieurs filtres. Les accents et les majuscules ne comptent pas.
 
@@ -77,9 +95,10 @@ python main.py --depuis offres.json --techno SQL --ville Montréal --csv
 | `--salaire-min 60000` | Les offres dont le bas de la fourchette atteint ce montant. L'unité est l'année par défaut ; ajouter `--unite-salaire heure` pour un taux horaire |
 | `--employeur desjardins` | Les offres dont le nom de l'employeur contient ce mot |
 | `--csv` | Enregistre les offres affichées dans `offres.csv`, qui s'ouvre directement dans Excel |
+| `--html` | Crée la page `offres.html` avec les offres affichées (toutes, s'il n'y a pas de filtre) |
 | `--resume-seulement` | Affiche les statistiques sans la liste |
 
-Les filtres changent ce qui est affiché et ce qui va dans le CSV. `offres.json` garde toujours toutes les offres.
+Les filtres changent ce qui est affiché, ce qui va dans le CSV et ce qui va dans la page HTML. `offres.json` garde toujours toutes les offres.
 
 La liste complète des options s'obtient avec `python main.py --help`.
 
@@ -89,6 +108,7 @@ La liste complète des options s'obtient avec `python main.py --help`.
 |---|---|---|
 | `offres.json` | Toutes les offres avec tous les champs, et les statistiques | Non |
 | `offres.csv` | Les offres affichées, pour Excel | Non |
+| `offres.html` | La page de recherche à ouvrir dans le navigateur | Non |
 | `echantillon.json` | 10 offres d'exemple | Oui |
 | `regions_quebec.csv` | Municipalités et arrondissements du Québec avec leur région (source officielle, voir plus bas) | Oui |
 | `cache/fiches/` | Les fiches déjà téléchargées | Non |
@@ -98,6 +118,7 @@ La liste complète des options s'obtient avec `python main.py --help`.
 - **`python` n'est pas reconnu** : utiliser `py`, ou installer Python depuis python.org en cochant « Add Python to PATH ».
 - **`No such file or directory: main.py`** : la commande n'est pas lancée depuis le dossier du projet (voir l'étape 1).
 - **`Impossible de lire offres.json`** : faire d'abord une collecte (étape 3) avant d'utiliser `--depuis`.
+- **La page `offres.html` ne montre pas les dernières offres** : refaire la commande `--html` après une nouvelle collecte. La page est une photo de `offres.json` au moment où elle est créée.
 - **`Offres affichées : 0`** : les filtres sont trop stricts. Par exemple, `--ville` demande le nom exact de la ville, comme `Québec` et non `Qc`.
 
 ## 1. Site choisi
@@ -139,7 +160,7 @@ Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-d
 **Ce que j'ai modifié :**
 
 - Tout est réécrit avec la bibliothèque standard (`html.parser`) : pas de BeautifulSoup ni de Pydantic, donc aucune installation.
-- Le prototype est découpé en modules : `guichet`, `fiches`, `remotive`, `normalisation`, `competences`, `fusion`, `analyse`, `regions`, `filtres`, `export`, `main`.
+- Le prototype est découpé en modules : `guichet`, `fiches`, `remotive`, `normalisation`, `competences`, `fusion`, `analyse`, `regions`, `filtres`, `export`, `interface`, `main`.
 - Nouveaux champs :
   - titre de l'employeur, description, tâches ;
   - date d'expiration et date de début ;
@@ -153,6 +174,7 @@ Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-d
   - dans 10 fiches, des séquences d'échappement Unicode écrites telles quelles (barre oblique inverse + `u00E9` au lieu de « é ») ;
   - des `&amp;` encodés deux fois.
 - Région administrative de chaque offre (module `regions`) : la ville est cherchée dans le Répertoire des municipalités du Québec (ministère des Affaires municipales et de l'Habitation, données ouvertes sous licence CC-BY 4.0). La liste officielle des arrondissements sert pour Saint-Laurent, Lachine, etc. Le fichier `regions_quebec.csv` garde seulement le nom, le type et la région, sans aucun nom d'élu. Il est recréé par `preparer_regions.py`.
+- Page de recherche `offres.html` (module `interface` et modèle `interface_modele.html`) : un seul fichier qui s'ouvre dans le navigateur, avec les offres incluses. Il n'y a ni serveur, ni Internet, ni bibliothèque externe. Le JavaScript affiche les textes des offres avec `textContent`, jamais comme du HTML : un texte d'offre ne peut pas devenir du code.
 - Filtres et export : `--ville`, `--region`, `--techno`, `--niveau`, `--stages`, `--salaire-min`, `--employeur`, export `--csv` pour Excel, et `--depuis` pour filtrer une collecte déjà faite sans Internet (modules `filtres` et `export`).
 
 Le code est dans ce dossier. Le prototype du L2 reste tel quel dans `02-preuve-de-concept-scraping/`.
@@ -185,7 +207,10 @@ python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --sans-fiches
 # Filtrer une collecte déjà faite, sans Internet, et exporter pour Excel
 python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equipe\kandet\03-amelioration-preuve-de-concept\offres.json --techno Python --csv
 
-# Tests hors ligne (129 tests)
+# Page de recherche à ouvrir dans le navigateur
+python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equipe\kandet\03-amelioration-preuve-de-concept\offres.json --html
+
+# Tests hors ligne (140 tests)
 python -m unittest discover -s equipe/kandet/03-amelioration-preuve-de-concept -p "test_*.py" -v
 ```
 
@@ -212,7 +237,7 @@ Sorties :
 | Technologies détectées | 0 | 83 offres |
 | Niveau (débutant, intermédiaire, avancé) | 0 | 124 offres |
 | Stages détectés | 0 | 1 confirmé |
-| Tests hors ligne | 33 | 129 |
+| Tests hors ligne | 33 | 140 |
 
 Les compteurs de la dernière colonne viennent du résumé de `offres.json` (`summary.filled_fields`).
 
@@ -224,6 +249,38 @@ Les compteurs de la dernière colonne viennent du résumé de `offres.json` (`su
   - La description correspond pour 4. La 5e, celle de Québec emploi, est une offre fusionnée avec sa copie Jobillico : sa description vient de la fiche Jobillico, comme prévu.
   - Les technologies détectées sont bien écrites dans les pages. Par exemple, « Postgres » donne PostgreSQL.
 - **Détections risquées :** j'ai relu le texte autour des technologies les plus risquées (Windows, Oracle, SAP, Swift, Rust, Cisco, Git, Java). Toutes correspondent à de vraies mentions.
+
+### Vérification de la page HTML
+
+Les tests Python vérifient le contenu de la page :
+- les offres incluses ;
+- un titre piégé `</script>` qui ne casse pas la page ;
+- aucune ressource externe ;
+- aucun `innerHTML`.
+
+J'ai aussi ouvert la vraie page (195 offres) dans Edge en mode sans fenêtre (`--headless --dump-dom`), avec des filtres passés dans l'adresse. La page donne les mêmes nombres que les filtres de `main.py` :
+
+| Filtre | Page HTML | `main.py` |
+|---|---|---|
+| Région Montérégie | 48 | 48 |
+| Capitale-Nationale + SQL | 6 | 6 |
+| Python | 18 | 18 |
+| Niveau débutant | 27 | 27 |
+| Stages | 1 | 1 |
+| Salaire ≥ 90 000 $ / an | 29 | 29 |
+| Montréal + ≥ 40 $ / h | 9 | 9 |
+
+Une copie de test de la page a aussi cliqué elle-même sur les boutons :
+- « Afficher plus » : 30, puis 60, puis 90 offres ;
+- choix de l'Estrie : seules Sherbrooke, Coaticook et Valcourt sont proposées comme villes ;
+- export CSV : 5 offres, et le fichier commence par les octets `EF BB BF` pour qu'Excel lise les accents ;
+- « Effacer les filtres » : retour à 195 ;
+- clic sur « SQL » : 32 offres.
+
+Des captures d'écran sur ordinateur, sur téléphone (375 pixels) et en mode sombre ont permis de corriger trois défauts avant l'ajout :
+- un bouton « Afficher plus (0 restantes) » visible à tort ;
+- un titre de filtres mal espacé ;
+- un texte de bouton peu lisible en mode sombre.
 
 ### Ce que les données montrent (17 novembre)
 
@@ -249,5 +306,7 @@ Les compteurs de la dernière colonne viennent du résumé de `offres.json` (`su
 
 - **Régions :** la région est trouvée à partir du nom de la ville. Un lieu qui n'est pas une municipalité ni un arrondissement (hameau, quartier, « Différentes régions ») reste sans région. Un nom porté par des municipalités de deux régions différentes reste aussi sans région, sans qu'on en choisisse une.
 
+- **Page HTML :** c'est une photo des offres au moment de sa création. Pour la mettre à jour, il faut refaire une collecte, puis `--html`. Le bouton « Copier le lien » demande l'accès au presse-papiers : certains navigateurs le refusent pour un fichier ouvert en local, et la page affiche alors « Copiez l'adresse de la page ».
+
 **À faire ensuite :**
-- une interface simple (piste 3 du projet), pour chercher les offres sans ligne de commande.
+- l'aide à la candidature (piste 4 du projet) : comparer un CV avec les technologies et le niveau des offres.

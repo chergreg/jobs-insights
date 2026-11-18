@@ -1,6 +1,7 @@
 # Résultats complets et caches locaux (regénérés par le script)
 offres.json
 offres.csv
+offres.html
 remotive-cache.json
 cache/
 __pycache__/

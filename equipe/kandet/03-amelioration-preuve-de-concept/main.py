@@ -2,7 +2,7 @@
 
 Point d'entrée en ligne de commande. Le travail est réparti dans les modules :
 collecte (HTTP), guichet, fiches, remotive, normalisation, fusion (doublons),
-competences, analyse (statistiques), filtres et export (CSV).
+competences, analyse (statistiques), regions, filtres, export (CSV) et interface (page HTML).
 
 Lancer depuis la racine du dépôt :
     python .\\equipe\\kandet\\03-amelioration-preuve-de-concept\\main.py
@@ -26,6 +26,7 @@ from export import load_offers, write_csv
 from fiches import enrich_with_postings
 from filtres import Filters, filter_offers
 from fusion import aggregate_records
+from interface import write_html
 from guichet import CNP_CODES_TI, GUICHET_DELAY_SECONDS, GUICHET_SEARCH_URL, fetch_guichet
 from modele import AggregatedOffer, SourceRecord
 from normalisation import normalize_record
@@ -130,6 +131,13 @@ def build_parser() -> argparse.ArgumentParser:
         nargs="?",
         const=DOSSIER / "offres.csv",
         help="Exporter les offres affichées en CSV pour Excel (défaut : offres.csv à côté du script).",
+    )
+    sorties.add_argument(
+        "--html",
+        type=Path,
+        nargs="?",
+        const=DOSSIER / "offres.html",
+        help="Créer une page à ouvrir dans le navigateur pour chercher les offres (défaut : offres.html).",
     )
     sorties.add_argument(
         "--echantillon",
@@ -299,6 +307,15 @@ def save_json(args: argparse.Namespace, offers: list[AggregatedOffer], report: d
         print(f"Échantillon enregistré dans : {args.echantillon}")
 
 
+def collected_on(path: Path) -> str | None:
+    """Date de la collecte écrite dans un offres.json (AAAA-MM-JJ), si elle y est."""
+    try:
+        value = json.loads(path.read_text(encoding="utf-8")).get("generated_at", "")
+        return datetime.fromisoformat(value).astimezone().date().isoformat()
+    except (OSError, ValueError, AttributeError, TypeError):
+        return None
+
+
 def main(argv: list[str] | None = None) -> None:
     args = build_parser().parse_args(argv)
 
@@ -324,9 +341,11 @@ def main(argv: list[str] | None = None) -> None:
         except (OSError, ValueError) as error:
             raise SystemExit(f"Impossible de lire {args.depuis} : {error}")
         report = None
+        collection_date = collected_on(args.depuis)
         print(f"{len(offers)} offres relues depuis {args.depuis} (aucun téléchargement).")
     else:
         offers, report = collect(args)
+        collection_date = datetime.now().date().isoformat()
 
     if not offers:
         print("Aucune offre ne correspond aux critères.")
@@ -347,6 +366,9 @@ def main(argv: list[str] | None = None) -> None:
     if args.csv:
         write_csv(selected, args.csv)
         print(f"CSV pour Excel enregistré dans : {args.csv} ({len(selected)} offres)")
+    if args.html:
+        write_html(selected, args.html, generated_on=collection_date)
+        print(f"Page à ouvrir dans le navigateur : {args.html} ({len(selected)} offres)")
 
 
 if __name__ == "__main__":

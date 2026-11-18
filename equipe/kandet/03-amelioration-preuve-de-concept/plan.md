@@ -350,6 +350,10 @@ Ce sont des pistes 3 et 4 du projet (présenter les offres, aider à la candidat
   - essai d'abord : 178 des 179 villes de nos offres sont retrouvées dans le Répertoire des municipalités du Québec (MAMH, CC-BY 4.0), aucune n'est ambiguë ;
   - ajout ensuite : module `regions.py`, fichier `regions_quebec.csv` (3 colonnes, sans données personnelles), script `preparer_regions.py`, filtre `--region`, colonne `region` dans le CSV ;
   - 11 nouveaux tests dans `test_regions.py` ; au total, 129 tests OK.
+- **Page de recherche HTML ✅ (17 novembre)** :
+  - essai d'abord : prototype dans un dossier temporaire, ouvert dans Edge sans fenêtre. Mêmes résultats que les filtres de `main.py`, clics testés (afficher plus, région puis ville, export CSV, effacer), captures sur ordinateur, téléphone et mode sombre ;
+  - ajout ensuite : `interface.py`, `interface_modele.html`, option `--html` ;
+  - 11 nouveaux tests dans `test_interface.py` ; au total, 140 tests OK.
 - **Descriptions de Québec emploi ❌ (vérifié le 17 novembre)** : techniquement possible (JSON-LD `JobPosting`, `robots.txt` permissif), mais interdit par les conditions d'utilisation du site. Non ajouté.
 - **Score de pertinence pour un étudiant du DEC** : règles simples et affichées (stage, niveau débutant, technologies vues au cours). Le score doit être expliqué, pas une note magique.
 - **Géolocalisation** : à partir du code postal, seulement avec une source de données autorisée.
