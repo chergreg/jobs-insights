@@ -9,6 +9,7 @@ Recherche centrée sur les emplois et stages en informatique au Québec, plus qu
   - Utilisé dans mon prototype du livrable 2.
 - [Québec emploi](https://www.quebecemploi.gouv.qc.ca/plateforme-emploi/?lang=fr)
   - Portail du gouvernement du Québec. Emplois réguliers, emplois étudiants et stages, filtres par région.
+  - Consultation manuelle seulement : ses conditions d'utilisation interdisent les robots et la collecte automatique (vérifié le 17 novembre 2026).
 - [Carrières — gouvernement du Québec](https://emplois.carrieres.gouv.qc.ca/plateforme-emploi)
   - Postes dans les ministères et organismes, dont plusieurs en TI.
 - [Étudiants et stagiaires — gouvernement du Québec](https://www.carrieres.gouv.qc.ca/etudiants-et-stagiaires/)

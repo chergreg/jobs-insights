@@ -137,8 +137,34 @@ Le flux ne contient que les offres publiées directement sur le Guichet-Emplois,
 - **Remotive.** L'API publique ne renvoie que 14 offres au total, avec 24 h de retard. Le paramètre `category` ne change rien au résultat. C'est une source d'appoint. Il faut garder le lien et le nom de Remotive, et ne pas republier ces offres ailleurs.
 - **Dépendance au HTML.** Si le Guichet-Emplois change ses classes CSS, le script devra être adapté. Les tests utilisent une copie du balisage observé le 12 novembre 2026.
 
-**Pistes pour la suite :**
+## 5. Plan d'amélioration
 
-- lire les fiches pour avoir la description, le vrai titre et le lien vers l'annonce d'origine, puis détecter les stages ;
-- uniformiser le format des lieux ;
-- comparer avec les essais de Hugo et Mamadou sur le Guichet-Emplois (fiches HTML et RDFa).
+En relisant mes résultats et le [plan de Gregory](../../gregory/livrable3/plan.md), je retiens ces limites :
+
+| Limite | Conséquence |
+|---|---|
+| Seule la page de résultats est lue, pas les fiches | Pas de description ni d'exigences |
+| Titres CNP au lieu des titres de l'employeur | 0 stage détecté |
+| Salaire en texte, lieu « Ville (QC) » en un seul champ | Pas de tri ni de statistiques sur le salaire ou la ville |
+| Pas de date d'expiration, d'études ni d'expérience | On ne sait pas si l'offre convient à un étudiant |
+| Remotive : 14 offres, surtout hors Québec | Source d'appoint seulement |
+
+Le 17 novembre, j'ai ouvert 3 fiches pour voir ce qu'on peut en tirer. Elles contiennent des balises RDFa avec :
+- la description ;
+- la date d'expiration (`validThrough`) ;
+- le salaire minimum et maximum avec son unité ;
+- le type d'emploi, les études et l'expérience demandées ;
+- le code postal.
+
+Les fiches des partenaires donnent aussi le lien vers l'annonce d'origine, qui contient le vrai titre. Il n'y a pas de latitude ni de longitude.
+
+Étapes prévues pour le livrable 3, avec des tests hors ligne à chaque étape :
+
+1. Découper le script en modules (collecte, Guichet-Emplois, Remotive, analyse).
+2. Lire les fiches (RDFa) avec un cache sur disque et 5 s entre les fiches. Environ 16 minutes la première fois, ensuite seulement les nouvelles offres.
+3. Séparer la ville et la province, mettre le salaire en chiffres (min, max, unité) et ajouter la date d'expiration.
+4. Détecter les technologies (liste reprise de Hugo, sans faux positifs sur « C » et « Vue »), l'expérience demandée, le niveau et les stages à partir de la description.
+5. Ajouter des statistiques : top technologies, salaires par unité, villes, champs remplis.
+6. Vérifier avant/après et rédiger la note du livrable 3.
+
+Le détail (champs, tests prévus, ce que je reprends de Hugo, Mamadou et Gregory) est dans [`03-amelioration-preuve-de-concept/plan.md`](../03-amelioration-preuve-de-concept/plan.md).

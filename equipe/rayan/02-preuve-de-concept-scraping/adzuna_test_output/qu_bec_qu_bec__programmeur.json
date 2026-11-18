@@ -1,0 +1,1254 @@
+{
+  "search": {
+    "keyword": "programmeur",
+    "location": "Québec, Québec",
+    "category": "it-jobs",
+    "results_per_page": 20,
+    "max_pages": 2
+  },
+  "pages": [
+    {
+      "page": 1,
+      "returned": 20,
+      "total_count": 248
+    },
+    {
+      "page": 2,
+      "returned": 20,
+      "total_count": 248
+    }
+  ],
+  "results": [
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5967041078?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.625144,
+      "created": "2026-11-15T12:16:19Z",
+      "longitude": -72.950227,
+      "description": "Notre client, une entreprise manufacturière et de distribution située à Saint-Hyacinthe, cherche actuellement un analyste-programmeur pour un poste permanent.Ils recrutent un(e) analyste-progr Notre client, une entreprise manufacturière et de distribution située à Saint-Hyacinthe, cherche actuellement un analyste-programmeur pour un poste permanent. Ils recrutent un(e) analyste-programmeur intermédiaire talentueux(se) et dynamique pour rejoindre leur équipe TI. Le/la candidat(e) idéal(e) sera a…",
+      "id": "5967041078",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "title": "Actuarial Analyst",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "contract_type": "permanent",
+      "salary_is_predicted": "0",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Les Maskoutains",
+          "Saint-Hyacinthe"
+        ],
+        "display_name": "Saint-Hyacinthe, Les Maskoutains",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Intact Financial Corporation"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzA0MTA3OCIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.QDMuUuRMnk4yCk_cutPuZS_9Y5n-orW8aiHXyySKSQ4"
+    },
+    {
+      "latitude": 45.544959,
+      "created": "2026-11-15T12:16:15Z",
+      "longitude": -73.588138,
+      "description": "CE QUI NOUS REND EPIC ? Au cœur du succès d'Epic se trouvent des personnes talentueuses et passionnées. Epic est fière de créer un environnement collaboratif, accueillant et créatif. Que ce soit en développant des jeux primés ou en concevant une technologie de moteur qui permet à d'autres de créer des expériences interactives visuellement impressionnantes, nous innovons constamment. Faire partie d'Epic, c'est rejoindre une équipe qui s'efforce continuellement de faire ce qui est juste pour sa c…",
+      "redirect_url": "https://www.adzuna.ca/details/5967040422?utm_medium=api&utm_source=9ca5241a",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5967040422",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Programmeur backend principal (plateforme pour développeurs)",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "company": {
+        "display_name": "epicgamesfrench",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzA0MDQyMiIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.J3_teBw5hihu9h4rdsLZOsjsrlVLJTzzUEm_hJORCsg"
+    },
+    {
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5967040450",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Programmeur.euse avancé.e, jouabilité / Advanced Gameplay Programmer",
+      "latitude": 45.544959,
+      "created": "2026-11-15T12:16:15Z",
+      "description": "Game Development 5 years Unreal Engine Development Bienvenue chez Warner Bros. Discovery l'étoffe dont sont faits les rêves Qui sommes-nous Lorsque nous parlons de l'étoffe dont sont faits les rêves, nous ne faisons pas seulement référence au monde des sorciers, des dragons et des superhéros, ni même aux merveilles de la planète Terre. Derrière le vaste portefeuille de contenus emblématiques et de marques bien-aimées, il y a les scénaristes qui donnent vie à nos personnages, les équipes de créa…",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5967040450?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicEFYMTdOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY3MDQwNDUwIn0.LzlXtF0Pr5fc1RobpkbUudkkq5gRShjIrG_e8MDzB9A",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Game Companies"
+      }
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzAzOTYxMyIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.9I8hkvIFERctXT_Cg_A94nAIPOoiTyXIg990lLdBb4g",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "CHROME TECHNOLOGIES"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "contract_type": "permanent",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Analyste-Programmeur Full Stack Télétravail et Access",
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5967039613",
+      "redirect_url": "https://www.adzuna.ca/details/5967039613?utm_medium=api&utm_source=9ca5241a",
+      "description": "Télétravail avec déplacements occasionnels à Québec ou Montréal Durée Nous recherchons un Analyste-programmeur full stack afin de rejoindre notre équipe de conseillers du bureau de Québec ou de Montréal dans le cadre d'un poste permanent. Ce poste est en mode télétravail. Agissant à titre de conseiller / consultant de Chrome Technologies, le candidat interviendra auprès de nos clients dans la réalisation des projets qu'ils nous ont confiés. La ressource agira à titre d'analyste-programmeur full…",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-15T12:16:09Z"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzAzOTMyMSIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.PHtZed2TQFpwlwQD0yg6IT_14PBu_UAO4Ht5AemWNXw",
+      "company": {
+        "display_name": "Optimum Informatique inc. ",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "title": "Programmeur.euse analyste Java",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "id": "5967039321",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "description": "Programmeur.euse analyste Java Emplacement: Montréal (3j/semaine au bureau) Nous cherchons un.e candidat.e qui souhaite travailler en équipe pour répondre aux besoins d’une filiale du Groupe Optimum specialized en réassurance-vie. La personne recherchée doit être en mesure de combiner des compétences en programmation, conception et analyse informatiques. Il travaillera sur différents projets d’envergure ou d’évolution avec une équipe de développement d’expérience pour mettre en place des soluti…",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-15T12:16:07Z",
+      "redirect_url": "https://www.adzuna.ca/details/5967039321?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5966473992?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "description": "-English below- La connaissance de l'anglais est requise pour ce poste car le/la titulaire devra collaborer quotidiennement avec nos équipes des studios internationaux et participer à des réunions de travail qui se déroulent exclusivement en anglais. Cloud Imperium Games est une entreprise de développement de jeux vidéo de premier plan reconnue pour ses expériences de jeu innovantes et immersives. Nous nous consacrons à la création de jeux de haute qualité qui captivent et engagent les joueurs …",
+      "created": "2026-11-14T22:59:18Z",
+      "latitude": 45.544959,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "contract_type": "permanent",
+      "title": "Programmeur.se Gameplay Senior / Senior Gameplay Programmer",
+      "id": "5966473992",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "company": {
+        "display_name": "Cloud Imperium Games Limited",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjQ3Mzk5MiIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.GDIZO93e_-1T8n6fyw9K6afxW8SDRtPwRLvTsU5Bu_w",
+      "contract_time": "full_time"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5966145651?utm_medium=api&utm_source=9ca5241a",
+      "description": "À titre d’analyste-programmeur(-euse) Backend Python, vous contribuez au développement et à l’évolution de notre plateforme d’automatisation des infrastructures et services de Télécommunications et de Sécurité du Mouvement Desjardins. Vous concevez des solutions logicielles stables, sécuritaires et évolutives permettant d’automatiser le cycle de vie de ces services et de les rendre consommables en libre-service, notamment par l’entremise d’API et d’un portail Web. Votre rôle va au-delà du dével…",
+      "longitude": -73.588138,
+      "created": "2026-11-14T12:22:37Z",
+      "latitude": 45.544959,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur ou développeuse Backend, Python",
+      "salary_is_predicted": "0",
+      "id": "5966145651",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "company": {
+        "display_name": "Desjardins",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjE0NTY1MSIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.UY9WfrwT5MxRAmerFuL67vXPnLxanbFEG5AljAggoVU"
+    },
+    {
+      "company": {
+        "display_name": "People Can Fly",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec, Canada",
+        "area": [
+          "Canada",
+          "Québec"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicEFYMTdOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY2MTQ1MjYzIn0.KuSrmqfNldm7bPEcDwGvuL11smdpPhiuxAQBwufWTgo",
+      "longitude": -72.213404,
+      "description": "People Can Fly est l'un des principaux studios indépendants de développement de jeux AAA. Notre équipe internationale est composée de centaines de personnes talentueuses qui travaillent dans nos bureaux en Pologne, au Royaume-Uni, en Irlande, aux États-Unis et au Canada, ainsi qu'à distance dans le monde entier. Fondée en 2002, notre société s'est imposée dans le genre des jeux de tir avec des titres tels que Painkiller, Bulletstorm, Gears of War: Judgement and Outriders. En tant que l'un des s…",
+      "latitude": 47.262372,
+      "created": "2026-11-14T12:22:35Z",
+      "redirect_url": "https://www.adzuna.ca/details/5966145263?utm_medium=api&utm_source=9ca5241a",
+      "title": "Programmeur (-euse) senior en IA / Senior AI Programmer",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5966145263"
+    },
+    {
+      "company": {
+        "display_name": "Boston Consulting Group",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjE0NDczOSIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.BFuulDEzLd9TrQHCV3oggBxqqsEHOZxy2h3EjLzFRSE",
+      "redirect_url": "https://www.adzuna.ca/details/5966144739?utm_medium=api&utm_source=9ca5241a",
+      "description": "Locations : Toronto | Montreal Who We Are Boston Consulting Group partners with leaders in business and society to tackle their most important challenges and capture their greatest opportunities. BCG was the pioneer in business strategy when it was founded in 1963. Today, we help clients with total transformation-inspiring complex change, enabling organizations to grow, building competitive advantage, and driving bottom-line impact. To succeed, organizations must blend digital and human capabil…",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-14T12:22:33Z",
+      "contract_type": "permanent",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Forward Deployed AI Engineer, Canada - BCG X",
+      "id": "5966144739",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      }
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Federation Caisses Desjardins"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjE0NDg1NSIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.z83a5j4lu34PvHfAPb9RB_FAG0VONRlQnSh7oc8Ebsc",
+      "longitude": -73.588138,
+      "description": "À titre d'Analyste-programmeur(-euse) Oracle, vous contribuez activement à l'efficacité des solutions informatiques de l'organisation. Vous participez à la conception, à la configuration, à l'administration, à la maintenance et à l'évolution des systèmes de gestion et des bases de données afin de répondre aux besoins d'affaires. Vous jouez un rôle clé dans le développement de systèmes, programmes et applications informatiques d'envergure. À ce titre, vous assurez l'arrimage et la mise en œuvre …",
+      "created": "2026-11-14T12:22:33Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5966144855?utm_medium=api&utm_source=9ca5241a",
+      "title": "Analyste-programmeur ou analyste-programmeuse, Oracle",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5966144855"
+    },
+    {
+      "title": "Spécialiste technique Sailpoint IIQ – développement",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5966144011",
+      "longitude": -73.588138,
+      "description": " Spécialiste technique Sailpoint IIQ – développementPostuler: Hybride: Montreal, Canada: Ville de Québec, Canada: Temps plein: Offre publiée aujourd'hui: Date de fin : 6 novembre 2026 (Il reste 1 jour pour postuler): JR103502Description de l'entrepriseWepoint est l’architecte des grandes transformations des entreprises et des acteurs publics.Nous accompagnons nos clients de la stratégie à la mise en œuvre technologique, en nous attachant toujours à penser au-delà des évidences et à s’inscrire d…",
+      "latitude": 45.544959,
+      "created": "2026-11-14T12:22:28Z",
+      "redirect_url": "https://www.adzuna.ca/details/5966144011?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicEFYMTdOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY2MTQ0MDExIn0.S5c-ovAqD3mHG8nALcTC7XSXlq-_DBuHNhlMndTpKQY",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "OnePoint Group"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      }
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicEFYMTdOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY2MTQzNjE5In0.bYd_H0sjmgS5PVZvNX875Km1COaqoMoCSGXej8aAX1M",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "company": {
+        "display_name": "Desjardins",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5966143619",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur ou développeuse Backend, Python",
+      "salary_is_predicted": "0",
+      "redirect_url": "https://www.adzuna.ca/details/5966143619?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959,
+      "created": "2026-11-14T12:22:25Z",
+      "description": " Développeur ou développeuse Backend, PythonPostuler: Le mode de travail s’appliquant au poste est hybride: Montréal: Lévis: Temps plein: Publié hier: R2613561À titre d’analyste-programmeur(-euse) Backend Python, vous contribuez au développement et à l’évolution de notre plateforme d’automatisation des infrastructures et services de Télécommunications et de Sécurité du Mouvement Desjardins. Vous concevez des solutions logicielles stables, sécuritaires et évolutives permettant d’automatiser le c…",
+      "longitude": -73.588138
+    },
+    {
+      "company": {
+        "display_name": "Solution SFT",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicEFYMTdOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY1OTcwMzc0In0.uxcK8g1OHqTSKqHSYVFWSlKWBht1WxnbHHx9Lqx0M8A",
+      "redirect_url": "https://www.adzuna.ca/details/5965970374?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "description": "Job Description Job Description Solution SFT cherche un(e) Architecte organique Oracle , dans ce poste vous interviendrez dans le cadre d'un projet client qui relève du secteur public dans la ville du Québec et Montreal . L’Architecte organique Oracle accompagne les équipes internes dans la conception, le développement et l’évolution des systèmes applicatifs basés sur les technologies Oracle. Les systèmes ciblés incluent notamment : GDF (Gestion du financement des services de garde), CAFÉ, CE (…",
+      "latitude": 45.544959,
+      "created": "2026-11-14T08:42:26Z",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Architecte organique Oracle",
+      "salary_is_predicted": "0",
+      "id": "5965970374",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      }
+    },
+    {
+      "company": {
+        "display_name": "Solution SFT",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec, Canada"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NTk1NTQ1MSIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.BJBRnRitxJDQMzQttelSnAcMlKesMuxas3fr-SHh5YQ",
+      "longitude": -72.213404,
+      "description": "Job Description Job Description Solution SFT cherche un(e) Architecte organique Oracle , dans ce poste vous interviendrez dans le cadre d'un projet client qui relève du secteur public dans la ville du Québec et Montreal . L’Architecte organique Oracle accompagne les équipes internes dans la conception, le développement et l’évolution des systèmes applicatifs basés sur les technologies Oracle. Les systèmes ciblés incluent notamment : GDF (Gestion du financement des services de garde), CAFÉ, CE (…",
+      "latitude": 47.262372,
+      "created": "2026-11-14T08:28:51Z",
+      "redirect_url": "https://www.adzuna.ca/details/5965955451?utm_medium=api&utm_source=9ca5241a",
+      "title": "Architecte organique Oracle",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "id": "5965955451",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      }
+    },
+    {
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5965596955",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "description": "Position Description: En tant qu'analyste-programmeur ESRI en géomatique, vous serez responsable de la conception, de la mise en œuvre et de la maintenance de solutions en systèmes d'information géographique (SIG). Vous programmez et vous dirigez la préparation de documents tels que des spécifications techniques, des rapports de recommandation et des stratégies de gouvernance des données. La présente banque de candidatures vise à constituer un bassin de personnes qualifiées en géomatique en mes…",
+      "salary_max": 60000,
+      "contract_time": "full_time",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NTU5Njk1NSIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.nM7MOwW2sAb3VqN5htJcr18Ru0lRHcOaRHZT17WCDxA",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "title": "Analyste-programmeur ESRI",
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "created": "2026-11-14T05:04:13Z",
+      "salary_min": 60000,
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5965596955?utm_medium=api&utm_source=9ca5241a",
+      "company": {
+        "display_name": "CGI",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      }
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Programmeur backend principal (plateforme pour développeurs)",
+      "id": "5965590276",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "description": "CE QUI NOUS REND EPIC ? Au cœur du succès d'Epic se trouvent des personnes talentueuses et passionnées. Epic est fière de créer un environnement collaboratif, accueillant et créatif. Que ce soit en développant des jeux primés ou en concevant une technologie de moteur qui permet à d'autres de créer des expériences interactives visuellement impressionnantes, nous innovons constamment. Faire partie d'Epic, c'est rejoindre une équipe qui s'efforce continuellement de faire ce qui est juste pour sa c…",
+      "longitude": -73.588138,
+      "latitude": 45.544959,
+      "created": "2026-11-14T05:00:11Z",
+      "redirect_url": "https://www.adzuna.ca/details/5965590276?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoicEFYMTdOcmg4Ukc4c2QteVpQTVZmQSIsImkiOiI1OTY1NTkwMjc2In0.hCHS9oMTCO8sPQrK-P6oPCXLDIavPNELzcQtNaiBOtw",
+      "company": {
+        "display_name": "Epic Games",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      }
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5965575027?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "description": "CE QUI NOUS REND EPIC ? Au cœur du succès d'Epic se trouvent des personnes talentueuses et passionnées. Epic est fière de créer un environnement collaboratif, accueillant et créatif. Que ce soit en développant des jeux primés ou en concevant une technologie de moteur qui permet à d'autres de créer des expériences interactives visuellement impressionnantes, nous innovons constamment. Faire partie d'Epic, c'est rejoindre une équipe qui s'efforce continuellement de faire ce qui est juste pour sa c…",
+      "latitude": 45.544959,
+      "created": "2026-11-14T04:53:03Z",
+      "title": "Programmeur sénior, sécurité de l'information",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "id": "5965575027",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "company": {
+        "display_name": "Epic Games",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NTU3NTAyNyIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.lcoqtET3tgL79ibcEUOCajnpnpUKvX2w0GtxI4TwBR8"
+    },
+    {
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Ubisoft"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NTQwNDk1OCIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.6AYw0t0NQaMJu4ZdczOrKQRhoPO1AAhzcSoziBElRfo",
+      "redirect_url": "https://www.adzuna.ca/details/5965404958?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959,
+      "created": "2026-11-14T02:12:04Z",
+      "description": "Job Description En tant qu’ animateur·trice de jouabilité sénior au sein de l’équipe de March of Giants à Ubisoft Montréal, vous prenez en charge l'intégralité du processus d'animation de jouabilité, de la création de performances de personnages mémorables jusqu'à leur intégration et leur peaufinage au sein du système de compétences du jeu. Vous alliez un instinct aiguisé pour le jouabilité à une maîtrise exceptionnelle des fondamentaux de l'animation, comprenant comment le mouvement traduit à …",
+      "longitude": -73.588138,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5965404958",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Animateur-trice jouabilité sénior - [March of Giants]"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NTQwMzY4OCIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.XC4rvzpb8DZ4dB5vKG5138a5TENryNq7jXHhGvGsVZ0",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "NBCUniversal"
+      },
+      "id": "5965403688",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Senior AI Programmer | Programmeur en IA senior",
+      "created": "2026-11-14T02:11:39Z",
+      "latitude": 45.544959,
+      "description": "Job Description RESPONSIBILTIES As a Senior AI Programmer, you are responsible for designing, implementing, and maintaining advanced AI systems that deliver believable, responsive, and scalable in‑game behaviour. You work closely with designers, animators, and gameplay engineers to ensure AI supports the creative vision while meeting performance and stability requirements of an AAA production. You take ownership of complex AI features, contribute to technical direction, and help raise the overa…",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5965403688?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal",
+          "Outremont"
+        ],
+        "display_name": "Outremont, Montréal",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "company": {
+        "display_name": "SODEC",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NTA4NjI1NiIsInMiOiJwQVgxN05yaDhSRzhzZC15WlBNVmZBIn0.xtRAtZwwcUtZzfpD6DIlz8c94YEks5NKbEAB70KhYEc",
+      "redirect_url": "https://www.adzuna.ca/details/5965086256?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-13T20:11:58Z",
+      "latitude": 45.52473,
+      "salary_min": 1,
+      "description": "TITRE : Programmeuse, programmeur - analyste LIEU DE TRAVAIL : Montréal DURÉE DU CONTRAT : 12 mois SALAIRE : Minimum : 56 647 $ Maximum : 103 015 $ La SODEC conjugue les mondes de la culture et de l’économie : elle appuie la production artistique afin que les œuvres culturelles québécoises se démarquent auprès des publics d’ici et d’ailleurs tout en veillant à ce que les entreprises développent leur plein potentiel économique. Ainsi, la SODEC contribue au rayonnement de la culture québécoise et…",
+      "longitude": -73.54984,
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "id": "5965086256",
+      "title": "Programmeuse, programmeur - analyste",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "contract_type": "contract",
+      "salary_is_predicted": "0"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "title": "Développeur ou développeuse Backend, Python-FR",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoia21QQjdkcmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY0ODE5ODM0In0.Y_Rrg1ftEppz_yUSLWe3yyPyK0Flgy1WXea9CwCnQfc",
+      "location": {
+        "display_name": "Montréal West, Montréal",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal",
+          "Montréal West"
+        ]
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Desjardins"
+      },
+      "longitude": -73.649709,
+      "id": "5964819834",
+      "description": "À titre d’analyste-programmeur(-euse) Backend Python, vous contribuez au développement et à l’évolution de notre plateforme d’automatisation des infrastructures et services de Télécommunications et de Sécurité du Mouvement Desjardins. Vous concevez des solutions logicielles stables, sécuritaires et évolutives permettant d’automatiser le cycle de vie de ces services et de les rendre consommables en libre-service, notamment par l’entremise d’API et d’un portail Web. Votre rôle va au-delà du dével…",
+      "created": "2026-11-13T12:17:02Z",
+      "redirect_url": "https://www.adzuna.ca/details/5964819834?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.453527
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5964819387?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959,
+      "created": "2026-11-13T12:16:56Z",
+      "company": {
+        "display_name": "Nbcuniversal3",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "description": "RESPONSIBILTÉS En tant que Concepteur(trice) Technique Senior, vous prendrez en charge des fonctionnalités de gameplay de leur conception jusqu'au niveau de finition final, en combinant de solides compétences en game design, du prototypage rapide et une certaine implémentation directement dans le moteur, tout en collaborant étroitement avec les programmeur(euse)s et les autres disciplines afin de livrer des expériences de jeu de haute qualité. Vous travaillerez en étroite collaboration avec des…",
+      "longitude": -73.588138,
+      "id": "5964819387",
+      "title": "Concepteur(trice) Technique Senior - Senior Technical Designer",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoia21QQjdkcmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY0ODE5Mzg3In0.wPvrJWA7Ol_cBRSQK6rv66YJYjwgSpuslqDs3QFszHA",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5964819318?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 46.804026,
+      "company": {
+        "display_name": "Desjardins",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "longitude": -71.172791,
+      "id": "5964819318",
+      "description": "À titre d’analyste-programmeur(-euse) Backend Python, vous contribuez au développement et à l’évolution de notre plateforme d’automatisation des infrastructures et services de Télécommunications et de Sécurité du Mouvement Desjardins. Vous concevez des solutions logicielles stables, sécuritaires et évolutives permettant d’automatiser le cycle de vie de ces services et de les rendre consommables en libre-service, notamment par l’entremise d’API et d’un portail Web. Votre rôle va au-delà du dével…",
+      "created": "2026-11-13T12:16:55Z",
+      "title": "Développeur ou développeuse Backend, Python-FR",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Lévis, Desjardins",
+        "area": [
+          "Canada",
+          "Québec",
+          "Chaudière - Appalaches",
+          "Desjardins",
+          "Lévis"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NDgxOTMxOCIsInMiOiJrbVBCN2RyaDhSRzIxZDJXQmRwRV9nIn0._9Zrb0A40fa8m28oVjfhbDF-CIoYEmhfCPmhLJSOFlc",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      }
+    },
+    {
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5964819008?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-13T12:16:52Z",
+      "longitude": -73.588138,
+      "description": "The First-year Base Compensation For This Role Is Forward Deployed AI Engineer I: $110,000 CAD Forward Deployed AI Engineer II: $150,000 CAD Forward Deployed AI Engineer III: $157,000 CAD Senior Forward Deployed AI Engineer : $210,000 CAD Locations Toronto | Montreal Who We Are Boston Consulting Group partners with leaders in business and society to tackle their most important challenges and capture their greatest opportunities. BCG was the pioneer in business strategy when it was founded in 19…",
+      "id": "5964819008",
+      "contract_type": "permanent",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "BCG X"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoia21QQjdkcmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY0ODE5MDA4In0.0SEW6k_TFDQ9ePqi8B4aOigFSRwQg8aKbZMDBlfp-N0",
+      "title": "Forward Deployed AI Engineer, Canada - BCG X",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "salary_is_predicted": "0",
+      "title": "Développeur Senior | Senior Software Developer- video games",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NDU4Nzc5NiIsInMiOiJrbVBCN2RyaDhSRzIxZDJXQmRwRV9nIn0.VhxpezzGlgCROOTabKON71-fnpZe03spu0JhZmL64Y4",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Solution SFT"
+      },
+      "description": "Job Description Job Description Vous ferez partie d’une équipe créative et dynamique qui exploite les technologies de rendu les plus récentes pour offrir un système visuel de pointe et introduire des fonctionnalités innovantes dans les produits de simulation. En tant que développeur en rendu expérimenté, vous apporterez votre expertise pour développer la prochaine génération de systèmes visuels haute fidélité et d’environnements synthétiques pour les simulateurs de vol. Le candidat idéal est pa…",
+      "longitude": -73.588138,
+      "id": "5964587796",
+      "created": "2026-11-13T08:39:16Z",
+      "redirect_url": "https://www.adzuna.ca/details/5964587796?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959
+    },
+    {
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "salary_max": 60000,
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoia21QQjdkcmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY0MzM4MzMyIn0.G6PSEJBfXBaP2ux-45gRU_2UG2mWHkDjcdXFGudNnes",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "CGI"
+      },
+      "description": "Position Description: En tant qu’analyste-programmeur Python en géomatique, vous serez responsable de la conception, de la mise en œuvre et de la maintenance de solutions en systèmes d'information géographique (SIG). Vous programmez et vous dirigez la préparation de documents tels que des spécifications techniques, des rapports de recommandation et des stratégies de gouvernance des données. La présente banque de candidatures vise à constituer un bassin de personnes qualifiées en géomatique en m…",
+      "longitude": -73.588138,
+      "contract_time": "full_time",
+      "latitude": 45.544959,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Analyste-Programmeur Python en géomatique",
+      "id": "5964338332",
+      "salary_min": 60000,
+      "created": "2026-11-13T04:57:39Z",
+      "redirect_url": "https://www.adzuna.ca/details/5964338332?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "company": {
+        "display_name": "Ubisoft",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5963140331",
+      "longitude": -70.07275,
+      "description": "Job Description Job Description Description de l'entreprise Ubisoft est un·e chef·fe de file mondial·e dans l’industrie du jeu vidéo, avec des équipes partout dans le monde qui créent des expériences originales et mémorables, d’Assassin’s Creed et Rainbow Six à Just Dance et bien plus encore. Nous sommes convaincu·e·s que la diversité des perspectives permet aux joueur·euse·s comme aux équipes de s’épanouir. Si vous êtes passionné·e par l’innovation et par le fait de repousser les limites du di…",
+      "created": "2026-11-12T08:13:16Z",
+      "redirect_url": "https://www.adzuna.ca/details/5963140331?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 48.21182,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "title": "Programmeur.meuse Engin - OS (Game Network)",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Petit-Saguenay, Le Fjord-du-Saguenay",
+        "area": [
+          "Canada",
+          "Québec",
+          "Saguenay - Lac-Saint-Jean",
+          "Le Fjord-du-Saguenay",
+          "Petit-Saguenay"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MzE0MDMzMSIsInMiOiJrbVBCN2RyaDhSRzIxZDJXQmRwRV9nIn0.ymJ42KYdmEktLR6WlEL2r1ceCNknKbBTyHBR-rnt3ME"
+    },
+    {
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Programmeuse statistique (Contrat)/ Statistical Programmer (Contract)",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MzA2NjM4NiIsInMiOiJrbVBCN2RyaDhSRzIxZDJXQmRwRV9nIn0.wZ_BaFfxy-Hla7uzILnML2NNRObg4ePgpE7d-Z9VO90",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal",
+          "Kirkland"
+        ],
+        "display_name": "Kirkland, Montréal",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "contract_time": "part_time",
+      "created": "2026-11-12T07:42:35Z",
+      "company": {
+        "display_name": "IQVIA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5963066386",
+      "longitude": -73.866041,
+      "description": "À titre de programmeur/programmeuse, vous êtes responsable de l’analyse des exigences des projets, de la réalisation des tâches de programmation requises et de la satisfaction des attentes des clients. Responsabilités Analyser les exigences des projets et en évaluer la faisabilité. Réaliser les tâches de programmation conformément aux exigences des projets de manière efficace, précise et dans les délais impartis à l’aide de SAS et/ou SQL. Respecter les pratiques et normes établies. Rédiger une …",
+      "contract_type": "contract",
+      "redirect_url": "https://www.adzuna.ca/details/5963066386?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.451188
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoia21QQjdkcmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTYyODkyNjYxIn0.JLop0YY0YZLcr63PgpVA3lsBZtw2V322xrlaZIVv3os",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "salary_max": 60000,
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "latitude": 45.544959,
+      "longitude": -73.588138,
+      "description": "Position Description: En tant qu’analyste-programmeur Ppython en géomatique, vous serez responsable de la conception, de la mise en œuvre et de la maintenance de solutions en systèmes d'information géographique (SIG). Vous programmez et vous dirigez la préparation de documents tels que des spécifications techniques, des rapports de recommandation et des stratégies de gouvernance des données. La présente banque de candidatures vise à constituer un bassin de personnes qualifiées en géomatique en …",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "CGI"
+      },
+      "contract_time": "full_time",
+      "title": "Analyste-Programmeur Python en géomatique",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "redirect_url": "https://www.adzuna.ca/details/5962892661?utm_medium=api&utm_source=9ca5241a",
+      "id": "5962892661",
+      "salary_min": 60000,
+      "created": "2026-11-12T05:01:34Z"
+    },
+    {
+      "created": "2026-11-11T20:08:45Z",
+      "id": "5962345071",
+      "longitude": -72.213404,
+      "description": "Description du poste Ce à quoi ressembleront tes semaines Collaborer étroitement avec l’équipe UI/UX pour intégrer les interfaces de jeu (menus, HUD, écrans de chargement, etc.) dans Unreal Engine; Participer à des revues de code avec différents membres de l’équipe; Identifier et résoudre les problèmes de performance liés au rendu UI, au profiling GPU/CPU, et à la gestion mémoire; Développer des systèmes d’interface utilisateur modulaires et réutilisables à l’aide de Slate, UMG, Blueprints et C…",
+      "company": {
+        "display_name": "Frima Studio",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "latitude": 47.262372,
+      "redirect_url": "https://www.adzuna.ca/details/5962345071?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec, Canada",
+        "area": [
+          "Canada",
+          "Québec"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoia21QQjdkcmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTYyMzQ1MDcxIn0.C8hJYlJHEs4XKu0JmpEwvpv-_RTvEDFc-0QgWNjOesY",
+      "title": "Programmeur.euse UI"
+    },
+    {
+      "title": "Programmeur.meuse Engin - OS (Game Network)",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoia21QQjdkcmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTYyMzQ0ODg5In0.Mx8UWgz6KzcxbvcGjFAj98svKOx2vQMU6MDRMzT2kYQ",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Saguenay - Lac-Saint-Jean, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Saguenay - Lac-Saint-Jean"
+        ]
+      },
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "redirect_url": "https://www.adzuna.ca/details/5962344889?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 48.590172,
+      "created": "2026-11-11T20:08:44Z",
+      "company": {
+        "display_name": "Ubisoft",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "longitude": -71.81301,
+      "description": "Description du poste En tant que programmeur·euse moteur C++ sénior à Ubisoft, vous rejoindrez l’équipe Core Services - Online Tech Foundations. Cette équipe crée les technologies qui soutiennent les services en ligne de nombreuses productions d’Ubisoft. Vous contribuerez à concevoir et à faire évoluer des systèmes distribués et des intergiciels utilisés dans les jeux, notamment pour le moteur de jeu, la programmation de bas niveau, le réseau et les composants Web intégrés au moteur. Ce que vou…",
+      "id": "5962344889"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5962245023?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.52473,
+      "created": "2026-11-11T18:07:47Z",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "SODEC"
+      },
+      "salary_min": 1,
+      "longitude": -73.54984,
+      "description": "TITRE : Analyste - programmeuse, programmeur - automatisation des processus organisationnels LIEU DE TRAVAIL : Montréal DURÉE DU CONTRAT : 12 mois possibilité de renouvellement SALAIRE : Minimum : 56 647 $ Maximum : 103 015 $ La SODEC conjugue les mondes de la culture et de l’économie : elle appuie la production artistique afin que les œuvres culturelles québécoises se démarquent auprès des publics d’ici et d’ailleurs tout en veillant à ce que les entreprises développent leur plein potentiel éc…",
+      "id": "5962245023",
+      "contract_type": "contract",
+      "title": "Analyste - programmeuse, programmeur - automatisation des processus",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoia21QQjdkcmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTYyMjQ1MDIzIn0.j4MlTyBdoErothmunZ33V-wPVFCYE7EBn0wdtEqjefs",
+      "location": {
+        "display_name": "Outremont, Montréal",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal",
+          "Outremont"
+        ]
+      },
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "created": "2026-11-11T12:24:16Z",
+      "id": "5961958982",
+      "longitude": -73.588138,
+      "description": "Vos missions au quotidien L’objectif de Global Banking Technology & Operations (GBTO) Canada est de fournir des services opérationnels quotidiens aux unités de banque d’investissement et de banque corporative de Société Générale ainsi qu’à leurs clients afin d’accélérer leur transformation. GBTO se distingue de ses concurrents par la rapidité de sa transformation agile, la diffusion de la culture technologique et de la donnée, l’accélération des processus décisionnels et l’adoption d’une vérita…",
+      "company": {
+        "display_name": "Societe Generale SA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5961958982?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoia21QQjdkcmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTYxOTU4OTgyIn0.XD3RHpUgqr_UffoBQ6DSEJaPVoefYtlNGtkIAago6YI",
+      "title": "Analyste‑Programmeur"
+    },
+    {
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5961958763?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-11T12:24:13Z",
+      "contract_type": "permanent",
+      "longitude": -73.588138,
+      "description": "Référence Date de démarrage Au plus vite Localisation du poste Montréal (hybride) Durée Nous recherchons un Analyste-programmeur EBX-Java Gestion des données afin de rejoindre notre équipe de conseillers du bureau de Montréal dans le cadre d'un poste permanent. Ce poste est en mode hybride. Agissant à titre de conseiller / consultant de Chrome Technologies, le candidat interviendra auprès de nos clients dans la réalisation des projets qu'ils nous ont confiés. À titre d'analyste-programmeur EBX-…",
+      "id": "5961958763",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Gravity Conseil"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoia21QQjdkcmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTYxOTU4NzYzIn0.1-oiYLsmfYE8oKDB1_MzqV30G3zS4R_5E5BZcCIBxYk",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "title": "ANALYSTE-PROGRAMMEUR EBX-JAVA GESTION DES DONNÉES Montréal (hybride) 2026-10-20",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1ODYxOSIsInMiOiJrbVBCN2RyaDhSRzIxZDJXQmRwRV9nIn0.4ru1JSJLsFK88IUbDUX-nn3scAsNnRQ6VJb3uz7XaoQ",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "title": "Analyste Programmeur – Support au Trading Fixed Income",
+      "description": "Vos missions au quotidien Le poste concerne un développeur C#/.NET qui rejoindra l’équipe de trading électronique Fixed Income. Cette équipe développe et maintient des solutions logicielles dans un environnement Agile, prenant en charge la contribution de prix, la gestion des RFQ, les Order Management Systems (OMS) ainsi que le traitement automatisé (straight-through processing) des opérations électroniques. Nos applications interagissent avec plusieurs plateformes et bourses de trading électro…",
+      "longitude": -73.588138,
+      "id": "5961958619",
+      "company": {
+        "display_name": "Societe Generale SA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "created": "2026-11-11T12:24:11Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5961958619?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "title": "ANALYSTE-PROGRAMMEUR - SENIOR Québec ou Montréal (hybride) 2026-08-27",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1NzgyNSIsInMiOiJrbVBCN2RyaDhSRzIxZDJXQmRwRV9nIn0.DAQnwKXfZ5bnvuhKE3SmR7luoM4RIghmz0rj5sZUAFI",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "company": {
+        "display_name": "CHROME TECHNOLOGIES",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5961957825",
+      "longitude": -73.588138,
+      "description": "Offre Nous recherchons un Analyste-programmeur - Senior pour rejoindre notre équipe de conseillers du bureau de Québec ou de Montréal dans le cadre d'un poste permanent. Ce poste est en mode hybride. Agissant à titre de conseiller / consultant de Chrome Technologies, le candidat interviendra auprès de nos clients dans la réalisation des projets qu'ils nous ont confiés. Responsabilités Assurer la livraison des biens livrables selon les délais et la qualité prévus; Assurer le suivi des points de …",
+      "contract_type": "permanent",
+      "created": "2026-11-11T12:24:00Z",
+      "redirect_url": "https://www.adzuna.ca/details/5961957825?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "title": "ANALYSTE-PROGRAMMEUR SHAREPOINT SENIOR Québec ou Montréal (hybride) 2026-09-29",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1NzU4NiIsInMiOiJrbVBCN2RyaDhSRzIxZDJXQmRwRV9nIn0.ofVuaNngVRCF2fcBqXhVpm6rX72Cx_BM_RB_RNDD8SY",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "company": {
+        "display_name": "CHROME TECHNOLOGIES",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5961957586",
+      "longitude": -73.588138,
+      "description": "Nous recherchons un Analyste-programmeur SharePoint Senior pour rejoindre notre équipe de conseillers du bureau de Québec ou de Montréal dans le cadre d'un poste permanent. Ce poste est en mode hybride. Agissant à titre de conseiller / consultant de Chrome Technologies, le candidat interviendra auprès de nos clients dans la réalisation des projets qu'ils nous ont confiés. Nous avons besoin d'une ressource analyste-programmeur pour joindre l'équipe produit Collab. L'équipe est responsable d'offr…",
+      "contract_type": "permanent",
+      "created": "2026-11-11T12:23:56Z",
+      "redirect_url": "https://www.adzuna.ca/details/5961957586?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5961956886?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959,
+      "created": "2026-11-11T12:23:47Z",
+      "company": {
+        "display_name": "Canadian Inclusion",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "longitude": -73.588138,
+      "description": "Analyste-programmeur (Project Management) Tender Retail recherche un développeur logiciel pour rejoindre son équipe Recherche et Développement. Le candidat idéal est autonome, débrouillard et doté d'un excellent esprit d'équipe. Il devra s'intégrer dans une équipe agile Scrum et collaborer avec différents intervenants pour concevoir, développer et optimiser des solutions de paiement. Notre secteur d'activité couvre les paiements aux points de vente ainsi que les paiements électroniques via des …",
+      "id": "5961956886",
+      "title": "Analyste-programmeur",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1Njg4NiIsInMiOiJrbVBCN2RyaDhSRzIxZDJXQmRwRV9nIn0.Pwz88ahK7t2mY1p0zTPMJDnTLEy9TFwSujsZjzVZ0_I",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "title": "Conseillers en architecture organique en intelligences d'affaires niveau senior (R2B)",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2MTk1NjE1NyIsInMiOiJrbVBCN2RyaDhSRzIxZDJXQmRwRV9nIn0.T4R9DWOoZeALbwym6Q4mKKO7mC-T2y64ilGnYbC7KRQ",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5961956157?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "TEHORA"
+      },
+      "longitude": -73.588138,
+      "id": "5961956157",
+      "description": "Job Overview TEHORA est présentement à la recherche d’un(e) conseiller en architecture organique en intelligence artificielle niveau senior ayant d’excellentes aptitudes techniques, d’excellentes connaissances et qui souhaite mettre à profit ses compétences au sein d’une équipe polyvalente. Responsibilities Assurer le respect des orientations établies lors de la conception de solutions et fournir le soutien nécessaire à l’équipe de réalisation; Assister les chefs d’équipe ou les chargés de proj…",
+      "created": "2026-11-11T12:23:38Z"
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Studio KRAFTON Montréal"
+      },
+      "longitude": -73.588138,
+      "description": "Seuls les résidents du Québec ayant légalement le droit de travailler au Canada seront considérés pour le poste.(English below) À propos de Krafton Montréal Nous sommes un studio de développement de jeux de premier plan composé de vétérans de l'industrie du jeu. Nous travaillons sur un jeu basé sur une propriété intellectuelle acclamée, située dans un monde fantastique médiéval. Chez Krafton Montréal, nous croyons qu'il est important de s'amuser tout en créant des expériences mémorables, en éta…",
+      "id": "5961955999",
+      "created": "2026-11-11T12:23:36Z",
+      "redirect_url": "https://www.adzuna.ca/details/5961955999?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "title": "Concepteur.trice de jeux AI / Game Designer AI",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoia21QQjdkcmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTYxOTU1OTk5In0.R9TFyx9tRaj4Nmvik0ajcRxDIfb4e_UEMw8cmgkHzzk",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      }
+    }
+  ]
+}

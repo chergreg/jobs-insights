@@ -1,0 +1,1253 @@
+{
+  "search": {
+    "keyword": "DevOps",
+    "location": "Québec, Québec",
+    "category": "it-jobs",
+    "results_per_page": 20,
+    "max_pages": 2
+  },
+  "pages": [
+    {
+      "page": 1,
+      "returned": 20,
+      "total_count": 2121
+    },
+    {
+      "page": 2,
+      "returned": 20,
+      "total_count": 2121
+    }
+  ],
+  "results": [
+    {
+      "created": "2026-11-16T08:55:36Z",
+      "contract_type": "permanent",
+      "description": "Job Description Job Description Company Description MEDFAR Clinical Solutions was founded in 2010 by two aeronautical engineers who realized that the healthcare system was not exploiting the full potential of technology. Supported by a large community of medical experts and focused on clinical success and patient safety, MEDFAR was the first company to certify a cloud-based Electronic Medical Record in Canada: MYLE (Make Your Life Easy). Committed to promoting excellence and effectiveness in he…",
+      "salary_is_predicted": "0",
+      "id": "5967829783",
+      "company": {
+        "display_name": "Medfar",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "latitude": 45.544959,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzgyOTc4MyIsInMiOiJ2QnpCOGRyaDhSR3cwYjRJMGFHWHl3In0.n0o-8q_39HLnP5WlWATAOYEo-k6JrENUiDlG2-lCbv4",
+      "redirect_url": "https://www.adzuna.ca/details/5967829783?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "title": "Senior Full Stack Developer (Healthcare - SaaS)",
+      "contract_time": "full_time"
+    },
+    {
+      "description": "_When applicable, Bombardier promotes flexible and hybrid work policies._ Why join us? At Bombardier, we design, build and maintain the world's peak-performing aircraft for the world's most discerning people and businesses, governments and militaries. We have been successful in setting the highest standards by putting our people at the heart of it all, and defining excellence, together. Working at Bombardier means operating at the highest level. Every day, you are part of a team that delivers s…",
+      "created": "2026-11-16T04:32:08Z",
+      "latitude": 45.448835,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "id": "5967602440",
+      "salary_is_predicted": "0",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Bombardier"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzYwMjQ0MCIsInMiOiJ2QnpCOGRyaDhSR3cwYjRJMGFHWHl3In0.eVBjMEArit3erBu8Tupib3UCMJOjLqqcG1oUhKDOYWo",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "display_name": "Dorval, Montréal",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal",
+          "Dorval"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5967602440?utm_medium=api&utm_source=9ca5241a",
+      "title": "Infrastructure Security Specialist",
+      "longitude": -73.754293
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5967041356?utm_medium=api&utm_source=9ca5241a",
+      "title": "DevOps Principal·e / Principal DevOps",
+      "longitude": -73.588138,
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzA0MTM1NiIsInMiOiJ2QnpCOGRyaDhSR3cwYjRJMGFHWHl3In0.fNyBNwlSxXVvxmlVFGV7cGiMdUJGZkZsU9-6sSE_SCo",
+      "id": "5967041356",
+      "salary_is_predicted": "0",
+      "company": {
+        "display_name": "Cloud Imperium Games Montreal",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "latitude": 45.544959,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "created": "2026-11-15T12:16:22Z",
+      "description": "La connaissance de l'anglais est requise pour ce poste car le/la titulaire devra collaborer quotidiennement avec nos équipes des studios internationaux et participer à des réunions de travail qui se déroulent exclusivement en anglais. Rejoignez les pionnier·ère·s chez Turbulent ! English Below Chez CIG Turbulent, nous repoussons les limites des jeux en ligne pour créer des univers vastes et immersifs qui redéfinissent l'expérience multijoueur massive. Nous croyons que les jeux révolutionnaires …"
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Champlain",
+          "Longueuil"
+        ],
+        "display_name": "Longueuil, Champlain"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzA0MTI4MyIsInMiOiJ2QnpCOGRyaDhSR3cwYjRJMGFHWHl3In0.BMfvPZtigW4OGC47SGyU0RuX3LVOZHLBZ74WvNeIlSo",
+      "redirect_url": "https://www.adzuna.ca/details/5967041283?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.480282,
+      "title": "Spécialiste, Ingénierie Logicielle / Specialist, Software Engineering",
+      "created": "2026-11-15T12:16:21Z",
+      "description": "Date d’affichag e  /  Date Posted: 2026-10-05 Pays / Country: Canada Emplacement / Location: CA-QC-LONGUEUIL-J01 ~ 1000 Blvd Marie-Victorin ~ J01 BLDG Titre du poste Spécialiste, Ingénierie Logicielle À propos de Pratt & Whitney Canada Pratt & Whitney Canada (P&WC) est un leader mondial de l’innovation aérospatiale, dont le siège social est situé à Longueuil, au Québec, depuis 1928. Nous concevons et fabriquons des moteurs d’aéronefs de nouvelle génération qui propulsent la plus grande flotte m…",
+      "salary_is_predicted": "0",
+      "id": "5967041283",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "RTX"
+      },
+      "latitude": 45.531116,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      }
+    },
+    {
+      "title": "Senior Developer",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5967041166?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoidkJ6Qjhkcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTY3MDQxMTY2In0.-Geurt99cs223tfiRmzl0Uj_HGQRI3kO40-Xf9VYFYg",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "SAP IT Business Systeme"
+      },
+      "id": "5967041166",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "latitude": 45.544959,
+      "created": "2026-11-15T12:16:20Z",
+      "description": "Compensation: CAD 108,100 - CAD 222,800 - yearly Company Description You'll join the CX Order Management Services team, a cloud-native engineering group building the backbone of SAP's commerce fulfillment ecosystem. We ship features that directly impact how global enterprise customers manage orders at scale.In our team, we value technical craftsmanship, open feedback, andhavea people-first culture. Our environment is safe to let people be themselves and leverage their strengths.This high-perfor…",
+      "contract_type": "permanent"
+    },
+    {
+      "title": "Actuarial Analyst",
+      "longitude": -72.950227,
+      "redirect_url": "https://www.adzuna.ca/details/5967041078?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Saint-Hyacinthe, Les Maskoutains",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Les Maskoutains",
+          "Saint-Hyacinthe"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzA0MTA3OCIsInMiOiJ2QnpCOGRyaDhSR3cwYjRJMGFHWHl3In0.tqp_x-Z1tA8I9TJuzQs5unB8lByO_4up6MuOQ8AhMgo",
+      "company": {
+        "display_name": "Intact Financial Corporation",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5967041078",
+      "salary_is_predicted": "0",
+      "latitude": 45.625144,
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "created": "2026-11-15T12:16:19Z",
+      "description": "Notre client, une entreprise manufacturière et de distribution située à Saint-Hyacinthe, cherche actuellement un analyste-programmeur pour un poste permanent.Ils recrutent un(e) analyste-progr Notre client, une entreprise manufacturière et de distribution située à Saint-Hyacinthe, cherche actuellement un analyste-programmeur pour un poste permanent. Ils recrutent un(e) analyste-programmeur intermédiaire talentueux(se) et dynamique pour rejoindre leur équipe TI. Le/la candidat(e) idéal(e) sera a…",
+      "contract_type": "permanent"
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "iA Financial Group"
+      },
+      "id": "5967041049",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "latitude": 45.544959,
+      "created": "2026-11-15T12:16:19Z",
+      "description": "Senior Full-Stack Developer Get ahead, where your talent belongs Senior Full-Stack DeveloperApply: Montreal, Quebec: Toronto, Ontario: Full time: Posted Today: End Date: November 28, 2026 (14 days left to apply): JR10028303 Job DescriptionBuild the future with us Are you passionate about software engineering, emerging technologies, and artificial intelligence? Are you eager to contribute to the purpose of a company that aims to help its clients feel confident and secure about their future? As a…",
+      "longitude": -73.588138,
+      "contract_time": "full_time",
+      "title": "Senior Full-Stack Developer",
+      "redirect_url": "https://www.adzuna.ca/details/5967041049?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoidkJ6Qjhkcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTY3MDQxMDQ5In0.wdughEgH4IIQFVNMcu8RyaVnqGjYB4oBPuOk5HD9rp0"
+    },
+    {
+      "title": "Senior Data Engineering Advisor",
+      "longitude": -71.172791,
+      "redirect_url": "https://www.adzuna.ca/details/5967041075?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzA0MTA3NSIsInMiOiJ2QnpCOGRyaDhSR3cwYjRJMGFHWHl3In0.ln9HpYtdQqt64hsTREcXwSZIwxKE_pIXntU2Rob9mq8",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Chaudière - Appalaches",
+          "Desjardins",
+          "Lévis"
+        ],
+        "display_name": "Lévis, Desjardins"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "latitude": 46.804026,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Desjardins"
+      },
+      "id": "5967041075",
+      "salary_is_predicted": "0",
+      "description": "Senior Data Engineering Advisor The Personal Services Analytics and Data Solutions Department is responsible for supporting the various sectors to help them meet their analytics needs. As a senior data engineering advisor, you help develop solutions for collecting, integrating, consolidating, cleaning, sorting and seamlessly using data. You support a dedicated client group on various initiatives to develop scalable data solutions, including designing platforms tailored to business needs. More s…",
+      "created": "2026-11-15T12:16:19Z"
+    },
+    {
+      "longitude": -72.213404,
+      "title": "Senior Data Analyst",
+      "redirect_url": "https://www.adzuna.ca/details/5967040735?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Québec, Canada",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoidkJ6Qjhkcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTY3MDQwNzM1In0._hTT7oWC7Q5Z-I2WZmv6R18fRbWr2u3xrwh4agrefoQ",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "IA Financial Services"
+      },
+      "id": "5967040735",
+      "salary_is_predicted": "0",
+      "latitude": 47.262372,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "created": "2026-11-15T12:16:17Z",
+      "description": "Job Description The internal job title will be Data Analyst. Build the future with us Are you passionate about data, cloud technologies, and innovation, and eager to contribute to the digital transformation of an organization dedicated to helping its clients feel confident and secure about their future? As a Senior Data Analyst , you will play a key role in accelerating Investia's digital transformation by designing, developing, and maintaining modern data solutions that support our platforms a…"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoidkJ6Qjhkcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTY3MDQwNzA0In0.Br3UVLE2d_irjD6-C3hx8xkPCfqiemAb1KvrQiFTUa0",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec"
+        ],
+        "display_name": "Québec, Canada"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "longitude": -72.213404,
+      "title": "Développeur DevOps principal",
+      "redirect_url": "https://www.adzuna.ca/details/5967040704?utm_medium=api&utm_source=9ca5241a",
+      "description": "L’opportunité - Votre carrière à Moneris En tant que Développeur DevOps principal au sein de l’équipe Plateforme, vous jouerez un rôle clé dans l’évolution, l’exploitation et l’optimisation d’une plateforme cloud moderne reposant principalement sur Google Cloud Platform. À travers une combinaison d’activités liées aux opérations cloud, à l’automatisation et au développement, vous contribuerez directement à la fiabilité, à la sécurité et à la performance des solutions. Vous évoluerez au sein d’u…",
+      "contract_type": "contract",
+      "created": "2026-11-15T12:16:17Z",
+      "category": {
+        "label": "IT Jobs",
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "latitude": 47.262372,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Moneris"
+      },
+      "id": "5967040704",
+      "salary_is_predicted": "0"
+    },
+    {
+      "description": "The Senior Software Engineer – Canada Retirement (AI/ML & Agentic SDLC) designs, builds, and maintains applications and services that support Manulife’s Canadian Retirement business. This role combines strong software engineering skills with hands-on AI/ML experience and agentic SDLC practices to deliver well‑architected, secure, and reliable solutions. The engineer works closely with product, business, and architecture partners to implement features, modernize platforms, and orchestrate AI‑dri…",
+      "created": "2026-11-15T12:16:17Z",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "latitude": 45.531116,
+      "salary_is_predicted": "0",
+      "id": "5967040719",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "TEHORA"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoidkJ6Qjhkcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTY3MDQwNzE5In0.mhyHFV_R8ZyKsNgI0j8kjB7OE2lrugn2Lah1bP6TlIc",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montérégie",
+          "Champlain",
+          "Longueuil"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Longueuil, Champlain"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5967040719?utm_medium=api&utm_source=9ca5241a",
+      "title": "Chargé de projets immobiliers, junior - Châteauguay",
+      "longitude": -73.480282
+    },
+    {
+      "title": "Développeur(euse) logiciel embarqué C/C++",
+      "longitude": -72.213404,
+      "redirect_url": "https://www.adzuna.ca/details/5967040495?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec"
+        ],
+        "display_name": "Québec, Canada"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzA0MDQ5NSIsInMiOiJ2QnpCOGRyaDhSR3cwYjRJMGFHWHl3In0.OVtShGMNhQQYQqwvCrtYx2fJGKokSjVf3G5Vlsl0lNM",
+      "company": {
+        "display_name": "PrevTech",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5967040495",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "latitude": 47.262372,
+      "created": "2026-11-15T12:16:15Z",
+      "description": "Architecture et développement logiciel embarqué (40 %) Concevoir et faire évoluer les micrologiciels pour soutenir les fonctionnalités et la fiabilité des appareils PrevTech. Développer, maintenir et optimiser les micrologiciels C/C++ des produits nouveaux et existants sur microcontrôleurs ARM Cortex-M (SAM4S ou équivalent). Définir et faire évoluer l’architecture logicielle des appareils existants et de ceux de la prochaine génération, en proposant des choix techniques justifiés et éclairés pa…",
+      "contract_type": "permanent"
+    },
+    {
+      "contract_type": "permanent",
+      "description": "Alteo is looking for a DevOps Developer for a permanent position based in Montreal.  Hybrid work: 3 days in the office / 2 days remote  You will be responsible for bridging the gap between software development and IT operations by automating, optimizing, and securing the software delivery lifecycle. This role involves designing, implementing, and maintaining CI/CD pipelines, automating deployments, and ensuring system monitoring and reliability practices. The DevOps Developer works closely with…",
+      "created": "2026-11-15T12:16:15Z",
+      "latitude": 45.544959,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "id": "5967040414",
+      "salary_is_predicted": "0",
+      "company": {
+        "display_name": "Alteo",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoidkJ6Qjhkcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTY3MDQwNDE0In0.YqZPUk_isWAHUfAZ41Boi9DE3Q4FlyuApWsY2Mk3tvk",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5967040414?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -73.588138,
+      "title": "DevOps Developer [5001]"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoidkJ6Qjhkcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTY3MDQwMzcyIn0.bSRLqYT6RTh94qT0V6iilVw0kfIWpfBim0RqZR2o2rk",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Platform Engineer - $210,000  bonus! (Fintech)",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5967040372?utm_medium=api&utm_source=9ca5241a",
+      "description": "Client – Award winning Financial Trading firm run by passionate Computer Scientists Salary – Up to $210,000  an exceptional bonus and package Location – Montreal, City based (stunning offices) The Company A leading global quantitative investment firm, built on research, technology and data. Engineers here work closely with researchers and developers, and the platform they build underpins compute-intensive research and trading workloads across the business. The Role You’ll deliver and maintain m…",
+      "created": "2026-11-15T12:16:14Z",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "latitude": 45.544959,
+      "company": {
+        "display_name": "Hunter Bond",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "salary_is_predicted": "0",
+      "id": "5967040372"
+    },
+    {
+      "longitude": -73.754293,
+      "title": "Spécialiste de la sécurité des infrastructures",
+      "redirect_url": "https://www.adzuna.ca/details/5967040379?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzA0MDM3OSIsInMiOiJ2QnpCOGRyaDhSR3cwYjRJMGFHWHl3In0.hChPLWUKoEDOB4aMSB9edxzLzN-ySqKuKueycb2tBtA",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal",
+          "Dorval"
+        ],
+        "display_name": "Dorval, Montréal"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "latitude": 45.448835,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "company": {
+        "display_name": "Bombardier",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "salary_is_predicted": "0",
+      "id": "5967040379",
+      "description": "En fonction du poste, Bombardier offre des politiques de travail flexibles et hybrides. Pourquoi vous joindre à nous? Chez Bombardier, nous concevons, construisons, modifions et entretenons les avions les plus performants du monde pour les individus, les entreprises, les gouvernements et les entités militaires les plus avisés. Nous réussissons à établir les normes les plus élevées grâce à notre approche centrée sur les personnes, et toujours en définissant l'excellence, ensemble. Travailler che…",
+      "created": "2026-11-15T12:16:14Z"
+    },
+    {
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "latitude": 47.262372,
+      "salary_is_predicted": "0",
+      "id": "5967040292",
+      "company": {
+        "display_name": "Canadian Inclusion",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "description": "Architecte Sécurité Données - IA Générative et Agentique (Education) Architecte Sécurité Données - IA Générative et Agentique (Education) Location: Quebec City, Canada Dans des marchés en rapide évolution, les clients à travers le monde font confiance à Thales. Thales est une entreprise où les personnes les plus brillantes du monde entier se regroupent pour mettre en commun leurs idées et ainsi s'inspirer mutuellement. Dans tous les secteurs où œuvre Thales, notamment l'aérospatiale, le transpo…",
+      "created": "2026-11-15T12:16:14Z",
+      "redirect_url": "https://www.adzuna.ca/details/5967040292?utm_medium=api&utm_source=9ca5241a",
+      "contract_time": "full_time",
+      "longitude": -72.213404,
+      "title": "Architecte Sécurité Données - IA Générative et Agentique",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoidkJ6Qjhkcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTY3MDQwMjkyIn0.zeN9SFCo85wcNiSpksnvyb_ngeycmwmNTXzK-_mzRdM",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec, Canada"
+      }
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "display_name": "Québec, Canada",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoidkJ6Qjhkcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTY3MDQwMTkyIn0.ScZBRQ3YEtOq1ePGdIIgFGnYp5jck-kc1a-tv_WusVc",
+      "redirect_url": "https://www.adzuna.ca/details/5967040192?utm_medium=api&utm_source=9ca5241a",
+      "longitude": -72.213404,
+      "title": "Chauffeur classe 1 -Plancher mobile",
+      "contract_time": "full_time",
+      "created": "2026-11-15T12:16:13Z",
+      "contract_type": "contract",
+      "description": "Our client, a prominent Canadian institutional leader in the financial services and insurance sector, is actively transforming and modernizing its enterprise security architecture. As part of a major strategic initiative to overhaul access governance, they are seeking a Senior IAM & API Security Developer to play a pivotal role in the modernization of their identity, credentialing, and access authorization ecosystem. In this role, you will be instrumental in architecting and delivering pilot im…",
+      "id": "5967040192",
+      "salary_is_predicted": "0",
+      "company": {
+        "display_name": "Extra Multi-Ressources",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "latitude": 47.262372
+    },
+    {
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Intact Financial Corporation"
+      },
+      "id": "5967040238",
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "created": "2026-11-15T12:16:13Z",
+      "description": "Full-time Remote Salary: CA$110,600.00–CA$166,000.00 yearly Core responsibilities Architect and document a high-throughput data ingestion pipeline capable of processing billions of events daily Create detailed technical specifications and solution blueprints Develop and implement efficient ETL processes for ingestion, storage and retrieval Design and implement processes for detecting and offloading stale data from active systems to long-term storage databases. Ensure efficient integration of AP…",
+      "longitude": -73.588138,
+      "title": "Senior Solution Architect - Data & AI",
+      "contract_time": "full_time",
+      "redirect_url": "https://www.adzuna.ca/details/5967040238?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoidkJ6Qjhkcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTY3MDQwMjM4In0.tlZIc_lJVbxF41GZTHH8BdcBT4_E1E-YYRPigYBXjSM"
+    },
+    {
+      "description": "Développeur .NET / Intelligence d’Affaires Mandat de 12 mois renouvelable Notre client du secteur financier est à la recherche d’un Développeur .NET / BI qui contribuera à l’évolution de solutions numériques et analytiques liées à la gestion des risques et aux portefeuilles d’investissement. Responsabilités Concevoir, développer et faire évoluer des composantes de transformation de données en C#/.NET, SSIS et AWS. Participer à l’intégration, la qualité et l’optimisation des solutions analytique…",
+      "created": "2026-11-15T12:16:13Z",
+      "latitude": 45.544959,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "company": {
+        "display_name": "Ateko, backed by Bell Canada",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "salary_is_predicted": "0",
+      "id": "5967040164",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoidkJ6Qjhkcmg4Ukd3MGI0STBhR1h5dyIsImkiOiI1OTY3MDQwMTY0In0.wiebZYugpTTWao7kZofTHlbgmkjBnpHJN76TlPrcDHs",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "longitude": -73.588138,
+      "title": "Développeur .Net / Intelligence d’affaires",
+      "redirect_url": "https://www.adzuna.ca/details/5967040164?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "description": "Développeur(euse) principal(e) Full Stack Votre talent compte, prenez les devants Développeur(euse) principal(e) Full StackPostuler: Montréal, Québec: Toronto, Ontario: Temps plein: Publié aujourd'hui: Date de fin : 28 novembre 2026 (Il reste 14 jours pour postuler): JR10028303Description d’emploiBâtissez l’avenir avec nousVous êtes passionné(e) par le génie logiciel, les technologies émergentes et l’intelligence artificielle? Vous souhaitez contribuer à la raison d’être d’une entreprise qui vi…",
+      "created": "2026-11-15T12:16:12Z",
+      "latitude": 45.544959,
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs",
+        "label": "IT Jobs"
+      },
+      "company": {
+        "display_name": "iA Financial Group",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5967040056",
+      "salary_is_predicted": "0",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzA0MDA1NiIsInMiOiJ2QnpCOGRyaDhSR3cwYjRJMGFHWHl3In0.BcV-fEEXti2e6tu7K8zI4UqW2ZJ-PbLV3V2crWjHsuc",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "longitude": -73.588138,
+      "title": "Développeur(euse) principal(e) Full Stack",
+      "redirect_url": "https://www.adzuna.ca/details/5967040056?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiR2h0OTh0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY3MDQwMDAzIn0.TbX3pYrzh40evgp_t3sdj9T2SMkU4o9oI6_Vw-NAD-c",
+      "title": "Ingénieur(e) DevOps",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5967040003?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-15T12:16:12Z",
+      "description": "Note sur la longueur — cette offre est volontairement plus longue que la plupart des autres. C’est intentionnel. Elle vous donne un aperçu réaliste du rôle et des indications claires sur la façon de présenter votre candidature; nous vous suggérons donc de la lire au complet. À propos de SOVRA SOVRA est une plateforme de premier plan en approvisionnement public, utilisée par plus de 7 000 organismes gouvernementaux et plus de 1 million de fournisseurs à travers l’Amérique du Nord. Notre travail …",
+      "id": "5967040003",
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "SOVRA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      }
+    },
+    {
+      "title": "Data Engineering Advisor",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Chaudière - Appalaches",
+          "Desjardins",
+          "Lévis"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Lévis, Desjardins"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiR2h0OTh0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY3MDQwMDI2In0.SCJvl85D3k6XAAluTn3B9Ecqz1Jit77WDiVRft6eVd8",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5967040026?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 46.804026,
+      "company": {
+        "display_name": "Desjardins",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "id": "5967040026",
+      "description": "The Personal Services Analytics Solutions Department is responsible for supporting the various sectors to help them meet their analytics needs. As a data engineering advisor, you help develop solutions for collecting, integrating, consolidating, cleaning, storing and seamlessly using data. You help develop, maintain, support and run computer applications and data pipelines, while ensuring the functional analysis, IT design, coding, fine-tuning and documentation of programs. You assist clients o…",
+      "longitude": -71.172791,
+      "created": "2026-11-15T12:16:12Z"
+    },
+    {
+      "created": "2026-11-15T12:16:12Z",
+      "company": {
+        "display_name": "IA Financial Services",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "longitude": -72.213404,
+      "id": "5967040087",
+      "description": "Job Description Build the future with us Are you passionate about designing high-performing technology solutions and eager to contribute to the purpose of a company that aims to help its clients feel confident and secure about their future? As a Senior Software Designer , you will play a key role in the design and evolution of innovative, robust and reusable software solutions, while providing technical leadership to teams. This position is a great opportunity to showcase your skills and fully …",
+      "redirect_url": "https://www.adzuna.ca/details/5967040087?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 47.262372,
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Senior Software Designer",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec, Canada",
+        "area": [
+          "Canada",
+          "Québec"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzA0MDA4NyIsInMiOiJHaHQ5OHRyaDhSRzIxZDJXQmRwRV9nIn0.D-JycrEuAu83iGSAMU9B-kWjWmE2KqqCy-uNRrPpfLw"
+    },
+    {
+      "created": "2026-11-15T12:16:10Z",
+      "id": "5967039782",
+      "description": "Titre: Conseiller en sécurité infonuagique (AWS/Azure) Durée: 6-12 mois renouvelable Lieu: en mode hybride 3 jours au centre-ville de Montréal Contexte du mandat On recherche un spécialiste sénior en sécurité infonuagique; le consultant devra s’intégrer rapidement à l’environnement, prendre en charge des activités opérationnelles critiques et agir comme expert-conseil auprès des équipes Cloud, DevOps, Architecture et Cybersécurité. Il s’agit d’un rôle fortement technique et orienté exécution. L…",
+      "longitude": -73.588138,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Procom"
+      },
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5967039782?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiR2h0OTh0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY3MDM5NzgyIn0.JPlBGwHEETtmm91aMsYpDockv-9T-Pe2EisXuSoJ7PA",
+      "title": "Conseiller en sécurité infonuagique (AWS/Azure)"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5967039513?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 47.262372,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Mirego"
+      },
+      "id": "5967039513",
+      "longitude": -72.213404,
+      "description": "Au sein de l'équipe de développement, tu prends part chaque jour à la création de produits numériques innovants qui ont pour ambition de changer le monde, quels que soient leur envergure ou leur domaine. Tu es spécialisé en développement back-end, mais ce qui te distingue, c'est ta maîtrise de l'écosystème DevOps. Tu ne te contentes pas d'écrire du code robuste et maintenable : tu conçois, déploies et opères l'infrastructure qui lui permet de vivre et de performer. Ton enthousiasme pour le déve…",
+      "created": "2026-11-15T12:16:09Z",
+      "title": "Développeur(euse) logiciel Back-End/DevOps",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiR2h0OTh0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY3MDM5NTEzIn0.FHleSoqk29XydZXq5MxlUBpTDCWRouqxwhrepIsVvb0",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec, Canada"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0"
+    },
+    {
+      "created": "2026-11-15T12:16:09Z",
+      "longitude": -73.588138,
+      "id": "5967039613",
+      "contract_type": "permanent",
+      "description": "Télétravail avec déplacements occasionnels à Québec ou Montréal Durée Nous recherchons un Analyste-programmeur full stack afin de rejoindre notre équipe de conseillers du bureau de Québec ou de Montréal dans le cadre d'un poste permanent. Ce poste est en mode télétravail. Agissant à titre de conseiller / consultant de Chrome Technologies, le candidat interviendra auprès de nos clients dans la réalisation des projets qu'ils nous ont confiés. La ressource agira à titre d'analyste-programmeur full…",
+      "company": {
+        "display_name": "CHROME TECHNOLOGIES",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5967039613?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzAzOTYxMyIsInMiOiJHaHQ5OHRyaDhSRzIxZDJXQmRwRV9nIn0.MvmA7SXfx9ffdIX3XsNUUf3nKJ1EBcNvLmF7HcJNpDk",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "title": "Analyste-Programmeur Full Stack Télétravail et Access"
+    },
+    {
+      "created": "2026-11-15T12:16:09Z",
+      "id": "5967039563",
+      "contract_type": "contract",
+      "longitude": -73.588138,
+      "description": "Avanciers Incorporated is hiring a Senior Salesforce Consultant for one of our clients. Job Title: Senior Salesforce Consultant Job Location: Montreal QC/Hybrid Employment Type: Contract Duration: 12 months Compensation Range: $70- $110 per hour This is an active job and application deadline is Sep31, 2026 (This posting may close earlier if a suitable candidate is found) We are having an urgent opening for a Senior Salesforce Consultant Please find below the Key Requirements:- Qualifications & …",
+      "company": {
+        "display_name": "Avanciers Inc.",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5967039563?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiR2h0OTh0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY3MDM5NTYzIn0.zEhaLfbJPvBDkGul5HZpzrbG5S9IEgEvc_pJiWNaJmc",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "title": "Salesforce Consultant"
+    },
+    {
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NzAzOTUwMSIsInMiOiJHaHQ5OHRyaDhSRzIxZDJXQmRwRV9nIn0.NmDdzHSluP47mCS8Bni3NTNVZtbWoQCJRnX-YIxrfUk",
+      "title": "Spécialiste infrastructure didacticiels & DevOp / Courseware & DevOps Specialist",
+      "created": "2026-11-15T12:16:08Z",
+      "description": "La dynamique de votre équipe: Nous recherchons un spécialiste en infrastructure nuage et DevOps chargé de concevoir, d’automatiser et d’assurer le soutien de l’infrastructure Azure qui sous-tend nos plateformes mondiales de formation et de certification. Ce poste allie les opérations nuage, le DevOps, l’automatisation et la sécurité, l’accent étant mis sur la mise en place d’environnements évolutifs, fiables et sécurisés grâce à l’infrastructure en tant que code (IaC) et aux pratiques nuage mod…",
+      "id": "5967039501",
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "Genetec",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5967039501?utm_medium=api&utm_source=9ca5241a"
+    },
+    {
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "salary_is_predicted": "0",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Java Software Engineer",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjkyMTQzOCIsInMiOiJHaHQ5OHRyaDhSRzIxZDJXQmRwRV9nIn0.cjiZBGNrPGjV-ch-oMqiFct7lx5RcmzCDqZVqV_GWac",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "created": "2026-11-15T09:09:03Z",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "VeeRteq Solutions Inc."
+      },
+      "id": "5966921438",
+      "description": "Job Description Job Description Role: Java Software Engineer \\n Title: AVP/VP \\n Location: New York, NY \\n Work Arrangement: Day 1 Onsite / Hybrid \\n Mode of Work: 3 days per week onsite required \\n Required Experience: Min 6 years \\n\\nJob Overview\\n\\n We are looking for a skilled Java Developer with strong experience in Java/J2EE, Spring Boot, and database technologies . The ideal candidate should have hands-on experience with cloud platforms, monitoring tools, and AI-powered development tools…",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5966921438?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959
+    },
+    {
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "salary_is_predicted": "0",
+      "title": "Senior DevOps Specialist",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiR2h0OTh0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY2OTE5MzkyIn0.4C7N0oSMriCQ9hDaOt5rHigu9DnfkQCiVxADo-49U1E",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "company": {
+        "display_name": "High Tech Genesis",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "longitude": -73.588138,
+      "id": "5966919392",
+      "description": "Job Description Job Description We are seeking a Senior DevOps Specialist to build and maintain scalable cloud infrastructure, automate deployments, and improve the reliability, security, and performance of cloud-based applications. \\n \\n Key Responsibilities \\n \\n \\n Develop Infrastructure as Code (Terraform, Bicep). \\n \\n Build and maintain CI/CD pipelines. \\n \\n Manage Kubernetes environments and GitOps deployments. \\n \\n Improve cloud performance, security, monitoring, and availability. \\n …",
+      "created": "2026-11-15T09:06:33Z",
+      "redirect_url": "https://www.adzuna.ca/details/5966919392?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959
+    },
+    {
+      "created": "2026-11-15T08:56:51Z",
+      "id": "5966908491",
+      "contract_type": "contract",
+      "longitude": -73.588138,
+      "description": "Job Description Job Description Tech Talent International (SI) supplies technical talent to a variety of clients ranging from Fortune 100/500/1000 companies to small and mid-sized organizations in Canada/US and Europe. \\n We currently have a role as an Senior SRE / Observability Engineer – IA & AI Ops - Bilingual with our large consulting client, working for a public sector, crown corporation in the Montreal area. \\n \\n Role: Senior SRE / Observability Engineer – IA & AI Ops - Bilingual \\n Type…",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Tech Talent International"
+      },
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5966908491?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiR2h0OTh0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY2OTA4NDkxIn0.tj-HmRNBkx3iFtg3Zri2XII7tShu7y9Mk_GdWIM-PHI",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "title": "Senior SRE / Observability Engineer - IA & AI Ops - Bilingual"
+    },
+    {
+      "created": "2026-11-15T08:36:47Z",
+      "salary_min": 93600,
+      "longitude": -73.588138,
+      "id": "5966889227",
+      "description": "Job Description Job Description \\n Pay Range: $45.00hr - $50.00hr \\n\\n Job Overview: \\n\\n The candidate will provide production support and application maintenance within a capital markets back-office environment. The candidate will work directly with stakeholders to resolve daily operational issues, translate functional gaps into technical specifications, and lead system improvement and deployment efforts. \\n\\n Responsibilities: \\n\\n \\n\\t Work closely with end users to resolve day-to-day opera…",
+      "company": {
+        "display_name": "CYNET SYSTEMS",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5966889227?utm_medium=api&utm_source=9ca5241a",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2Njg4OTIyNyIsInMiOiJHaHQ5OHRyaDhSRzIxZDJXQmRwRV9nIn0.EHm0ZB1kbbFFSf0qrMuhEGDqOLTusiCDB6QzvsQM-00",
+      "title": "Senior Capital Markets Support Engineer",
+      "salary_max": 104000
+    },
+    {
+      "created": "2026-11-15T08:15:40Z",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Tech Talent International"
+      },
+      "id": "5966870717",
+      "description": "Job Description Job Description Tech Talent International (SI) supplies technical talent to a variety of clients ranging from Fortune 100/500/1000 companies to small and mid-sized organizations in Canada/US and Europe. \\n We currently have a role as an AI Application Modernization Architect/Lead with our large consulting client, working for a public sector, crown corporation in the Montreal area. \\n \\n Role: AI Application Modernization Architect/Lead \\n Type: Permanent or Long Term Contract \\n…",
+      "contract_type": "contract",
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5966870717?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959,
+      "salary_is_predicted": "0",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "AI Application Modernization Architect/Lead - Bilingual",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiR2h0OTh0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY2ODcwNzE3In0.ucoPQmEuHgYQznjolE1KP5a1UlThwe-_oPSiLkIJSPg"
+    },
+    {
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5966816391?utm_medium=api&utm_source=9ca5241a",
+      "id": "5966816391",
+      "description": "English will follow OPAL-RT recherche un Responsable Technique - Automatisation Assurance Qualité À propos d’OPAL-RT Technologies : Leader mondial dans la diversité des applications, nos outils sont utilisés dans une multitude de secteurs tels que l'automobile, l'aérospatiale, l’énergie, le transport, la fabrication industrielle, etc. Fondée au Québec et maintenant assurée par une présence mondiale, OPAL-RT a le vent dans les voiles! Nous sommes animés par une ambition commune : repousser les l…",
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "OPAL-RT",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "created": "2026-11-15T07:43:38Z",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjgxNjM5MSIsInMiOiJHaHQ5OHRyaDhSRzIxZDJXQmRwRV9nIn0.5vq6mbYyxTFxli2ZaUf3QZBm6h6nhkPtw2G5z2ex0DI",
+      "title": "Responsable Technique - Automatisation Assurance Qualité / Quality Assurance Automation Technical Lead.",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      }
+    },
+    {
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "title": "Développeur(euse) logiciel Back-End/DevOps",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjczOTMwNCIsInMiOiJHaHQ5OHRyaDhSRzIxZDJXQmRwRV9nIn0.6gK-jG_z1t3-KzBhC69dV0JNE4b2gZiNZE2_A12nC0Y",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "contract_time": "full_time",
+      "created": "2026-11-15T05:12:20Z",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Mirego"
+      },
+      "longitude": -73.588138,
+      "id": "5966739304",
+      "description": "Au sein de l'équipe de développement, tu prends part chaque jour à la création de produits numériques innovants qui ont pour ambition de changer le monde, quels que soient leur envergure ou leur domaine. Tu es spécialisé en développement back-end, mais ce qui te distingue, c'est ta maîtrise de l'écosystème DevOps. Tu ne te contentes pas d'écrire du code robuste et maintenable : tu conçois, déploies et opères l'infrastructure qui lui permet de vivre et de performer. Ton enthousiasme pour le déve…",
+      "redirect_url": "https://www.adzuna.ca/details/5966739304?utm_medium=api&utm_source=9ca5241a",
+      "latitude": 45.544959
+    },
+    {
+      "longitude": -73.588138,
+      "id": "5966735860",
+      "description": "Le spécialiste DevOps rejoindra notre équipe des Services de production pour maintenir et améliorer les systèmes et services soutenant le travail de développement et de production du studio. Le rôle couvre les déploiements et mises à jour d'applications, la maintenance des machines virtuelles (VM) et des pipelines CI/CD, ainsi que l'automatisation des tâches récurrentes. En collaboration avec les TI, le développement et l'assurance qualité (QA), le spécialiste contribuera aux mises à niveau pla…",
+      "company": {
+        "display_name": "Highdive",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "created": "2026-11-15T05:08:45Z",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5966735860?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjczNTg2MCIsInMiOiJHaHQ5OHRyaDhSRzIxZDJXQmRwRV9nIn0.LxtxWj9yTUU3FsWKdDJIBj9mjlKTkygVmRyIil1mS00",
+      "title": "Spécialiste DevOps / DevOps Specialist"
+    },
+    {
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjczMjUyMSIsInMiOiJHaHQ5OHRyaDhSRzIxZDJXQmRwRV9nIn0.M8Cu1K_gCYkjFuCNysc19EVHIhf7aHfOZVsFX_WvsYo",
+      "title": "Développeur(euse) Fullstack",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "redirect_url": "https://www.adzuna.ca/details/5966732521?utm_medium=api&utm_source=9ca5241a",
+      "description": "Au sein de l'équipe de développement, tu prends part chaque jour à la création de produits numériques innovants qui ont pour ambition de changer le monde, quels que soient leur envergure ou leur domaine. À l’aise autant côté front-end que back-end, et c'est cette polyvalence qui te permet de naviguer avec fluidité entre les différentes couches d'un produit et d’en saisir l’ensemble de la complexité. Ton enthousiasme pour le développement te pousse naturellement à relever des défis stimulants et…",
+      "id": "5966732521",
+      "longitude": -73.588138,
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Mirego"
+      },
+      "created": "2026-11-15T05:03:28Z",
+      "contract_time": "full_time"
+    },
+    {
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjczMTQyNyIsInMiOiJHaHQ5OHRyaDhSRzIxZDJXQmRwRV9nIn0.nMB_xR-6p7bM2AtK41vjsq6eRiL_2RyInvYLjK_AVkw",
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "salary_max": 120000,
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "latitude": 45.544959,
+      "description": "Position Description: Vous aimez transformer des données complexes en solutions concrètes? Joignez-vous à CGI pour faire évoluer un algorithme Python au cœur d’initiatives en données géospatiales. Vous contribuerez à son amélioration, à l’intégration de nouvelles sources de données et à la réflexion sur un référentiel géospatial organisationnel. Mode de travail : hybride, avec une journée par semaine en présentiel Lieu : Montréal Your future duties and responsibilities: Votre contribution • Pre…",
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "CGI",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "contract_time": "full_time",
+      "title": "Développeur(se) Python",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "redirect_url": "https://www.adzuna.ca/details/5966731427?utm_medium=api&utm_source=9ca5241a",
+      "id": "5966731427",
+      "salary_min": 65000,
+      "created": "2026-11-15T05:01:56Z"
+    },
+    {
+      "redirect_url": "https://www.adzuna.ca/details/5966728156?utm_medium=api&utm_source=9ca5241a",
+      "created": "2026-11-15T04:57:18Z",
+      "contract_time": "full_time",
+      "description": "Company Description Wepoint is the architect of major transformations for businesses and public sector organizations. We support our clients from strategy through technological implementation, always striving to think beyond the obvious and to act within the framework of Economic, Social, Environmental, and Technological Responsibility (RESET). Our goal is to create new ways of working, new economic models, and smarter environments. In nearly 20 years, we have become one of the key players in d…",
+      "id": "5966728156",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "Onepoint"
+      },
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Québec City"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Québec City, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiR2h0OTh0cmg4UkcyMWQyV0JkcEVfZyIsImkiOiI1OTY2NzI4MTU2In0.I8B4d9YLlKQNcH_UgSQEzQRwTJhtS-ARWCbU5hwA_DI",
+      "title": "Conseiller(ère) en gouvernance",
+      "salary_is_predicted": "0",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "company": {
+        "display_name": "CGI",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "longitude": -73.588138,
+      "description": "Position Description: Description du poste Nous recherchons un·e développeur·euse Full Stack senior pour concevoir, développer et faire évoluer des applications d’entreprise selon une approche Cloud First. Vous contribuerez à des projets de modernisation et au développement de solutions critiques dans les secteurs bancaire et financier. Au sein d’équipes Agile multidisciplinaires, vous collaborerez avec des analystes d’affaires, des spécialistes en assurance qualité et en DevOps, ainsi qu’avec …",
+      "contract_time": "full_time",
+      "latitude": 45.544959,
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "salary_max": 115000,
+      "location": {
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTk2NjcyMTIwMCIsInMiOiJHaHQ5OHRyaDhSRzIxZDJXQmRwRV9nIn0.QExlFv_qgs2JiBcF-Ral2xgP8qKBghrFIjD5LgFPArU",
+      "salary_min": 60000,
+      "id": "5966721200",
+      "created": "2026-11-15T04:53:11Z",
+      "redirect_url": "https://www.adzuna.ca/details/5966721200?utm_medium=api&utm_source=9ca5241a",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "salary_is_predicted": "0",
+      "title": "Développeur Fullstack .NET"
+    }
+  ]
+}

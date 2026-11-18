@@ -1,0 +1,241 @@
+{
+  "search": {
+    "keyword": "technicien informatique",
+    "location": "Montréal, Québec",
+    "category": "it-jobs",
+    "results_per_page": 20,
+    "max_pages": 2
+  },
+  "pages": [
+    {
+      "page": 1,
+      "returned": 7,
+      "total_count": 7
+    },
+    {
+      "page": 2,
+      "returned": 0,
+      "total_count": 7
+    }
+  ],
+  "results": [
+    {
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "title": "Cisco VoIP Specialist [5005]",
+      "id": "5961937134",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiY3VMUTk5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTYxOTM3MTM0In0.uhFf9oK1GCgApFzvYoTJWoPjTae8NUVc7rVJSwM7dqI",
+      "redirect_url": "https://www.adzuna.ca/details/5961937134?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "contract_type": "permanent",
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "Alteo",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "created": "2026-11-11T12:19:20Z",
+      "description": "Alteo is looking for a Cisco VoIP Specialist for a permanent position based in Montreal.  Hybrid Work  You will be responsible for monitoring and executing tasks to ensure the continuity of network services. This includes change planning and configuring alerts. You will also meet with clients, analyze their needs, apply your specific expertise, contribute to the development of implementation plans, and monitor the execution of tasks. RESPONSIBILITIES: Collaborates on information technology arch…"
+    },
+    {
+      "id": "5951660380",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs",
+        "tag": "it-jobs"
+      },
+      "latitude": 45.544959,
+      "title": "Cisco VoIP Specialist [5005]",
+      "salary_is_predicted": "0",
+      "description": "Job Description Job Description Alteo is looking for a Cisco VoIP Specialist for a permanent position based in Montreal.  Hybrid Work  You will be responsible for monitoring and executing tasks to ensure the continuity of network services. This includes change planning and configuring alerts. You will also meet with clients, analyze their needs, apply your specific expertise, contribute to the development of implementation plans, and monitor the execution of tasks. RESPONSIBILITIES: > Architect…",
+      "created": "2026-11-03T07:11:24Z",
+      "contract_type": "permanent",
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "Alteo",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiY3VMUTk5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1OTUxNjYwMzgwIn0.8bRA1ULplR3mKF_cGlbDtk2qyyauy8hwVK7ySbt5694",
+      "redirect_url": "https://www.adzuna.ca/details/5951660380?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      }
+    },
+    {
+      "title": "Technicien en soutien informatique",
+      "latitude": 45.544959,
+      "salary_is_predicted": "0",
+      "id": "5889647803",
+      "contract_time": "full_time",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "TEHORA"
+      },
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5889647803?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTg4OTY0NzgwMyIsInMiOiJjdUxROTlyaDhSR0RMXzMzaDdxSkhRIn0.umbjWrx3eSSESILoalOr-KOoxyi1iGqNZK8LsyWTbZM",
+      "description": "TEHORA est présentement à la recherche des techniciens en soutien informatique à distance possédant une expérience en assistance aux utilisateurs, diagnostic d’incidents et soutien bureautique dans des environnements technologiques complexes. Ces ressources participeront aux opérations du centre d’assistance du ministère et assureront le premier niveau de soutien aux utilisateurs partout au Québec. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Rec…",
+      "created": "2026-09-18T13:29:08Z"
+    },
+    {
+      "id": "5817526677",
+      "contract_time": "full_time",
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "category": {
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "tag": "it-jobs"
+      },
+      "latitude": 45.544959,
+      "title": "Soutien informatique intermédiaire / Technicien en informatique - DEC",
+      "salary_is_predicted": "0",
+      "description": "TEHORA est présentement à la recherche d’ un Soutien informatique intermédiaire / Technicien en informatique intermédiaire – DEC afin d’assurer le soutien technique aux utilisateurs ainsi que l’installation, la configuration et le maintien des équipements et postes de travail. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Assurer le soutien informatique auprès des utilisateurs; Installer, configurer et maintenir les équipements informatiques; Diag…",
+      "created": "2026-07-27T13:06:26Z",
+      "company": {
+        "__CLASS__": "Adzuna::API::Response::Company",
+        "display_name": "TEHORA"
+      },
+      "longitude": -73.588138,
+      "redirect_url": "https://www.adzuna.ca/details/5817526677?utm_medium=api&utm_source=9ca5241a",
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiY3VMUTk5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1ODE3NTI2Njc3In0.4AkmSMfuVo6lpHUvT4oSJrP3iSNmJya_GYNiW3pve-c",
+      "location": {
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ]
+      }
+    },
+    {
+      "description": "TEHORA est présentement à la recherche d’ un Soutien informatique sénior / Technicien en informatique sénior – DEC afin de participer au soutien, à l’installation, à la configuration et à l’optimisation des environnements technologiques ainsi qu’au soutien des utilisateurs dans des environnements complexes. Sans être exhaustifs, voici les services et livrables que devra fournir la personne retenue : Assurer le soutien technique de niveau avancé auprès des utilisateurs; Installer, configurer et …",
+      "created": "2026-07-27T13:06:26Z",
+      "longitude": -73.588138,
+      "company": {
+        "display_name": "TEHORA",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5817526680?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Montréal, Québec"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJzIjoiY3VMUTk5cmg4UkdETF8zM2g3cUpIUSIsImkiOiI1ODE3NTI2NjgwIn0.J7CvP2e9DR62vW_qa-sYDgnFqE7X4gV-Tnog23G8pbw",
+      "contract_time": "full_time",
+      "id": "5817526680",
+      "category": {
+        "tag": "it-jobs",
+        "__CLASS__": "Adzuna::API::Response::Category",
+        "label": "IT Jobs"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "latitude": 45.544959,
+      "title": "Soutien informatique sénior / Technicien en informatique - DEC",
+      "salary_is_predicted": "0"
+    },
+    {
+      "longitude": -73.56065,
+      "company": {
+        "display_name": "Ton talent, nos opportunités",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "redirect_url": "https://www.adzuna.ca/details/5812903212?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal",
+          "Westmount"
+        ],
+        "__CLASS__": "Adzuna::API::Response::Location",
+        "display_name": "Westmount, Montréal"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTgxMjkwMzIxMiIsInMiOiJjdUxROTlyaDhSR0RMXzMzaDdxSkhRIn0.KPpQ9KmfgiEsmT6yQUHRXBRQ-EGdcnoryno6SuGMrwE",
+      "description": "Chez Lussier, on le vit vraiment! Ici, la priorité, c’est toi. Ce n’est pas seulement quelque chose qu’on dit, c’est ce qu’on vit, vraiment. S’épanouir chez Lussier, c’est décrocher le téléphone le jour et décrocher le soir, pour vrai. C’est avancer dans une carrière qui te ressemble, où tu peux être toi-même et faire une différence. En tant que Technicienne / Technicien informatique • Technologies de l'information, tu assures le support technique avancé auprès des utilisateurs, tu participes à…",
+      "created": "2026-07-23T18:03:32Z",
+      "title": "Technicienne / Technicien informatique Technologies de l'information",
+      "latitude": 45.50687,
+      "salary_is_predicted": "0",
+      "contract_time": "full_time",
+      "id": "5812903212",
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job"
+    },
+    {
+      "category": {
+        "tag": "it-jobs",
+        "label": "IT Jobs",
+        "__CLASS__": "Adzuna::API::Response::Category"
+      },
+      "__CLASS__": "Adzuna::API::Response::Job",
+      "id": "5809893189",
+      "salary_is_predicted": "0",
+      "latitude": 45.544959,
+      "title": "Analyste spécialisé.e en informatique - Réseautique",
+      "created": "2026-07-21T17:54:08Z",
+      "description": "Informations générales Entreprise: CIUSSS du Centre-Ouest-de-l'Île-de-Montréal Titre de l'emploi: Analyste spécialisé.e en informatique - Réseautique Réf n°: 4955 Direction: Direction des ressources informationnelles Site: Hôpital général juif Ville de l'emploi: Montréal Statut de l'emploi: Permanent à temps plein Quart de travail: Jour Type d'emploi: Syndiqué Nombre d’heures par période de paie: 80 Base (min.): 31.51 Base (max.): 57.81 Catégorie d’emploi: Technologie de l’information (TI) Nomb…",
+      "redirect_url": "https://www.adzuna.ca/details/5809893189?utm_medium=api&utm_source=9ca5241a",
+      "location": {
+        "area": [
+          "Canada",
+          "Québec",
+          "Montréal"
+        ],
+        "display_name": "Montréal, Québec",
+        "__CLASS__": "Adzuna::API::Response::Location"
+      },
+      "adref": "eyJhbGciOiJIUzI1NiJ9.eyJpIjoiNTgwOTg5MzE4OSIsInMiOiJjdUxROTlyaDhSR0RMXzMzaDdxSkhRIn0.0RefHz4KY364gVzXuq5Bjpqcau9Or-UYGvl6vMnIAOM",
+      "company": {
+        "display_name": "CIUSSS-du-Centre-Ouest-de-l’Île-de-Montréal",
+        "__CLASS__": "Adzuna::API::Response::Company"
+      },
+      "longitude": -73.588138,
+      "contract_type": "permanent"
+    }
+  ]
+}
