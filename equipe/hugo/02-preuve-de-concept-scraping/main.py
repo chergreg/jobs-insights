@@ -18,6 +18,9 @@ if hasattr(sys.stdout, 'reconfigure'):
 if hasattr(sys.stderr, 'reconfigure'):
     sys.stderr.reconfigure(encoding='utf-8', errors='replace')
 
+DOSSIER_COURANT = os.path.dirname(os.path.abspath(__file__))
+FICHIER_SORTIE_DEFAUT = os.path.join(DOSSIER_COURANT, "data", "offres_emploi_canada.json")
+
 # ==============================================================================
 # VÉRIFICATION PASSIVE DES DÉPENDANCES (Aucune auto-installation pip)
 # ==============================================================================
@@ -149,9 +152,8 @@ def executer_mode_interactif():
     )
 
     # 6. Sauvegarde
-    chemin_sortie = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "offres_emploi_canada.json")
     if offres:
-        collecteur.exporter(offres, chemin_sortie)
+        collecteur.exporter(offres, FICHIER_SORTIE_DEFAUT)
     else:
         print("\n [INFO] Aucune offre n'a été collectée.")
 
@@ -165,7 +167,7 @@ def main():
     parser.add_argument("--keyword", type=str, default=None, help="Mot-clé spécifique de recherche")
     parser.add_argument("--fast", action="store_true", help="Active le mode rapide (délai 1.2s au lieu de 5.0s)")
     parser.add_argument("--no-enrich", action="store_true", help="Désactive l'enrichissement détaillé des fiches")
-    parser.add_argument("--output", type=str, default="data/offres_emploi_canada.json", help="Chemin du fichier JSON de sortie")
+    parser.add_argument("--output", type=str, default=FICHIER_SORTIE_DEFAUT, help="Chemin du fichier JSON de sortie")
     parser.add_argument("--skip-health-check", action="store_true", help="Ignore le test de connectivité initial")
     parser.add_argument("--non-interactif", action="store_true", help="Force le mode non-interactif sans demande utilisateur")
 
