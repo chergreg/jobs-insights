@@ -131,19 +131,22 @@ def main() -> None:
         offers_by_id[off.id] = off
     print(f" • {len(elvira_offers)} offre(s) intégrée(s) depuis les travaux d'Elvira.")
 
-    # 2. Chargement des contributions de Mamadou
+    # 2. Chargement des contributions de Mamadou (v1 et v2 si disponible)
     mamadou_path = CUR_DIR.parent.parent / "mamadou" / "02-preuve-de-concept-scraping" / "sample_scraped_jobs.json"
     mamadou_offers = load_mamadou_offers(mamadou_path)
+    mamadou_v2_path = CUR_DIR.parent.parent / "mamadou" / "03-amelioration-preuve-de-concept" / "echantillon_v2.json"
+    if mamadou_v2_path.is_file():
+        mamadou_offers.extend(load_mamadou_offers(mamadou_v2_path))
     for off in mamadou_offers:
         if off.id not in offers_by_id:
             offers_by_id[off.id] = off
-    print(f" • {len(mamadou_offers)} offre(s) intégrée(s) depuis les travaux de Mamadou.")
+    print(f" • {len(offers_by_id)} offre(s) intégrée(s) après contributions étudiantes (Elvira + Mamadou).")
 
-    # 3. Collecte via le connecteur Jobboom fiabilisé (pages 1 et 2 en cache ou direct)
+    # 3. Collecte via le connecteur Jobboom fiabilisé (toutes les pages en cache ou direct, sans limite)
     print(" • Exécution du connecteur JobboomScraper sur la catégorie TI...")
     scraper = JobboomScraper(delai_secondes=2.0)
     try:
-        live_offers = scraper.search(keyword="", max_pages=2, limit=25, use_cache=True)
+        live_offers = scraper.search(keyword="", max_pages=0, limit=0, use_cache=True)
         print(f"   -> {len(live_offers)} offre(s) récupérée(s) via JobboomScraper.")
         for off in live_offers:
             offers_by_id[off.id] = off
