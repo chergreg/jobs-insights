@@ -73,10 +73,13 @@ IT_TITLE_EXCLUSION_PATTERNS = re.compile(
     r"cvc|cvac|hvac|batiment(?:s)?|construction|mecanicien|electromecanicien|usinage|cnc|"
     r"comptable|comptabilite|accounting|accounts\s+receivable|accounts\s+payable|controleur|"
     r"succursale|sqdc|vendeur|vente(?:s)?|sales\s+representative|service\s+a\s+la\s+clientele|"
-    r"deductions|claims|reclamations|soumissions|inspecteur|travaux|loans"
+    r"deductions|claims|reclamations|soumissions|inspecteur|travaux|loans|journalier|desassemblage"
     r")\b",
     flags=re.IGNORECASE,
 )
+
+MIN_PUBLICATION_YEAR = 2026
+REFERENCE_TODAY_ISO = "2026-11-18"
 
 # Catalogue de compétences techniques TI (patterns stricts pour éviter les faux positifs en français/anglais)
 TECH_SKILLS_PATTERNS: list[tuple[str, str]] = [
@@ -149,6 +152,31 @@ def is_it_job(title: str, url: str = "") -> bool:
         return False
 
     return bool(IT_TITLE_POSITIVE_PATTERNS.search(target))
+
+
+def is_recent_and_valid_offer(
+    date_publication: str | None,
+    date_expiration: str | None = None,
+    min_year: int = MIN_PUBLICATION_YEAR,
+    today_iso: str = REFERENCE_TODAY_ISO,
+) -> bool:
+    """
+    Vérifie que l'offre est récente (publiée en `min_year` ou après, aucune offre des années passées)
+    et qu'elle est toujours valide (`date_expiration` absente ou >= `today_iso`).
+    """
+    if not date_publication or len(str(date_publication)) < 4:
+        return False
+    try:
+        pub_year = int(str(date_publication)[:4])
+    except ValueError:
+        return False
+    if pub_year < min_year:
+        return False
+    if date_expiration:
+        exp_str = str(date_expiration)[:10]
+        if len(exp_str) == 10 and exp_str < today_iso:
+            return False
+    return True
 
 
 def clean_html_text(raw_html: str | None) -> str:
@@ -372,6 +400,11 @@ def normalize_existing_file(file_path: Path) -> list[dict[str, Any]]:
             cleaned_item = dict(item)
             cleaned_item.pop("raw_json_ld", None)
             normalized = cleaned_item
+        if not is_recent_and_valid_offer(
+            normalized.get("date_publication"),
+            normalized.get("date_expiration"),
+        ):
+            continue
         seen_urls.add(url)
         normalized_results.append(normalized)
 
@@ -464,6 +497,14 @@ def main() -> None:
                 normalized = normalize_job_posting(job_data, url)
                 if not is_it_job(normalized["titre"], url):
                     print(f"      [-] Ignorée (hors TI) : {normalized['titre']}")
+                    continue
+                if not is_recent_and_valid_offer(
+                    normalized.get("date_publication"),
+                    normalized.get("date_expiration"),
+                ):
+                    print(
+                        f"      [-] Ignorée (ancienne ou expirée : {normalized.get('date_publication')}) : {normalized['titre']}"
+                    )
                     continue
                 results.append(normalized)
                 print(

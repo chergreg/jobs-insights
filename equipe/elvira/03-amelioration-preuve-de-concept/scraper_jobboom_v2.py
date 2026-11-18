@@ -33,6 +33,8 @@ from urllib.parse import urljoin
 import requests
 from bs4 import BeautifulSoup
 
+from models import is_recent_and_valid_offer
+
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 
@@ -585,7 +587,14 @@ def upgrade_existing_file(
                 origines_decouverte=[origin_tag],
             )
 
-    results = [results_by_id[jid] for jid in ordered_ids]
+    results = [
+        results_by_id[jid]
+        for jid in ordered_ids
+        if is_recent_and_valid_offer(
+            results_by_id[jid].get("date_publication"),
+            results_by_id[jid].get("date_expiration"),
+        )
+    ]
     output_file.parent.mkdir(parents=True, exist_ok=True)
     output_file.write_text(json.dumps(results, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return results
