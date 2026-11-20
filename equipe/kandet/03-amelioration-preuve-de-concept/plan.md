@@ -370,6 +370,9 @@ Ce sont des pistes 3 et 4 du projet (présenter les offres, aider à la candidat
   - essai d'abord : en 3 jours, 24 nouvelles offres et 24 disparues sur 197, et 23 fiches inutiles dans le cache ;
   - ajout ensuite : `historique.py` (comparaison avec la collecte précédente, `historique-collectes.csv`, `--nettoyer-cache`), badge « Nouvelle » et filtre dans `offres.html`, scripts `collecte-reguliere.ps1` et `planifier-collecte.ps1` ;
   - 13 nouveaux tests dans `test_historique.py` ; au total, 192 tests OK.
+- **README d'accueil ✅ (20 novembre)** : `equipe/kandet/README.md`, avec 3 commandes pour essayer, le contenu du dossier et les règles suivies.
+- **Format commun ✅ (20 novembre)** : dossier à part `equipe/kandet/format-commun/` (`convertir.py`, 10 tests). Il convertit `offres.json` au modèle `JobOffer` de Gregory. Les 195 offres sont acceptées telles quelles par son modèle, et rien n'est deviné (province et pays « Non spécifié » pour Remotive).
+- **Jobboom ❌ (vérifié le 20 novembre)** : le `robots.txt` le permet, mais les conditions d'utilisation interdisent de copier, reproduire ou publier les informations du site. Non ajouté.
 - **Descriptions de Québec emploi ❌ (vérifié le 17 novembre)** : techniquement possible (JSON-LD `JobPosting`, `robots.txt` permissif), mais interdit par les conditions d'utilisation du site. Non ajouté.
 - **Score de pertinence pour un étudiant du DEC** : règles simples et affichées (stage, niveau débutant, technologies vues au cours). Le score doit être expliqué, pas une note magique.
 - **Géolocalisation** : à partir du code postal, seulement avec une source de données autorisée.

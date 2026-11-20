@@ -503,6 +503,10 @@ Les 13 nouveaux tests (`test_historique.py`) vérifient notamment :
   - J'ai vérifié Québec emploi le 17 novembre. Techniquement, ce serait facile : ses pages d'offres contiennent un bloc JSON-LD `JobPosting` avec la description complète, et le `robots.txt` les autorise.
   - Mais ses [conditions d'utilisation](https://www.quebecemploi.gouv.qc.ca/conditions-d-utilisation) disent : « Il est interdit d'avoir recours à des robots ou à tout autre procédé automatisé pour accéder au site Québec emploi ou pour y collecter, extraire, générer ou exploiter des données ».
   - Je ne l'ai donc pas ajouté. Pour ces offres, il faut lire la description sur Québec emploi en suivant le lien.
+- **Jobboom (vérifié le 20 novembre) :**
+  - le `robots.txt` autorise les pages d'offres, et les fiches contiennent des données structurées ;
+  - mais les [conditions d'utilisation](https://www.jobboom.com/carriere/conditions-utilisation) interdisent de « modifier, copier, distribuer, transmettre, diffuser, représenter, reproduire, publier […] tout information […] obtenu à partir du site ». Or notre projet copie les offres (`offres.json`) et les republie (`offres.html`, échantillons sur GitHub) ;
+  - je ne l'ai donc pas ajouté. Ce point est à vérifier pour toute collecte de Jobboom dans le projet commun.
 - **Stages :** un seul confirmé sur 194 offres. Il y a très peu de stages TI sur le Guichet-Emplois en ce moment, et `fsrc=16` n'est pas un filtre de stages.
 - **Caractères des partenaires :** des `?` remplacent les apostrophes dans leurs textes (« d?ordinateur »). Ils sont laissés tels quels, car un `?` peut être une vraie question.
 - **Salaires :**
@@ -529,6 +533,8 @@ Les 13 nouveaux tests (`test_historique.py`) vérifient notamment :
 - **Collecte régulière :**
   - la comparaison se fait seulement avec le dernier `offres.json`. Si une collecte a des erreurs, des offres peuvent paraître « disparues » à tort ; le programme l'écrit alors en avertissement ;
   - le Planificateur ne lance la collecte que si la session Windows est ouverte.
+
+**Pour la mise en commun :** le dossier [`../format-commun/`](../format-commun/README.md), à part de ce projet, convertit `offres.json` au format `JobOffer` de Gregory. Les 195 offres sont acceptées telles quelles par son modèle.
 
 **À faire ensuite :**
 - recueillir l'avis des camarades de classe qui testeront la page et l'aide à la candidature.

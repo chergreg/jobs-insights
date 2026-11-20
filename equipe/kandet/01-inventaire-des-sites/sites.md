@@ -21,6 +21,7 @@ Recherche centrée sur les emplois et stages en informatique au Québec, plus qu
   - Site québécois. Beaucoup d'offres en TI, avec la scolarité, l'expérience et les langues demandées.
 - [Jobboom](https://www.jobboom.com/fr/emploi/informatique/_lfrk?dk=informatique)
   - Site québécois avec une catégorie informatique.
+  - Consultation manuelle seulement : ses conditions d'utilisation interdisent de copier ou de republier les informations du site (vérifié le 20 novembre 2026).
 - [Talent.com](https://ca.talent.com/fr/jobs?k=informatique&l=Qu%C3%A9bec)
   - Agrégateur. Recherche par mot-clé et par ville.
 - [Indeed Canada](https://ca.indeed.com/)
