@@ -2,6 +2,8 @@
 offres.json
 offres.csv
 offres.html
+historique-collectes.csv
+journal-collectes.log
 # CV et rapports personnels : ne jamais les mettre dans Git
 rapport-candidature*.md
 rapport-lettre*.md

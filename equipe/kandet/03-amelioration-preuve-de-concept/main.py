@@ -30,7 +30,9 @@ from filtres import Filters, filter_offers
 from fusion import aggregate_records
 from interface import write_html
 from lettre import build_letter_report, check_letter, find_offer, letter_tips
+from texte import french_date
 from guichet import CNP_CODES_TI, GUICHET_DELAY_SECONDS, GUICHET_SEARCH_URL, fetch_guichet
+from historique import Changes, append_history, clean_cache, compare_with_previous, load_previous
 from modele import AggregatedOffer, SourceRecord
 from normalisation import normalize_record
 from remotive import (
@@ -173,6 +175,11 @@ def build_parser() -> argparse.ArgumentParser:
         help="Écrit aussi un petit fichier avec les 10 premières offres du Guichet-Emplois.",
     )
     sorties.add_argument("--sans-sauvegarde", action="store_true", help="Ne pas écrire offres.json.")
+    sorties.add_argument(
+        "--nettoyer-cache",
+        action="store_true",
+        help="Après une collecte complète, retirer du cache les fiches des offres qui ne sont plus en ligne.",
+    )
     sorties.add_argument(
         "--resume-seulement",
         action="store_true",
@@ -317,6 +324,7 @@ def save_json(args: argparse.Namespace, offers: list[AggregatedOffer], report: d
         "errors": report["errors"],
         "guichet_searches": report["guichet_searches"],
         "postings": report["postings"],
+        "changes_since_previous": report["changes"].as_dict() if report.get("changes") else None,
         "remotive_total_in_api": report["remotive_total_in_api"],
         "offer_count": len(offers),
         "summary": summary,
@@ -412,6 +420,51 @@ def collected_on(path: Path) -> str | None:
         return None
 
 
+def describe_changes(new_offers: int, previous_date: str) -> str:
+    """Phrase affichée en haut de la page HTML."""
+    plural = "s" if new_offers > 1 else ""
+    return f" · {new_offers} nouvelle{plural} offre{plural} depuis la collecte du {french_date(previous_date)}"
+
+
+def print_changes(changes: Changes, had_errors: bool) -> None:
+    print(
+        f"\nDepuis la collecte du {french_date(changes.previous_date)} : {changes.new_count} nouvelle(s) offre(s), "
+        f"{len(changes.gone)} disparue(s) (dont {changes.gone_before_expiry} retirée(s) avant leur date limite), "
+        f"{changes.kept_count} toujours en ligne."
+    )
+    if had_errors:
+        print("ATTENTION : la collecte a eu des erreurs. Certaines offres « disparues » sont peut-être encore en ligne.")
+
+
+def changes_text_from_file(path: Path) -> str:
+    """Phrase sur les nouveautés, lue dans un offres.json (option --depuis)."""
+    try:
+        changes = json.loads(path.read_text(encoding="utf-8")).get("changes_since_previous")
+        return describe_changes(int(changes["new_offers"]), str(changes["previous_generated_at"])) if changes else ""
+    except (OSError, ValueError, AttributeError, TypeError, KeyError):
+        return ""
+
+
+def clean_cache_after_collection(args: argparse.Namespace, offers: list[AggregatedOffer], report: dict[str, object]) -> None:
+    """Ménage du cache, seulement après une collecte complète et sans erreur."""
+    searches = report["guichet_searches"]
+    complete = (
+        not args.sans_fiches
+        and args.max_fiches is None
+        and not report["errors"]
+        and searches
+        and all(search["collected"] == search["announced_total"] or search["announced_total"] is None for search in searches)
+    )
+    if not complete:
+        print("Cache non nettoyé : il faut une collecte complète, avec toutes les fiches et sans erreur.")
+        return
+    current_ids = {
+        record.source_id for offer in offers for record in offer.source_records if record.source == "Guichet-Emplois"
+    }
+    removed = clean_cache(args.cache_fiches, current_ids)
+    print(f"Cache nettoyé : {removed} fiche(s) d'offres disparues retirée(s).")
+
+
 def main(argv: list[str] | None = None) -> None:
     args = build_parser().parse_args(argv)
 
@@ -438,10 +491,19 @@ def main(argv: list[str] | None = None) -> None:
             raise SystemExit(f"Impossible de lire {args.depuis} : {error}")
         report = None
         collection_date = collected_on(args.depuis)
+        changes_text = changes_text_from_file(args.depuis)
         print(f"{len(offers)} offres relues depuis {args.depuis} (aucun téléchargement).")
     else:
         offers, report = collect(args)
         collection_date = datetime.now().date().isoformat()
+        # Comparaison avec le offres.json précédent, avant qu'il soit remplacé.
+        previous = load_previous(args.sortie)
+        changes = compare_with_previous(previous, offers) if previous else None
+        report["changes"] = changes
+        changes_text = ""
+        if changes:
+            print_changes(changes, bool(report["errors"]))
+            changes_text = describe_changes(changes.new_count, changes.previous_date)
 
     if not offers:
         print("Aucune offre ne correspond aux critères.")
@@ -463,11 +525,17 @@ def main(argv: list[str] | None = None) -> None:
     print()
     if report is not None and not args.sans_sauvegarde:
         save_json(args, offers, report, summary)
+        history = args.sortie.parent / "historique-collectes.csv"
+        postings = report["postings"] or {}
+        append_history(history, len(offers), report["changes"], int(postings.get("read", 0)), len(report["errors"]))
+        print(f"Historique des collectes : {history}")
+    if report is not None and args.nettoyer_cache:
+        clean_cache_after_collection(args, offers, report)
     if args.csv:
         write_csv(selected, args.csv)
         print(f"CSV pour Excel enregistré dans : {args.csv} ({len(selected)} offres)")
     if args.html:
-        write_html(selected, args.html, generated_on=collection_date)
+        write_html(selected, args.html, generated_on=collection_date, changes_text=changes_text)
         print(f"Page à ouvrir dans le navigateur : {args.html} ({len(selected)} offres)")
 
 

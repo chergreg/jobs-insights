@@ -150,6 +150,7 @@
   .badges { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
   .badge { font-size: 12.5px; padding: 2px 8px; border-radius: 6px; background: var(--accent-fond); color: var(--accent); }
   .badge.stage { background: var(--vert-fond); color: var(--vert); font-weight: 600; }
+  .badge.nouvelle { background: var(--accent); color: var(--sur-accent); font-weight: 600; }
   .badge.bientot { background: var(--orange-fond); color: var(--orange); }
   .badge.urgent { background: var(--rouge-fond); color: var(--rouge); font-weight: 600; }
   .salaire { margin-top: 8px; font-weight: 600; }
@@ -224,7 +225,7 @@
 <body>
 <header>
   <h1>Offres d'emploi et de stage en informatique au Québec</h1>
-  <p>{{NOMBRE}} offres · collecte du {{DATE}} · Guichet-Emplois (et ses sites partenaires) et Remotive</p>
+  <p>{{NOMBRE}} offres · collecte du {{DATE}}{{NOUVEAUTES}} · Guichet-Emplois (et ses sites partenaires) et Remotive</p>
 </header>
 
 <div class="page">
@@ -268,6 +269,7 @@
     </div>
     <div class="champ">
       <label class="case"><input type="checkbox" id="stages"> Stages seulement</label>
+      <label class="case" id="case-nouvelles" hidden><input type="checkbox" id="nouvelles"> Nouvelles offres seulement</label>
       <label class="case"><input type="checkbox" id="avecSalaire"> Salaire indiqué</label>
       <label class="case"><input type="checkbox" id="actives"> Cacher les offres expirées</label>
     </div>
@@ -360,7 +362,7 @@
   const formatDate = new Intl.DateTimeFormat("fr-CA", { day: "numeric", month: "long", year: "numeric" });
   const dateLisible = (iso) => { const d = new Date(iso + "T00:00:00"); return isNaN(d) ? iso : formatDate.format(d); };
   const $ = (id) => document.getElementById(id);
-  const champs = ["q", "region", "ville", "techno", "niveau", "salaire", "unite", "stages", "avecSalaire", "actives", "tri"];
+  const champs = ["q", "region", "ville", "techno", "niveau", "salaire", "unite", "stages", "nouvelles", "avecSalaire", "actives", "tri"];
   let affichees = PAR_PAGE;
 
   // Comparaison sans accents ni majuscules : « montreal » trouve « Montréal ».
@@ -425,13 +427,14 @@
     const mots = q ? q.split(/\s+/) : [];
     const region = $("region").value, ville = $("ville").value, techno = $("techno").value, niveau = $("niveau").value;
     const salaire = parseFloat($("salaire").value), unite = $("unite").value;
-    const stages = $("stages").checked, avecSalaire = $("avecSalaire").checked, actives = $("actives").checked;
+    const stages = $("stages").checked, nouvelles = $("nouvelles").checked, avecSalaire = $("avecSalaire").checked, actives = $("actives").checked;
     return OFFRES.filter((o) => {
       if (region && o.region !== region) return false;
       if (ville && o.ville !== ville) return false;
       if (techno && !o.technos.includes(techno)) return false;
       if (niveau && o.niveau !== niveau) return false;
       if (stages && !o.stage) return false;
+      if (nouvelles && !o.nouvelle) return false;
       if (avecSalaire && o.salMin === null) return false;
       if (!isNaN(salaire) && (o.salMin === null || o.unite !== unite || o.salMin < salaire)) return false;
       if (actives) { const j = joursAvant(o.expire); if (j !== null && j < 0) return false; }
@@ -509,6 +512,7 @@
     art.append(meta);
 
     const badges = element("div", "badges");
+    if (o.nouvelle) badges.append(element("span", "badge nouvelle", "Nouvelle"));
     if (o.stage) badges.append(element("span", "badge stage", o.stage));
     if (o.niveau) badges.append(element("span", "badge", `Niveau ${o.niveau}`));
     if (o.mode) badges.append(element("span", "badge", o.mode));
@@ -774,6 +778,8 @@
   remplirListe($("region"), compter(OFFRES.map((o) => o.region)), true);
   remplirVilles();
   remplirListe($("techno"), compter(OFFRES.flatMap((o) => o.technos)), true);
+  // La case « Nouvelles offres seulement » n'apparaît que s'il y a des nouveautés depuis la collecte précédente.
+  $("case-nouvelles").hidden = !OFFRES.some((o) => o.nouvelle);
   lireAdresse();
 
   for (const id of champs) {

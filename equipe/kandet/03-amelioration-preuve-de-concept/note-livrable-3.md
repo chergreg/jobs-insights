@@ -28,7 +28,7 @@ Toutes les commandes suivantes se lancent depuis ce dossier.
 python -m unittest discover -p "test_*.py" -v
 ```
 
-La dernière ligne doit être `OK`, après `Ran 179 tests`. Deux tests comparent la page avec Python à l'aide de Node.js, l'un pour le CV et l'autre pour la lettre. Si Node.js n'est pas installé, ces deux tests sont simplement sautés (`skipped`).
+La dernière ligne doit être `OK`, après `Ran 192 tests`. Deux tests comparent la page avec Python à l'aide de Node.js, l'un pour le CV et l'autre pour la lettre. Si Node.js n'est pas installé, ces deux tests sont simplement sautés (`skipped`).
 
 ### 3. Lancer la collecte
 
@@ -120,7 +120,35 @@ Le programme ne note pas la lettre. Il repère ce qui peut être amélioré :
 
 Avec `--rapport-lettre`, le résultat est aussi enregistré dans `rapport-lettre.md`.
 
-### 6. Chercher des offres précises dans le terminal (sans retélécharger)
+### 6. Garder les offres à jour (collecte régulière)
+
+Les offres changent vite : entre le 17 et le 20 novembre, 24 offres sur 197 étaient nouvelles et 24 avaient disparu. Il faut donc refaire la collecte souvent, par exemple chaque jour ou 2 à 3 fois par semaine.
+
+```powershell
+# À la main : collecte, page à jour, ménage du cache (environ 1 minute)
+python main.py --nettoyer-cache --html --resume-seulement
+
+# Ou avec le script, qui note aussi tout dans journal-collectes.log
+.\collecte-reguliere.ps1
+```
+
+À chaque collecte, le programme :
+- **compare avec la collecte précédente** : « 24 nouvelle(s) offre(s), 24 disparue(s) (dont 13 retirée(s) avant leur date limite) ». Le détail est dans `offres.json` (`changes_since_previous`) ;
+- **marque les nouvelles offres** : badge « Nouvelle » dans `offres.html`, case « Nouvelles offres seulement » dans les filtres, et phrase en haut de la page (« 24 nouvelles offres depuis la collecte du 17 novembre 2026 ») ;
+- **ajoute une ligne à `historique-collectes.csv`** (date, offres, nouvelles, disparues…), qui s'ouvre dans Excel ;
+- **avec `--nettoyer-cache`**, retire du cache les fiches des offres disparues. Il le fait seulement après une collecte complète et sans erreur, pour ne rien effacer par erreur.
+
+**Collecte automatique avec Windows :**
+
+```powershell
+.\planifier-collecte.ps1                # chaque jour à 8 h
+.\planifier-collecte.ps1 -Heure 12:30   # à une autre heure
+.\planifier-collecte.ps1 -Supprimer     # arrêter la collecte automatique
+```
+
+La tâche lance `collecte-reguliere.ps1` quand la session est ouverte. Si l'ordinateur est éteint à l'heure prévue, elle se lance dès qu'il est rallumé. Une collecte par jour respecte les règles des sites : 5 s entre les pages du Guichet-Emplois, et Remotive au plus 1 fois par jour grâce au cache de 24 h.
+
+### 7. Chercher des offres précises dans le terminal (sans retélécharger)
 
 Après une collecte, `--depuis offres.json` relit les offres en quelques secondes, sans Internet. On peut combiner plusieurs filtres. Les accents et les majuscules ne comptent pas.
 
@@ -164,6 +192,9 @@ La liste complète des options s'obtient avec `python main.py --help`.
 | `rapport-candidature.md` | Classement des offres selon un CV, avec les suggestions | Non |
 | `lettre-exemple.txt` | Lettre fictive pour essayer la vérification de lettre | Oui |
 | `rapport-lettre.md` | Vérification d'une lettre pour une offre | Non |
+| `historique-collectes.csv` | Une ligne par collecte : offres, nouvelles, disparues | Non |
+| `journal-collectes.log` | Ce qu'a affiché chaque collecte lancée par `collecte-reguliere.ps1` | Non |
+| `collecte-reguliere.ps1`, `planifier-collecte.ps1` | Scripts de collecte régulière et automatique | Oui |
 | `regions_quebec.csv` | Municipalités et arrondissements du Québec avec leur région (source officielle, voir plus bas) | Oui |
 | `cache/fiches/` | Les fiches déjà téléchargées | Non |
 
@@ -216,7 +247,7 @@ Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-d
 **Ce que j'ai modifié :**
 
 - Tout est réécrit avec la bibliothèque standard (`html.parser`) : pas de BeautifulSoup ni de Pydantic, donc aucune installation.
-- Le prototype est découpé en modules : `guichet`, `fiches`, `remotive`, `normalisation`, `competences`, `fusion`, `analyse`, `regions`, `filtres`, `export`, `interface` (avec `interface_cv.js`), `candidature`, `lettre`, `main`.
+- Le prototype est découpé en modules : `guichet`, `fiches`, `remotive`, `normalisation`, `competences`, `fusion`, `analyse`, `regions`, `filtres`, `export`, `interface` (avec `interface_cv.js`), `candidature`, `lettre`, `historique`, `main`.
 - Nouveaux champs :
   - titre de l'employeur, description, tâches ;
   - date d'expiration et date de début ;
@@ -240,6 +271,11 @@ Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-d
   - au moment de créer la page, `interface.py` y copie les expressions de `competences.py` et `candidature.py`. La page et `main.py --cv` utilisent donc les mêmes règles ;
   - le `.docx` est lu dans le navigateur, sans bibliothèque (`DecompressionStream`).
 - Vérification d'une lettre de motivation (module `lettre`), options `--lettre`, `--offre` et `--rapport-lettre`. Elle se fait aussi dans la page, avec le bouton « Vérifier ma lettre pour cette offre ». La page reçoit les listes de mots de `lettre.py`.
+- Collecte régulière (module `historique`) :
+  - comparaison avec la collecte précédente : offres nouvelles et disparues ;
+  - badge « Nouvelle » et filtre dans la page ;
+  - historique CSV et ménage du cache (`--nettoyer-cache`) ;
+  - scripts PowerShell `collecte-reguliere.ps1` et `planifier-collecte.ps1` (Planificateur de tâches de Windows).
 - Filtres et export : `--ville`, `--region`, `--techno`, `--niveau`, `--stages`, `--salaire-min`, `--employeur`, export `--csv` pour Excel, et `--depuis` pour filtrer une collecte déjà faite sans Internet (modules `filtres` et `export`).
 
 Le code est dans ce dossier. Le prototype du L2 reste tel quel dans `02-preuve-de-concept-scraping/`.
@@ -281,7 +317,10 @@ python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equi
 # Vérifier une lettre de motivation pour une offre
 python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equipe\kandet\03-amelioration-preuve-de-concept\offres.json --lettre .\equipe\kandet\03-amelioration-preuve-de-concept\lettre-exemple.txt --offre 50585958
 
-# Tests hors ligne (179 tests)
+# Collecte régulière : comparaison avec la collecte précédente, page à jour, ménage du cache
+python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --nettoyer-cache --html --resume-seulement
+
+# Tests hors ligne (192 tests)
 python -m unittest discover -s equipe/kandet/03-amelioration-preuve-de-concept -p "test_*.py" -v
 ```
 
@@ -308,7 +347,7 @@ Sorties :
 | Technologies détectées | 0 | 83 offres |
 | Niveau (débutant, intermédiaire, avancé) | 0 | 124 offres |
 | Stages détectés | 0 | 1 confirmé |
-| Tests hors ligne | 33 | 179 |
+| Tests hors ligne | 33 | 192 |
 
 Les compteurs de la dernière colonne viennent du résumé de `offres.json` (`summary.filled_fields`).
 
@@ -418,6 +457,39 @@ Les captures sur ordinateur et sur téléphone ont fait corriger un champ « Cho
 
 Le test automatique de la lettre a d'abord été trop faible : avec un script volontairement modifié (mots comparés sur 4 lettres au lieu de 5), il passait encore. J'ai ajouté un cas où cette différence compte (« partenaires » et « participé »). Maintenant, il échoue avec le script modifié.
 
+### Vérification de la collecte régulière (20 novembre)
+
+Essai d'abord : une nouvelle collecte le 20 novembre, enregistrée à part et comparée à celle du 17 novembre.
+
+| Mesure | Résultat |
+|---|---|
+| Annonces le 17 / le 20 | 197 / 197 |
+| Nouvelles | 24 (12 %) |
+| Disparues | 24, dont 14 avant leur date limite (sans doute des postes déjà pourvus) |
+| Fiches du cache devenues inutiles | 23 |
+
+Sans nouvelle collecte, la page aurait donc montré 24 offres qui n'existent plus et caché 24 nouvelles.
+
+Une fois le code ajouté, j'ai lancé `collecte-reguliere.ps1` pour de vrai, comme le ferait le Planificateur :
+- collecte en 58 s, sans erreur ;
+- 24 nouvelles et 24 disparues, mêmes chiffres que l'essai ;
+- 23 fiches retirées du cache (de 213 à 190) ;
+- historique et journal écrits, avec les accents intacts.
+
+J'ai aussi vérifié dans Edge :
+- l'en-tête indique « 24 nouvelles offres depuis la collecte du 17 novembre 2026 » ;
+- le filtre « Nouvelles offres seulement » donne exactement 24 offres, et 12 avec la région Montréal.
+
+`planifier-collecte.ps1` a seulement été vérifié (syntaxe PowerShell correcte). Il n'a pas été lancé : la tâche s'ajoute à l'ordinateur seulement quand on l'exécute soi-même.
+
+Les 13 nouveaux tests (`test_historique.py`) vérifient notamment :
+- deux collectes simulées de suite (1 nouvelle, 1 disparue) ;
+- une offre retrouvée chez un autre partenaire, qui ne doit pas être comptée comme nouvelle ;
+- un `offres.json` précédent absent ou abîmé ;
+- l'historique, avec une seule ligne d'en-tête ;
+- le ménage du cache, qui ne se fait pas après une collecte partielle ;
+- le marqueur UTF-8 des scripts PowerShell.
+
 ### Ce que les données montrent (17 novembre)
 
 - **Salaire médian** (valeur basse de la fourchette) : 70 000 $ par année (111 offres), 36 $ de l'heure (68 offres).
@@ -454,6 +526,9 @@ Le test automatique de la lettre a d'abord été trop faible : avec un script vo
   - les règles ne jugent ni le style ni l'orthographe ;
   - les mots-clés sont comparés par leur début (5 lettres) : un synonyme (« tester » au lieu de « mettre à l'essai ») n'est pas reconnu.
 
+- **Collecte régulière :**
+  - la comparaison se fait seulement avec le dernier `offres.json`. Si une collecte a des erreurs, des offres peuvent paraître « disparues » à tort ; le programme l'écrit alors en avertissement ;
+  - le Planificateur ne lance la collecte que si la session Windows est ouverte.
+
 **À faire ensuite :**
-- refaire une collecte régulièrement : les offres expirent vite (71 en une semaine) ;
-- montrer la page et l'aide à la candidature à quelques étudiants pour savoir ce qui leur est vraiment utile.
+- recueillir l'avis des camarades de classe qui testeront la page et l'aide à la candidature.

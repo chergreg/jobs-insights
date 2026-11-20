@@ -71,7 +71,7 @@ class PageTests(unittest.TestCase):
         self.assertEqual(len(rows), 2)
         self.assertEqual(rows[0]["region"], "Capitale-Nationale")
         self.assertEqual(rows[1]["technos"], ["SQL"])
-        self.assertIn("2 offres · collecte du 2026-11-17", page)
+        self.assertIn("2 offres · collecte du 17 novembre 2026", page)
         self.assertNotIn("{{", page)
 
     def test_text_from_a_job_offer_cannot_break_the_page(self) -> None:

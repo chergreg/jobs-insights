@@ -12,6 +12,7 @@ import json
 from pathlib import Path
 
 from modele import AggregatedOffer
+from texte import french_date
 
 
 STAGE_LABELS = {"confirmed_stage": "Stage", "possible_stage": "Stage possible"}
@@ -70,6 +71,7 @@ def offer_to_row(offer: AggregatedOffer, number: int) -> dict[str, object]:
         "titreEmployeur": offer.original_title,
         "taches": offer.tasks,
         "aDescription": bool(offer.description),
+        "nouvelle": offer.new_since_previous,
         "employeur": offer.employer,
         "ville": offer.city,
         "region": offer.region,
@@ -102,13 +104,14 @@ def _json_for_html(rows: object) -> str:
     return json.dumps(rows, ensure_ascii=False).replace("</", "<\\/")
 
 
-def build_html(offers: list[AggregatedOffer], generated_on: str | None = None) -> str:
+def build_html(offers: list[AggregatedOffer], generated_on: str | None = None, changes_text: str = "") -> str:
     rows = [offer_to_row(offer, number) for number, offer in enumerate(offers, start=1)]
     generated_on = generated_on or date.today().isoformat()
     template = TEMPLATE_FILE.read_text(encoding="utf-8")
     cv_script = CV_SCRIPT_FILE.read_text(encoding="utf-8").replace("</", "<\\/")
     return (
-        template.replace("{{DATE}}", html.escape(generated_on))
+        template.replace("{{DATE}}", html.escape(french_date(generated_on)))
+        .replace("{{NOUVEAUTES}}", html.escape(changes_text))
         .replace("{{NOMBRE}}", str(len(rows)))
         .replace("{{REGLES}}", _json_for_html(browser_rules()))
         .replace("{{SCRIPT_CV}}", cv_script)
@@ -116,6 +119,6 @@ def build_html(offers: list[AggregatedOffer], generated_on: str | None = None) -
     )
 
 
-def write_html(offers: list[AggregatedOffer], path: Path, generated_on: str | None = None) -> None:
+def write_html(offers: list[AggregatedOffer], path: Path, generated_on: str | None = None, changes_text: str = "") -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(build_html(offers, generated_on), encoding="utf-8")
+    path.write_text(build_html(offers, generated_on, changes_text), encoding="utf-8")

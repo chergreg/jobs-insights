@@ -366,6 +366,10 @@ Ce sont des pistes 3 et 4 du projet (présenter les offres, aider à la candidat
   - essai d'abord : 780 cas sur 780 identiques entre JavaScript et `lettre.py` (4 lettres × 195 offres, avec et sans CV) ;
   - ajout ensuite : bouton « Vérifier ma lettre pour cette offre » et fenêtre de vérification dans `offres.html`. Les listes de mots de `lettre.py` sont copiées dans la page ;
   - test Node.js de la lettre, renforcé après avoir constaté qu'il ne voyait pas un changement de règle ; au total, 179 tests OK.
+- **Collecte régulière ✅ (20 novembre)** :
+  - essai d'abord : en 3 jours, 24 nouvelles offres et 24 disparues sur 197, et 23 fiches inutiles dans le cache ;
+  - ajout ensuite : `historique.py` (comparaison avec la collecte précédente, `historique-collectes.csv`, `--nettoyer-cache`), badge « Nouvelle » et filtre dans `offres.html`, scripts `collecte-reguliere.ps1` et `planifier-collecte.ps1` ;
+  - 13 nouveaux tests dans `test_historique.py` ; au total, 192 tests OK.
 - **Descriptions de Québec emploi ❌ (vérifié le 17 novembre)** : techniquement possible (JSON-LD `JobPosting`, `robots.txt` permissif), mais interdit par les conditions d'utilisation du site. Non ajouté.
 - **Score de pertinence pour un étudiant du DEC** : règles simples et affichées (stage, niveau débutant, technologies vues au cours). Le score doit être expliqué, pas une note magique.
 - **Géolocalisation** : à partir du code postal, seulement avec une source de données autorisée.
