@@ -184,6 +184,28 @@
   .note-cv.moyenne { background: var(--accent-fond); color: var(--accent); }
   .note-cv.basse { background: var(--fond); color: var(--doux); border: 1px solid var(--bord); }
   .cv-ligne .manque { color: var(--orange); }
+  /* Vérification d'une lettre de motivation */
+  button.lien-bouton { border: 0; background: none; padding: 0; color: var(--accent); text-decoration: underline; font-size: 14px; }
+  #dialogue-lettre {
+    width: min(760px, calc(100vw - 24px)); max-height: calc(100vh - 32px); padding: 0;
+    border: 1px solid var(--bord); border-radius: 12px; background: var(--carte); color: var(--texte);
+  }
+  #dialogue-lettre::backdrop { background: rgba(10, 14, 22, .55); }
+  #dialogue-lettre .contenu { padding: 18px 20px; overflow-y: auto; max-height: calc(100vh - 34px); }
+  #dialogue-lettre h2 { margin: 0 0 4px; font-size: 18px; }
+  #dialogue-lettre .offre-visee { color: var(--doux); margin: 0 0 12px; font-size: 14px; }
+  #dialogue-lettre textarea {
+    width: 100%; min-height: 160px; padding: 8px 10px; margin-top: 8px; font: inherit; font-size: 14px;
+    border: 1px solid var(--bord); border-radius: 6px; background: var(--fond); color: var(--texte); resize: vertical;
+  }
+  #dialogue-lettre .actions { margin-top: 10px; }
+  #lettre-message { font-size: 14px; margin: 8px 0 0; }
+  #lettre-message.erreur { color: var(--rouge); }
+  .verifs { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 4px; font-size: 14px; }
+  .verifs .ok::before { content: "✓ "; color: var(--vert); font-weight: 700; }
+  .verifs .a-revoir::before { content: "✗ "; color: var(--rouge); font-weight: 700; }
+  #lettre-conseils { margin: 12px 0 0; padding-left: 20px; font-size: 14px; display: grid; gap: 6px; }
+  input[type="file"] { max-width: 100%; font-size: 14px; }
   footer { max-width: 1280px; margin: 0 auto; padding: 0 24px 32px; color: var(--doux); font-size: 13px; }
   .meta, .resume, article h3 { overflow-wrap: anywhere; }
   @media (max-width: 860px) {
@@ -294,6 +316,26 @@
     <button type="button" id="plus" hidden>Afficher plus d'offres</button>
   </main>
 </div>
+
+<dialog id="dialogue-lettre" aria-labelledby="titre-lettre">
+  <div class="contenu">
+    <h2 id="titre-lettre">Vérifier ma lettre de motivation</h2>
+    <p class="offre-visee" id="lettre-offre"></p>
+    <p class="aide">
+      Choisissez la lettre (.docx ou .txt) ou collez son texte. Elle reste dans ce navigateur : rien n'est envoyé ni enregistré.
+      La lettre n'est pas notée : la page repère ce qui peut être amélioré pour cette offre (mêmes règles que <code>main.py --lettre</code>).
+    </p>
+    <input type="file" id="lettre-fichier" accept=".docx,.txt,.md" aria-label="Fichier de la lettre">
+    <textarea id="lettre-texte" placeholder="… ou collez le texte de votre lettre ici" aria-label="Texte de la lettre"></textarea>
+    <div class="actions">
+      <button type="button" id="lettre-verifier" class="principal">Vérifier la lettre</button>
+      <button type="button" id="lettre-fermer">Fermer</button>
+    </div>
+    <p id="lettre-message" role="status" aria-live="polite"></p>
+    <ul class="verifs" id="lettre-verifs" hidden></ul>
+    <ul id="lettre-conseils" hidden></ul>
+  </div>
+</dialog>
 
 <footer>
   Sources : <a href="https://www.guichetemplois.gc.ca/">Guichet-Emplois</a> (offres directes et partenaires : Jobillico, Québec emploi, Talent.com…),
@@ -527,6 +569,10 @@
     if (principal) liens.append(principal);
     const origine = lienSur(o.lienOrigine, `Annonce d'origine (${o.sites[0]})`);
     if (origine) liens.append(origine);
+    const boutonLettre = element("button", "lien-bouton", "Vérifier ma lettre pour cette offre");
+    boutonLettre.type = "button";
+    boutonLettre.addEventListener("click", () => ouvrirLettre(o));
+    liens.append(boutonLettre);
     if (liens.children.length) art.append(liens);
     return art;
   }
@@ -607,7 +653,7 @@
       try { return new TextDecoder("utf-8", { fatal: true }).decode(octets); }
       catch { return new TextDecoder("windows-1252").decode(octets); } // fichier enregistré en ANSI
     }
-    throw new Error("Format non pris en charge. Enregistrez le CV en .docx (Word) ou en .txt.");
+    throw new Error("Format non pris en charge. Enregistrez le document en .docx (Word) ou en .txt.");
   }
 
   function afficherProfil(p, resultats, sansInfo) {
@@ -661,6 +707,58 @@
 
   $("cv-comparer").addEventListener("click", comparerCv);
   $("cv-retirer").addEventListener("click", retirerCv);
+
+  // --- Vérification d'une lettre de motivation -----------------------------------
+  const reglesLettre = JSON.parse(document.getElementById("regles").textContent);
+  const verificateur = creerVerificateurLettre(reglesLettre);
+  const { motsMin, motsMax } = reglesLettre.lettre;
+  let offreLettre = null;
+
+  function messageLettre(texte, erreur) {
+    $("lettre-message").textContent = texte;
+    $("lettre-message").className = erreur ? "erreur" : "";
+  }
+
+  function ouvrirLettre(o) {
+    offreLettre = o;
+    $("lettre-offre").textContent = `Offre : ${o.titre} · ${o.employeur || "employeur non précisé"}`;
+    $("lettre-verifs").hidden = true; $("lettre-conseils").hidden = true;
+    messageLettre("");
+    $("dialogue-lettre").showModal(); // la lettre déjà collée est gardée pour essayer une autre offre
+  }
+
+  async function verifierLettre() {
+    try {
+      const fichier = $("lettre-fichier").files[0];
+      const texte = fichier ? await lireFichierCv(fichier) : $("lettre-texte").value;
+      if (!texte.trim()) { messageLettre("Choisissez un fichier ou collez le texte de la lettre.", true); return; }
+      if (fichier) { $("lettre-texte").value = texte; $("lettre-fichier").value = ""; } // on peut ensuite retoucher le texte
+      const v = verificateur.verifier(texte, offreLettre);
+      const conseils = verificateur.suggestions(v, offreLettre, profilCv ? profilCv.technos : null);
+      const point = (ok, texteOk, texteNon) => element("li", ok ? "ok" : "a-revoir", ok ? texteOk : texteNon);
+      const verifs = [
+        point(!v.zones.length, "Aucune zone à remplir oubliée", `Zones à remplir oubliées : ${v.zones.join(", ")}`),
+        v.employeurCite === null
+          ? element("li", "", "Employeur non précisé dans l'offre")
+          : point(v.employeurCite, "Employeur cité", "Employeur non cité"),
+        point(v.posteCite, "Poste cité", "Poste non cité"),
+        point(!v.technosAbsentes.length, "Toutes les technologies de l'offre sont citées",
+          `Technologies de l'offre citées : ${v.technosCitees.join(", ") || "aucune"} · absentes : ${v.technosAbsentes.join(", ")}`),
+        point(v.nbMots >= motsMin && v.nbMots <= motsMax, `Longueur : ${v.nbMots} mots`, `Longueur : ${v.nbMots} mots (viser ${motsMin} à ${motsMax})`),
+      ];
+      $("lettre-verifs").replaceChildren(...verifs);
+      $("lettre-conseils").replaceChildren(...(conseils.length ? conseils : ["Rien à signaler avec ces règles. Relisez quand même l'offre complète."])
+        .map((t) => element("li", "", t)));
+      $("lettre-verifs").hidden = false; $("lettre-conseils").hidden = false;
+      messageLettre(profilCv ? "Suggestions faites avec votre CV chargé dans la page." : "Astuce : chargez aussi votre CV pour des suggestions plus précises.");
+    } catch (erreur) {
+      messageLettre(erreur.message, true);
+    }
+  }
+
+  $("lettre-verifier").addEventListener("click", verifierLettre);
+  $("lettre-fermer").addEventListener("click", () => $("dialogue-lettre").close());
+  $("lettre-fichier").addEventListener("change", () => messageLettre(""));
 
   // Sur téléphone, les filtres sont repliés au départ pour voir tout de suite les offres.
   const petitEcran = window.matchMedia("(max-width: 860px)");

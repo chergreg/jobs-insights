@@ -31,9 +31,11 @@ CV_SCRIPT_FILE = Path(__file__).with_name("interface_cv.js")
 def browser_rules() -> dict[str, object]:
     """Les expressions de competences.py et candidature.py, copiées telles quelles dans la page.
 
-    Ainsi la comparaison avec un CV dans le navigateur utilise exactement les mêmes règles
-    que `main.py --cv` (vérifié par test_interface_cv.py).
+    Ainsi la comparaison avec un CV et la vérification d'une lettre dans le navigateur
+    utilisent exactement les mêmes règles que `main.py --cv` et `main.py --lettre`
+    (vérifié par test_interface_cv.py).
     """
+    import lettre
     from candidature import LANGUAGE_WORDS, STAGE_WANTED_PATTERN, STUDENT_PATTERN
     from competences import DESCRIPTION_EXPERIENCE, SKILL_PATTERNS, TECHNOLOGY_PATTERNS
 
@@ -44,6 +46,15 @@ def browser_rules() -> dict[str, object]:
         "etudiant": STUDENT_PATTERN.pattern,
         "stageRecherche": STAGE_WANTED_PATTERN.pattern,
         "langues": LANGUAGE_WORDS,
+        "lettre": {
+            "motsVides": sorted(lettre.STOP_WORDS),
+            "motsEmployeur": sorted(lettre.EMPLOYER_COMMON),
+            "zonesARemplir": lettre.PLACEHOLDER_PATTERN.pattern,
+            "longueurRacine": lettre.STEM_LENGTH,
+            "maxMotsCles": lettre.MAX_KEYWORDS,
+            "motsMin": lettre.MIN_WORDS,
+            "motsMax": lettre.MAX_WORDS,
+        },
     }
 
 
@@ -55,6 +66,10 @@ def offer_to_row(offer: AggregatedOffer, number: int) -> dict[str, object]:
         "titre": offer.original_title or offer.title,
         "titreCnp": offer.title if offer.original_title and offer.original_title != offer.title else "",
         "titreTri": offer.title,  # même ordre qu'en Python quand deux notes sont égales
+        # Pour la vérification d'une lettre (mêmes données que lettre.py)
+        "titreEmployeur": offer.original_title,
+        "taches": offer.tasks,
+        "aDescription": bool(offer.description),
         "employeur": offer.employer,
         "ville": offer.city,
         "region": offer.region,

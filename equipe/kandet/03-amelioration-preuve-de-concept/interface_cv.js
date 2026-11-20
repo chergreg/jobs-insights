@@ -1,3 +1,6 @@
+// Aide à la candidature dans la page offres.html : comparaison avec un CV, lecture des .docx
+// et vérification d'une lettre de motivation. Les règles viennent de Python (voir interface.py).
+
 // Comparaison d'un CV avec les offres, dans le navigateur.
 // Même calcul que candidature.py ; les expressions viennent de competences.py (REGLES).
 function creerComparateur(REGLES) {
@@ -73,7 +76,6 @@ function creerComparateur(REGLES) {
   }
   return { profil, comparer, classer, simple };
 }
-if (typeof module !== "undefined") module.exports = { creerComparateur };
 // Lecture du texte d'un .docx dans le navigateur, sans bibliothèque.
 // Un .docx est une archive ZIP : on cherche word/document.xml, on le décompresse, puis on lit les <w:t>.
 async function texteDocx(octets) {
@@ -131,3 +133,89 @@ function texteDepuisXml(xml) {
   }
   return lignes.join("\n");
 }
+
+// Vérification d'une lettre de motivation dans le navigateur : même règles que lettre.py.
+function creerVerificateurLettre(REGLES) {
+  const L = REGLES.lettre;
+  const simple = (t) => String(t || "").normalize("NFKD").replace(/\p{M}/gu, "").toLowerCase();
+  const technos = REGLES.technologies.map(([nom, src]) => [nom, new RegExp(src, "iu")]);
+  const competences = REGLES.competences.map(([nom, src]) => [nom, new RegExp(src, "u")]);
+  const motsVides = new Set(L.motsVides);
+  const motsEmployeur = new Set(L.motsEmployeur);
+  const zones = new RegExp(L.zonesARemplir, "gu");
+
+  const mots = (t) => simple(t).match(/[a-z0-9]+/g) || [];
+  const racine = (m) => m.slice(0, L.longueurRacine);
+  function importants(texte, longueurMin = 4) {
+    const vus = new Map();
+    for (const mot of String(texte || "").toLowerCase().match(/\p{L}+/gu) || []) {
+      const plat = simple(mot);
+      if (plat.length >= longueurMin && !motsVides.has(plat) && !vus.has(racine(plat))) vus.set(racine(plat), mot);
+    }
+    return [...vus.values()];
+  }
+
+  function employeurCite(lettre, employeur) {
+    let distinctifs = mots(employeur).filter((m) => m.length >= 3 && !motsEmployeur.has(m));
+    if (!distinctifs.length) distinctifs = mots(employeur).filter((m) => m.length >= 3);
+    if (!distinctifs.length) return null;
+    const dansLettre = new Set(mots(lettre));
+    return distinctifs.some((m) => dansLettre.has(m));
+  }
+
+  function posteCite(lettre, o) {
+    const racines = new Set(mots(lettre).map(racine));
+    for (const titre of [o.titreEmployeur, (o.titreTri || "").replace(/\/[^\s\/]+/g, "")]) {
+      const liste = importants(titre);
+      if (liste.length && liste.filter((m) => racines.has(racine(simple(m)))).length * 3 >= liste.length * 2) return true;
+    }
+    return false;
+  }
+
+  function verifier(lettre, o) {
+    const cites = technos.filter(([, re]) => re.test(lettre)).map(([nom]) => nom);
+    const plat = simple(lettre);
+    const competencesCitees = competences.filter(([, re]) => re.test(plat)).map(([nom]) => nom);
+    const racines = new Set(mots(lettre).map(racine));
+    const source = (o.taches || []).join(" ") || o.resume || "";
+    return {
+      nbMots: (lettre.match(/[\p{L}\p{N}_]+(?:['’][\p{L}\p{N}_]+)?/gu) || []).length,
+      employeurCite: employeurCite(lettre, o.employeur),
+      posteCite: posteCite(lettre, o),
+      technosCitees: o.technos.filter((t) => cites.includes(t)),
+      technosAbsentes: o.technos.filter((t) => !cites.includes(t)),
+      competencesCitees: o.competences.filter((c) => competencesCitees.includes(c)),
+      competencesAbsentes: o.competences.filter((c) => !competencesCitees.includes(c)),
+      motsAbsents: importants(source, 5).filter((m) => !racines.has(racine(simple(m)))).slice(0, L.maxMotsCles),
+      zones: [...new Set(lettre.match(zones) || [])],
+    };
+  }
+
+  // Mêmes phrases que letter_tips() dans lettre.py.
+  function suggestions(v, o, technosCv) {
+    const t = [];
+    if (v.zones.length) t.push("Zones à remplir oubliées : " + v.zones.join(", ") + ".");
+    if (v.employeurCite === false) t.push(`Nommez l'employeur (${o.employeur}) et dites pourquoi il vous intéresse.`);
+    if (!v.posteCite) t.push(`Indiquez clairement le poste visé : « ${o.titre} ».`);
+    if (v.technosCitees.length) t.push("Bien : la lettre cite " + v.technosCitees.join(", ") + ", demandés par l'offre.");
+    if (v.technosAbsentes.length) {
+      if (technosCv) {
+        const connues = v.technosAbsentes.filter((x) => technosCv.includes(x));
+        const inconnues = v.technosAbsentes.filter((x) => !technosCv.includes(x));
+        if (connues.length) t.push("Ces technologies sont dans votre CV mais pas dans la lettre : " + connues.join(", ") + ". Donnez un exemple concret où vous les avez utilisées.");
+        if (inconnues.length) t.push("Demandées par l'offre, absentes de la lettre et du CV : " + inconnues.join(", ") + ". N'en parlez que si vous les connaissez; sinon, montrez que vous apprenez vite.");
+      } else {
+        t.push("Technologies de l'offre absentes de la lettre : " + v.technosAbsentes.join(", ") + ". Citez celles que vous connaissez vraiment, avec un exemple.");
+      }
+    }
+    if (v.competencesAbsentes.length) t.push("Compétences recherchées absentes de la lettre : " + v.competencesAbsentes.join(", ") + ".");
+    if (v.motsAbsents.length) t.push("Mots importants des tâches de l'offre absents de la lettre : " + v.motsAbsents.join(", ") + ". Reprenez une ou deux tâches qui correspondent à votre expérience.");
+    if (v.nbMots < L.motsMin) t.push(`La lettre est courte (${v.nbMots} mots). Visez environ ${L.motsMin} à ${L.motsMax} mots, avec un exemple de projet ou d'expérience.`);
+    else if (v.nbMots > L.motsMax) t.push(`La lettre est longue (${v.nbMots} mots). Visez une page, environ ${L.motsMin} à ${L.motsMax} mots.`);
+    if (!o.aDescription && o.lienOrigine) t.push(`Lisez l'annonce complète avant d'envoyer la lettre : ${o.lienOrigine}`);
+    return t;
+  }
+  return { verifier, suggestions };
+}
+
+if (typeof module !== "undefined") module.exports = { creerComparateur, creerVerificateurLettre };

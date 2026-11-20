@@ -63,7 +63,7 @@ def read_cv(path: Path) -> str:
         return _read_docx(path)
     raise ValueError(
         f"Format {suffix or 'inconnu'} non pris en charge. "
-        "Enregistrez le CV en .docx (Word) ou en .txt, puis relancez."
+        "Enregistrez le document en .docx (Word) ou en .txt, puis relancez."
     )
 
 

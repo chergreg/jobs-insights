@@ -362,6 +362,10 @@ Ce sont des pistes 3 et 4 du projet (présenter les offres, aider à la candidat
   - essai d'abord : mêmes notes en JavaScript et en Python (0 différence sur 3 CV × 195 offres), lecture d'un vrai `.docx` dans Edge, lettre fictive testée. Deux défauts de la lettre corrigés (employeur et titre déclarés cités à tort) ;
   - ajout ensuite : `interface_cv.js` et panneau « Comparer avec mon CV » dans `offres.html`, `lettre.py`, `lettre-exemple.txt`, options `--lettre`, `--offre` et `--rapport-lettre` ;
   - nouveaux tests : `test_lettre.py` et `test_interface_cv.py` (comparaison avec Node.js) ; au total, 178 tests OK.
+- **Lettre dans la page ✅ (20 novembre)** :
+  - essai d'abord : 780 cas sur 780 identiques entre JavaScript et `lettre.py` (4 lettres × 195 offres, avec et sans CV) ;
+  - ajout ensuite : bouton « Vérifier ma lettre pour cette offre » et fenêtre de vérification dans `offres.html`. Les listes de mots de `lettre.py` sont copiées dans la page ;
+  - test Node.js de la lettre, renforcé après avoir constaté qu'il ne voyait pas un changement de règle ; au total, 179 tests OK.
 - **Descriptions de Québec emploi ❌ (vérifié le 17 novembre)** : techniquement possible (JSON-LD `JobPosting`, `robots.txt` permissif), mais interdit par les conditions d'utilisation du site. Non ajouté.
 - **Score de pertinence pour un étudiant du DEC** : règles simples et affichées (stage, niveau débutant, technologies vues au cours). Le score doit être expliqué, pas une note magique.
 - **Géolocalisation** : à partir du code postal, seulement avec une source de données autorisée.

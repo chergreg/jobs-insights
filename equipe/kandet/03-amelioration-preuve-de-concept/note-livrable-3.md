@@ -28,7 +28,7 @@ Toutes les commandes suivantes se lancent depuis ce dossier.
 python -m unittest discover -p "test_*.py" -v
 ```
 
-La dernière ligne doit être `OK`, après `Ran 178 tests`. Un des tests compare la page avec Python à l'aide de Node.js. Si Node.js n'est pas installé, ce test est simplement sauté (`skipped`).
+La dernière ligne doit être `OK`, après `Ran 179 tests`. Deux tests comparent la page avec Python à l'aide de Node.js, l'un pour le CV et l'autre pour la lettre. Si Node.js n'est pas installé, ces deux tests sont simplement sautés (`skipped`).
 
 ### 3. Lancer la collecte
 
@@ -75,6 +75,11 @@ Dans la page :
   - chaque offre montre sa note sur 100, ce qui est en commun et ce qui manque ;
   - la note est la même qu'avec `main.py --cv` ;
   - le CV reste dans le navigateur : il n'est ni envoyé ni enregistré. « Retirer le CV » efface tout.
+- **« Vérifier ma lettre pour cette offre »** (sous chaque offre) :
+  - ouvre une fenêtre où l'on choisit sa lettre (`.docx` ou `.txt`) ou colle son texte ;
+  - la page affiche les vérifications (✓ / ✗ : zones à remplir, employeur, poste, technologies, longueur) et les suggestions. Ce sont les mêmes que `main.py --lettre` ;
+  - si un CV est chargé dans la page, les suggestions séparent les technologies du CV de celles à apprendre ;
+  - la lettre reste dans la fenêtre : on peut la retoucher, revérifier, ou la vérifier pour une autre offre.
 
 ### 5. Comparer son CV avec les offres (aide à la candidature)
 
@@ -234,7 +239,7 @@ Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-d
 - Comparaison avec le CV dans la page `offres.html` (script `interface_cv.js`) :
   - au moment de créer la page, `interface.py` y copie les expressions de `competences.py` et `candidature.py`. La page et `main.py --cv` utilisent donc les mêmes règles ;
   - le `.docx` est lu dans le navigateur, sans bibliothèque (`DecompressionStream`).
-- Vérification d'une lettre de motivation (module `lettre`), options `--lettre`, `--offre` et `--rapport-lettre`.
+- Vérification d'une lettre de motivation (module `lettre`), options `--lettre`, `--offre` et `--rapport-lettre`. Elle se fait aussi dans la page, avec le bouton « Vérifier ma lettre pour cette offre ». La page reçoit les listes de mots de `lettre.py`.
 - Filtres et export : `--ville`, `--region`, `--techno`, `--niveau`, `--stages`, `--salaire-min`, `--employeur`, export `--csv` pour Excel, et `--depuis` pour filtrer une collecte déjà faite sans Internet (modules `filtres` et `export`).
 
 Le code est dans ce dossier. Le prototype du L2 reste tel quel dans `02-preuve-de-concept-scraping/`.
@@ -276,7 +281,7 @@ python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equi
 # Vérifier une lettre de motivation pour une offre
 python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equipe\kandet\03-amelioration-preuve-de-concept\offres.json --lettre .\equipe\kandet\03-amelioration-preuve-de-concept\lettre-exemple.txt --offre 50585958
 
-# Tests hors ligne (178 tests)
+# Tests hors ligne (179 tests)
 python -m unittest discover -s equipe/kandet/03-amelioration-preuve-de-concept -p "test_*.py" -v
 ```
 
@@ -303,7 +308,7 @@ Sorties :
 | Technologies détectées | 0 | 83 offres |
 | Niveau (débutant, intermédiaire, avancé) | 0 | 124 offres |
 | Stages détectés | 0 | 1 confirmé |
-| Tests hors ligne | 33 | 178 |
+| Tests hors ligne | 33 | 179 |
 
 Les compteurs de la dernière colonne viennent du résumé de `offres.json` (`summary.filled_fields`).
 
@@ -401,6 +406,18 @@ Le test `test_interface_cv.py` compare automatiquement les notes JavaScript et P
 
 Après correction, la lettre fictive est bien signalée : `[nom du poste]` oublié, employeur et poste absents, 4 technologies de l'offre absentes, lettre courte (114 mots). Une fois la lettre corrigée, ces remarques disparaissent.
 
+**Lettre dans la page.** Essai fait avant de modifier la page : la vérification écrite en JavaScript donne les mêmes vérifications et les mêmes phrases que `lettre.py` dans **780 cas sur 780** (4 lettres × 195 vraies offres, avec et sans CV).
+
+Ensuite, dans Edge, une copie de test de la vraie page a fait elle-même les étapes :
+- ouvrir la fenêtre d'une offre et coller la lettre : 7 suggestions, identiques à Python ;
+- charger le CV puis choisir la lettre en vrai fichier Word : 8 suggestions, identiques à Python ;
+- fermer et rouvrir : la lettre est gardée ;
+- un PDF est refusé avec un message.
+
+Les captures sur ordinateur et sur téléphone ont fait corriger un champ « Choisir un fichier » qui dépassait sur téléphone.
+
+Le test automatique de la lettre a d'abord été trop faible : avec un script volontairement modifié (mots comparés sur 4 lettres au lieu de 5), il passait encore. J'ai ajouté un cas où cette différence compte (« partenaires » et « participé »). Maintenant, il échoue avec le script modifié.
+
 ### Ce que les données montrent (17 novembre)
 
 - **Salaire médian** (valeur basse de la fourchette) : 70 000 $ par année (111 offres), 36 $ de l'heure (68 offres).
@@ -438,4 +455,5 @@ Après correction, la lettre fictive est bien signalée : `[nom du poste]` oubli
   - les mots-clés sont comparés par leur début (5 lettres) : un synonyme (« tester » au lieu de « mettre à l'essai ») n'est pas reconnu.
 
 **À faire ensuite :**
-- vérifier la lettre directement dans la page `offres.html`, comme le CV.
+- refaire une collecte régulièrement : les offres expirent vite (71 en une semaine) ;
+- montrer la page et l'aide à la candidature à quelques étudiants pour savoir ce qui leur est vraiment utile.

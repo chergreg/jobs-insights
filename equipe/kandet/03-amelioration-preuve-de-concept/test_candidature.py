@@ -87,7 +87,7 @@ class ReadCvTests(unittest.TestCase):
         with TemporaryDirectory() as folder:
             pdf = Path(folder) / "cv.pdf"
             pdf.write_bytes(b"%PDF-1.4")
-            with self.assertRaisesRegex(ValueError, "Enregistrez le CV en .docx"):
+            with self.assertRaisesRegex(ValueError, "Enregistrez le document en .docx"):
                 read_cv(pdf)
             fake = Path(folder) / "faux.docx"
             fake.write_text("pas un fichier Word", encoding="utf-8")
@@ -256,7 +256,7 @@ class MainCvTests(CollecteSimulee, unittest.TestCase):
             pdf.write_bytes(b"%PDF-1.4")
             with self.assertRaises(SystemExit) as error:
                 self.run_offline("--depuis", str(result_path), "--cv", str(pdf))
-        self.assertIn("Enregistrez le CV en .docx", str(error.exception))
+        self.assertIn("Enregistrez le document en .docx", str(error.exception))
 
 
 if __name__ == "__main__":
