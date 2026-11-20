@@ -354,6 +354,10 @@ Ce sont des pistes 3 et 4 du projet (présenter les offres, aider à la candidat
   - essai d'abord : prototype dans un dossier temporaire, ouvert dans Edge sans fenêtre. Mêmes résultats que les filtres de `main.py`, clics testés (afficher plus, région puis ville, export CSV, effacer), captures sur ordinateur, téléphone et mode sombre ;
   - ajout ensuite : `interface.py`, `interface_modele.html`, option `--html` ;
   - 11 nouveaux tests dans `test_interface.py` ; au total, 140 tests OK.
+- **Aide à la candidature (piste 4) ✅ (20 novembre)** :
+  - essai d'abord, avec deux CV fictifs sur les 195 offres. Trois défauts de la règle de note trouvés et corrigés (nombre de technologies en commun, niveau trop élevé, offres avec trop peu d'information). La lecture d'un vrai `.docx` créé par Word a été vérifiée ;
+  - ajout ensuite : `candidature.py`, `cv-exemple.txt` (fictif), options `--cv`, `--nb-offres` et `--rapport-cv` ;
+  - 21 nouveaux tests dans `test_candidature.py` ; au total, 161 tests OK.
 - **Descriptions de Québec emploi ❌ (vérifié le 17 novembre)** : techniquement possible (JSON-LD `JobPosting`, `robots.txt` permissif), mais interdit par les conditions d'utilisation du site. Non ajouté.
 - **Score de pertinence pour un étudiant du DEC** : règles simples et affichées (stage, niveau débutant, technologies vues au cours). Le score doit être expliqué, pas une note magique.
 - **Géolocalisation** : à partir du code postal, seulement avec une source de données autorisée.

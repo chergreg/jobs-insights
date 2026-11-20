@@ -2,6 +2,10 @@
 offres.json
 offres.csv
 offres.html
+# CV et rapports personnels : ne jamais les mettre dans Git
+rapport-candidature*.md
+*.docx
+*.pdf
 remotive-cache.json
 cache/
 __pycache__/
