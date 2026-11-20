@@ -358,6 +358,10 @@ Ce sont des pistes 3 et 4 du projet (présenter les offres, aider à la candidat
   - essai d'abord, avec deux CV fictifs sur les 195 offres. Trois défauts de la règle de note trouvés et corrigés (nombre de technologies en commun, niveau trop élevé, offres avec trop peu d'information). La lecture d'un vrai `.docx` créé par Word a été vérifiée ;
   - ajout ensuite : `candidature.py`, `cv-exemple.txt` (fictif), options `--cv`, `--nb-offres` et `--rapport-cv` ;
   - 21 nouveaux tests dans `test_candidature.py` ; au total, 161 tests OK.
+- **CV dans la page et lettre de motivation ✅ (20 novembre)** :
+  - essai d'abord : mêmes notes en JavaScript et en Python (0 différence sur 3 CV × 195 offres), lecture d'un vrai `.docx` dans Edge, lettre fictive testée. Deux défauts de la lettre corrigés (employeur et titre déclarés cités à tort) ;
+  - ajout ensuite : `interface_cv.js` et panneau « Comparer avec mon CV » dans `offres.html`, `lettre.py`, `lettre-exemple.txt`, options `--lettre`, `--offre` et `--rapport-lettre` ;
+  - nouveaux tests : `test_lettre.py` et `test_interface_cv.py` (comparaison avec Node.js) ; au total, 178 tests OK.
 - **Descriptions de Québec emploi ❌ (vérifié le 17 novembre)** : techniquement possible (JSON-LD `JobPosting`, `robots.txt` permissif), mais interdit par les conditions d'utilisation du site. Non ajouté.
 - **Score de pertinence pour un étudiant du DEC** : règles simples et affichées (stage, niveau débutant, technologies vues au cours). Le score doit être expliqué, pas une note magique.
 - **Géolocalisation** : à partir du code postal, seulement avec une source de données autorisée.

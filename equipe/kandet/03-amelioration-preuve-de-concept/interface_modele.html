@@ -164,6 +164,26 @@
   .liens { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 10px; font-size: 14px; }
   .vide { text-align: center; padding: 40px 16px; color: var(--doux); background: var(--carte); border: 1px dashed var(--bord); border-radius: 10px; }
   #plus { display: block; margin: 16px auto 0; }
+  /* Comparaison avec un CV */
+  .bloc-cv { background: var(--carte); border: 1px solid var(--bord); border-radius: 10px; padding: 12px 16px; margin-bottom: 14px; box-shadow: var(--ombre); }
+  .bloc-cv > details > summary { cursor: pointer; font-weight: 600; }
+  .bloc-cv .discret { font-weight: 400; color: var(--doux); font-size: 13.5px; }
+  .bloc-cv .aide { color: var(--doux); font-size: 14px; margin: 10px 0; }
+  .bloc-cv textarea {
+    width: 100%; min-height: 110px; padding: 8px 10px; margin-top: 8px; font: inherit; font-size: 14px;
+    border: 1px solid var(--bord); border-radius: 6px; background: var(--fond); color: var(--texte); resize: vertical;
+  }
+  .bloc-cv .actions { margin-top: 8px; }
+  #cv-message { margin: 8px 0 0; font-size: 14px; }
+  #cv-message.erreur { color: var(--rouge); }
+  #cv-profil { margin-top: 10px; font-size: 14px; display: grid; gap: 4px; }
+  #cv-profil b { font-weight: 600; }
+  .cv-ligne { margin-top: 8px; padding: 8px 10px; border-radius: 8px; background: var(--fond); font-size: 14px; display: grid; gap: 4px; }
+  .note-cv { display: inline-block; font-weight: 700; padding: 1px 8px; border-radius: 6px; margin-right: 6px; }
+  .note-cv.haute { background: var(--vert-fond); color: var(--vert); }
+  .note-cv.moyenne { background: var(--accent-fond); color: var(--accent); }
+  .note-cv.basse { background: var(--fond); color: var(--doux); border: 1px solid var(--bord); }
+  .cv-ligne .manque { color: var(--orange); }
   footer { max-width: 1280px; margin: 0 auto; padding: 0 24px 32px; color: var(--doux); font-size: 13px; }
   .meta, .resume, article h3 { overflow-wrap: anywhere; }
   @media (max-width: 860px) {
@@ -236,6 +256,7 @@
         <option value="salaire">Salaire le plus élevé</option>
         <option value="expire">Expire bientôt</option>
         <option value="titre">Titre (A à Z)</option>
+        <option value="cv" id="tri-cv" hidden disabled>Correspondance avec mon CV</option>
       </select>
     </div>
     <button type="button" id="effacer">Effacer les filtres</button>
@@ -243,6 +264,24 @@
   </aside>
 
   <main>
+    <section class="bloc-cv" aria-labelledby="titre-cv">
+      <details id="panneau-cv">
+        <summary><span id="titre-cv">Comparer les offres avec mon CV</span> <span class="discret">· le CV reste dans ce navigateur</span></summary>
+        <p class="aide">
+          Choisissez votre CV en Word (.docx) ou en texte (.txt), ou collez son texte. Rien n'est envoyé ni enregistré :
+          la comparaison se fait sur cet appareil, avec les mêmes règles que <code>main.py --cv</code>.
+          Pour un PDF, enregistrez d'abord le CV en .docx depuis Word.
+        </p>
+        <input type="file" id="cv-fichier" accept=".docx,.txt,.md" aria-label="Fichier du CV">
+        <textarea id="cv-texte" placeholder="… ou collez le texte de votre CV ici" aria-label="Texte du CV"></textarea>
+        <div class="actions">
+          <button type="button" id="cv-comparer" class="principal">Comparer avec mon CV</button>
+          <button type="button" id="cv-retirer" hidden>Retirer le CV</button>
+        </div>
+        <p id="cv-message" role="status" aria-live="polite"></p>
+        <div id="cv-profil" hidden></div>
+      </details>
+    </section>
     <div class="barre">
       <div id="compte" aria-live="polite" data-count="0"></div>
       <div class="actions">
@@ -263,6 +302,10 @@
   Les informations absentes d'une offre ne sont pas devinées. Vérifiez toujours l'offre sur le site d'origine avant de postuler.
 </footer>
 
+<script type="application/json" id="regles">{{REGLES}}</script>
+<script>
+{{SCRIPT_CV}}
+</script>
 <script type="application/json" id="donnees">{{DONNEES}}</script>
 <script>
 "use strict";
@@ -329,7 +372,7 @@
     for (const id of champs) {
       const champ = $(id);
       if (champ.type === "checkbox") { if (champ.checked) params.set(id, "1"); }
-      else if (champ.value && !(id === "tri" && champ.value === "recent") && !(id === "unite" && champ.value === "année")) params.set(id, champ.value);
+      else if (champ.value && !(id === "tri" && (champ.value === "recent" || champ.value === "cv")) && !(id === "unite" && champ.value === "année")) params.set(id, champ.value);
     }
     const hash = params.toString();
     history.replaceState(null, "", hash ? "#" + hash : location.pathname + location.search);
@@ -360,10 +403,23 @@
 
   function salaireAnnuel(o) { return o.unite === "année" && o.salMin !== null ? (o.salMax ?? o.salMin) : -1; }
 
+  // Résultats de la comparaison avec un CV (id de l'offre -> note, en commun, manque). Gardés en mémoire seulement.
+  let comparaison = null;
+  let profilCv = null;
+  const comparateur = creerComparateur(JSON.parse(document.getElementById("regles").textContent));
+
   function trier(liste) {
     const tri = $("tri").value;
     const copie = [...liste];
-    if (tri === "salaire") copie.sort((a, b) => salaireAnnuel(b) - salaireAnnuel(a) || (b.unite === "heure" ? (b.salMax ?? b.salMin) : -1) - (a.unite === "heure" ? (a.salMax ?? a.salMin) : -1));
+    if (tri === "cv" && comparaison) {
+      // Même ordre que main.py --cv : note, puis nombre de technologies en commun, puis titre.
+      const cle = (o) => comparaison.get(o.id);
+      copie.sort((a, b) => {
+        const ra = cle(a), rb = cle(b);
+        if (!ra || !rb) return (rb ? 1 : 0) - (ra ? 1 : 0);
+        return rb.note - ra.note || rb.communs.length - ra.communs.length || (a.titreTri < b.titreTri ? -1 : a.titreTri > b.titreTri ? 1 : 0);
+      });
+    } else if (tri === "salaire") copie.sort((a, b) => salaireAnnuel(b) - salaireAnnuel(a) || (b.unite === "heure" ? (b.salMax ?? b.salMin) : -1) - (a.unite === "heure" ? (a.salMax ?? a.salMin) : -1));
     else if (tri === "expire") copie.sort((a, b) => (a.expire || "9999") .localeCompare(b.expire || "9999"));
     else if (tri === "titre") copie.sort((a, b) => a.titre.localeCompare(b.titre, "fr"));
     else copie.sort((a, b) => (b.publiee || "").localeCompare(a.publiee || ""));
@@ -422,6 +478,24 @@
       else if (jours <= 7) badges.append(element("span", "badge bientot", `Expire dans ${jours} j`));
     }
     if (badges.children.length) art.append(badges);
+
+    if (comparaison) {
+      const r = comparaison.get(o.id);
+      const ligne = element("div", "cv-ligne");
+      if (r) {
+        art.dataset.note = r.note;
+        const tete = element("div");
+        tete.append(element("span", `note-cv ${r.note >= 80 ? "haute" : r.note >= 60 ? "moyenne" : "basse"}`, `${r.note}/100`));
+        tete.append(document.createTextNode(`Correspondance avec mon CV · niveau ${r.niveau}${r.peuInfo ? " · peu d'information dans l'offre" : ""}`));
+        ligne.append(tete);
+        const communs = [...r.communs, ...r.communsCompetences];
+        ligne.append(element("div", "", `En commun : ${communs.length ? communs.join(", ") : "rien"}`));
+        if (r.manquants.length) ligne.append(element("div", "manque", `Demandé, absent du CV : ${r.manquants.join(", ")}`));
+      } else {
+        ligne.append(element("div", "", "Pas assez d'information dans l'offre pour la comparer avec le CV."));
+      }
+      art.append(ligne);
+    }
 
     const salaire = texteSalaire(o);
     if (salaire) {
@@ -497,6 +571,12 @@
       ["ville", (o) => o.ville], ["region", (o) => o.region], ["salaire_min", (o) => o.salMin], ["salaire_max", (o) => o.salMax],
       ["unite", (o) => o.unite], ["niveau", (o) => o.niveau], ["stage", (o) => o.stage], ["technologies", (o) => o.technos.join(", ")],
       ["publiee_le", (o) => o.publiee], ["expire_le", (o) => o.expire], ["lien", (o) => o.lien], ["lien_origine", (o) => o.lienOrigine]];
+    if (comparaison) {
+      colonnes.splice(1, 0,
+        ["note_cv", (o) => comparaison.get(o.id)?.note ?? ""],
+        ["en_commun_avec_cv", (o) => { const r = comparaison.get(o.id); return r ? [...r.communs, ...r.communsCompetences].join(", ") : ""; }],
+        ["absent_du_cv", (o) => comparaison.get(o.id)?.manquants.join(", ") ?? ""]);
+    }
     const cellule = (v) => {
       let t = v === null || v === undefined ? "" : String(v);
       if (typeof v === "number") t = t.replace(".", ",");
@@ -512,6 +592,75 @@
     a.click();
     setTimeout(() => URL.revokeObjectURL(a.href), 1000);
   }
+
+  // --- Comparaison avec un CV -------------------------------------------------
+  function messageCv(texte, erreur) {
+    $("cv-message").textContent = texte;
+    $("cv-message").className = erreur ? "erreur" : "";
+  }
+
+  async function lireFichierCv(fichier) {
+    const nom = fichier.name.toLowerCase();
+    if (nom.endsWith(".docx")) return texteDocx(new Uint8Array(await fichier.arrayBuffer()));
+    if (nom.endsWith(".txt") || nom.endsWith(".md")) {
+      const octets = new Uint8Array(await fichier.arrayBuffer());
+      try { return new TextDecoder("utf-8", { fatal: true }).decode(octets); }
+      catch { return new TextDecoder("windows-1252").decode(octets); } // fichier enregistré en ANSI
+    }
+    throw new Error("Format non pris en charge. Enregistrez le CV en .docx (Word) ou en .txt.");
+  }
+
+  function afficherProfil(p, resultats, sansInfo) {
+    const zone = $("cv-profil");
+    const ligne = (titre, valeur) => { const d = element("div"); d.append(element("b", "", titre + " : ")); d.append(document.createTextNode(valeur)); return d; };
+    const exp = p.annees === null ? "non précisée" : `${String(p.annees).replace(".", ",")} an(s), niveau ${p.niveau}`;
+    const lignes = [
+      ligne("Technologies trouvées", p.technos.join(", ") || "aucune (écrivez-les clairement, ex. « Langages : Python, SQL »)"),
+      ligne("Compétences", p.competences.join(", ") || "aucune"),
+      ligne("Expérience", exp),
+      ligne("Langues", p.langues.join(", ") || "non précisées"),
+      ligne("Cherche un stage", p.chercheStage ? "oui" : "non"),
+      ligne("Offres comparées", `${resultats.length}, et ${sansInfo} sans technologie ni compétence listée`),
+    ];
+    if (p.chercheStage) {
+      const stages = resultats.map((r, i) => [i + 1, r]).filter(([, r]) => r.offre.stage);
+      lignes.push(ligne("Stages dans le classement", stages.length ? stages.map(([rang, r]) => `n° ${rang} ${r.offre.titre}`).join("; ") : "aucun parmi ces offres"));
+    }
+    zone.replaceChildren(...lignes);
+    zone.hidden = false;
+  }
+
+  async function comparerCv() {
+    try {
+      const fichier = $("cv-fichier").files[0];
+      const texte = fichier ? await lireFichierCv(fichier) : $("cv-texte").value;
+      if (!texte.trim()) { messageCv("Choisissez un fichier ou collez le texte du CV.", true); return; }
+      profilCv = comparateur.profil(texte);
+      const { resultats, sansInfo } = comparateur.classer(profilCv, OFFRES);
+      comparaison = new Map(resultats.map((r) => [r.offre.id, r]));
+      afficherProfil(profilCv, resultats, sansInfo);
+      $("tri-cv").hidden = false; $("tri-cv").disabled = false; $("tri").value = "cv";
+      $("cv-retirer").hidden = false;
+      messageCv("Les offres sont classées selon votre CV. La note vient de règles simples : lisez toujours l'offre complète.");
+      mettreAJour(true);
+    } catch (erreur) {
+      messageCv(erreur.message, true);
+    }
+  }
+
+  function retirerCv() {
+    comparaison = null; profilCv = null;
+    $("cv-fichier").value = ""; $("cv-texte").value = "";
+    $("cv-profil").hidden = true; $("cv-profil").replaceChildren();
+    if ($("tri").value === "cv") $("tri").value = "recent";
+    $("tri-cv").hidden = true; $("tri-cv").disabled = true;
+    $("cv-retirer").hidden = true;
+    messageCv("CV retiré.");
+    mettreAJour(true);
+  }
+
+  $("cv-comparer").addEventListener("click", comparerCv);
+  $("cv-retirer").addEventListener("click", retirerCv);
 
   // Sur téléphone, les filtres sont repliés au départ pour voir tout de suite les offres.
   const petitEcran = window.matchMedia("(max-width: 860px)");
@@ -537,7 +686,7 @@
   }
   $("effacer").addEventListener("click", () => {
     for (const id of champs) { const c = $(id); if (c.type === "checkbox") c.checked = false; else c.value = ""; }
-    $("tri").value = "recent"; $("unite").value = "année";
+    $("tri").value = comparaison ? "cv" : "recent"; $("unite").value = "année";
     remplirVilles();
     mettreAJour(true);
   });

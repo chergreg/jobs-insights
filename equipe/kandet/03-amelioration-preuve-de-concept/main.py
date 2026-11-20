@@ -3,7 +3,7 @@
 Point d'entrée en ligne de commande. Le travail est réparti dans les modules :
 collecte (HTTP), guichet, fiches, remotive, normalisation, fusion (doublons),
 competences, analyse (statistiques), regions, filtres, export (CSV), interface (page HTML)
-et candidature (comparaison avec un CV).
+candidature (comparaison avec un CV) et lettre (vérification d'une lettre de motivation).
 
 Lancer depuis la racine du dépôt :
     python .\\equipe\\kandet\\03-amelioration-preuve-de-concept\\main.py
@@ -29,6 +29,7 @@ from fiches import enrich_with_postings
 from filtres import Filters, filter_offers
 from fusion import aggregate_records
 from interface import write_html
+from lettre import build_letter_report, check_letter, find_offer, letter_tips
 from guichet import CNP_CODES_TI, GUICHET_DELAY_SECONDS, GUICHET_SEARCH_URL, fetch_guichet
 from modele import AggregatedOffer, SourceRecord
 from normalisation import normalize_record
@@ -129,6 +130,20 @@ def build_parser() -> argparse.ArgumentParser:
         nargs="?",
         const=DOSSIER / "rapport-candidature.md",
         help="Écrire le classement et les suggestions dans un fichier (défaut : rapport-candidature.md).",
+    )
+
+    cv.add_argument("--lettre", type=Path, help="Lettre de motivation (.docx ou .txt) à vérifier pour l'offre --offre.")
+    cv.add_argument(
+        "--offre",
+        default="",
+        help="Offre visée par la lettre : numéro du Guichet-Emplois (ex. 50585958) ou lien de l'offre.",
+    )
+    cv.add_argument(
+        "--rapport-lettre",
+        type=Path,
+        nargs="?",
+        const=DOSSIER / "rapport-lettre.md",
+        help="Écrire la vérification de la lettre dans un fichier (défaut : rapport-lettre.md).",
     )
 
     sorties = parser.add_argument_group("sorties")
@@ -359,6 +374,35 @@ def compare_cv(args: argparse.Namespace, offers: list[AggregatedOffer], filters:
         print(f"\nRapport enregistré dans : {args.rapport_cv}")
 
 
+def verify_letter(args: argparse.Namespace, offers: list[AggregatedOffer]) -> None:
+    """Vérifie une lettre de motivation pour l'offre choisie avec --offre."""
+    if not args.offre:
+        raise SystemExit("Indiquez l'offre visée avec --offre (numéro du Guichet-Emplois ou lien de l'offre).")
+    offer = find_offer(offers, args.offre)
+    if offer is None:
+        raise SystemExit(f"Offre « {args.offre} » introuvable dans les offres collectées. "
+                         "Copiez son lien depuis offres.html ou depuis le Guichet-Emplois.")
+    try:
+        letter = read_cv(args.lettre)
+        cv_technologies = build_profile(read_cv(args.cv)).technologies if args.cv else None
+    except (OSError, ValueError) as error:
+        raise SystemExit(f"Impossible de lire le fichier : {error}")
+
+    check = check_letter(letter, offer)
+    tips = letter_tips(check, offer, cv_technologies)
+    print(f"\n=== Lettre {args.lettre.name} pour « {offer.original_title or offer.title} » ({offer.employer}) ===")
+    print(f"{check.word_count} mots | employeur cité : {'oui' if check.employer_mentioned else 'non'}"
+          f" | poste cité : {'oui' if check.title_mentioned else 'non'}")
+    print(f"Technologies de l'offre citées : {', '.join(check.technologies_cited) or 'aucune'}"
+          f" | absentes : {', '.join(check.technologies_missing) or 'aucune'}")
+    for tip in tips:
+        print(f"  - {tip}")
+    if args.rapport_lettre:
+        args.rapport_lettre.parent.mkdir(parents=True, exist_ok=True)
+        args.rapport_lettre.write_text(build_letter_report(check, offer, tips), encoding="utf-8")
+        print(f"Rapport enregistré dans : {args.rapport_lettre}")
+
+
 def collected_on(path: Path) -> str | None:
     """Date de la collecte écrite dans un offres.json (AAAA-MM-JJ), si elle y est."""
     try:
@@ -413,6 +457,8 @@ def main(argv: list[str] | None = None) -> None:
             print_offer(offer)
     if args.cv:
         compare_cv(args, selected, filters)
+    if args.lettre:
+        verify_letter(args, offers)
 
     print()
     if report is not None and not args.sans_sauvegarde:
