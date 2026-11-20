@@ -1,4 +1,4 @@
-# Collecteur Remotive API (Espace Hugo)
+# 06 - Scrapping Remotive API (Espace Hugo)
 
 Module autonome de collecte pour l'API REST de **Remotive**, inspiré des travaux de Kandet.
 
@@ -10,7 +10,7 @@ Module autonome de collecte pour l'API REST de **Remotive**, inspiré des travau
 
 ## 🚀 Utilisation
 
-### Mode interactif (Windows)
+### Mode interactif Windows
 ```powershell
 python main.py
 ```
@@ -22,5 +22,5 @@ python main.py --category software-dev --limit 25 --output data/offres_remotive.
 
 ## 🧪 Tests unitaires hors ligne
 ```powershell
-python -m unittest test_scraper.py -v
+python -m unittest test_remotive.py -v
 ```

@@ -1,4 +1,4 @@
-# Collecteur Jobillico Québec (Espace Hugo)
+# 04 - Scrapping Jobillico Québec (Espace Hugo)
 
 Module autonome de collecte pour la plateforme québécoise **Jobillico**, inspiré des travaux de veille d'El Hadji Konaté.
 
@@ -9,7 +9,7 @@ Module autonome de collecte pour la plateforme québécoise **Jobillico**, inspi
 
 ## 🚀 Utilisation
 
-### Mode interactif (Windows)
+### Mode interactif Windows
 ```powershell
 python main.py
 ```
@@ -21,5 +21,5 @@ python main.py --keyword "programmeur" --location "Quebec" --limit 15 --output d
 
 ## 🧪 Tests unitaires hors ligne
 ```powershell
-python -m unittest test_scraper.py -v
+python -m unittest test_jobillico.py -v
 ```

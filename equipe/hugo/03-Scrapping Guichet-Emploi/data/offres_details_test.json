@@ -1,0 +1,79 @@
+[
+  {
+    "id": "gc-50691239",
+    "titre": "développeur/développeuse d'applications dorsales",
+    "entreprise": "JobsMedia",
+    "lieu": "Sainte-Thérèse (QC)",
+    "province": "QC",
+    "pays": "Canada",
+    "salaire": "80 000,00 $ à 100 000,00 $ par année",
+    "date_publication": "09 novembre 2026",
+    "modalite": "Sur place",
+    "type_poste": "Temps plein",
+    "competences_cles": [
+      "API",
+      "Agile",
+      "Mysql",
+      "PHP",
+      "Postgresql",
+      "React",
+      "SQL",
+      "VUE",
+      "Vue.js"
+    ],
+    "description": null,
+    "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50691239",
+    "source": "Guichet-Emplois",
+    "partenaire": "JobsMedia.ca",
+    "date_extraction": "2026-11-10T17:49:32.180081"
+  },
+  {
+    "id": "gc-50684844",
+    "titre": "développeur Web/développeuse Web",
+    "entreprise": "Richard & Levesque Cuisines Salles de Bain",
+    "lieu": "Saint-Augustin-de-Desmaures (QC)",
+    "province": "QC",
+    "pays": "Canada",
+    "salaire": "38,46 $ à 45,00 $ de l'heure",
+    "date_publication": "08 novembre 2026",
+    "modalite": "Sur place",
+    "type_poste": "Temps plein",
+    "competences_cles": [
+      "API",
+      "C#",
+      "C++",
+      "CSS",
+      "Javascript",
+      "Mysql",
+      "SQL"
+    ],
+    "description": null,
+    "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50684844",
+    "source": "Guichet-Emplois",
+    "partenaire": "Jobillico",
+    "date_extraction": "2026-11-10T17:49:32.180663"
+  },
+  {
+    "id": "gc-50684542",
+    "titre": "développeur/développeuse d'application Web",
+    "entreprise": "Enroll Talent",
+    "lieu": "Sainte-Thérèse (QC)",
+    "province": "QC",
+    "pays": "Canada",
+    "salaire": "50,00 $ à 60,00 $ de l'heure",
+    "date_publication": "08 novembre 2026",
+    "modalite": "Sur place",
+    "type_poste": "Temps plein",
+    "competences_cles": [
+      "API",
+      "CSS",
+      "GIT",
+      "Rest"
+    ],
+    "description": null,
+    "url_source": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/50684542",
+    "source": "Guichet-Emplois",
+    "partenaire": "JobsMedia.ca",
+    "date_extraction": "2026-11-10T17:49:32.181156"
+  }
+]

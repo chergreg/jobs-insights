@@ -1,4 +1,4 @@
-# Collecteur Talent.com Canada (Espace Hugo)
+# 07 - Scrapping Talent.com Canada (Espace Hugo)
 
 Module autonome de collecte pour l'agrégateur **Talent.com Canada**, inspiré des travaux de veille d'El Hadji Konaté.
 
@@ -9,7 +9,7 @@ Module autonome de collecte pour l'agrégateur **Talent.com Canada**, inspiré d
 
 ## 🚀 Utilisation
 
-### Mode interactif (Windows)
+### Mode interactif Windows
 ```powershell
 python main.py
 ```
@@ -21,5 +21,5 @@ python main.py --keyword "informatique" --location "Quebec" --limit 15 --output 
 
 ## 🧪 Tests unitaires hors ligne
 ```powershell
-python -m unittest test_scraper.py -v
+python -m unittest test_talent.py -v
 ```
