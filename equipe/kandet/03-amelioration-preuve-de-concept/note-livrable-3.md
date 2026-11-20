@@ -28,7 +28,7 @@ Toutes les commandes suivantes se lancent depuis ce dossier.
 python -m unittest discover -p "test_*.py" -v
 ```
 
-La dernière ligne doit être `OK`, après `Ran 140 tests`.
+La dernière ligne doit être `OK`, après `Ran 179 tests`. Deux tests comparent la page avec Python à l'aide de Node.js, l'un pour le CV et l'autre pour la lettre. Si Node.js n'est pas installé, ces deux tests sont simplement sautés (`skipped`).
 
 ### 3. Lancer la collecte
 
@@ -69,8 +69,58 @@ Dans la page :
 - **« Exporter en CSV »** enregistre les offres affichées pour Excel.
 - **« Copier le lien de cette recherche »** garde les filtres dans l'adresse de la page. Par exemple, `offres.html#region=Estrie&techno=SQL` rouvre la page avec ces filtres.
 - La page s'adapte au téléphone (filtres repliables) et au mode sombre.
+- **« Comparer les offres avec mon CV »** (en haut des résultats) :
+  - choisir un CV en `.docx` ou en `.txt`, ou coller son texte ;
+  - la page affiche ce qu'elle a compris du CV et trie les offres par correspondance ;
+  - chaque offre montre sa note sur 100, ce qui est en commun et ce qui manque ;
+  - la note est la même qu'avec `main.py --cv` ;
+  - le CV reste dans le navigateur : il n'est ni envoyé ni enregistré. « Retirer le CV » efface tout.
+- **« Vérifier ma lettre pour cette offre »** (sous chaque offre) :
+  - ouvre une fenêtre où l'on choisit sa lettre (`.docx` ou `.txt`) ou colle son texte ;
+  - la page affiche les vérifications (✓ / ✗ : zones à remplir, employeur, poste, technologies, longueur) et les suggestions. Ce sont les mêmes que `main.py --lettre` ;
+  - si un CV est chargé dans la page, les suggestions séparent les technologies du CV de celles à apprendre ;
+  - la lettre reste dans la fenêtre : on peut la retoucher, revérifier, ou la vérifier pour une autre offre.
 
-### 5. Chercher des offres précises dans le terminal (sans retélécharger)
+### 5. Comparer son CV avec les offres (aide à la candidature)
+
+```powershell
+# Essai avec le CV fictif fourni
+python main.py --depuis offres.json --cv cv-exemple.txt
+
+# Avec son propre CV (Word ou texte), seulement les offres de la Capitale-Nationale, avec un rapport
+python main.py --depuis offres.json --cv C:\Users\moi\Documents\mon-cv.docx --region capitale --rapport-cv
+```
+
+Le programme :
+
+1. lit le CV (`.docx` ou `.txt`). Les PDF ne sont pas acceptés : il faut enregistrer le CV en `.docx` depuis Word ;
+2. affiche ce qu'il a compris : technologies, compétences, années d'expérience, niveau, langues, recherche de stage ;
+3. classe les offres avec une note sur 100. Pour chacune, il montre ce qui est en commun avec le CV et ce qui manque ;
+4. signale les stages présents dans le classement ;
+5. donne des pistes pour adapter le CV aux 3 premières offres : technologies à mettre en avant, technologies demandées absentes du CV, langues, expérience et études demandées, tâches de l'offre à relier à ses projets, date limite ;
+6. avec `--rapport-cv`, enregistre tout dans `rapport-candidature.md` (`--nb-offres 20` pour en voir plus).
+
+**Le CV reste sur l'ordinateur** : rien n'est envoyé à un service extérieur. Les fichiers `.docx`, `.pdf` et `rapport-candidature*.md` de ce dossier sont ignorés par Git. Il ne faut jamais mettre un vrai CV dans le dépôt.
+
+Les filtres de l'étape suivante (`--region`, `--stages`, `--niveau`…) choisissent les offres à comparer.
+
+**Vérifier une lettre de motivation pour une offre précise :**
+
+```powershell
+# L'offre se donne par son lien (copié depuis offres.html) ou par son numéro du Guichet-Emplois
+python main.py --depuis offres.json --lettre lettre-exemple.txt --cv cv-exemple.txt --offre 50585958 --rapport-lettre
+```
+
+Le programme ne note pas la lettre. Il repère ce qui peut être amélioré :
+- zones à remplir oubliées (« [nom du poste] », « XXX ») ;
+- employeur et poste cités ou non ;
+- technologies et compétences de l'offre citées ou absentes. Avec `--cv`, il sépare celles qui sont dans le CV de celles à apprendre ;
+- mots importants des tâches de l'offre absents de la lettre ;
+- longueur (environ 200 à 450 mots).
+
+Avec `--rapport-lettre`, le résultat est aussi enregistré dans `rapport-lettre.md`.
+
+### 6. Chercher des offres précises dans le terminal (sans retélécharger)
 
 Après une collecte, `--depuis offres.json` relit les offres en quelques secondes, sans Internet. On peut combiner plusieurs filtres. Les accents et les majuscules ne comptent pas.
 
@@ -110,6 +160,10 @@ La liste complète des options s'obtient avec `python main.py --help`.
 | `offres.csv` | Les offres affichées, pour Excel | Non |
 | `offres.html` | La page de recherche à ouvrir dans le navigateur | Non |
 | `echantillon.json` | 10 offres d'exemple | Oui |
+| `cv-exemple.txt` | CV fictif pour essayer l'aide à la candidature | Oui |
+| `rapport-candidature.md` | Classement des offres selon un CV, avec les suggestions | Non |
+| `lettre-exemple.txt` | Lettre fictive pour essayer la vérification de lettre | Oui |
+| `rapport-lettre.md` | Vérification d'une lettre pour une offre | Non |
 | `regions_quebec.csv` | Municipalités et arrondissements du Québec avec leur région (source officielle, voir plus bas) | Oui |
 | `cache/fiches/` | Les fiches déjà téléchargées | Non |
 
@@ -117,6 +171,8 @@ La liste complète des options s'obtient avec `python main.py --help`.
 
 - **`python` n'est pas reconnu** : utiliser `py`, ou installer Python depuis python.org en cochant « Add Python to PATH ».
 - **`No such file or directory: main.py`** : la commande n'est pas lancée depuis le dossier du projet (voir l'étape 1).
+- **`Format .pdf non pris en charge`** : ouvrir le CV dans Word, puis « Enregistrer sous » au format `.docx`.
+- **« Technologies trouvées dans le CV : aucune »** : écrire les technologies clairement dans le CV, par exemple « Langages : Python, Java, SQL ».
 - **`Impossible de lire offres.json`** : faire d'abord une collecte (étape 3) avant d'utiliser `--depuis`.
 - **La page `offres.html` ne montre pas les dernières offres** : refaire la commande `--html` après une nouvelle collecte. La page est une photo de `offres.json` au moment où elle est créée.
 - **`Offres affichées : 0`** : les filtres sont trop stricts. Par exemple, `--ville` demande le nom exact de la ville, comme `Québec` et non `Qc`.
@@ -160,7 +216,7 @@ Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-d
 **Ce que j'ai modifié :**
 
 - Tout est réécrit avec la bibliothèque standard (`html.parser`) : pas de BeautifulSoup ni de Pydantic, donc aucune installation.
-- Le prototype est découpé en modules : `guichet`, `fiches`, `remotive`, `normalisation`, `competences`, `fusion`, `analyse`, `regions`, `filtres`, `export`, `interface`, `main`.
+- Le prototype est découpé en modules : `guichet`, `fiches`, `remotive`, `normalisation`, `competences`, `fusion`, `analyse`, `regions`, `filtres`, `export`, `interface` (avec `interface_cv.js`), `candidature`, `lettre`, `main`.
 - Nouveaux champs :
   - titre de l'employeur, description, tâches ;
   - date d'expiration et date de début ;
@@ -175,6 +231,15 @@ Je me suis aussi appuyé sur la [synthèse du L2](../../../livrables/02-preuve-d
   - des `&amp;` encodés deux fois.
 - Région administrative de chaque offre (module `regions`) : la ville est cherchée dans le Répertoire des municipalités du Québec (ministère des Affaires municipales et de l'Habitation, données ouvertes sous licence CC-BY 4.0). La liste officielle des arrondissements sert pour Saint-Laurent, Lachine, etc. Le fichier `regions_quebec.csv` garde seulement le nom, le type et la région, sans aucun nom d'élu. Il est recréé par `preparer_regions.py`.
 - Page de recherche `offres.html` (module `interface` et modèle `interface_modele.html`) : un seul fichier qui s'ouvre dans le navigateur, avec les offres incluses. Il n'y a ni serveur, ni Internet, ni bibliothèque externe. Le JavaScript affiche les textes des offres avec `textContent`, jamais comme du HTML : un texte d'offre ne peut pas devenir du code.
+- Aide à la candidature, piste 4 du projet (module `candidature`) :
+  - le CV (`.docx` ou `.txt`) est lu sur l'ordinateur, sans service extérieur ;
+  - il est comparé aux offres avec les mêmes listes de technologies et de compétences que pour les offres, et une note sur 100 dont chaque partie est expliquée ;
+  - le programme donne des suggestions pour adapter le CV à une offre, sans jamais rien inventer sur le candidat ;
+  - options `--cv`, `--nb-offres` et `--rapport-cv`.
+- Comparaison avec le CV dans la page `offres.html` (script `interface_cv.js`) :
+  - au moment de créer la page, `interface.py` y copie les expressions de `competences.py` et `candidature.py`. La page et `main.py --cv` utilisent donc les mêmes règles ;
+  - le `.docx` est lu dans le navigateur, sans bibliothèque (`DecompressionStream`).
+- Vérification d'une lettre de motivation (module `lettre`), options `--lettre`, `--offre` et `--rapport-lettre`. Elle se fait aussi dans la page, avec le bouton « Vérifier ma lettre pour cette offre ». La page reçoit les listes de mots de `lettre.py`.
 - Filtres et export : `--ville`, `--region`, `--techno`, `--niveau`, `--stages`, `--salaire-min`, `--employeur`, export `--csv` pour Excel, et `--depuis` pour filtrer une collecte déjà faite sans Internet (modules `filtres` et `export`).
 
 Le code est dans ce dossier. Le prototype du L2 reste tel quel dans `02-preuve-de-concept-scraping/`.
@@ -210,7 +275,13 @@ python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equi
 # Page de recherche à ouvrir dans le navigateur
 python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equipe\kandet\03-amelioration-preuve-de-concept\offres.json --html
 
-# Tests hors ligne (140 tests)
+# Comparer un CV avec les offres (aide à la candidature)
+python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equipe\kandet\03-amelioration-preuve-de-concept\offres.json --cv .\equipe\kandet\03-amelioration-preuve-de-concept\cv-exemple.txt --rapport-cv
+
+# Vérifier une lettre de motivation pour une offre
+python .\equipe\kandet\03-amelioration-preuve-de-concept\main.py --depuis .\equipe\kandet\03-amelioration-preuve-de-concept\offres.json --lettre .\equipe\kandet\03-amelioration-preuve-de-concept\lettre-exemple.txt --offre 50585958
+
+# Tests hors ligne (179 tests)
 python -m unittest discover -s equipe/kandet/03-amelioration-preuve-de-concept -p "test_*.py" -v
 ```
 
@@ -237,7 +308,7 @@ Sorties :
 | Technologies détectées | 0 | 83 offres |
 | Niveau (débutant, intermédiaire, avancé) | 0 | 124 offres |
 | Stages détectés | 0 | 1 confirmé |
-| Tests hors ligne | 33 | 140 |
+| Tests hors ligne | 33 | 179 |
 
 Les compteurs de la dernière colonne viennent du résumé de `offres.json` (`summary.filled_fields`).
 
@@ -282,6 +353,71 @@ Des captures d'écran sur ordinateur, sur téléphone (375 pixels) et en mode so
 - un titre de filtres mal espacé ;
 - un texte de bouton peu lisible en mode sombre.
 
+### Vérification de l'aide à la candidature (20 novembre)
+
+J'ai fait l'essai avant d'écrire le module, avec deux CV fictifs comparés aux 195 vraies offres :
+- une étudiante en développement qui cherche un stage ;
+- un technicien en soutien et réseau avec 2 ans d'expérience.
+
+L'essai a montré trois défauts de la première règle de note, corrigés avant l'ajout :
+
+| Défaut observé | Correction |
+|---|---|
+| Une offre qui ne liste que « Python » avait la note maximale sur les technologies avec 1 seule technologie en commun | La note tient compte aussi du nombre de technologies en commun (jusqu'à 4) |
+| L'étudiante recevait des postes « avancés » (chef de projet, administrateur de bases de données senior) | Moins de points quand l'offre est d'un niveau au-dessus du CV, aucun quand elle est deux niveaux au-dessus |
+| Pour le technicien, les 5 premières offres ne listaient qu'un seul élément (« Réseaux ») : 100/100 sans vraie information | Une offre avec peu d'éléments garde 70 % à 90 % de sa note |
+
+**Résultat après correction :**
+
+- **Étudiante :** 1re offre « développeur Web full-stack », niveau débutant, 6 technologies sur 7 en commun (95/100). Le seul stage trouvé est signalé à part.
+- **Technicien :** 1res offres « administrateur réseaux », avec 4 ou 5 éléments en commun (Windows, Active Directory, VMware…).
+
+**Lecture des CV :**
+
+- un vrai `.docx` créé par Word se lit sans bibliothèque externe, et son texte est identique à la version `.txt` ;
+- un PDF est refusé avec un message qui explique quoi faire.
+
+**Tests :** 21 nouveaux tests dans `test_candidature.py`. Ils vérifient notamment :
+- un `.docx` construit dans le test (avec un tableau et des sauts de ligne) ;
+- un ancien stage, sans recherche de stage, qui ne doit pas être compté comme recherche ;
+- « Bilingue » compris comme français et anglais ;
+- aucune suggestion inventée.
+
+### Vérification du CV dans la page et de la lettre (20 novembre)
+
+**CV dans la page.** Essai fait avant de modifier la page :
+- les 72 expressions de Python fonctionnent telles quelles en JavaScript ;
+- pour 3 CV fictifs et les 195 vraies offres, le calcul JavaScript (exécuté avec Node.js) donne le même profil et la même note que Python pour chaque offre (0 différence) ;
+- un vrai `.docx` créé par Word est lu dans Edge sans bibliothèque, avec le même texte que la version `.txt`.
+
+Une fois la page faite, une copie de test a rempli le panneau elle-même dans Edge :
+- CV collé (2 profils) et vrai fichier Word : les 10 premières offres et leurs notes sont identiques à `main.py --cv` ;
+- avec le filtre région Montréal, le tri par correspondance est gardé ;
+- « Retirer le CV » efface tout, et le CV n'apparaît jamais dans l'adresse de la page ;
+- un PDF est refusé avec un message.
+
+Captures sur ordinateur et sur téléphone (375 pixels) : rien ne dépasse de l'écran.
+
+Le test `test_interface_cv.py` compare automatiquement les notes JavaScript et Python. Pour vérifier qu'il sert à quelque chose, je lui ai donné une copie du script avec une seule règle changée (50 points au lieu de 55) : il a échoué, comme il le devait.
+
+**Lettre.** Essai avec une lettre fictive (`lettre-exemple.txt`) pour l'offre « développeur Web full-stack ». Deux défauts trouvés et corrigés avant l'ajout :
+- l'employeur était déclaré « cité » parce que la lettre contenait le mot « les » (« Les technologies Duologiq »). On compare maintenant les mots distinctifs du nom ;
+- le titre était déclaré « cité » à cause du seul mot « développer ». Il faut maintenant 2 mots importants sur 3 du titre.
+
+Après correction, la lettre fictive est bien signalée : `[nom du poste]` oublié, employeur et poste absents, 4 technologies de l'offre absentes, lettre courte (114 mots). Une fois la lettre corrigée, ces remarques disparaissent.
+
+**Lettre dans la page.** Essai fait avant de modifier la page : la vérification écrite en JavaScript donne les mêmes vérifications et les mêmes phrases que `lettre.py` dans **780 cas sur 780** (4 lettres × 195 vraies offres, avec et sans CV).
+
+Ensuite, dans Edge, une copie de test de la vraie page a fait elle-même les étapes :
+- ouvrir la fenêtre d'une offre et coller la lettre : 7 suggestions, identiques à Python ;
+- charger le CV puis choisir la lettre en vrai fichier Word : 8 suggestions, identiques à Python ;
+- fermer et rouvrir : la lettre est gardée ;
+- un PDF est refusé avec un message.
+
+Les captures sur ordinateur et sur téléphone ont fait corriger un champ « Choisir un fichier » qui dépassait sur téléphone.
+
+Le test automatique de la lettre a d'abord été trop faible : avec un script volontairement modifié (mots comparés sur 4 lettres au lieu de 5), il passait encore. J'ai ajouté un cas où cette différence compte (« partenaires » et « participé »). Maintenant, il échoue avec le script modifié.
+
 ### Ce que les données montrent (17 novembre)
 
 - **Salaire médian** (valeur basse de la fourchette) : 70 000 $ par année (111 offres), 36 $ de l'heure (68 offres).
@@ -308,5 +444,16 @@ Des captures d'écran sur ordinateur, sur téléphone (375 pixels) et en mode so
 
 - **Page HTML :** c'est une photo des offres au moment de sa création. Pour la mettre à jour, il faut refaire une collecte, puis `--html`. Le bouton « Copier le lien » demande l'accès au presse-papiers : certains navigateurs le refusent pour un fichier ouvert en local, et la page affiche alors « Copiez l'adresse de la page ».
 
+- **Aide à la candidature :**
+  - la note vient de règles simples. Elle ne comprend que les technologies et compétences de nos listes (51 et 14), écrites clairement dans le CV ;
+  - 70 offres sur 195 ne listent ni technologie ni compétence : elles ne sont pas classées, et le programme le dit ;
+  - pas de PDF : il faut enregistrer le CV en `.docx` ;
+  - les suggestions aident à savoir quoi mettre en avant, mais il faut toujours relire l'offre complète.
+
+- **Lettre de motivation :**
+  - les règles ne jugent ni le style ni l'orthographe ;
+  - les mots-clés sont comparés par leur début (5 lettres) : un synonyme (« tester » au lieu de « mettre à l'essai ») n'est pas reconnu.
+
 **À faire ensuite :**
-- l'aide à la candidature (piste 4 du projet) : comparer un CV avec les technologies et le niveau des offres.
+- refaire une collecte régulièrement : les offres expirent vite (71 en une semaine) ;
+- montrer la page et l'aide à la candidature à quelques étudiants pour savoir ce qui leur est vraiment utile.

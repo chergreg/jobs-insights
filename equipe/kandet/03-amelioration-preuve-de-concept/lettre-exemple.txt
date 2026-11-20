@@ -1,0 +1,13 @@
+Camille Exemple (lettre fictive, pour essayer le programme)
+
+Madame, Monsieur,
+
+Je vous écris pour poser ma candidature au poste de [nom du poste]. Étudiante en dernière année du DEC en techniques de l'informatique, je souhaite rejoindre une équipe où je pourrai développer des sites Web utiles.
+
+Pendant mes études, j'ai réalisé une application Web de gestion de bibliothèque avec React et une API en Python. J'ai écrit et testé le code, et j'ai travaillé avec Git en équipe Agile. J'ai aussi conçu la base de données SQL du projet.
+
+Je suis curieuse, rigoureuse et j'aime apprendre de nouvelles technologies.
+
+Je vous remercie de votre attention et je serais heureuse de vous rencontrer.
+
+Camille Exemple

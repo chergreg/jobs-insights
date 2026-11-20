@@ -1,0 +1,18 @@
+Camille Exemple (CV fictif, pour essayer le programme)
+Étudiante en 3e année, DEC en Techniques de l'informatique (programmation)
+Recherche : stage en développement Web ou logiciel
+
+Compétences techniques
+- Langages : Python, Java, C#, JavaScript, HTML/CSS, SQL
+- Outils : Git, GitHub, Visual Studio Code, Linux
+- Bases de données : MySQL, PostgreSQL
+- Méthodes : Agile / Scrum en projet d'équipe
+
+Projets
+- Application Web de gestion de bibliothèque (React, API REST en Python avec Django, PostgreSQL)
+- Jeu en C# avec tests unitaires
+
+Expérience
+- Commis à l'aide informatique au cégep, 6 mois (soutien aux étudiants)
+
+Langues : français, anglais

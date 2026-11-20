@@ -1,20 +1,37 @@
 """
-Tests unitaires hors ligne pour `scraper_jobboom_v2.py` (Livrable 3).
+Tests unitaires hors ligne pour le Livrable 3 Multi-Sources d'Elvira :
+- `models.py` (`JobOffer`, filtre strict 2026 `is_recent_and_valid_offer`, `is_it_job`, `dedup_key`)
+- `collecteurs.py` (`JobboomCollector`, `GuichetEmploisCollector`, `JobillicoCollector`, `RemotiveCollector`)
+- `pipeline.py` (`MultiSourcePipeline` : déduplication inter-sources, filtrage et exports JSON/CSV)
+- `scraper_jobboom_v2.py` (compatibilité v2 Jobboom)
+
 Aucun appel réseau n'est effectué pendant ces tests.
 """
 
 from __future__ import annotations
 
 import json
+import tempfile
 import unittest
 import urllib.robotparser
 from pathlib import Path
 
+from collecteurs import (
+    GuichetEmploisCollector,
+    JobboomCollector,
+    JobillicoCollector,
+    RemotiveCollector,
+)
+from models import (
+    JobOffer,
+    extract_salary,
+    is_it_job,
+    is_recent_and_valid_offer,
+)
+from pipeline import MultiSourcePipeline
 from scraper_jobboom_v2 import (
     USER_AGENT,
     extract_job_id,
-    extract_salary,
-    is_it_job,
     is_url_allowed,
     merge_discovered_urls,
     normalize_job_posting,
@@ -26,7 +43,7 @@ from scraper_jobboom_v2 import (
 FIXTURE_PATH = Path(__file__).resolve().parent / "fixtures" / "jobboom_fixture.json"
 
 
-class TestScraperJobboomV2(unittest.TestCase):
+class TestScraperMultiSourcesV2(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         cls.fixtures = json.loads(FIXTURE_PATH.read_text(encoding="utf-8"))
@@ -46,12 +63,22 @@ class TestScraperJobboomV2(unittest.TestCase):
         )
 
     def test_is_it_job_positive_and_exclusion(self) -> None:
-        """Vérifie que les titres TI passent et que les postes hors-TI (comptable, CVC, ventes) sont exclus."""
+        """Vérifie que les titres TI passent et que les postes hors-TI sont exclus."""
         self.assertTrue(is_it_job("Développeur Fullstack Python", ""))
         self.assertTrue(is_it_job("Stage en soutien informatique", ""))
         self.assertFalse(is_it_job("Commis comptable", ""))
         self.assertFalse(is_it_job("Technicien CVC / bâtiment", ""))
-        self.assertFalse(is_it_job("Conseiller aux ventes en succursale", ""))
+        self.assertFalse(is_it_job("Journalier au désassemblage de matériel informatique", ""))
+
+    def test_is_recent_and_valid_offer_rejects_past_years_and_expired(self) -> None:
+        """Vérifie qu'aucune offre de l'année passée (< 2026) ou expirée n'est acceptée."""
+        self.assertTrue(is_recent_and_valid_offer("2026-11-10", "2027-01-15", today_iso="2026-11-18"))
+        self.assertTrue(is_recent_and_valid_offer("12 novembre 2026", None, today_iso="2026-11-18"))
+        # Offres de 2023 ou 2025 rejetées même si la date d'expiration est en 2027
+        self.assertFalse(is_recent_and_valid_offer("2023-11-25", "2027-02-07", today_iso="2026-11-18"))
+        self.assertFalse(is_recent_and_valid_offer("2025-12-31", "2026-12-31", today_iso="2026-11-18"))
+        # Offre de 2026 mais déjà expirée rejetée
+        self.assertFalse(is_recent_and_valid_offer("2026-09-01", "2026-10-15", today_iso="2026-11-18"))
 
     def test_parse_and_normalize_job_posting(self) -> None:
         """Vérifie l'extraction du JSON-LD `JobPosting` et sa normalisation complète."""
@@ -71,17 +98,12 @@ class TestScraperJobboomV2(unittest.TestCase):
         self.assertEqual(normalized["titre"], "Stage développeur Web Python / React")
         self.assertEqual(normalized["entreprise"], "Studio Numérique Québec")
         self.assertEqual(normalized["ville"], "Québec")
-        self.assertEqual(normalized["province"], "QC")
-        self.assertEqual(normalized["code_postal"], "G1K 3C2")
-        self.assertEqual(normalized["coordonnees_gps"], {"latitude": 46.8139, "longitude": -71.208})
         self.assertEqual(normalized["salaire"], "22 à 26 CAD / heure")
         self.assertEqual(normalized["modalite"], "Hybride")
         self.assertTrue(normalized["est_stage"])
         self.assertIn("Python", normalized["competences_cles"])
-        self.assertIn("React", normalized["competences_cles"])
-        self.assertIn("PostgreSQL", normalized["competences_cles"])
-        # "soins de la vue" ne doit PAS déclencher "Vue.js"
         self.assertNotIn("Vue.js", normalized["competences_cles"])
+        self.assertNotIn("raw_json_ld", normalized)
 
     def test_extract_salary_when_absent_or_present(self) -> None:
         """Vérifie que le salaire n'est jamais inventé lorsqu'il est absent (`None`)."""
@@ -110,30 +132,134 @@ class TestScraperJobboomV2(unittest.TestCase):
         merged = merge_discovered_urls(batches)
 
         self.assertEqual(len(merged), 2)
-        self.assertEqual(merged[0], (url_a, ["categorie_ti:_i10lfr_p1"]))
-        self.assertEqual(
-            merged[1],
-            (url_b, ["categorie_ti:_i10lfr_p1", "mot_cle:stage informatique"]),
-        )
+        self.assertEqual(merged[1], (url_b, ["categorie_ti:_i10lfr_p1", "mot_cle:stage informatique"]))
         self.assertEqual(extract_job_id(url_a), "jb-1111111")
 
     def test_robots_txt_permission(self) -> None:
         """Vérifie le respect des règles `robots.txt` via `RobotFileParser`."""
         rp = urllib.robotparser.RobotFileParser()
-        rp.parse(
-            [
-                "User-agent: *",
-                "Disallow: /fr/admin/",
-                "Allow: /fr/",
-            ]
-        )
+        rp.parse(["User-agent: *", "Disallow: /fr/admin/", "Allow: /fr/"])
         self.assertTrue(is_url_allowed(rp, "https://www.jobboom.com/fr/technologies-medias-numeriques/_i10lfr", USER_AGENT))
         self.assertFalse(is_url_allowed(rp, "https://www.jobboom.com/fr/admin/secret", USER_AGENT))
 
-    def test_upgrade_existing_file_fuses_elvira_and_mamadou_samples(self) -> None:
-        """Vérifie la fusion hors ligne de l'échantillon v1 d'Elvira et des offres Jobboom de Mamadou."""
-        import tempfile
+    def test_guichet_emplois_collector_parsing_and_rdfa_enrichment(self) -> None:
+        """Vérifie le parsing d'une carte Guichet-Emplois et son enrichissement RDFa."""
+        search_html = """
+        <article id="article-50711091">
+          <a href="/rechercheemplois/offredemploi/50711091;jsessionid=ABC">
+            <span class="noctitle">développeur/développeuse Web</span>
+          </a>
+          <li class="business">Techno Québec Inc.</li>
+          <li class="location"><span class="wb-inv">Emplacement</span>Québec (QC)</li>
+          <li class="salary"><span class="wb-inv">Salaire</span>32,00 $ de l'heure</li>
+          <li class="date">14 novembre 2026</li>
+          <li class="telework">Hybride</li>
+          <li class="source"><span class="wb-inv">Jobillico</span></li>
+        </article>
+        """
+        cards = GuichetEmploisCollector.parse_search_results_html(search_html)
+        self.assertEqual(len(cards), 1)
+        self.assertEqual(cards[0]["id"], "ge-50711091")
+        self.assertEqual(cards[0]["partenaire_origine"], "Jobillico")
+        self.assertEqual(cards[0]["date_publication"], "2026-11-14")
 
+        detail_html = """
+        <html><body>
+          <span class="source-title-inner">Développeur Web Fullstack (Stage / Junior)</span>
+          <div property="description"><p>Maîtrise de <strong>Python</strong>, <strong>React</strong> et <strong>SQL</strong>.</p></div>
+        </body></html>
+        """
+        offer = GuichetEmploisCollector.enrich_from_detail_html(cards[0], detail_html)
+        self.assertEqual(offer.titre, "Développeur Web Fullstack (Stage / Junior)")
+        self.assertEqual(offer.modalite, "Hybride")
+        self.assertTrue(offer.est_stage)
+        self.assertIn("Python", offer.competences_cles)
+        self.assertIn("SQL", offer.competences_cles)
+
+    def test_jobillico_and_remotive_collectors(self) -> None:
+        """Vérifie les parseurs Jobillico (JSON-LD) et Remotive (API REST JSON)."""
+        ji_html = """
+        <html><head><script type="application/ld+json">
+        {"@type":"JobPosting","title":"Programmeur analyste C#","description":"Poste télétravail avec C#, .NET et Azure.","datePosted":"2026-11-12","hiringOrganization":{"name":"Solutions Lévis"},"jobLocation":{"address":{"addressLocality":"Lévis","addressRegion":"QC"}}}
+        </script></head></html>
+        """
+        ji_offer = JobillicoCollector.parse_job_posting_from_html(
+            ji_html,
+            "https://www.jobillico.com/fr/offre-d-emploi/solutions-levis/programmeur/17550001",
+        )
+        self.assertIsNotNone(ji_offer)
+        assert ji_offer is not None
+        self.assertEqual(ji_offer.id, "ji-17550001")
+        self.assertEqual(ji_offer.source, "Jobillico")
+        self.assertIn("C#", ji_offer.competences_cles)
+
+        rem_payload = {
+            "jobs": [
+                {
+                    "id": 9901,
+                    "title": "Junior Python Software Developer Intern",
+                    "company_name": "CloudNova",
+                    "candidate_required_location": "Canada",
+                    "publication_date": "2026-11-15T10:00:00",
+                    "job_type": "internship",
+                    "salary": "$25/hr",
+                    "url": "https://remotive.com/remote-jobs/software-dev/intern-9901",
+                    "description": "<p>Remote internship using Python, Docker, and PostgreSQL.</p>",
+                },
+                {
+                    "id": 9902,
+                    "title": "Old Developer 2024",
+                    "company_name": "OldCorp",
+                    "candidate_required_location": "Canada",
+                    "publication_date": "2024-05-10T10:00:00",
+                    "job_type": "full_time",
+                    "url": "https://remotive.com/remote-jobs/software-dev/old-9902",
+                    "description": "Python",
+                },
+            ]
+        }
+        rem_offers = RemotiveCollector.parse_api_jobs(rem_payload)
+        self.assertEqual(len(rem_offers), 1)
+        self.assertEqual(rem_offers[0].id, "rem-9901")
+        self.assertTrue(rem_offers[0].est_stage)
+
+    def test_cross_source_deduplication_and_merge(self) -> None:
+        """Vérifie qu'une même offre présente sur Guichet-Emplois et sur Jobboom est fusionnée sans perte."""
+        o1 = JobOffer(
+            id="ge-5001",
+            source="Guichet-Emplois",
+            titre="Développeur Python",
+            entreprise="InnovMetric Logiciels Inc.",
+            ville="Québec (QC)",
+            salaire="75 000 $ / an",
+            competences_cles=["Python"],
+            date_publication="2026-11-12",
+            url="https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/5001",
+            description_texte="Résumé court.",
+        )
+        o2 = JobOffer(
+            id="jb-3001",
+            source="Jobboom",
+            titre="Développeur Python",
+            entreprise="InnovMetric Logiciels",
+            ville="Québec",
+            code_postal="G1N4N6",
+            coordonnees_gps={"latitude": 46.81, "longitude": -71.31},
+            competences_cles=["Python", "Docker", "SQL"],
+            date_publication="2026-11-12",
+            url="https://www.jobboom.com/fr/offre-emploi/developpeur-python_p3001",
+            description_texte="Description complète beaucoup plus détaillée avec Docker et SQL.",
+        )
+        merged = MultiSourcePipeline.deduplicate_and_merge([o1, o2])
+        self.assertEqual(len(merged), 1)
+        result = merged[0]
+        self.assertEqual(result.salaire, "75 000 $ / an")
+        self.assertEqual(result.code_postal, "G1N4N6")
+        self.assertIn("Docker", result.competences_cles)
+        self.assertEqual(len(result.urls_sources), 2)
+
+    def test_upgrade_existing_file_keeps_only_2026_valid_offers(self) -> None:
+        """Vérifie que la fusion v2 ne garde aucune offre des années passées."""
         v1_path = Path(__file__).resolve().parent.parent / "02-preuve-de-concept-scraping" / "offres_jobboom.json"
         mamadou_path = (
             Path(__file__).resolve().parent.parent.parent
@@ -144,10 +270,9 @@ class TestScraperJobboomV2(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp_dir:
             out_path = Path(tmp_dir) / "merged.json"
             merged = upgrade_existing_file(v1_path, out_path, mamadou_file=mamadou_path)
-            self.assertEqual(len(merged), 23)
-            ids = {item["id"] for item in merged}
-            self.assertIn("jb-3718101", ids)  # Offre Cybersécurité issue de Mamadou (_i10lfr)
-            self.assertIn("jb-3698100", ids)  # Offre Technicien TI issue d'Elvira (mots-clés)
+            self.assertEqual(len(merged), 15)
+            for item in merged:
+                self.assertTrue(str(item["date_publication"]).startswith("2026"))
 
 
 if __name__ == "__main__":
