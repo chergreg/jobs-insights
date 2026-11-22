@@ -2114,12 +2114,19 @@ def parse_json_ld_job_posting(html_text: str, url: str, source_name: str, id_pre
                 competences_cles=skills,
                 description=desc_clean,
             )
-            if not is_recent_and_valid_offer(offer):
-                return None
             return enrich_offer_metadata(offer)
         except (json.JSONDecodeError, ValueError, TypeError):
             continue
     return None
+
+
+def split_recent_offers(
+    offers: list[JobBankOffer],
+    min_year: int = 2026,
+) -> tuple[list[JobBankOffer], int]:
+    """Sépare les offres 2026 valides des annonces obsolètes. Retourne `(offres_retenues, nb_rejetees_pre_2026)`."""
+    kept = [o for o in offers if is_recent_and_valid_offer(o, min_year=min_year)]
+    return kept, len(offers) - len(kept)
 
 
 def is_recent_and_valid_offer(
@@ -2756,7 +2763,10 @@ def collect_all_sources(
     # 5. Remotive API (Télétravail Canada, avec cache 24 h + filtre CNP TI)
     all_offers.extend(fetch_remotive_canada_offers(session, limit=other_limit, use_cache=use_cache, cache_dir=cache_dir))
 
-    return [asdict(o) for o in all_offers]
+    recent_offers, nb_old = split_recent_offers(all_offers)
+    if nb_old:
+        print(f"\n  -> {nb_old} offre(s) antérieure(s) à 2026 écartée(s) par le filtre de fraîcheur.")
+    return [asdict(o) for o in recent_offers]
 
 
 def consolidate_data_directory(data_dir: Path = DATA_DIR) -> dict[str, Any]:
@@ -2784,6 +2794,7 @@ def consolidate_data_directory(data_dir: Path = DATA_DIR) -> dict[str, Any]:
         src_retained_offers: list[JobBankOffer] = []
         retained = 0
         rejected = 0
+        rejected_old = 0
         for item in raw_items:
             raw_id = str(item.get("source_id") or str(item.get("id", "")).split("-")[-1])
             oid = str(item.get("id") or f"{prefix}-{raw_id}")
@@ -2834,8 +2845,11 @@ def consolidate_data_directory(data_dir: Path = DATA_DIR) -> dict[str, Any]:
                 off.competences_cles,
                 source=src_name,
             )
-            if cnp_res is None or not is_recent_and_valid_offer(off):
+            if cnp_res is None:
                 rejected += 1
+                continue
+            if not is_recent_and_valid_offer(off):
+                rejected_old += 1
                 continue
             off.code_cnp = cnp_res[0]
             if not off.cnp_title:
@@ -2853,6 +2867,7 @@ def consolidate_data_directory(data_dir: Path = DATA_DIR) -> dict[str, Any]:
             "brutes_lues": len(raw_items),
             "retenues_ti_cnp": retained,
             "rejetees_hors_ti": rejected,
+            "rejetees_pre_2026": rejected_old,
         }
 
     unified, dedup_stats = unify_and_deduplicate_offers(all_offers)
@@ -2947,10 +2962,12 @@ def run_autonomous_full_collection(
 
     ge_dedup, ge_dstats = unify_and_deduplicate_offers(ge_enriched)
     total_intra_merged += ge_dstats["doublons_intra_fusionnes"]
+    ge_dedup, ge_old = split_recent_offers(ge_dedup)
     per_source_counts["guichet-emplois"] = {
         "brutes_lues": len(ge_enriched),
         "retenues_ti_cnp": len(ge_dedup),
         "rejetees_hors_ti": 0,
+        "rejetees_pre_2026": ge_old,
     }
 
     # --------------------------------------------------------------------------
@@ -2991,12 +3008,14 @@ def run_autonomous_full_collection(
 
     jb_dedup, jb_dstats = unify_and_deduplicate_offers(jb_offers)
     total_intra_merged += jb_dstats["doublons_intra_fusionnes"]
+    jb_dedup, jb_old = split_recent_offers(jb_dedup)
     per_source_counts["jobboom"] = {
         "brutes_lues": len(jb_offers) + jb_rejected,
         "retenues_ti_cnp": len(jb_dedup),
         "rejetees_hors_ti": jb_rejected,
+        "rejetees_pre_2026": jb_old,
     }
-    print(f"  ✓ Jobboom : {len(jb_dedup)} offres TI uniques retenues ({jb_rejected} hors-TI rejetées)")
+    print(f"  ✓ Jobboom : {len(jb_dedup)} offres TI 2026 uniques retenues ({jb_rejected} hors-TI rejetées, {jb_old} pré-2026 écartées)")
 
     # --------------------------------------------------------------------------
     # 3. TALENT.COM CANADA (Multi-requêtes TI QC + JSON-LD @graph + GPS)
@@ -3040,10 +3059,12 @@ def run_autonomous_full_collection(
 
     tc_dedup, tc_dstats = unify_and_deduplicate_offers(tc_offers)
     total_intra_merged += tc_dstats["doublons_intra_fusionnes"]
+    tc_dedup, tc_old = split_recent_offers(tc_dedup)
     per_source_counts["talent-canada"] = {
         "brutes_lues": len(tc_offers) + tc_rejected,
         "retenues_ti_cnp": len(tc_dedup),
         "rejetees_hors_ti": tc_rejected,
+        "rejetees_pre_2026": tc_old,
     }
     print(f"  ✓ Talent.com : {len(tc_dedup)} offres TI uniques avec GPS retenues ({tc_rejected} hors-TI rejetées)")
 
@@ -3087,10 +3108,12 @@ def run_autonomous_full_collection(
 
     ji_dedup, ji_dstats = unify_and_deduplicate_offers(ji_offers)
     total_intra_merged += ji_dstats["doublons_intra_fusionnes"]
+    ji_dedup, ji_old = split_recent_offers(ji_dedup)
     per_source_counts["jobillico"] = {
         "brutes_lues": len(ji_offers) + ji_rejected,
         "retenues_ti_cnp": len(ji_dedup),
         "rejetees_hors_ti": ji_rejected,
+        "rejetees_pre_2026": ji_old,
     }
     print(f"  ✓ Jobillico : {len(ji_dedup)} offres TI uniques retenues ({ji_rejected} hors-TI rejetées)")
 
@@ -3118,10 +3141,12 @@ def run_autonomous_full_collection(
 
     rem_dedup, rem_dstats = unify_and_deduplicate_offers(rem_offers)
     total_intra_merged += rem_dstats["doublons_intra_fusionnes"]
+    rem_dedup, rem_old = split_recent_offers(rem_dedup)
     per_source_counts["remotive"] = {
         "brutes_lues": len(rem_offers) + rem_rejected,
         "retenues_ti_cnp": len(rem_dedup),
         "rejetees_hors_ti": rem_rejected,
+        "rejetees_pre_2026": rem_old,
     }
     print(f"  ✓ Remotive : {len(rem_dedup)} offres TI uniques retenues ({rem_rejected} hors-TI/hors-Canada filtrées)")
 

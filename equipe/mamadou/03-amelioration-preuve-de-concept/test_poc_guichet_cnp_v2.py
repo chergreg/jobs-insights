@@ -52,6 +52,7 @@ from poc_guichet_cnp_v2 import (
     parse_search_results_html,
     parse_talent_job_detail_html,
     resolve_quebec_location,
+    split_recent_offers,
     unify_and_deduplicate_offers,
 )
 
@@ -574,6 +575,10 @@ class TestPocGuichetCnpV2(unittest.TestCase):
         self.assertFalse(is_recent_and_valid_offer(old_offer, min_year=2026))
         self.assertTrue(is_recent_and_valid_offer(valid_offer, min_year=2026, reference_date="2026-11-22"))
         self.assertFalse(is_recent_and_valid_offer(valid_offer, min_year=2026, reference_date="2026-12-20"))
+
+        kept, nb_old = split_recent_offers([old_offer, valid_offer])
+        self.assertEqual([o.id for o in kept], ["ge-2026"])
+        self.assertEqual(nb_old, 1)
 
     def test_filter_offers_multicriteria_offline(self) -> None:
         o1 = enrich_offer_metadata(

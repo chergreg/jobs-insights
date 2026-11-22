@@ -11,13 +11,13 @@ Notre collecteur ([`poc_guichet_cnp_v2.py --collecte-complete`](03-amelioration-
 
 | # | Source | Mode d'accès autonome | Offres TI 2026 retenues (`data/`) | Hors-TI / pré-2026 filtrées |
 | :-: | --- | --- | :-: | :-: |
-| **1** | **Guichet-Emplois Canada** | 8 pages × 14 codes CNP TI (`fn21`) + **196/196 fiches RDFa/DOM** | **196** | 0 |
-| **2** | **Jobboom Québec** | 10 pages catégorie TI `_i10lfr` + **131 fiches JSON-LD** + filtre CNP & 2026 | **91** | 40 (24 hors-TI + 16 pré-2026) |
-| **3** | **Talent.com Canada** | Multi-requêtes TI QC + **101 fiches JSON-LD `@graph` + GPS** | **55** | 46 |
-| **4** | **Jobillico Québec** | Multi-requêtes TI QC + **56 fiches JSON-LD `JobPosting`** | **40** | 16 |
-| **5** | **Remotive** | API REST JSON multi-catégories TI + filtre Canada & CNP | **7** | 36 |
+| **1** | **Guichet-Emplois Canada** | 8 pages × 14 codes CNP TI (`fn21`) + **195/195 fiches RDFa/DOM** | **194** | 0 |
+| **2** | **Jobboom Québec** | 10 pages catégorie TI `_i10lfr` + **132 fiches JSON-LD** + filtre CNP & 2026 | **91** | 41 (25 hors-TI + 16 pré-2026) |
+| **3** | **Talent.com Canada** | Multi-requêtes TI QC + **102 fiches JSON-LD `@graph` + GPS** | **49** | 53 |
+| **4** | **Jobillico Québec** | Multi-requêtes TI QC + **56 fiches JSON-LD `JobPosting`** | **42** | 14 |
+| **5** | **Remotive** | API REST JSON multi-catégories TI + filtre Canada & CNP | **6** | 40 |
 
-- **Total consolidé et dédupliqué (`data/offres_unifiees.json` & `.csv`) :** **377 offres TI 2026 uniques** (**377 / 377 = 100 % avec description complète** et **377 / 377 = 100 % avec `competences_cles`**, après rejet de 138 offres hors TI / pré-2026 et fusion sans perte de 21 doublons intra-source et 12 doublons inter-sources).
+- **Total consolidé et dédupliqué (`data/offres_unifiees.json` & `.csv`) :** **372 offres TI 2026 uniques** (**372 / 372 = 100 % avec description complète** et **372 / 372 = 100 % avec `competences_cles`**, après rejet de 148 offres (132 hors TI + 16 pré-2026) et fusion sans perte de 18 doublons intra-source et 10 doublons inter-sources).
 
 ---
 
@@ -29,4 +29,4 @@ Notre collecteur ([`poc_guichet_cnp_v2.py --collecte-complete`](03-amelioration-
 | **Lot 2** | Collecteur 5 sources CNP + Fiches + Doc | ✅ Fait | `poc_guichet_cnp_v2.py`, `README.md`, `note.md`, `echantillon_v2.json` | **7 tests OK (0,01 s)** |
 | **Lot 3** | Cache disque local 24 h & Pagination | ✅ Fait | `poc_guichet_cnp_v2.py`, `test_poc_guichet_cnp_v2.py`, `.gitignore` | **10 tests OK (0,04 s)** |
 | **Lot 4** | Collecte autonome 5 sources + Enrichissement `JobTailor` + CNP + `data/*.json` | ✅ Fait | `poc_guichet_cnp_v2.py`, `data/*.json`, `data/offres_unifiees.csv`, `data/rapport_collecte.json` | **16 tests OK (0,10 s)** |
-| **Lot 5** | Fraîcheur 2026 (377 offres) + `--filtrer` + `--format-commun` + `--html` + `--cv` + `--lettre` | ✅ Fait | `assistant_et_interface.py`, `data/portail_ti_jobtailor.html`, `data/offres_format_commun.json` | **21 tests OK (0,20 s)** |
+| **Lot 5** | Fraîcheur 2026 (372 offres, collecte live) + `--filtrer` + `--format-commun` + `--html` + `--cv` + `--lettre` | ✅ Fait | `assistant_et_interface.py`, `data/portail_ti_jobtailor.html`, `data/offres_format_commun.json` | **21 tests OK (0,20 s)** |

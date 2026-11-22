@@ -59,29 +59,9 @@ EMPLOYER_GENERIC_WORDS: set[str] = {
 
 # ==============================================================================
 # 1. Filtre de fraîcheur et validité 2026 (inspiré d'Elvira)
+#    Source unique : `poc_guichet_cnp_v2.is_recent_and_valid_offer` (réexporté ici).
 # ==============================================================================
-def is_recent_and_valid_offer(
-    offer: JobBankOffer,
-    min_year: int = 2026,
-    reference_date: Optional[str] = None,
-) -> bool:
-    """
-    Vérifie qu'une offre n'est ni une ancienne annonce d'une année passée (ex. offres Jobboom
-    de 2023), ni une offre dont la date de fin d'affichage (`date_fin`) est dépassée.
-    """
-    if offer.date_publication and len(offer.date_publication) >= 4:
-        try:
-            pub_year = int(offer.date_publication[:4])
-            if pub_year < min_year:
-                return False
-        except ValueError:
-            pass
-
-    if reference_date and offer.date_fin and re.match(r"^\d{4}-\d{2}-\d{2}$", offer.date_fin):
-        if offer.date_fin < reference_date:
-            return False
-
-    return True
+from poc_guichet_cnp_v2 import is_recent_and_valid_offer  # noqa: E402
 
 
 # ==============================================================================
@@ -996,7 +976,12 @@ def generate_interactive_html_portal(
 
       <h2 style="margin-top:1.4rem;">2. Matching CV (Piste 4 JobTailor)</h2>
       <div class="field">
-        <label for="cv-input">Collez le texte de votre CV pour calculer votre score ATS (/100) sur chaque offre :</label>
+        <label for="cv-file">Chargez votre CV (.txt, .md, .json ou .docx) :</label>
+        <input type="file" id="cv-file" accept=".txt,.md,.json,.docx">
+        <div id="cv-file-status" style="font-size:0.75rem;color:#94a3b8;margin-top:0.3rem;"></div>
+      </div>
+      <div class="field">
+        <label for="cv-input">… ou collez le texte de votre CV pour calculer votre score ATS (/100) sur chaque offre :</label>
         <textarea id="cv-input" placeholder="Ex. Étudiant au DEC en informatique (Collège O'Sullivan). Compétences : Python, SQL, PostgreSQL, Docker, Git, Linux, FastAPI, React, Soutien TI..."></textarea>
       </div>
       <div class="btn-row">
@@ -1264,6 +1249,65 @@ def generate_interactive_html_portal(
       document.getElementById('f-stage').checked = false;
       renderOffers();
     }};
+
+    async function readDocxText(arrayBuffer) {{
+      // Lecture native d'un .docx (archive ZIP) sans dépendance : répertoire central + DecompressionStream.
+      const bytes = new Uint8Array(arrayBuffer);
+      const view = new DataView(arrayBuffer);
+      let eocd = -1;
+      for (let i = bytes.length - 22; i >= Math.max(0, bytes.length - 66000); i--) {{
+        if (view.getUint32(i, true) === 0x06054b50) {{ eocd = i; break; }}
+      }}
+      if (eocd < 0) throw new Error('Archive .docx invalide');
+      const entries = view.getUint16(eocd + 10, true);
+      let ptr = view.getUint32(eocd + 16, true);
+      for (let e = 0; e < entries; e++) {{
+        if (view.getUint32(ptr, true) !== 0x02014b50) break;
+        const method = view.getUint16(ptr + 10, true);
+        const compSize = view.getUint32(ptr + 20, true);
+        const nameLen = view.getUint16(ptr + 28, true);
+        const extraLen = view.getUint16(ptr + 30, true);
+        const commentLen = view.getUint16(ptr + 32, true);
+        const localOffset = view.getUint32(ptr + 42, true);
+        const name = new TextDecoder().decode(bytes.subarray(ptr + 46, ptr + 46 + nameLen));
+        if (name === 'word/document.xml') {{
+          const lNameLen = view.getUint16(localOffset + 26, true);
+          const lExtraLen = view.getUint16(localOffset + 28, true);
+          const start = localOffset + 30 + lNameLen + lExtraLen;
+          const data = bytes.subarray(start, start + compSize);
+          let xmlBytes = data;
+          if (method === 8) {{
+            const stream = new Blob([data]).stream().pipeThrough(new DecompressionStream('deflate-raw'));
+            xmlBytes = new Uint8Array(await new Response(stream).arrayBuffer());
+          }}
+          const xml = new TextDecoder('utf-8').decode(xmlBytes);
+          const withBreaks = xml.replace(/<\\/w:p>/g, '\\n').replace(/<w:tab\\/>/g, ' ');
+          const doc = new DOMParser().parseFromString('<r>' + withBreaks.replace(/<[^>]+>/g, '') + '</r>', 'text/xml');
+          return (doc.documentElement.textContent || '').trim();
+        }}
+        ptr += 46 + nameLen + extraLen + commentLen;
+      }}
+      throw new Error('word/document.xml introuvable dans le .docx');
+    }}
+
+    document.getElementById('cv-file').addEventListener('change', async (ev) => {{
+      const file = ev.target.files && ev.target.files[0];
+      const status = document.getElementById('cv-file-status');
+      if (!file) return;
+      try {{
+        let text = '';
+        if (file.name.toLowerCase().endsWith('.docx')) {{
+          text = await readDocxText(await file.arrayBuffer());
+        }} else {{
+          text = await file.text();
+        }}
+        document.getElementById('cv-input').value = text;
+        status.textContent = 'Fichier chargé : ' + file.name + ' (' + text.length + ' caractères).';
+        document.getElementById('btn-apply-cv').click();
+      }} catch (err) {{
+        status.textContent = 'Lecture impossible : ' + err.message + ' — collez le texte du CV ci-dessous.';
+      }}
+    }});
 
     document.getElementById('btn-apply-cv').onclick = () => {{
       const txt = document.getElementById('cv-input').value || '';

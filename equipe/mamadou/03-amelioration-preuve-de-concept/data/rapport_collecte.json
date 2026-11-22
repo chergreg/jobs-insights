@@ -1,141 +1,146 @@
 {
-  "date_generation": "2026-11-22T19:30:08.926082+00:00",
+  "date_generation": "2026-11-22T19:45:44.649914+00:00",
   "auteur": "Mamadou (Livrable 3 - Lot 4 final)",
-  "total_offres_unifiees_ti": 377,
+  "total_offres_unifiees_ti": 372,
   "deduplication": {
-    "total_entree": 389,
-    "doublons_intra_fusionnes": 0,
-    "doublons_inter_fusionnes": 12,
-    "total_unifie": 377
+    "total_entree": 400,
+    "doublons_intra_fusionnes": 18,
+    "doublons_inter_fusionnes": 10,
+    "total_unifie": 372
   },
   "collecte_par_source": {
     "guichet-emplois": {
-      "brutes_lues": 196,
-      "retenues_ti_cnp": 196,
-      "rejetees_hors_ti": 0
+      "brutes_lues": 195,
+      "retenues_ti_cnp": 194,
+      "rejetees_hors_ti": 0,
+      "rejetees_pre_2026": 0
     },
     "jobboom": {
-      "brutes_lues": 107,
+      "brutes_lues": 132,
       "retenues_ti_cnp": 91,
-      "rejetees_hors_ti": 16
+      "rejetees_hors_ti": 25,
+      "rejetees_pre_2026": 16
     },
     "talent-canada": {
-      "brutes_lues": 55,
-      "retenues_ti_cnp": 55,
-      "rejetees_hors_ti": 0
+      "brutes_lues": 102,
+      "retenues_ti_cnp": 49,
+      "rejetees_hors_ti": 53,
+      "rejetees_pre_2026": 0
     },
     "jobillico": {
-      "brutes_lues": 40,
-      "retenues_ti_cnp": 40,
-      "rejetees_hors_ti": 0
+      "brutes_lues": 56,
+      "retenues_ti_cnp": 42,
+      "rejetees_hors_ti": 14,
+      "rejetees_pre_2026": 0
     },
     "remotive": {
-      "brutes_lues": 7,
-      "retenues_ti_cnp": 7,
-      "rejetees_hors_ti": 0
+      "brutes_lues": 64,
+      "retenues_ti_cnp": 6,
+      "rejetees_hors_ti": 40,
+      "rejetees_pre_2026": 0
     }
   },
   "repartition_sources_unifiees": {
-    "guichet-emplois": 196,
+    "guichet-emplois": 194,
     "jobboom": 87,
-    "talent-canada": 52,
-    "jobillico": 35,
-    "remotive": 7
+    "talent-canada": 46,
+    "jobillico": 39,
+    "remotive": 6
   },
   "repartition_codes_cnp_2021": {
     "21232 - Développeurs et programmeurs de logiciels": 63,
-    "21222 - Spécialistes en informatique": 50,
-    "22221 - Agents de soutien aux utilisateurs": 44,
-    "22220 - Techniciens de réseaux informatiques": 42,
-    "21231 - Ingénieurs et concepteurs en logiciel": 33,
-    "21221 - Spécialistes des systèmes d'affaires": 31,
-    "21211 - Spécialistes des données": 30,
+    "22221 - Agents de soutien aux utilisateurs": 47,
+    "21222 - Spécialistes en informatique": 47,
+    "22220 - Techniciens de réseaux informatiques": 46,
+    "21231 - Ingénieurs et concepteurs en logiciel": 32,
+    "21221 - Spécialistes des systèmes d'affaires": 29,
+    "21211 - Spécialistes des données": 28,
     "21220 - Spécialistes en cybersécurité": 27,
-    "21234 - Développeurs et programmeurs Web": 18,
-    "20012 - Gestionnaires des systèmes informatiques": 17,
-    "22222 - Évaluateurs de systèmes informatiques": 9,
-    "21223 - Analystes de bases de données et administrateurs de données": 6,
-    "21233 - Concepteurs Web": 5,
+    "20012 - Gestionnaires des systèmes informatiques": 16,
+    "21234 - Développeurs et programmeurs Web": 14,
+    "22222 - Évaluateurs de systèmes informatiques": 8,
+    "21223 - Analystes de bases de données et administrateurs de données": 7,
+    "21233 - Concepteurs Web": 6,
     "21230 - Développeurs de systèmes informatiques et programmeurs": 2
   },
   "repartition_domaines_ti": {
-    "tech_backend": 163,
-    "tech_support": 99,
+    "tech_backend": 153,
+    "tech_support": 106,
     "data_ia": 44,
-    "devops_cloud": 34,
+    "devops_cloud": 32,
     "cybersecurite": 27,
     "tech_frontend": 10
   },
   "repartition_regions_administratives_qc": {
-    "Montréal": 152,
-    "Montérégie": 79,
-    "Capitale-Nationale": 60,
-    "Hors QC / Télétravail": 24,
-    "Estrie": 19,
-    "Chaudière-Appalaches": 13,
-    "Laurentides": 10,
-    "Laval": 5,
+    "Montréal": 144,
+    "Montérégie": 75,
+    "Capitale-Nationale": 65,
+    "Hors QC / Télétravail": 22,
+    "Estrie": 18,
+    "Chaudière-Appalaches": 15,
+    "Laurentides": 8,
+    "Laval": 6,
+    "Centre-du-Québec": 4,
+    "Lanaudière": 3,
     "Saguenay--Lac-Saint-Jean": 3,
-    "Centre-du-Québec": 3,
     "Abitibi-Témiscamingue": 3,
-    "Lanaudière": 2,
+    "Mauricie": 2,
+    "Outaouais": 2,
     "Nord-du-Québec": 1,
-    "Outaouais": 1,
-    "Mauricie": 1,
-    "Bas-Saint-Laurent": 1
+    "Côte-Nord": 1
   },
   "repartition_niveaux_seniorite": {
-    "Intermédiaire": 185,
-    "Senior": 142,
-    "Junior / DEC": 44,
-    "Étudiant / Stage": 6
+    "Intermédiaire": 179,
+    "Senior": 146,
+    "Junior / DEC": 43,
+    "Étudiant / Stage": 4
   },
   "repartition_statuts_stage": {
-    "not_indicated": 371,
-    "confirmed_stage": 6
+    "not_indicated": 368,
+    "confirmed_stage": 4
   },
   "repartition_modalites": {
-    "Sur place": 178,
-    "Hybride": 80,
-    "Non spécifié": 69,
-    "Télétravail": 46,
-    "À distance": 2,
-    "Sur la route": 2
+    "Sur place": 176,
+    "Hybride": 79,
+    "Non spécifié": 66,
+    "Télétravail": 47,
+    "Sur la route": 3,
+    "À distance": 1
   },
   "top_technologies_ti": {
-    "SQL": 176,
-    "Windows Server": 113,
-    "Git": 83,
-    "IA / Machine Learning": 77,
-    "Réseaux (TCP/IP, VLAN, VPN)": 73,
-    "CI/CD": 73,
-    "Agile / Scrum": 69,
-    "Soutien TI / Helpdesk": 64,
-    "Azure": 64,
-    "ServiceNow / Jira / ITIL": 54,
+    "SQL": 170,
+    "Windows Server": 121,
+    "Git": 79,
+    "IA / Machine Learning": 79,
+    "Réseaux (TCP/IP, VLAN, VPN)": 77,
+    "CI/CD": 71,
+    "Soutien TI / Helpdesk": 68,
+    "Azure": 62,
+    "Agile / Scrum": 62,
     "Microsoft 365 / SharePoint": 50,
-    "Cybersécurité (SIEM / SOC)": 49,
-    "Python": 48,
-    "JavaScript": 46,
-    "SAP / ERP": 45,
-    "SQL Server / Oracle": 44,
-    "Linux": 35,
-    "AWS": 34,
-    "HTML/CSS": 33,
-    ".NET": 29,
-    "C#": 29,
+    "ServiceNow / Jira / ITIL": 48,
+    "SQL Server / Oracle": 47,
+    "Cybersécurité (SIEM / SOC)": 46,
+    "Python": 45,
+    "SAP / ERP": 44,
+    "JavaScript": 41,
+    "Linux": 37,
+    "AWS": 30,
+    "C#": 30,
+    "HTML/CSS": 28,
     "Java": 27,
-    "PowerShell / Bash": 25,
+    ".NET": 25,
+    "PowerShell / Bash": 23,
     "Power BI / Tableau": 22,
+    "React": 20,
     "CRM (Salesforce / Dynamics)": 20,
     "VMware": 20,
-    "API REST / GraphQL": 19,
-    "React": 19,
     "QA / Tests": 19,
-    "Docker": 19
+    "API REST / GraphQL": 18,
+    "Docker": 18
   },
-  "score_pertinence_dec_moyen": 61.5,
-  "offres_avec_coordonnees_gps": 55,
+  "score_pertinence_dec_moyen": 61.3,
+  "offres_avec_coordonnees_gps": 49,
   "offres_avec_salaire_chiffre": 213,
-  "offres_avec_description_complete": 377
+  "offres_avec_description_complete": 372
 }
