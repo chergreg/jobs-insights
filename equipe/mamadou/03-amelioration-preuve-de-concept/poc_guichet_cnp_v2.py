@@ -2114,10 +2114,34 @@ def parse_json_ld_job_posting(html_text: str, url: str, source_name: str, id_pre
                 competences_cles=skills,
                 description=desc_clean,
             )
+            if not is_recent_and_valid_offer(offer):
+                return None
             return enrich_offer_metadata(offer)
         except (json.JSONDecodeError, ValueError, TypeError):
             continue
     return None
+
+
+def is_recent_and_valid_offer(
+    offer: JobBankOffer,
+    min_year: int = 2026,
+    reference_date: Optional[str] = None,
+) -> bool:
+    """
+    Filtre de fraîcheur et de validité 2026 (inspiré des travaux d'Elvira) :
+    - Rejette toute annonce obsolète publiée avant `min_year` (ex. vieilles annonces Jobboom de 2023/2025).
+    - Rejette toute annonce dont la date de fin d'affichage (`date_fin`) est antérieure à `reference_date`.
+    """
+    if offer.date_publication and len(offer.date_publication) >= 4:
+        try:
+            if int(offer.date_publication[:4]) < min_year:
+                return False
+        except ValueError:
+            pass
+    if reference_date and offer.date_fin and re.match(r"^\d{4}-\d{2}-\d{2}$", offer.date_fin):
+        if offer.date_fin < reference_date:
+            return False
+    return True
 
 
 # ==============================================================================
@@ -2757,6 +2781,7 @@ def consolidate_data_directory(data_dir: Path = DATA_DIR) -> dict[str, Any]:
         if not fpath.is_file():
             continue
         raw_items = json.loads(fpath.read_text(encoding="utf-8"))
+        src_retained_offers: list[JobBankOffer] = []
         retained = 0
         rejected = 0
         for item in raw_items:
@@ -2809,16 +2834,21 @@ def consolidate_data_directory(data_dir: Path = DATA_DIR) -> dict[str, Any]:
                 off.competences_cles,
                 source=src_name,
             )
-            if cnp_res is None:
+            if cnp_res is None or not is_recent_and_valid_offer(off):
                 rejected += 1
                 continue
             off.code_cnp = cnp_res[0]
             if not off.cnp_title:
                 off.cnp_title = cnp_res[1]
             enrich_offer_metadata(off)
+            src_retained_offers.append(off)
             all_offers.append(off)
             retained += 1
 
+        fpath.write_text(
+            json.dumps([asdict(o) for o in src_retained_offers], indent=2, ensure_ascii=False) + "\n",
+            encoding="utf-8",
+        )
         per_source_counts[src_name] = {
             "brutes_lues": len(raw_items),
             "retenues_ti_cnp": retained,
@@ -3147,16 +3177,40 @@ def from_cache_check(url: str, cache_dir: Path = CACHE_DIR, ttl_seconds: int = D
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Collecteur Multi-Sources Enrichi (5 sites Québec/Canada - Livrable 3 Lot 4)")
+    parser = argparse.ArgumentParser(
+        description=(
+            "Collecteur Multi-Sources Enrichi, Filtre Multicritère, Portail Web Interactif "
+            "& Assistant de Candidature JobTailor (5 sites Québec/Canada - Livrable 3)"
+        )
+    )
     parser.add_argument("--limite-guichet", type=int, default=8, help="Offres Guichet-Emplois CNP à enrichir (défaut: 8)")
     parser.add_argument("--limite-autres", type=int, default=4, help="Offres par autre source à enrichir (défaut: 4)")
     parser.add_argument("--pages", type=int, default=1, help="Nombre de pages de résultats à parcourir sur Guichet-Emplois et Jobboom (défaut: 1)")
-    parser.add_argument("--stages", action="store_true", help="Cibler en priorité les stages TI")
-    parser.add_argument("--mot-cle", type=str, default=None, help="Mot-clé optionnel")
+    parser.add_argument("--stages", action="store_true", help="Cibler uniquement ou en priorité les stages TI")
+    parser.add_argument("--mot-cle", type=str, default=None, help="Mot-clé optionnel de collecte")
     parser.add_argument("--delai", type=float, default=2.0, help="Délai en secondes entre les nouvelles fiches HTTP (défaut: 2.0s)")
     parser.add_argument("--sans-cache", action="store_true", help="Désactiver le cache disque local 24 h")
-    parser.add_argument("--collecte-complete", action="store_true", help="Lancer la collecte autonome complète par notre système sur les 5 sources (avec lecture de toutes les fiches détaillées) vers data/*.json et .csv")
+    parser.add_argument("--collecte-complete", action="store_true", help="Lancer la collecte autonome complète par notre système sur les 5 sources vers data/*.json et .csv")
     parser.add_argument("--consolider-data", action="store_true", help="Unifier et dédupliquer hors ligne les 5 fichiers data/offres_*.json vers offres_unifiees.json/.csv et rapport_collecte.json")
+
+    # Nouveaux modes hors ligne (Piste 3 : Filtrage + Portail Web HTML + Format commun ; Piste 4 : CV + Lettre)
+    parser.add_argument("--filtrer", action="store_true", help="Filtrer instantanément hors ligne le jeu d'offres (data/offres_unifiees.json)")
+    parser.add_argument("--depuis", type=str, default=None, help="Fichier JSON d'offres à charger hors ligne (défaut: data/offres_unifiees.json)")
+    parser.add_argument("--ville", type=str, default=None, help="Filtrer par ville (ex: Québec, Montréal, Lévis)")
+    parser.add_argument("--region", type=str, default=None, help="Filtrer par région administrative du Québec (ex: Capitale-Nationale, Montréal)")
+    parser.add_argument("--domaine", type=str, default=None, help="Filtrer par sous-domaine TI (tech_backend, tech_frontend, tech_support, devops_cloud, data_ia, cybersecurite)")
+    parser.add_argument("--cnp", type=str, default=None, help="Filtrer par code CNP 2021 TI (ex: 21232, 22221, 21220)")
+    parser.add_argument("--techno", type=str, default=None, help="Filtrer par technologie exigée (ex: Python, React, Docker, SQL)")
+    parser.add_argument("--seniorite", type=str, default=None, help="Filtrer par séniorité (Étudiant / Stage, Junior / DEC, Intermédiaire, Senior)")
+    parser.add_argument("--source", type=str, default=None, help="Filtrer par source (guichet-emplois, jobboom, talent-canada, jobillico, remotive)")
+    parser.add_argument("--salaire-min", type=float, default=None, help="Filtrer par salaire minimum chiffré (ex: 25 pour 25$/h ou 65000 pour 65k$/an)")
+    parser.add_argument("--unite-salaire", type=str, default=None, help="Unité salariale pour --salaire-min (heure ou annee)")
+    parser.add_argument("--cv", type=str, default=None, help="Piste 4 (JobTailor) : Comparer un CV (.txt, .md, .docx, .json) aux offres TI et classer par Score ATS (/100)")
+    parser.add_argument("--top", type=int, default=10, help="Nombre d'offres à afficher pour --cv ou --filtrer (défaut: 10)")
+    parser.add_argument("--lettre", type=str, default=None, help="Piste 4 (JobTailor) : Auditer une lettre de motivation (.txt, .md, .docx) selon la méthode Vous/Moi/Nous")
+    parser.add_argument("--id-offre", type=str, default=None, help="Identifiant de l'offre ciblée pour --lettre (ex: ge-50711091, tc-999)")
+    parser.add_argument("--html", action="store_true", help="Générer le portail Web interactif autonome data/portail_ti_jobtailor.html")
+    parser.add_argument("--format-commun", action="store_true", help="Exporter data/offres_format_commun.json compatible avec le modèle JobOffer (17 champs) de la classe")
     parser.add_argument("--sortie", type=str, default="echantillon_v2.json", help="Fichier JSON de sortie")
     args = parser.parse_args()
 
@@ -3168,19 +3222,114 @@ def main() -> None:
             use_cache=not args.sans_cache,
         )
         print(
-            f"\nCollecte autonome complète terminée : {report['total_offres_unifiees_ti']} offres TI uniques "
+            f"\nCollecte autonome complète terminée : {report['total_offres_unifiees_ti']} offres TI 2026 uniques "
             f"(descriptions: {report['offres_avec_description_complete']}/{report['total_offres_unifiees_ti']}) "
             f"enregistrées sous data/"
         )
-        return
+        if not (args.html or args.format_commun or args.cv or args.lettre or args.filtrer):
+            return
 
     if args.consolider_data:
         report = consolidate_data_directory(DATA_DIR)
         print(
-            f"Consolidation hors ligne terminée : {report['total_offres_unifiees_ti']} offres TI uniques "
+            f"Consolidation hors ligne terminée : {report['total_offres_unifiees_ti']} offres TI 2026 uniques "
             f"(intra: {report['deduplication']['doublons_intra_fusionnes']}, "
             f"inter: {report['deduplication']['doublons_inter_fusionnes']}) dans data/offres_unifiees.json et .csv"
         )
+        if not (args.html or args.format_commun or args.cv or args.lettre or args.filtrer):
+            return
+
+    has_filter_criteria = any(
+        [
+            args.filtrer,
+            args.depuis is not None,
+            args.ville is not None,
+            args.region is not None,
+            args.domaine is not None,
+            args.cnp is not None,
+            args.techno is not None,
+            args.seniorite is not None,
+            args.source is not None,
+            args.salaire_min is not None,
+        ]
+    )
+    offline_action = has_filter_criteria or bool(args.cv or args.lettre or args.html or args.format_commun)
+
+    if offline_action:
+        from assistant_et_interface import (
+            audit_cover_letter,
+            export_common_format_json,
+            filter_offers,
+            format_cover_letter_audit_report,
+            format_cv_matching_report,
+            format_filtered_offers_summary,
+            generate_interactive_html_portal,
+            load_offers_from_json,
+            match_cv_against_offers,
+            read_cv_document,
+        )
+
+        source_json = Path(args.depuis) if args.depuis else (DATA_DIR / "offres_unifiees.json")
+        if not source_json.is_absolute() and not source_json.exists():
+            source_json = Path(__file__).parent / source_json
+        offers = load_offers_from_json(source_json)
+
+        filtered = filter_offers(
+            offers,
+            ville=args.ville,
+            region=args.region,
+            domaine=args.domaine,
+            code_cnp=args.cnp,
+            techno=args.techno,
+            seniorite=args.seniorite,
+            source=args.source,
+            stages_only=args.stages,
+            salaire_min=args.salaire_min,
+            unite_salaire=args.unite_salaire,
+            recent_only=True,
+        )
+
+        if has_filter_criteria and not args.cv:
+            print(format_filtered_offers_summary(filtered, limit=max(10, args.top)))
+
+        if args.format_commun:
+            common_path = DATA_DIR / "offres_format_commun.json"
+            export_common_format_json(filtered, common_path)
+            print(f"\n✓ Export Format Commun (17 champs JobOffer de la classe) généré : {common_path} ({len(filtered)} offres)")
+
+        if args.html:
+            html_path = DATA_DIR / "portail_ti_jobtailor.html"
+            generate_interactive_html_portal(filtered, html_path)
+            print(f"\n✓ Portail Web interactif autonome généré : {html_path} ({len(filtered)} offres embarquées)")
+
+        cv_text_loaded: Optional[str] = None
+        top_matched_offer: Optional[JobBankOffer] = None
+        if args.cv:
+            cv_path = Path(args.cv)
+            if not cv_path.is_absolute() and not cv_path.exists():
+                cv_path = Path(__file__).parent / cv_path
+            cv_text_loaded = read_cv_document(cv_path)
+            profile, matches = match_cv_against_offers(cv_text_loaded, filtered, top_n=args.top)
+            print(format_cv_matching_report(profile, matches))
+            if matches:
+                top_matched_offer = matches[0].offer
+
+        if args.lettre:
+            letter_path = Path(args.lettre)
+            if not letter_path.is_absolute() and not letter_path.exists():
+                letter_path = Path(__file__).parent / letter_path
+            letter_text = read_cv_document(letter_path)
+            target_offer: Optional[JobBankOffer] = None
+            if args.id_offre:
+                target_id = args.id_offre.strip().lower()
+                target_offer = next((o for o in filtered if o.id.lower() == target_id or o.source_id.lower() == target_id), None)
+                if target_offer is None:
+                    target_offer = next((o for o in offers if o.id.lower() == target_id or o.source_id.lower() == target_id), None)
+            if target_offer is None:
+                target_offer = top_matched_offer or (filtered[0] if filtered else (offers[0] if offers else None))
+            if target_offer is not None:
+                audit_res = audit_cover_letter(letter_text, target_offer, cv_text=cv_text_loaded)
+                print(format_cover_letter_audit_report(audit_res))
         return
 
     results = collect_all_sources(

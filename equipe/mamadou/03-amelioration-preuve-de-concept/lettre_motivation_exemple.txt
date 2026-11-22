@@ -1,0 +1,16 @@
+Thomas Lemieux
+Québec (QC)
+
+Objet : Candidature au poste de Développeur Python / Full Stack
+
+Madame, Monsieur,
+
+C'est avec un grand intérêt que je vous soumets ma candidature au sein de votre équipe informatique. Votre organisation se démarque par la qualité de ses projets numériques et ses défis en développement logiciel et modernisation de systèmes.
+
+Dans le cadre de ma formation au DEC en Techniques de l'informatique au Collège O'Sullivan de Québec, j'ai développé plusieurs applications backend et web mettant en œuvre Python, FastAPI, React, PostgreSQL, SQL, Docker et Git sous environnement Linux. Rigoureux et autonome, j'applique les bonnes pratiques Agile / Scrum ainsi que les tests automatisés pour livrer un code fiable et maintenable.
+
+Intégrer votre équipe représenterait pour moi l'occasion de contribuer concrètement à vos développements logiciels et à la résolution de problèmes techniques, tout en mettant mon énergie et ma capacité d'apprentissage rapide au service de vos projets.
+
+Je serais ravi d'échanger avec vous lors d'une entrevue afin de vous présenter plus en détail mes réalisations. Je vous prie d'agréer, Madame, Monsieur, l'expression de mes salutations distinguées.
+
+Thomas Lemieux

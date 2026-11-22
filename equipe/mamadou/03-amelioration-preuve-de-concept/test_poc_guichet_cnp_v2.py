@@ -7,7 +7,18 @@ import tempfile
 import time
 import unittest
 from unittest.mock import MagicMock, patch
+import zipfile
 
+from assistant_et_interface import (
+    audit_cover_letter,
+    convert_to_common_format_dict,
+    export_common_format_json,
+    filter_offers,
+    generate_interactive_html_portal,
+    is_recent_and_valid_offer,
+    match_cv_against_offers,
+    read_cv_document,
+)
 from poc_guichet_cnp_v2 import (
     CNP_2021_TI_DICT,
     CNP_CODES_TI,
@@ -543,6 +554,173 @@ class TestPocGuichetCnpV2(unittest.TestCase):
             self.assertTrue((d_dir / "offres_unifiees.json").is_file())
             self.assertTrue((d_dir / "offres_unifiees.csv").is_file())
             self.assertTrue((d_dir / "rapport_collecte.json").is_file())
+
+    def test_is_recent_and_valid_offer_rejects_old_2023_offers_and_expired_dates(self) -> None:
+        old_offer = JobBankOffer(
+            id="jb-2023",
+            source_id="2023",
+            url="https://www.jobboom.com/fr/offre-emploi/dev_p2023",
+            titre="Développeur Python",
+            date_publication="2023-06-29",
+        )
+        valid_offer = JobBankOffer(
+            id="ge-2026",
+            source_id="2026",
+            url="https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/2026",
+            titre="Développeur Python",
+            date_publication="2026-11-12",
+            date_fin="2026-12-15",
+        )
+        self.assertFalse(is_recent_and_valid_offer(old_offer, min_year=2026))
+        self.assertTrue(is_recent_and_valid_offer(valid_offer, min_year=2026, reference_date="2026-11-22"))
+        self.assertFalse(is_recent_and_valid_offer(valid_offer, min_year=2026, reference_date="2026-12-20"))
+
+    def test_filter_offers_multicriteria_offline(self) -> None:
+        o1 = enrich_offer_metadata(
+            JobBankOffer(
+                id="ge-1",
+                source_id="1",
+                url="https://example.com/1",
+                titre="Stagiaire Développeur Python",
+                entreprise="Tech Québec",
+                lieu="Québec (QC)",
+                source="guichet-emplois",
+                date_publication="2026-11-12",
+                salaire="26,00 $ de l'heure",
+                est_stage=True,
+                statut_stage="confirmed_stage",
+                competences_cles=["Docker", "FastAPI", "Python", "SQL"],
+            )
+        )
+        o2 = enrich_offer_metadata(
+            JobBankOffer(
+                id="jb-2",
+                source_id="2",
+                url="https://example.com/2",
+                titre="Architecte Cloud Senior",
+                entreprise="Cloud Montréal",
+                lieu="Montréal (QC)",
+                source="jobboom",
+                date_publication="2026-11-10",
+                salaire="120 000 $ par année",
+                est_stage=False,
+                statut_stage="not_indicated",
+                competences_cles=["AWS", "Kubernetes", "Terraform"],
+            )
+        )
+        self.assertEqual(len(filter_offers([o1, o2], region="Capitale-Nationale")), 1)
+        self.assertEqual(len(filter_offers([o1, o2], techno="Python", stages_only=True)), 1)
+        self.assertEqual(len(filter_offers([o1, o2], domaine="devops_cloud")), 1)
+        self.assertEqual(len(filter_offers([o1, o2], salaire_min=25.0, unite_salaire="heure")), 1)
+        self.assertEqual(len(filter_offers([o1, o2], salaire_min=30.0, unite_salaire="heure")), 0)
+
+    def test_read_cv_document_docx_and_match_cv_against_offers(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            docx_path = Path(tmp_dir) / "cv_test.docx"
+            xml_content = (
+                '<?xml version="1.0" encoding="UTF-8"?>'
+                '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
+                "<w:body>"
+                "<w:p><w:r><w:t>Étudiant DEC en informatique à Québec — recherche de stage</w:t></w:r></w:p>"
+                "<w:p><w:r><w:t>Compétences : Python, FastAPI, PostgreSQL, Docker, Git, Linux, SQL.</w:t></w:r></w:p>"
+                "</w:body></w:document>"
+            )
+            with zipfile.ZipFile(docx_path, "w") as zf:
+                zf.writestr("word/document.xml", xml_content)
+
+            cv_text = read_cv_document(docx_path)
+            self.assertIn("FastAPI", cv_text)
+
+            target_offer = enrich_offer_metadata(
+                JobBankOffer(
+                    id="ge-101",
+                    source_id="101",
+                    url="https://example.com/101",
+                    titre="Stagiaire Développeur Python Backend",
+                    entreprise="Québec Numérique",
+                    lieu="Québec (QC)",
+                    date_publication="2026-11-15",
+                    est_stage=True,
+                    statut_stage="confirmed_stage",
+                    competences_cles=["Docker", "FastAPI", "Git", "PostgreSQL", "Python", "SQL"],
+                    description="Stage DEC en développement backend Python FastAPI et PostgreSQL.",
+                )
+            )
+            unrelated_offer = enrich_offer_metadata(
+                JobBankOffer(
+                    id="jb-202",
+                    source_id="202",
+                    url="https://example.com/202",
+                    titre="Architecte SAP Senior",
+                    entreprise="ERP Corp",
+                    lieu="Montréal (QC)",
+                    date_publication="2026-11-15",
+                    competences_cles=["Oracle", "SAP"],
+                    description="10 ans d'expérience SAP requis.",
+                )
+            )
+
+            profile, matches = match_cv_against_offers(cv_text, [unrelated_offer, target_offer], top_n=2)
+            self.assertTrue(profile.cherche_stage)
+            self.assertIn("Python", profile.competences)
+            self.assertEqual(matches[0].offer.id, "ge-101")
+            self.assertGreater(matches[0].score_ats, matches[1].score_ats)
+            self.assertGreaterEqual(matches[0].score_ats, 80)
+
+    def test_audit_cover_letter_detects_placeholders_and_missing_keywords(self) -> None:
+        offer = enrich_offer_metadata(
+            JobBankOffer(
+                id="ge-500",
+                source_id="500",
+                url="https://example.com/500",
+                titre="Stagiaire Développeur Python",
+                entreprise="GolfIn Québec",
+                lieu="Québec (QC)",
+                competences_cles=["Docker", "FastAPI", "PostgreSQL", "Python"],
+                missions_cles=["Concevoir des APIs REST performantes", "Automatiser les tests unitaires"],
+            )
+        )
+        draft_letter = (
+            "Madame, Monsieur, Je postule pour le poste de [nom du poste] au sein de votre équipe. "
+            "Grâce à ma formation DEC, j'utilise Python et Git dans mes projets. "
+            "Je serais ravi d'échanger en entrevue afin de contribuer ensemble."
+        )
+        audit = audit_cover_letter(draft_letter, offer, cv_text="Compétences : Python, Docker, FastAPI, Git")
+        self.assertFalse(audit.mentionne_employeur)
+        self.assertIn("[nom du poste]", audit.zones_a_remplir_oubliees)
+        self.assertIn("Python", audit.technologies_citees)
+        self.assertIn("Docker", audit.technologies_manquantes)
+        self.assertTrue(any("GolfIn" in c for c in audit.conseils))
+        self.assertTrue(any("Docker" in c for c in audit.conseils))
+
+    def test_convert_to_common_format_and_generate_xss_safe_html_portal(self) -> None:
+        xss_offer = enrich_offer_metadata(
+            JobBankOffer(
+                id="ge-777",
+                source_id="777",
+                url="https://example.com/777",
+                titre="Développeur Python </script><script>alert(1)</script>",
+                entreprise="SecuCorp",
+                lieu="Québec (QC)",
+                date_publication="2026-11-15",
+                competences_cles=["Python", "SQL"],
+            )
+        )
+        common_dict = convert_to_common_format_dict(xss_offer)
+        self.assertEqual(common_dict["id"], "ge-777")
+        self.assertIn("statut_stage", common_dict)
+        self.assertIn("competences_cles", common_dict)
+
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            common_path = Path(tmp_dir) / "offres_format_commun.json"
+            html_path = Path(tmp_dir) / "portail_ti_jobtailor.html"
+            export_common_format_json([xss_offer], common_path)
+            generate_interactive_html_portal([xss_offer], html_path)
+
+            self.assertTrue(common_path.is_file())
+            html_text = html_path.read_text(encoding="utf-8")
+            self.assertNotIn("</script><script>alert(1)", html_text)
+            self.assertIn("<\\/script>", html_text)
 
 
 if __name__ == "__main__":

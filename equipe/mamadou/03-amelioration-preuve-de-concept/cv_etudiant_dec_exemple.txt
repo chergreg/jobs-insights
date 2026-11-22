@@ -1,0 +1,18 @@
+Thomas Lemieux — Étudiant finissant au DEC en Techniques de l'informatique
+Collège O'Sullivan de Québec — Québec (QC)
+Objectif : Recherche d'un stage ou poste Junior en développement logiciel / backend / full-stack ou soutien TI.
+Langues : Français (langue maternelle), Anglais (bilingue fonctionnel)
+
+COMPÉTENCES TECHNIQUES
+- Programmation & Backend : Python, FastAPI, Django, Java, C#, .NET, PHP, API REST / GraphQL
+- Développement Web & Frontend : JavaScript, TypeScript, React, Vue.js, Node.js, HTML/CSS
+- Bases de données : SQL, PostgreSQL, MySQL, MongoDB, SQL Server
+- DevOps, Systèmes & Réseaux : Docker, Git, GitHub, Linux, Windows Server, Active Directory, CI/CD, PowerShell / Bash, Réseaux (TCP/IP, VLAN, VPN)
+- Méthodologies & Qualité : Agile / Scrum, QA / Tests unitaires (Pytest), Soutien TI / Helpdesk, Microsoft 365
+
+EXPÉRIENCES ET PROJETS ACADÉMIQUES
+- Stagiaire / Développeur Python & Web (Projets synthèse DEC Informatique, 1 an d'expérience pratique) :
+  • Conception et développement d'APIs REST avec Python (FastAPI) et PostgreSQL.
+  • Création d'interfaces Web réactives en React, TypeScript et HTML/CSS.
+  • Conteneurisation d'applications avec Docker et automatisation de tests unitaires.
+  • Soutien technique aux utilisateurs et administration de postes Windows / Linux.
