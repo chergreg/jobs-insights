@@ -1,0 +1,4 @@
+# Livrable 3 (Dan) — Python 3.12+
+# Les tests (tests/) n'utilisent que la bibliothèque standard.
+requests>=2.31
+beautifulsoup4>=4.12
