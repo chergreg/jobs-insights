@@ -45,7 +45,8 @@ Seul `echantillon_format_commun.json` va dans Git. Les fichiers complets se recr
 ## Vérification
 
 - 14 tests hors ligne, dont un qui vérifie que mes offres sont **acceptées par le modèle `JobOffer` de Gregory** sans que ses valeurs par défaut remplacent les miennes. Ce test est sauté si Pydantic n'est pas installé.
-- Résultat de la collecte réelle : _à compléter après le premier lancement_ (nombre d'offres reçues, uniques au Canada, stages).
+- Résultat de la collecte réelle : 19 offres reçues, 18 offres uniques au Canada
+dont 1 stage(s) confirmé(s)
 
 ## Limites
 
