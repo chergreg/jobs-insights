@@ -1,6 +1,6 @@
 """
-parsers.py - Logique pure d'extraction et de parsing pour Jobboom.
-Inspiré des travaux d'Elvira et d'El Hadji Konaté.
+parsers.py - Logique pure d'extraction, parsing et filtrage strict TI pour Jobboom.
+Inspiré des travaux d'Elvira, d'El Hadji Konaté et de la classe (Livrable 3).
 Totalement découplé du réseau et testable hors ligne.
 """
 
@@ -9,19 +9,62 @@ from __future__ import annotations
 import html
 import json
 import re
+import unicodedata
 from typing import Any, Dict, List, Optional
 from urllib.parse import urljoin
 
 from bs4 import BeautifulSoup
 from models import JobOffer
 
-
+# Dictionnaire de compétences technologiques
 TECH_SKILLS = [
     "Python", "JavaScript", "TypeScript", "Java", "C#", "C++", "PHP", "Go", "Rust",
     "SQL", "HTML", "CSS", "React", "Angular", "Vue", "Node.js", "Django", "Flask",
     "FastAPI", "Spring", "Docker", "Kubernetes", "AWS", "Azure", "GCP", "Linux",
-    "Git", "Jira", "PostgreSQL", "MySQL", "MongoDB", "Oracle", "DevOps"
+    "Git", "Jira", "PostgreSQL", "MySQL", "MongoDB", "Oracle", "DevOps", "CI/CD",
+    "Agile", "Scrum", "QA", "SysAdmin"
 ]
+
+# Motifs de titres indiquant EXPLICITEMENT un poste HORS informatique
+IT_EXCLUSION_PATTERNS = re.compile(
+    r"\b(?:"
+    r"plombier|plomberie|magasinier|caissier(?:e)?|assembleur(?:se)?|manutentionnaire|"
+    r"mecanicien|electromecanicien|usinage|cnc|hvac|ventilation|batiment(?:s)?|construction|"
+    r"comptable|comptabilite|receptionniste|cuisinier|serveur(?:se)?|barista|"
+    r"vendeur(?:se)?|commis\s+bancaire|caissier\s+en\s+milieu\s+bancaire|"
+    r"service\s+a\s+la\s+clientele|associe\s+specialise|associe\s+ventes|"
+    r"adjoint(?:e)?\s+administratif(?:ve)?(?!\s+ti)|secretaire|commis\s+d['’]entrepot|"
+    r"chauffeur|livreur|operateur\s+de\s+production|agent\s+de\s+securite"
+    r")\b",
+    flags=re.IGNORECASE
+)
+
+# Motifs de titres confirmant un poste du domaine TI / Informatique
+IT_POSITIVE_PATTERNS = re.compile(
+    r"\b(?:"
+    r"informatique|informaticien(?:ne)?|ti\b|it\b|"
+    r"developpeur(?:euse)?|developer|programmeur(?:euse)?|programmer|"
+    r"logiciel(?:s)?|software|web|fullstack|full[\s-]?stack|frontend|front[\s-]?end|backend|back[\s-]?end|"
+    r"devops|cloud|cybersecurite|cybersecurity|securite\s+informatique|"
+    r"data|donnees|base(?:s)?\s+de\s+donnees|dba|bi\b|intelligence\s+d['’]affaires|"
+    r"reseau(?:x)?|network|systeme(?:s)?|administrateur(?:trice)?\s+systeme|sysadmin|"
+    r"support\s+technique|soutien\s+technique|soutien\s+informatique|helpdesk|help\s+desk|"
+    r"technicien(?:ne)?\s+informatique|technicien(?:ne)?\s+ti|"
+    r"analyste\s+fonctionnel|analyste\s+ti|analyste[\s-]programmeur|analyste|architecte\s+ti|architecte\s+logiciel|architecte|"
+    r"specialiste\s+d['’]?application|gestionnaire\s+de\s+projets?\s+ti|"
+    r"qa\b|assurance\s+qualite\s+logiciel|testeur(?:euse)?\s+logiciel|qualite\s+logiciel|"
+    r"scrum\s+master|product\s+owner|integrateur(?:trice)?\s+web|stage\s+informatique"
+    r")\b",
+    flags=re.IGNORECASE
+)
+
+
+def normalize_text(text: str) -> str:
+    """Supprime les accents et convertit en minuscules pour faciliter les correspondances."""
+    if not text:
+        return ""
+    decomposed = unicodedata.normalize("NFKD", text.lower())
+    return "".join(c for c in decomposed if not unicodedata.combining(c))
 
 
 def clean_html(raw_html: str) -> str:
@@ -47,8 +90,10 @@ def extract_tech_skills(text: str) -> List[str]:
     return sorted(list(set(found)))
 
 
-def detect_modalite(text: str) -> str:
+def detect_modalite(text: str, data: Optional[Dict[str, Any]] = None) -> str:
     """Détecte la modalité de travail (Télétravail, Hybride, Sur place)."""
+    if data and data.get("jobLocationType") == "TELECOMMUTE":
+        return "Télétravail"
     text_lower = text.lower()
     if any(k in text_lower for k in ["télétravail", "teletravail", "à distance", "remote", "100% à distance"]):
         return "Télétravail"
@@ -57,6 +102,34 @@ def detect_modalite(text: str) -> str:
     if any(k in text_lower for k in ["sur place", "en présentiel", "sur site"]):
         return "Sur place"
     return "Non spécifié"
+
+
+def is_it_offer(titre: str, description: str = "", competences: Optional[List[str]] = None) -> bool:
+    """
+    Filtre strict de validation informatique :
+    1. Rejette immédiatement les postes non-informatiques évidents (plomberie, caissier, magasinier, etc.).
+    2. Valide si le titre contient un métier TI ou si des compétences technologiques TI sont détectées.
+    """
+    titre_norm = normalize_text(titre)
+
+    # 1. Règle d'exclusion stricte
+    if IT_EXCLUSION_PATTERNS.search(titre_norm):
+        return False
+
+    # 2. Règle positive de validation TI
+    if IT_POSITIVE_PATTERNS.search(titre_norm):
+        return True
+
+    # 3. Validation par les compétences techniques présentes
+    if competences and len(competences) > 0:
+        return True
+
+    # 4. Examen de secours dans la description normalisée
+    desc_norm = normalize_text(description[:500])
+    if any(k in desc_norm for k in ["developpement logiciel", "infrastructure ti", "programmation", "base de donnees"]):
+        return True
+
+    return False
 
 
 def extract_job_links_from_html(search_html: str, base_url: str = "https://www.jobboom.com") -> List[str]:
@@ -70,9 +143,9 @@ def extract_job_links_from_html(search_html: str, base_url: str = "https://www.j
 
     for a_tag in soup.find_all("a", href=True):
         href = a_tag["href"]
-        if "/offre-emploi/" in href:
-            full_url = urljoin(base_url, href.split("?")[0])
-            links.add(full_url)
+        if "/offre-emploi/" in href and not href.startswith("javascript"):
+            clean_href = href.split("?")[0]
+            links.add(urljoin(base_url, clean_href))
 
     return sorted(list(links))
 
@@ -94,11 +167,14 @@ def extract_json_ld_from_detail_html(detail_html: str) -> Optional[Dict[str, Any
             if isinstance(data, dict):
                 if data.get("@type") == "JobPosting":
                     return data
-                # Cas où les données sont encapsulées dans un @graph
                 if "@graph" in data and isinstance(data["@graph"], list):
                     for item in data["@graph"]:
                         if isinstance(item, dict) and item.get("@type") == "JobPosting":
                             return item
+            elif isinstance(data, list):
+                for item in data:
+                    if isinstance(item, dict) and item.get("@type") == "JobPosting":
+                        return item
         except json.JSONDecodeError:
             continue
     return None
@@ -108,7 +184,6 @@ def parse_jobboom_json_ld(data: Dict[str, Any], job_url: str) -> JobOffer:
     """
     Convertit un dictionnaire JSON-LD JobPosting issu de Jobboom en modèle JobOffer standardisé.
     """
-    # Identifiant extrait de l'URL ou hash
     id_match = re.search(r"_p(\d+)$", job_url)
     job_id = f"jb-{id_match.group(1)}" if id_match else f"jb-{abs(hash(job_url)) % 10000000}"
 
@@ -136,12 +211,22 @@ def parse_jobboom_json_ld(data: Dict[str, Any], job_url: str) -> JobOffer:
     date_pub = data.get("datePosted")
 
     # Type d'emploi
+    type_map = {
+        "FULL_TIME": "Temps plein",
+        "PART_TIME": "Temps partiel",
+        "INTERN": "Stage",
+        "CONTRACTOR": "Contractuel",
+        "TEMPORARY": "Temporaire"
+    }
     employment_type = data.get("employmentType")
     type_poste = "Non spécifié"
     if isinstance(employment_type, list):
-        type_poste = ", ".join(employment_type)
+        type_poste = ", ".join(type_map.get(t, t) for t in employment_type)
     elif isinstance(employment_type, str):
-        type_poste = employment_type
+        type_poste = type_map.get(employment_type, employment_type)
+
+    if any(k in titre.lower() for k in ["stage", "stagiaire", "intern"]):
+        type_poste = "Stage"
 
     # Description
     raw_desc = data.get("description") or ""
@@ -149,7 +234,7 @@ def parse_jobboom_json_ld(data: Dict[str, Any], job_url: str) -> JobOffer:
 
     # Compétences et modalité
     skills = extract_tech_skills(clean_desc)
-    modalite = detect_modalite(clean_desc)
+    modalite = detect_modalite(clean_desc, data=data)
 
     # Salaire
     salaire = "Non spécifié"

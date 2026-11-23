@@ -2,6 +2,7 @@
 
 Projet collaboratif visant à développer un **agrégateur intelligent d'offres d'emploi et de stages en informatique** (Québec et Canada), complété par un module d'assistance à la **personnalisation et bonification de CV** selon les compétences demandées.
 
+> 🧭 **Tableau de bord de travail** : Consultez [**`PlanReadMe.MD`**](PlanReadMe.MD) pour voir la localisation actuelle, l'état des modules et la feuille de route.
 > 📌 **Cadre académique** : Cours `420-SV2-OQ` — DEC en Techniques de l'informatique au Collège O'Sullivan de Québec.
 
 ---

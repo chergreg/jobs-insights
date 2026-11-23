@@ -46,8 +46,10 @@ def extract_tech_skills(text: str) -> List[str]:
     return sorted(list(set(found)))
 
 
-def detect_modalite(text: str) -> str:
+def detect_modalite(text: str, data: Optional[Dict[str, Any]] = None) -> str:
     """Détecte la modalité de travail (Télétravail, Hybride, Sur place)."""
+    if data and data.get("jobLocationType") == "TELECOMMUTE":
+        return "Télétravail"
     text_lower = text.lower()
     if any(k in text_lower for k in ["télétravail", "teletravail", "à distance", "remote", "100% à distance"]):
         return "Télétravail"
@@ -61,24 +63,32 @@ def detect_modalite(text: str) -> str:
 def extract_job_links_from_html(search_html: str, base_url: str = "https://www.jobillico.com") -> List[str]:
     """
     Extrait les URLs des fiches d'offres depuis la page de résultats Jobillico.
+    Gère les variantes d'URLs francophones et anglophones :
+    - /fr/offre-d-emploi/ ou /offre-d-emploi/
+    - /fr/offre-emploi/ ou /offre-emploi/
+    - /en/job-offer/ ou /job-offer/
+    - /voir-offre/
     """
     if not search_html:
         return []
     soup = BeautifulSoup(search_html, "html.parser")
     links: set[str] = set()
 
+    cibles = ["/offre-d-emploi/", "/offre-emploi/", "/job-offer/", "/voir-offre/"]
+
     # Balises <a> avec href contenant l'offre
     for a_tag in soup.find_all("a", href=True):
         href = a_tag["href"]
-        if ("/offre-emploi/" in href or "/job-offer/" in href or "/voir-offre/" in href) and not href.startswith("javascript"):
+        if any(c in href for c in cibles) and not href.startswith("javascript"):
             clean_href = href.split("?")[0]
             links.add(urljoin(base_url, clean_href))
 
-    # Certains blocs d'offres ont un data-href
+    # Balises avec data-href (utilisé dans certains carrousels Jobillico)
     for tag in soup.find_all(attrs={"data-href": True}):
         d_href = tag["data-href"]
-        if "/offre-emploi/" in d_href or "/job-offer/" in d_href:
-            links.add(urljoin(base_url, d_href.split("?")[0]))
+        if any(c in d_href for c in cibles):
+            clean_href = d_href.split("?")[0]
+            links.add(urljoin(base_url, clean_href))
 
     return sorted(list(links))
 
@@ -144,17 +154,28 @@ def parse_jobillico_json_ld(data: Dict[str, Any], job_url: str) -> JobOffer:
     date_pub = data.get("datePosted")
 
     # Type de poste
+    type_map = {
+        "FULL_TIME": "Temps plein",
+        "PART_TIME": "Temps partiel",
+        "INTERN": "Stage",
+        "CONTRACTOR": "Contractuel",
+        "TEMPORARY": "Temporaire"
+    }
     employment_type = data.get("employmentType")
     type_poste = "Non spécifié"
     if isinstance(employment_type, list):
-        type_poste = ", ".join(employment_type)
+        types_fr = [type_map.get(t, t) for t in employment_type]
+        type_poste = ", ".join(types_fr)
     elif isinstance(employment_type, str):
-        type_poste = employment_type
+        type_poste = type_map.get(employment_type, employment_type)
+
+    if any(k in titre.lower() for k in ["stage", "stagiaire", "intern"]):
+        type_poste = "Stage"
 
     # Description
     clean_desc = clean_html(data.get("description") or "")
     skills = extract_tech_skills(clean_desc)
-    modalite = detect_modalite(clean_desc)
+    modalite = detect_modalite(clean_desc, data=data)
 
     # Salaire
     salaire = "Non spécifié"

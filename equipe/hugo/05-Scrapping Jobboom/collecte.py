@@ -1,6 +1,6 @@
 """
-collecte.py - Moteur de collecte réseau pour Jobboom Québec.
-Gère les requêtes HTTP, le respect des délais et l'exportation des données.
+collecte.py - Moteur de collecte réseau pour Jobboom Québec avec filtrage strict TI.
+Gère les requêtes HTTP, la catégorie officielle TI, la pagination et l'exportation des données.
 """
 
 from __future__ import annotations
@@ -19,10 +19,12 @@ from models import JobOffer
 from parsers import (
     extract_job_links_from_html,
     extract_json_ld_from_detail_html,
-    parse_jobboom_json_ld
+    parse_jobboom_json_ld,
+    is_it_offer
 )
 
 BASE_URL = "https://www.jobboom.com"
+CATEGORY_TI_URL = f"{BASE_URL}/fr/technologies-medias-numeriques/_i10lfr"
 
 HEADERS = {
     "User-Agent": (
@@ -30,8 +32,10 @@ HEADERS = {
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/124.0.0.0 Safari/537.36 (ProjetEtudiant-JobsInsights-Sullivan)"
     ),
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "fr-CA,fr;q=0.9,en;q=0.8",
+    "Referer": "https://www.jobboom.com/",
+    "Connection": "keep-alive"
 }
 
 logging.basicConfig(
@@ -44,45 +48,38 @@ logger = logging.getLogger("JobboomScraper")
 
 class CollecteurJobboom:
     """
-    Collecteur d'offres d'emploi pour la plateforme Jobboom.
+    Collecteur d'offres d'emploi pour la plateforme Jobboom avec garantie 100% TI.
     """
 
     def __init__(self, session: Optional[requests.Session] = None):
         self.session = session or requests.Session()
         self.session.headers.update(HEADERS)
 
-    def obtenir_liens_recherche(self, mot_cle: str = "informatique", max_pages: int = 2) -> List[str]:
+    def obtenir_liens_page(self, mot_cle: str = "informatique", page: int = 1) -> List[str]:
         """
-        Interroge la recherche Jobboom et extrait les liens des fiches d'offres.
+        Récupère les liens d'offres pour une page donnée.
+        Privilégie la catégorie officielle 'Technologies et Médias Numériques' pour les recherches TI.
         """
-        liens_totaux: set[str] = set()
-        slug_mot_cle = quote(mot_cle.strip().replace(" ", "-"))
-
-        for page in range(1, max_pages + 1):
-            url = f"{BASE_URL}/fr/emploi/{slug_mot_cle}/_lfrk"
-            params = {"dk": mot_cle}
+        terme = mot_cle.strip().lower()
+        if terme in ["informatique", "ti", "it", "tech", "technologie", "technologies", ""]:
+            url = f"{CATEGORY_TI_URL}?sortBy=date"
             if page > 1:
-                params["page"] = str(page)
+                url += f"&page={page}"
+        else:
+            slug = quote(terme.replace(" ", "-"))
+            url = f"{BASE_URL}/fr/emploi/{slug}/_lfrk"
+            if page > 1:
+                url += f"?page={page}"
 
-            try:
-                resp = self.session.get(url, params=params, timeout=15)
-                if resp.status_code != 200:
-                    logger.warning(f"Réponse HTTP {resp.status_code} sur {url}")
-                    break
-
-                liens = extract_job_links_from_html(resp.text, base_url=BASE_URL)
-                if not liens:
-                    logger.info(f"Fin des résultats Jobboom à la page {page}.")
-                    break
-
-                liens_totaux.update(liens)
-                logger.info(f"Page {page} : {len(liens)} offres trouvées (Total unique : {len(liens_totaux)})")
-                time.sleep(1.0)
-            except Exception as e:
-                logger.error(f"Erreur lors de la recherche Jobboom page {page} : {e}")
-                break
-
-        return sorted(list(liens_totaux))
+        try:
+            resp = self.session.get(url, timeout=15)
+            if resp.status_code != 200:
+                logger.warning(f"HTTP {resp.status_code} sur {url}")
+                return []
+            return extract_job_links_from_html(resp.text, base_url=BASE_URL)
+        except Exception as e:
+            logger.error(f"Erreur lors du chargement de la page {page} ({url}) : {e}")
+            return []
 
     def collecter_fiche(self, url_offre: str) -> Optional[JobOffer]:
         """
@@ -104,23 +101,60 @@ class CollecteurJobboom:
             logger.error(f"Erreur d'extraction sur {url_offre} : {e}")
             return None
 
-    def collecter(self, mot_cle: str = "informatique", limite: int = 10, delai: float = 1.0) -> List[JobOffer]:
+    def collecter(self, mot_cle: str = "informatique", limite: int = 50, delai: float = 1.0) -> List[JobOffer]:
         """
-        Exécute la collecte complète : recherche des liens puis extraction des fiches.
+        Exécute la collecte avec pagination dynamique et filtrage strict anti-hors-sujet.
+        Continue de paginer tant que le quota d'offres TI n'est pas atteint.
         """
-        logger.info(f"Début de collecte Jobboom (Mot-clé: '{mot_cle}', Cible: {limite} offres)")
-        liens = self.obtenir_liens_recherche(mot_cle=mot_cle, max_pages=max(1, (limite // 15) + 1))
-        
-        offres: List[JobOffer] = []
-        for idx, url in enumerate(liens[:limite], start=1):
-            logger.info(f"[{idx}/{min(len(liens), limite)}] Extraction : {url}")
-            offre = self.collecter_fiche(url)
-            if offre:
-                offres.append(offre)
-            time.sleep(delai)
+        logger.info(f"Début collecte Jobboom ciblée TI (Mot-clé: '{mot_cle}', Quota visé: {limite} offres TI)")
 
-        logger.info(f"Collecte Jobboom terminée : {len(offres)} offres récupérées.")
-        return offres
+        offres_validees: List[JobOffer] = []
+        urls_vues: set[str] = set()
+        page = 1
+        rejets_hors_sujet = 0
+
+        while len(offres_validees) < limite:
+            logger.info(f"[Page {page}] Recherche des annonces...")
+            liens_page = self.obtenir_liens_page(mot_cle=mot_cle, page=page)
+
+            if not liens_page:
+                logger.info(f"Fin des résultats disponibles à la page {page}.")
+                break
+
+            nouveaux_liens = [u for u in liens_page if u not in urls_vues]
+            if not nouveaux_liens:
+                logger.info(f"Aucun nouveau lien unique sur la page {page}, arrêt de la pagination.")
+                break
+
+            for url in nouveaux_liens:
+                urls_vues.add(url)
+                logger.info(f"[{len(offres_validees) + 1}/{limite}] Examen de la fiche : {url}")
+                offre = self.collecter_fiche(url)
+                
+                if not offre:
+                    continue
+
+                # APPLICATION DU FILTRE STRICT TI
+                if is_it_offer(offre.titre, offre.description, offre.competences_cles):
+                    offres_validees.append(offre)
+                    logger.info(f"  -> [TI VALIDÉ] {offre.titre} ({offre.entreprise})")
+                else:
+                    rejets_hors_sujet += 1
+                    logger.info(f"  -> [REJETÉ NON-TI] {offre.titre} (Hors domaine informatique)")
+
+                if len(offres_validees) >= limite:
+                    break
+
+                time.sleep(delai)
+
+            page += 1
+            time.sleep(1.0)
+
+        logger.info(
+            f"Collecte Jobboom terminée : {len(offres_validees)} offres 100% TI retenues "
+            f"({rejets_hors_sujet} annonces hors-sujet écartées)."
+        )
+        return offres_validees
 
     @staticmethod
     def exporter(offres: List[JobOffer], chemin_fichier: str) -> None:

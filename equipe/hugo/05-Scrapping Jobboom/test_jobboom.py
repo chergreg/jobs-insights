@@ -1,6 +1,6 @@
 """
 test_jobboom.py - Tests unitaires hors ligne pour le scraper Jobboom.
-Vérifie le parsing des liens de recherche et la conversion JSON-LD sans appel réseau.
+Vérifie le parsing des liens de recherche, la conversion JSON-LD et le filtrage strict TI.
 """
 
 import json
@@ -21,7 +21,8 @@ from parsers import (
     extract_json_ld_from_detail_html,
     parse_jobboom_json_ld,
     extract_tech_skills,
-    detect_modalite
+    detect_modalite,
+    is_it_offer
 )
 
 SAMPLE_SEARCH_HTML = """
@@ -101,6 +102,45 @@ class TestJobboomScraper(unittest.TestCase):
         self.assertIn("Docker", offer.competences_cles)
         self.assertIn("React", offer.competences_cles)
         self.assertEqual(offer.source, "Jobboom")
+
+    def test_is_it_offer_rejections(self):
+        """Vérifie que les métiers hors-sujet sont fermement rejetés."""
+        non_it_titles = [
+            "Adjoint chef magasinier",
+            "ADJOINT(E) ADMINISTRATIF(VE), GESTION PRIVÉE",
+            "Adjointe administrative – Cabinet comptable HL",
+            "Assembleur(euse)",
+            "Assembleur(se) recherché(e) – quart de jour",
+            "Associé, service à la clientele",
+            "Associé Spécialisé Pro",
+            "Associe, ventes et service a la clientele",
+            "Caissier(ère) - En Milieu Bancaire -",
+            "Chargé(e) de projet en ventilation",
+            "Commis à la plomberie",
+            "Manoeuvre en usine",
+            "Électromécanicien industriel"
+        ]
+        for titre in non_it_titles:
+            self.assertFalse(is_it_offer(titre), f"Le poste '{titre}' n'aurait pas dû être validé comme TI")
+
+    def test_is_it_offer_approvals(self):
+        """Vérifie que les métiers informatiques sont correctement validés."""
+        it_titles = [
+            "Développeur Full Stack Python / React",
+            "Administrateur des systèmes et de l'infrastructure informatique",
+            "Administrateur Système Linux",
+            "Analyste ECM",
+            "Analyste Support Dynamics",
+            "Analyste systèmes et intégration de données",
+            "Architecte infrastructure senior",
+            "Ingénieur DevOps et intégration infonuagique",
+            "Spécialiste en réseaux",
+            "Soutien technique",
+            "Chef.fe d'équipe TI",
+            "Programmeur-analyste C# .NET"
+        ]
+        for titre in it_titles:
+            self.assertTrue(is_it_offer(titre), f"Le poste '{titre}' aurait dû être validé comme TI")
 
 
 if __name__ == "__main__":

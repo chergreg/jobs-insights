@@ -1,6 +1,6 @@
 """
 collecte.py - Moteur de collecte réseau pour Jobillico Québec.
-Gère les requêtes HTTP, le respect des délais et l'exportation des données.
+Gère les requêtes HTTP, la pagination, le respect des délais et l'exportation des données.
 """
 
 from __future__ import annotations
@@ -11,7 +11,6 @@ import os
 import sys
 import time
 from typing import List, Optional
-from urllib.parse import quote
 
 import requests
 
@@ -30,8 +29,10 @@ HEADERS = {
         "AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/124.0.0.0 Safari/537.36 (ProjetEtudiant-JobsInsights-Sullivan)"
     ),
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "fr-CA,fr;q=0.9,en;q=0.8",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Language": "fr-CA,fr;q=0.9,en-CA;q=0.8,en;q=0.7",
+    "Referer": "https://www.jobillico.com/",
+    "Connection": "keep-alive"
 }
 
 logging.basicConfig(
@@ -54,17 +55,19 @@ class CollecteurJobillico:
     def obtenir_liens_recherche(self, mot_cle: str = "informatique", lieu: str = "Quebec", max_pages: int = 2) -> List[str]:
         """
         Recherche des offres sur Jobillico et extrait les URLs des fiches d'offres.
+        Utilise l'URL officielle /recherche-emploi avec pagination ipg=X et filtres skwd/scty.
         """
         liens_totaux: set[str] = set()
 
         for page in range(1, max_pages + 1):
-            url = f"{BASE_URL}/fr/recherche-emploi"
+            url = f"{BASE_URL}/recherche-emploi"
             params = {
-                "sk": mot_cle,
-                "l": lieu,
+                "skwd": mot_cle,
             }
+            if lieu:
+                params["scty"] = lieu
             if page > 1:
-                params["p"] = str(page)
+                params["ipg"] = str(page)
 
             try:
                 resp = self.session.get(url, params=params, timeout=15)
@@ -77,8 +80,13 @@ class CollecteurJobillico:
                     logger.info(f"Fin des résultats Jobillico à la page {page}.")
                     break
 
+                nouveaux = set(liens) - liens_totaux
+                if not nouveaux:
+                    logger.info(f"Page {page} : aucun nouveau résultat unique, arrêt de la pagination.")
+                    break
+
                 liens_totaux.update(liens)
-                logger.info(f"Page {page} : {len(liens)} offres trouvées (Total unique: {len(liens_totaux)})")
+                logger.info(f"Page {page} : {len(liens)} offres trouvées (+{len(nouveaux)} nouvelles, Total unique: {len(liens_totaux)})")
                 time.sleep(1.0)
             except Exception as e:
                 logger.error(f"Erreur recherche Jobillico page {page} : {e}")
@@ -88,7 +96,7 @@ class CollecteurJobillico:
 
     def collecter_fiche(self, url_offre: str) -> Optional[JobOffer]:
         """
-        Télécharge et analyse une offre Jobillico via son bloc JSON-LD.
+        Télécharge et analyse une offre Jobillico via son bloc JSON-LD JobPosting.
         """
         try:
             resp = self.session.get(url_offre, timeout=15)
@@ -111,7 +119,9 @@ class CollecteurJobillico:
         Exécute la collecte complète : recherche des liens puis extraction des fiches.
         """
         logger.info(f"Début collecte Jobillico (Mot-clé: '{mot_cle}', Lieu: '{lieu}', Cible: {limite})")
-        liens = self.obtenir_liens_recherche(mot_cle=mot_cle, lieu=lieu, max_pages=max(1, (limite // 15) + 1))
+        # Calcul du nombre de pages à parcourir (Jobillico affiche ~10 à 15 offres par page)
+        max_pages = max(1, (limite // 10) + 1)
+        liens = self.obtenir_liens_recherche(mot_cle=mot_cle, lieu=lieu, max_pages=max_pages)
 
         offres: List[JobOffer] = []
         for idx, url in enumerate(liens[:limite], start=1):
@@ -126,7 +136,7 @@ class CollecteurJobillico:
 
     @staticmethod
     def exporter(offres: List[JobOffer], chemin_fichier: str) -> None:
-        """Exporte la liste d'offres au format JSON."""
+        """Exporte la liste d'offres au format JSON avec encodage UTF-8."""
         dossier = os.path.dirname(os.path.abspath(chemin_fichier))
         if dossier and not os.path.exists(dossier):
             os.makedirs(dossier, exist_ok=True)

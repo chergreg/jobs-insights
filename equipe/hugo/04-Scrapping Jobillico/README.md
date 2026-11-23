@@ -2,8 +2,10 @@
 
 Module autonome de collecte pour la plateforme québécoise **Jobillico**, inspiré des travaux de veille d'El Hadji Konaté.
 
-## 🎯 Caractéristiques
+## 🎯 Caractéristiques & Correctifs récents
 * **Extraction sémantique standardisée :** Lecture du bloc JSON-LD `<script type="application/ld+json">` (`JobPosting`).
+* **Résolution du point d'accès de recherche :** Utilisation de l'endpoint direct `/recherche-emploi` avec paramètres `skwd` (mot-clé), `scty` (ville) et `ipg` (pagination).
+* **Détection robuste des liens d'offres :** Prise en charge des URLs `/offre-d-emploi/`, `/offre-emploi/` et `/job-offer/`.
 * **Focalisation régionale :** Couverture des PME et grandes entreprises de la Capitale-Nationale et du Québec.
 * **Format compatible :** Produit des instances conformes au modèle `JobOffer` du projet principal (`data/offres_jobillico.json`).
 
