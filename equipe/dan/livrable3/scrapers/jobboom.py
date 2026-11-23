@@ -12,7 +12,8 @@ Bonifications :
   ``est_stage`` vaut ``True`` ou ``None`` (jamais ``False`` sans preuve) ;
 - modalité tirée seulement du champ structuré ``jobLocationType`` (``TELECOMMUTE``), pas du texte libre ;
 - aucun identifiant inventé : une URL sans numéro ``_p<chiffres>`` est ignorée ;
-- réseau délégué à ``outils.Client`` (robots.txt complet, délai, cache 24 h, arrêt propre).
+- réseau délégué à ``outils.Client`` (délai 2 s, cache 24 h, arrêt propre sur 401/403/429 ;
+  robots.txt vérifié seulement avec ``--respecter-robots``).
 
 Usage (depuis equipe/dan/livrable3) :
     python -m scrapers.jobboom --pages 2 --fiches 10
@@ -165,9 +166,11 @@ def main(arguments: list[str] | None = None) -> None:
     analyseur.add_argument("--sortie", type=Path, default=SORTIE_JSON, help="fichier JSON produit")
     analyseur.add_argument("--csv", action="store_true", help="écrire aussi un CSV à côté du JSON")
     analyseur.add_argument("--sans-cache", action="store_true", help="ignorer le cache disque")
+    analyseur.add_argument("--respecter-robots", action="store_true",
+                           help="lire et appliquer robots.txt (désactivé par défaut)")
     args = analyseur.parse_args(arguments)
 
-    client = Client(cache_dossier=None) if args.sans_cache else Client()
+    client = Client(respecter_robots=args.respecter_robots, **({"cache_dossier": None} if args.sans_cache else {}))
     offres = collecter(client, pages=args.pages, fiches=args.fiches)
 
     chemin = exporter_json(offres, args.sortie)

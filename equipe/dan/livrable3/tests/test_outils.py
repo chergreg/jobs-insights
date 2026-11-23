@@ -138,7 +138,7 @@ class TestClient(unittest.TestCase):
     def tearDown(self):
         self.dossier.cleanup()
 
-    def client(self, reponses, cache=False):
+    def client(self, reponses, cache=False, robots=False):
         self.session = FausseSession(reponses)
         return Client(
             session=self.session,
@@ -146,38 +146,48 @@ class TestClient(unittest.TestCase):
             horloge=self.horloge,
             maintenant=lambda: self.temps_reel[0],
             cache_dossier=Path(self.dossier.name) if cache else None,
+            respecter_robots=robots,
         )
 
+    def urls_appelees(self):
+        return [u for u, _ in self.session.appels]
+
+    # --- Mode par défaut : robots.txt n'est pas lu ------------------------------
     def test_user_agent_honnete_envoye(self):
-        client = self.client({GE + "/robots.txt": FausseReponse(200, ""), GE + "/a": FausseReponse(200, "ok")})
+        client = self.client({GE + "/a": FausseReponse(200, "ok")})
         client.telecharger(GE + "/a")
         self.assertTrue(all("jobs-insights-dan" in h["User-Agent"] for _, h in self.session.appels))
 
-    def test_crawl_delay_respecte_entre_deux_pages(self):
-        client = self.client({
-            GE + "/robots.txt": FausseReponse(200, "User-agent: *\nCrawl-delay: 5\n"),
-            GE + "/p1": FausseReponse(200, "1"),
-            GE + "/p2": FausseReponse(200, "2"),
-        })
+    def test_par_defaut_robots_txt_pas_lu(self):
+        client = self.client({GE + "/a": FausseReponse(200, "ok")})
+        self.assertEqual(client.telecharger(GE + "/a"), "ok")
+        self.assertEqual(self.urls_appelees(), [GE + "/a"])           # aucune requête vers robots.txt
+
+    def test_par_defaut_page_interdite_par_robots_quand_meme_lue(self):
+        client = self.client({CB + "/robots.txt": FausseReponse(200, "User-agent: *\nDisallow: /jobs/\n"),
+                              CB + "/jobs/1": FausseReponse(200, "offre")})
+        self.assertEqual(client.telecharger(CB + "/jobs/1"), "offre")
+        self.assertNotIn(CB + "/robots.txt", self.urls_appelees())
+
+    def test_delai_fixe_guichet_5_secondes(self):
+        client = self.client({GE + "/p1": FausseReponse(200, "1"), GE + "/p2": FausseReponse(200, "2")})
         client.telecharger(GE + "/p1")
         client.telecharger(GE + "/p2")
-        self.assertEqual(self.horloge.attentes, [5.0, 5.0])   # après robots.txt, puis après p1
+        self.assertEqual(self.horloge.attentes, [5.0])                # seulement entre p1 et p2
 
-    def test_delai_minimum_si_pas_de_crawl_delay(self):
-        client = self.client({CB + "/robots.txt": FausseReponse(200, ""), CB + "/a": FausseReponse(200, "")})
+    def test_delai_minimum_pour_un_site_non_liste(self):
+        client = self.client({CB + "/a": FausseReponse(200, ""), CB + "/b": FausseReponse(200, "")})
         client.telecharger(CB + "/a")
+        client.telecharger(CB + "/b")
         self.assertEqual(self.horloge.attentes, [2.0])
 
-    def test_robots_interdit_aucune_requete_page(self):
-        client = self.client({CB + "/robots.txt": FausseReponse(200, "User-agent: *\nDisallow: /jobs/\n")})
-        with self.assertRaises(AccesRefuse) as ctx:
-            client.telecharger(CB + "/jobs/1")
-        self.assertIn("robots.txt interdit", str(ctx.exception))
-        self.assertEqual([u for u, _ in self.session.appels], [CB + "/robots.txt"])
+    def test_delais_par_site_configures(self):
+        self.assertEqual(Client(delais={"www.guichetemplois.gc.ca": 8}).delai(GE + "/a"), 8)
+        self.assertEqual(Client().delai("https://www.jobboom.com/x"), 2.0)
+        self.assertEqual(Client().delai("https://ca.talent.com/fr/jobs"), 2.0)
 
     def test_403_cloudflare_arret_propre(self):
         client = self.client({
-            CB + "/robots.txt": FausseReponse(200, ""),
             CB + "/fr/rechercher/x": FausseReponse(403, "", {"Server": "cloudflare", "CF-RAY": "abc"}),
         })
         with self.assertRaises(AccesRefuse) as ctx:
@@ -186,36 +196,59 @@ class TestClient(unittest.TestCase):
         self.assertIn("sans contournement", str(ctx.exception))
 
     def test_429_indique_retry_after(self):
-        client = self.client({
-            GE + "/robots.txt": FausseReponse(200, ""),
-            GE + "/a": FausseReponse(429, "", {"Retry-After": "30"}),
-        })
+        client = self.client({GE + "/a": FausseReponse(429, "", {"Retry-After": "30"})})
         with self.assertRaises(AccesRefuse) as ctx:
             client.telecharger(GE + "/a")
         self.assertIn("429", str(ctx.exception))
         self.assertIn("30", str(ctx.exception))
 
     def test_401_connexion_requise(self):
-        client = self.client({GE + "/robots.txt": FausseReponse(200, ""), GE + "/a": FausseReponse(401)})
+        client = self.client({GE + "/a": FausseReponse(401)})
         with self.assertRaisesRegex(AccesRefuse, "connexion"):
             client.telecharger(GE + "/a")
 
+    # --- Mode --respecter-robots : vérification complète ------------------------
+    def test_robots_crawl_delay_plus_grand_applique(self):
+        client = self.client({
+            CB + "/robots.txt": FausseReponse(200, "User-agent: *\nCrawl-delay: 7\n"),
+            CB + "/p1": FausseReponse(200, "1"),
+            CB + "/p2": FausseReponse(200, "2"),
+        }, robots=True)
+        client.telecharger(CB + "/p1")
+        client.telecharger(CB + "/p2")
+        self.assertEqual(self.horloge.attentes, [7.0, 7.0])   # après robots.txt, puis après p1
+
+    def test_robots_delai_fixe_garde_si_plus_grand(self):
+        client = self.client({GE + "/robots.txt": FausseReponse(200, "User-agent: *\nCrawl-delay: 1\n"),
+                              GE + "/a": FausseReponse(200, "")}, robots=True)
+        client.telecharger(GE + "/a")
+        self.assertEqual(self.horloge.attentes, [5.0])
+
+    def test_robots_interdit_aucune_requete_page(self):
+        client = self.client({CB + "/robots.txt": FausseReponse(200, "User-agent: *\nDisallow: /jobs/\n")},
+                             robots=True)
+        with self.assertRaises(AccesRefuse) as ctx:
+            client.telecharger(CB + "/jobs/1")
+        self.assertIn("robots.txt interdit", str(ctx.exception))
+        self.assertEqual(self.urls_appelees(), [CB + "/robots.txt"])
+
     def test_robots_absent_404_tout_permis(self):
-        client = self.client({GE + "/a": FausseReponse(200, "ok")})       # robots.txt → 404
+        client = self.client({GE + "/a": FausseReponse(200, "ok")}, robots=True)   # robots.txt → 404
         self.assertEqual(client.telecharger(GE + "/a"), "ok")
 
     def test_robots_refuse_403_arret(self):
-        client = self.client({GE + "/robots.txt": FausseReponse(403)})
+        client = self.client({GE + "/robots.txt": FausseReponse(403)}, robots=True)
         with self.assertRaises(AccesRefuse):
             client.telecharger(GE + "/a")
 
     def test_robots_erreur_serveur_arret(self):
-        client = self.client({GE + "/robots.txt": FausseReponse(503)})
+        client = self.client({GE + "/robots.txt": FausseReponse(503)}, robots=True)
         with self.assertRaisesRegex(AccesRefuse, "indisponible"):
             client.telecharger(GE + "/a")
 
+    # --- Cache ------------------------------------------------------------------
     def test_cache_evite_la_requete(self):
-        client = self.client({GE + "/robots.txt": FausseReponse(200, ""), GE + "/a": FausseReponse(200, "page")},
+        client = self.client({GE + "/a": FausseReponse(200, "page")},
                              cache=True)
         self.assertEqual(client.telecharger(GE + "/a"), "page")
         nb_appels = len(self.session.appels)
@@ -225,7 +258,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual(self.horloge.attentes, attentes)              # aucune attente
 
     def test_cache_expire_apres_24h(self):
-        client = self.client({GE + "/robots.txt": FausseReponse(200, ""), GE + "/a": FausseReponse(200, "page")},
+        client = self.client({GE + "/a": FausseReponse(200, "page")},
                              cache=True)
         client.telecharger(GE + "/a")
         self.temps_reel[0] += 24 * 3600 + 1
@@ -233,7 +266,7 @@ class TestClient(unittest.TestCase):
         self.assertEqual([u for u, _ in self.session.appels].count(GE + "/a"), 2)
 
     def test_cache_desactivable(self):
-        client = self.client({GE + "/robots.txt": FausseReponse(200, ""), GE + "/a": FausseReponse(200, "page")},
+        client = self.client({GE + "/a": FausseReponse(200, "page")},
                              cache=True)
         client.telecharger(GE + "/a", utiliser_cache=False)
         client.telecharger(GE + "/a", utiliser_cache=False)

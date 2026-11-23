@@ -4,8 +4,10 @@ Usage (depuis equipe/dan/livrable3) :
     python main.py                                   # 3 sites, 1 page, 5 fiches par site
     python main.py --sites guichet jobboom --pages 2 --fiches 10 --csv
     python main.py --sans-cache
+    python main.py --respecter-robots                # réactive la vérification de robots.txt
 
-Une source refusée (robots.txt, 401, 403, 429) ou en erreur n'arrête pas les autres :
+robots.txt n'est pas lu par défaut ; les délais par site sont fixés dans outils.DELAIS_PAR_SITE.
+Une source refusée (401, 403, 429, ou robots.txt avec --respecter-robots) ou en erreur n'arrête pas les autres :
 son statut apparaît dans le résumé final.
 """
 
@@ -17,6 +19,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from modele import Offre, exporter_csv, exporter_json
+from competences import detecter_competences
 from outils import Client
 from regroupement import regrouper
 from scrapers import guichet_emplois, jobboom, talent
@@ -50,10 +53,13 @@ def lancer_source(cle: str, client: Client, pages: int, fiches: int) -> Resultat
     nom, module = SOURCES[cle]
     print(f"\n=== {nom} ===")
     try:
-        return Resultat(nom, module.collecter(client, pages=pages, fiches=fiches))
+        offres = module.collecter(client, pages=pages, fiches=fiches)
     except Exception as erreur:                         # ex. page au format inattendu, réseau coupé
         print(f"Erreur inattendue : {erreur}")
         return Resultat(nom, [], erreur=f"{type(erreur).__name__}: {erreur}")
+    for offre in offres:                                # compétences lues dans le titre et la description
+        offre.competences = detecter_competences(offre.titre, offre.description) or offre.competences
+    return Resultat(nom, offres)
 
 
 def afficher_resume(resultats: list[Resultat], uniques: list[Offre], bilan) -> None:
@@ -67,6 +73,7 @@ def afficher_resume(resultats: list[Resultat], uniques: list[Offre], bilan) -> N
           f"→ {len(uniques)} offres uniques")
     for exemple in bilan.exemples:
         print(f"  doublon : {exemple}")
+    print(f"Compétences repérées dans {sum(bool(o.competences) for o in uniques)} offres sur {len(uniques)}")
 
 
 def main(arguments: list[str] | None = None) -> int:
@@ -76,11 +83,13 @@ def main(arguments: list[str] | None = None) -> int:
     analyseur.add_argument("--pages", type=int, default=1, help="pages de résultats par source (défaut : 1)")
     analyseur.add_argument("--fiches", type=int, default=5, help="fiches ouvertes par source (défaut : 5)")
     analyseur.add_argument("--sans-cache", action="store_true", help="ignorer le cache disque")
+    analyseur.add_argument("--respecter-robots", action="store_true",
+                           help="lire et appliquer robots.txt (désactivé par défaut)")
     analyseur.add_argument("--csv", action="store_true", help="écrire aussi un CSV par source")
     analyseur.add_argument("--dossier", type=Path, default=DOSSIER_DATA, help="dossier des fichiers produits")
     args = analyseur.parse_args(arguments)
 
-    client = Client(cache_dossier=None) if args.sans_cache else Client()   # un seul client : délais par site
+    client = Client(respecter_robots=args.respecter_robots, **({"cache_dossier": None} if args.sans_cache else {}))   # un seul client : délais par site
     resultats = []
     for cle in [c for c in SOURCES if c in args.sites]:
         resultat = lancer_source(cle, client, args.pages, args.fiches)

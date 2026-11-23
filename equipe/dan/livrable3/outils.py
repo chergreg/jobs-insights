@@ -1,4 +1,12 @@
-"""Outils réseau communs aux trois scrapers : robots.txt, délai, cache disque, arrêt propre.
+"""Outils réseau communs aux trois scrapers : délai par site, cache disque, arrêt propre.
+
+robots.txt est **optionnel** et désactivé par défaut (remarque du prof, 2026-11-23) :
+- par défaut, aucune lecture de robots.txt ; le délai vient de ``DELAIS_PAR_SITE``
+  (5 s pour le Guichet-Emplois, la valeur de son Crawl-delay) ;
+- ce qui reste toujours actif : User-Agent honnête, délai entre deux requêtes, cache 24 h
+  et **arrêt sur 401, 403 et 429** (le serveur qui refuse vraiment, comme CareerBeacon) ;
+- ``Client(respecter_robots=True)`` (option ``--respecter-robots``) réactive la vérification
+  complète : adresse interdite → arrêt, et Crawl-delay appliqué s'il est plus grand.
 
 Pourquoi un vérificateur maison plutôt que ``urllib.robotparser`` ?
 - ``RobotFileParser`` ne comprend pas les jokers ``*`` et ``$`` : avec le robots.txt de
@@ -10,9 +18,10 @@ Pourquoi un vérificateur maison plutôt que ``urllib.robotparser`` ?
 Ce module suit la norme RFC 9309 : la règle la plus longue gagne, ``Allow`` gagne à égalité.
 
 Usage dans un scraper :
-    client = Client()
+    client = Client()                         # ou Client(respecter_robots=True)
     html = client.telecharger("https://www.guichetemplois.gc.ca/jobsearch/rechercheemplois?fprov=QC")
-    # → AccesRefuse si robots.txt interdit l'URL ou si le serveur répond 401, 403 ou 429.
+    # → AccesRefuse si le serveur répond 401, 403 ou 429
+    #   (et, avec respecter_robots=True, si robots.txt interdit l'URL).
 """
 
 from __future__ import annotations
@@ -30,6 +39,13 @@ import requests
 
 USER_AGENT = "jobs-insights-dan/0.3 (projet etudiant, College O'Sullivan de Quebec)"
 DELAI_MIN = 2.0                                 # secondes entre deux requêtes au même site
+# Délais fixes par site (secondes), utilisés sans robots.txt. Le Guichet-Emplois demande 5 s
+# dans son robots.txt (Crawl-delay: 5) : on garde cette valeur écrite en dur.
+DELAIS_PAR_SITE = {
+    "www.guichetemplois.gc.ca": 5.0,
+    "www.jobboom.com": 2.0,
+    "ca.talent.com": 2.0,
+}
 CACHE_DOSSIER = Path(__file__).with_name("cache")
 CACHE_DUREE = 24 * 3600                         # secondes (24 h)
 TIMEOUT = 20
@@ -148,7 +164,9 @@ def _raison_refus(reponse: requests.Response) -> str:
 
 
 class Client:
-    """Téléchargeur poli : robots.txt vérifié, délai par site, cache 24 h, arrêt sur 401/403/429.
+    """Téléchargeur poli : délai par site, cache 24 h, arrêt sur 401/403/429.
+
+    ``respecter_robots=True`` ajoute la vérification de robots.txt (désactivée par défaut).
 
     ``session``, ``attendre``, ``horloge`` et ``maintenant`` sont remplaçables pour les tests
     hors ligne (aucun appel réseau).
@@ -158,6 +176,8 @@ class Client:
         self,
         user_agent: str = USER_AGENT,
         delai_min: float = DELAI_MIN,
+        delais: dict[str, float] | None = None,
+        respecter_robots: bool = False,
         cache_dossier: Path | None = CACHE_DOSSIER,
         cache_duree: float = CACHE_DUREE,
         session: requests.Session | None = None,
@@ -167,6 +187,8 @@ class Client:
     ) -> None:
         self.user_agent = user_agent
         self.delai_min = delai_min
+        self.delais = DELAIS_PAR_SITE if delais is None else delais
+        self.respecter_robots = respecter_robots
         self.cache_dossier = cache_dossier
         self.cache_duree = cache_duree
         self.session = session or requests.Session()
@@ -198,8 +220,12 @@ class Client:
         return self._robots[site]
 
     def delai(self, url: str) -> float:
-        """Délai à respecter pour ce site : le plus grand entre DELAI_MIN et Crawl-delay."""
-        return max(self.delai_min, self.robots(url).crawl_delay or 0.0)
+        """Délai à respecter pour ce site : le plus grand entre DELAI_MIN et le délai fixe du site,
+        et aussi le Crawl-delay de robots.txt si ``respecter_robots`` est activé."""
+        delai = max(self.delai_min, self.delais.get(urlsplit(url).netloc.lower(), 0.0))
+        if self.respecter_robots:
+            delai = max(delai, self.robots(url).crawl_delay or 0.0)
+        return delai
 
     # téléchargement -------------------------------------------------------------
     def telecharger(self, url: str, utiliser_cache: bool = True) -> str:
@@ -209,7 +235,7 @@ class Client:
             if contenu is not None:
                 return contenu                                 # aucune requête, aucune attente
 
-        if not self.robots(url).autorise(url):
+        if self.respecter_robots and not self.robots(url).autorise(url):
             raise AccesRefuse(url, "robots.txt interdit cette adresse.")
 
         reponse = self._requete(url, delai=self.delai(url))
