@@ -71,14 +71,14 @@ class PageTests(unittest.TestCase):
         self.assertEqual(len(rows), 2)
         self.assertEqual(rows[0]["region"], "Capitale-Nationale")
         self.assertEqual(rows[1]["technos"], ["SQL"])
-        self.assertIn("2 offres · collecte du 2026-11-17", page)
+        self.assertIn("2 offres · collecte du 17 novembre 2026", page)
         self.assertNotIn("{{", page)
 
     def test_text_from_a_job_offer_cannot_break_the_page(self) -> None:
         piege = "</script><script>alert('piège')</script>"
         page = build_html([offer(1, original_title=piege, employer="<b>Gras</b>")], generated_on="2026-11-17")
-        # Seules nos deux balises <script> sont fermées dans la page.
-        self.assertEqual(page.count("</script>"), 2)
+        # Seules nos quatre balises <script> sont fermées dans la page (règles, script CV, données, programme).
+        self.assertEqual(page.count("</script>"), 4)
         rows = embedded_rows(page)
         self.assertEqual(rows[0]["titre"], piege)  # le texte est gardé tel quel, comme donnée
         self.assertEqual(rows[0]["employeur"], "<b>Gras</b>")

@@ -1,81 +1,70 @@
-# Guide d'exécution et documentation des scripts — Livrable 3 (Mamadou)
+﻿# Guide d'exécution et documentation des scripts — Livrable 3 Final (Mamadou)
 
-Ce dossier contient la réalisation du **Livrable 3** (*Reprendre et améliorer une preuve de concept*) pour le projet **`jobs-insights`**, en consolidant et enrichissant **5 sources complémentaires** d'offres d'emploi et de stages en TI au Québec et au Canada.
+Ce dossier contient la réalisation complète du **Livrable 3** (*Reprendre et améliorer une preuve de concept*) pour le projet **`jobs-insights`**. Notre système ([`poc_guichet_cnp_v2.py`](poc_guichet_cnp_v2.py) + [`assistant_et_interface.py`](assistant_et_interface.py)) collecte, filtre (14 codes CNP 2021 TI + filtre de fraîcheur 2026) et enrichit **de manière 100 % autonome** les offres et leurs fiches individuelles sur **5 sources complémentaires** au Québec et au Canada (**372 offres TI 2026 réelles uniques, 100 % avec description complète et compétences clés** sous [`data/`](data/)).
 
----
-
-## 1. Vue d'ensemble des 5 sources intégrées
-
-1. **Guichet-Emplois Canada (`guichet-emplois`)** :
-   - Recherche par les **14 codes CNP 2021 du secteur informatique** (`fn21`) au Québec (`fprov=QC`) + filtre officiel emplois étudiants / stages (`fsrc=16`).
-   - Enrichissement de chaque fiche individuelle via une cascade à 3 niveaux :
-     - **Niveau A :** Balises sémantiques RDFa (`property="description"`, avec décodage du HTML doublement échappé `&lt;p&gt;` des offres partenaires Jobillico).
-     - **Niveau B :** Conteneurs DOM (`#job-posting-detail`, `.job-posting-detail-requirements`).
-     - **Niveau C :** Bandeau résumé (`ul.job-posting-brief` pour la modalité et les conditions) + extraction du **vrai titre de l'employeur** (`.source-title-inner`).
-2. **Talent.com Canada (`talent-canada`)** :
-   - Double extraction JSON-LD `@graph` (`ItemList` ➔ `JobPosting`) incluant les **coordonnées GPS (`latitude` / `longitude`)**.
-3. **Jobboom Québec (`jobboom`)** :
-   - Parcours ordonné de la catégorie **Technologies et médias numériques (`_i10lfr`)** (hors annonces commanditées) + extraction JSON-LD `JobPosting`.
-4. **Jobillico Québec (`jobillico`)** :
-   - Recherche TI au Québec + extraction JSON-LD `JobPosting`.
-5. **Remotive (`remotive`)** :
-   - API REST JSON officielle (`/api/remote-jobs`) filtrée sur les postes TI ouverts au Canada.
+Il intègre également :
+- **Piste 3 (Exploration & Format commun)** : Filtrage multicritère instantané hors ligne en CLI (`--filtrer`), **Portail Web interactif autonome** ([`data/portail_ti_jobtailor.html`](data/portail_ti_jobtailor.html) via `--html`) et export au **Format Commun de la classe** ([`data/offres_format_commun.json`](data/offres_format_commun.json) via `--format-commun`, compatible avec les 17 champs du modèle `JobOffer` de Grégory).
+- **Piste 4 (Assistant de candidature `JobTailor_V3`)** : Comparaison d'un CV étudiant (`.txt`, `.md`, `.docx`, `.json`) avec les 372 offres TI par **Score ATS (`/100`)** (`--cv`) et audit de **lettre de motivation** selon la méthode *Vous / Moi / Nous* (`--lettre`).
 
 ---
 
-## 2. Scripts Python : comment les utiliser (Entrées / Sorties / Configuration)
+## 1. Vue d'ensemble des 5 sources collectées par notre système (`data/`)
 
-### A. Collecteur multi-sources enrichi (`poc_guichet_cnp_v2.py`)
+| # | Source | Fichier JSON par source | Offres TI 2026 retenues | Fiches avec description | Offres avec `competences_cles` | Hors-TI ou pré-2026 rejetées |
+| :-: | --- | --- | :-: | :-: | :-: | :-: |
+| **1** | **Guichet-Emplois Canada** | [`data/offres_guichet_emplois.json`](data/offres_guichet_emplois.json) | **194** | **194 / 194 (100 %)** | **194 / 194 (100 %)** | 0 (filtre `fn21`) |
+| **2** | **Jobboom Québec** | [`data/offres_jobboom.json`](data/offres_jobboom.json) | **91** | **91 / 91 (100 %)** | **91 / 91 (100 %)** | 41 (25 hors-TI + 16 pré-2026) |
+| **3** | **Talent.com Canada** | [`data/offres_talent.json`](data/offres_talent.json) | **49** | **49 / 49 (100 %)** | **49 / 49 (100 %)** | 53 |
+| **4** | **Jobillico Québec** | [`data/offres_jobillico.json`](data/offres_jobillico.json) | **42** | **42 / 42 (100 %)** | **42 / 42 (100 %)** | 14 |
+| **5** | **Remotive** | [`data/offres_remotive.json`](data/offres_remotive.json) | **6** | **6 / 6 (100 %)** | **6 / 6 (100 %)** | 40 |
+| **Total** | **Jeu global unifié** | **[`data/offres_unifiees.json`](data/offres_unifiees.json)** | **372** | **372 / 372 (100 %)** | **372 / 372 (100 %)** | **148** |
 
-Interroge les 5 plateformes, normalise les dates au format ISO (`AAAA-MM-JJ`), extrait jusqu'à **35 compétences techniques TI** sans faux positifs (`competences_cles`), classifie les stages (`est_stage`, `statut_stage`) et exporte un JSON unifié.
-
-- **Fichier :** [`poc_guichet_cnp_v2.py`](poc_guichet_cnp_v2.py)
-- **Configuration :**
-  - `USER_AGENT` : `jobs-insights-osullivan/1.0 (atelier-livrable-3; mamadou)`
-  - `DEFAULT_CRAWL_DELAY` : `5.0` s sur Guichet-Emplois (vérifié automatiquement via `robots.txt` et `RobotFileParser`).
-  - `CACHE_DIR` & `DEFAULT_CACHE_TTL_SECONDS` : Dossier local `cache/` (ignoré par `.gitignore`) avec expiration automatique après **24 heures** (`86400` s) pour éviter de re-télécharger les fiches déjà lues et accélérer les relances sans attente inutile.
-  - `CNP_CODES_TI` : 14 codes CNP 2021 (`20012`, `21211`, `21220`, `21221`, `21222`, `21223`, `21230`, `21231`, `21232`, `21233`, `21234`, `22220`, `22221`, `22222`).
-- **Entrées (Paramètres CLI) :**
-  - `--limite-guichet N` : Nombre de fiches Guichet-Emplois CNP à enrichir (défaut : `8`).
-  - `--limite-autres M` : Nombre d'offres à extraire sur chacune des 4 autres sources (défaut : `4`).
-  - `--pages P` : Nombre de pages de résultats à parcourir sur Guichet-Emplois CNP et Jobboom TI (défaut : `1`).
-  - `--stages` : Active le filtre officiel emplois étudiants / stages (`fsrc=16`) et cible les stages sur les autres sites.
-  - `--mot-cle TEXTE` : Mot-clé additionnel optionnel (ex. `python`, `reseau`, `cybersecurite`).
-  - `--delai SECONDES` : Délai entre les nouvelles requêtes HTTP (défaut : `2.0` s ; mettre `5.0` pour le délai strict de Guichet-Emplois).
-  - `--sans-cache` : Désactive le cache disque local de 24 h et force le re-téléchargement HTTP.
-  - `--sortie FICHIER` : Nom du fichier JSON généré (défaut : `echantillon_v2.json`).
-- **Sorties :**
-  - **Console :** Progression détaillée par source avec indicateur `[HTTP]` ou `[CACHE]`, titre employeur, entreprise, coordonnées GPS et nombre de compétences TI détectées.
-  - **Cache disque :** Fichiers JSON horodatés dans `cache/<sha256>.json` (TTL 24 h, ignorés par Git).
-  - **Fichier JSON :** [`echantillon_v2.json`](echantillon_v2.json) contenant les offres complètes validées selon le schéma `JobBankOffer`.
-- **Exemples de commandes :**
-  ```powershell
-  # Installation des dépendances
-  pip install -r requirements.txt
-
-  # 1. Collecte complète enrichie sur les 5 sources avec cache 24 h (délai 2s sur nouvelles fiches)
-  python poc_guichet_cnp_v2.py --limite-guichet 6 --limite-autres 4 --delai 2
-
-  # 2. Collecte multi-pages (2 pages sur Guichet-Emplois CNP et Jobboom TI)
-  python poc_guichet_cnp_v2.py --pages 2 --limite-guichet 12 --limite-autres 6 --delai 5
-
-  # 3. Recherche ciblée sur les stages TI au Québec (filtre fsrc=16)
-  python poc_guichet_cnp_v2.py --stages --limite-guichet 5 --limite-autres 3
-  ```
+### Fichiers consolidés, interfaces et statistiques sous `data/`
+- **[`data/offres_unifiees.json`](data/offres_unifiees.json)** : **372 offres TI 2026 uniques** (100 % collectées par notre propre script) après déduplication intra-source (18 fusions) et inter-sources (10 fusions sans perte entre plateformes).
+- **[`data/offres_unifiees.csv`](data/offres_unifiees.csv)** : Export tabulaire encodé en `utf-8-sig` (avec BOM UTF-8 et séparateur `;`) s'ouvrant directement dans Microsoft Excel sous Windows.
+- **[`data/offres_format_commun.json`](data/offres_format_commun.json)** : Les **372 offres TI** converties au **schéma pivot de 17 champs (`JobOffer`)** défini par Grégory et adopté par la classe.
+- **[`data/portail_ti_jobtailor.html`](data/portail_ti_jobtailor.html)** : Portail Web interactif autonome (zéro serveur, protection XSS `textContent`) embarquant les 372 offres avec filtres par source, code CNP 2021, sous-domaine TI, région administrative du Québec, technologie, séniorité, comparateur de CV en direct (chargement .txt/.md/.json/.docx ou texte collé) et vérificateur de lettre de motivation.
+- **[`data/rapport_collecte.json`](data/rapport_collecte.json)** : Rapport statistique complet (compteurs par source, doublons fusionnés, répartition sur les **14 codes CNP 2021 TI**, les **6 sous-domaines TI**, les **17 régions administratives du Québec**, les **4 niveaux de séniorité** et le **top 30 des technologies**).
+- **[`echantillon_v2.json`](echantillon_v2.json)** : Échantillon léger vérifié de **22 offres multi-sources** au schéma complet de 36 champs.
 
 ---
 
-### B. Suite de tests unitaires 100 % hors ligne (`test_poc_guichet_cnp_v2.py`)
+## 2. Schéma de données enrichi (`JobBankOffer` — 36 champs)
 
-Vérifie l'ensemble des parseurs (liste CNP Guichet-Emplois, fiches RDFa avec `<div>` imbriqués, HTML doublement échappé des partenaires Jobillico, JSON-LD Talent.com avec GPS, Jobboom hors commandites, détection des stages, compétences TI sans faux positifs, **cache disque 24 h** et **pagination multi-pages avec déduplication**) **sans aucun appel réseau**.
+Chaque offre intègre l'ADN de `JobTailor_V3` et les meilleures briques de la classe (Grégory, Kandet, Hugo, Elvira) :
+- **Classification CNP 2021 TI & Domaine :** `code_cnp` (14 codes TI), `cnp_title`, `domaine_ti` (`tech_backend`, `tech_frontend`, `tech_support`, `devops_cloud`, `data_ia`, `cybersecurite`).
+- **Intitulés & Missions :** `titre`, `titre_employeur` (`.source-title-inner`), `missions_cles` (`list[str]`), `competences_cles` (`list[str]` — 48 technologies/outils TI + repli par code CNP `JobTailor_V3`), `description`.
+- **Études, Expérience & Séniorité :** `niveau_etudes`, `experience_requise`, `niveau_seniorite` (`Étudiant / Stage`, `Junior / DEC`, `Intermédiaire`, `Senior`), `est_stage`, `statut_stage`, `score_pertinence_dec` (`0-100`).
+- **Salaire structuré :** `salaire` (texte brut), `salaire_min` (`float`), `salaire_max` (`float`), `unite_salaire` (`heure`, `année`, `mois`, `semaine`, `jour`).
+- **Géographie (17 régions QC & GPS) :** `lieu`, `ville`, `region_administrative` (17 régions du Québec), `code_postal`, `province`, `pays`, `latitude`, `longitude` (49 offres géolocalisées).
+- **Traçabilité, Fraîcheur 2026 & Intégrité HTTP :** `id`, `source_id`, `source`, `source_partenaire`, `url` (nettoyée sans `;jsessionid` ni `utm_*`), `url_partenaire` (`a#externalJobLink`), `http_status` (`200`), `content_hash` (`SHA-256` 16 hex), `date_publication` (filtrée >= 2026 via `is_recent_and_valid_offer`), `date_fin`, `date_extraction`.
 
-- **Fichier :** [`test_poc_guichet_cnp_v2.py`](test_poc_guichet_cnp_v2.py)
-- **Configuration :** Lecture exclusive des fichiers locaux sous [`fixtures/`](fixtures/) et d'un répertoire temporaire isolé (`tempfile.TemporaryDirectory`) pour le cache.
-- **Entrées :**
-  - [`fixtures/liste_resultats_exemple.html`](fixtures/liste_resultats_exemple.html)
-  - [`fixtures/fiche_offre_imbriquee.html`](fixtures/fiche_offre_imbriquee.html)
-- **Sorties :** Rapport `unittest` (**10 tests validés en ~0,04 s**).
-- **Commande d'exécution :**
-  ```powershell
-  python -m unittest discover -s . -p "test_*.py" -v
-  ```
+---
+
+## 3. Commandes d'utilisation et de test (Collecte, Filtrage, Portail Web, CV & Lettre)
+
+```powershell
+# Installation des dépendances
+pip install -r requirements.txt
+
+# 1. Collecte autonome complète sur les 5 sources (lit toutes les pages et toutes les fiches individuelles)
+python poc_guichet_cnp_v2.py --collecte-complete
+
+# 2. Consolider hors ligne + générer le Portail Web HTML + exporter au Format Commun de la classe
+python poc_guichet_cnp_v2.py --consolider-data --html --format-commun
+
+# 3. Filtrage multicritère instantané hors ligne (ville, région, domaine, CNP, techno, séniorité, stages, salaire)
+python poc_guichet_cnp_v2.py --filtrer --region Capitale-Nationale --techno Python
+python poc_guichet_cnp_v2.py --filtrer --stages
+python poc_guichet_cnp_v2.py --filtrer --domaine cybersecurite --salaire-min 30 --unite-salaire heure
+
+# 4. Piste 4 (JobTailor) — Comparer un CV (.txt, .md, .docx, .json) aux 372 offres TI par Score ATS (/100)
+python poc_guichet_cnp_v2.py --cv cv_etudiant_dec_exemple.txt --top 5
+
+# 5. Piste 4 (JobTailor) — Auditer une lettre de motivation selon la méthode Vous / Moi / Nous
+python poc_guichet_cnp_v2.py --cv cv_etudiant_dec_exemple.txt --lettre lettre_motivation_exemple.txt --top 3
+python poc_guichet_cnp_v2.py --lettre lettre_motivation_exemple.txt --id-offre ge-50711091
+
+# 6. Exécuter les 21 tests unitaires 100 % hors ligne
+python -m unittest discover -s . -p "test_*.py" -v
+```

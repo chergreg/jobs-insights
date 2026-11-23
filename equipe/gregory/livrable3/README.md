@@ -31,7 +31,114 @@ Le livrable fusionne et bonifie les travaux de l'équipe :
 
 ---
 
-## 2. Scripts Python : guide d'utilisation, entrées, sorties et configuration
+## 2. Procédure pas à pas : exécution de tous les scripts pour récupérer le maximum d'offres
+
+Cette procédure décrit l'enchaînement méthodique des commandes Python pour collecter le volume maximal d'offres d'emploi et de stages TI au Québec et au Canada, consolider les jeux d'essai intermédiaires, orchestrer la déduplication et valider l'intégrité globale.
+
+### Tableau récapitulatif des commandes et points de contrôle
+
+| Étape | Script exécuté | Rôle principal | Fichier(s) produit(s) | Volume attendu |
+| :---: | --- | --- | --- | :---: |
+| **0** | `unittest discover` | Validation préalable hors ligne | S/O | 110 tests OK (< 1 s) |
+| **1a** | `run_demo_guichet.py` | Scraping direct + enrichissement RDFa | `cache/guichet_emplois/` | 188 fiches répertoriées (8 pages) |
+| **1b** | `generate_dataset.py` | Consolidation du jeu Guichet-Emplois | `data/offres_guichet_emplois.json` | 204 offres QC |
+| **2a** | `run_demo_jobboom.py` | Collecte paginée Jobboom + JSON-LD | `cache/jobboom/` | 131 fiches complètes (9 pages) |
+| **2b** | `generate_jobboom_dataset.py` | Consolidation du jeu Jobboom | `data/offres_jobboom.json` | 133 offres QC |
+| **3a** | `run_demo_remotive.py` | Interrogation API REST Remotive | `cache/remotive/` | 9 offres éligibles CA |
+| **3b** | `generate_remotive_dataset.py` | Consolidation du jeu Remotive | `data/offres_remotive.json` | 12 offres (3 stages) |
+| **4** | `main.py` | Unification, déduplication et exports | `data/offres_unifiees.json`, `.csv` | 343 offres consolidées |
+| **5** | `unittest discover` | Validation finale de non-régression | S/O | 110 tests OK (100 %) |
+
+---
+
+### Détail des étapes d'exécution et critères de vérification
+
+#### Étape 0 — Préparation de l'environnement et validation préalable
+Avant toute exécution, ouvrir un terminal PowerShell dans le dossier du Livrable 3 et valider que l'environnement est fonctionnel :
+```powershell
+cd equipe/gregory/livrable3
+python -m unittest discover -s . -p "test_*.py" -v
+```
+- **Quoi vérifier :**
+  - La suite de tests affiche `Ran 110 tests in ~0.8s` suivi de `OK`.
+  - Aucun appel réseau n'est émis (`offline_mode=True` actif sur les tests, conformité stricte `AGENTS.md`).
+
+#### Étape 1 — Collecte et consolidation Guichet-Emplois Canada
+Lancer la démonstration / collecte en direct avec enrichissement sémantique RDFa pour alimenter le cache disque, puis exécuter le générateur consolidé :
+```powershell
+# 1. Collecte et enrichissement RDFa / DOM
+python run_demo_guichet.py --limit 10 --enrich
+
+# 2. Consolidation du jeu d'essai standardisé
+python generate_dataset.py
+```
+- **Quoi vérifier :**
+  - **Console `run_demo_guichet.py` :** Vérifier l'extraction des fiches (`[OK] 10 offre(s) récupérée(s)`), le respect du `crawl-delay` (5,0 s en cas d'appel réseau réel) et l'extraction sémantique (descriptions nettoyées sans balises HTML, salaires horaires/annuels).
+  - **Console `generate_dataset.py` :** Message `[OK] 204 offres exportees avec succes dans data/offres_guichet_emplois.json`.
+  - **Fichier de sortie :** [`data/offres_guichet_emplois.json`](data/offres_guichet_emplois.json) existe et contient **204 offres** (87 offres d'Hugo + 10 offres de Kandet + 107 offres issues du cache des 8 pages de recherche enrichies).
+  - **Intégrité des données :** Tous les identifiants débutent par `ge-`, le champ `province` vaut `"QC"`, aucun salaire n'est inventé (`None` si absent).
+
+#### Étape 2 — Collecte et consolidation Jobboom Québec
+Parcourir l'ensemble des pages de la catégorie TI (`_i10lfr`) sans limitation artificielle pour extraire les blocs JSON-LD Schema.org/JobPosting, puis générer le jeu d'essai consolidé :
+```powershell
+# 1. Découverte ordonnée et extraction JSON-LD intégrale
+python run_demo_jobboom.py --pages 0 --limit 0
+
+# 2. Consolidation multi-contributeurs (Elvira + Mamadou + JobboomScraper)
+python generate_jobboom_dataset.py
+```
+- **Quoi vérifier :**
+  - **Console `run_demo_jobboom.py` :** Vérifier que les 9 pages sont découvertes (`131 annonces au total`), puis que l'ensemble des fiches est analysé via JSON-LD (`status_source` `CACHE` ou `RÉSEAU`).
+  - **Console `generate_jobboom_dataset.py` :** Affichage de l'intégration des contributions étudiantes et des 131 fiches réelles du connecteur `JobboomScraper`, menant à `[OK] 133 offres Jobboom consolidées`.
+  - **Fichier de sortie :** [`data/offres_jobboom.json`](data/offres_jobboom.json) contient **133 offres uniques** conformes Pydantic v2.
+  - **Intégrité des données :** Tous les identifiants débutent par `jb-`, le lieu est normalisé au Québec (ex: `"Montréal, QC"`, `"Québec, QC"`), les compétences techniques sont extraites sans faux positifs (`C` et `Vue` filtrés).
+
+#### Étape 3 — Collecte et consolidation Remotive (API REST, stages & télétravail)
+Interroger l'API REST Remotive en appliquant le filtre géographique `canada_eligible` et le cache local obligatoire de 24 h, puis générer le jeu consolidé :
+```powershell
+# 1. Test du client API REST avec classification géographique
+python run_demo_remotive.py --limit 50 --geo-filter canada_eligible
+
+# 2. Consolidation avec les cas historiques de stages TI (conformité Kandet)
+python generate_remotive_dataset.py
+```
+- **Quoi vérifier :**
+  - **Console `run_demo_remotive.py` :** Vérifier la détection du cache local valide (`Cache local valide détecté (< 24h)` sans appel réseau inutile), le filtre géographique (`canada_eligible` retenant les offres ouvertes au Canada/Québec) et la liste des offres typées.
+  - **Console `generate_remotive_dataset.py` :** Affichage de `[OK] Fichier généré avec succès` avec **12 offres** dont **3 stages confirmés** (`internship`).
+  - **Fichier de sortie :** [`data/offres_remotive.json`](data/offres_remotive.json) (42,7 Ko, 12 offres uniques).
+  - **Intégrité des données :** Tous les identifiants commencent par `rem-`, les tags et compétences clés sont normalisés.
+
+#### Étape 4 — Unification, déduplication multi-sources et exports finaux (`main.py`)
+Exécuter le point d'entrée principal qui orchestre le chargement des 3 jeux d'essai, applique l'algorithme de déduplication intra/inter-sources et produit les exports finaux :
+```powershell
+# Exécution du pipeline complet
+python main.py
+```
+*(Variante possible : exécuter une collecte directe par connecteurs avec l'option `python main.py --scrape --limit 10`).*
+- **Quoi vérifier :**
+  - **Console `main.py` :**
+    - Annonces en entrée : **349 annonces** (204 Guichet-Emplois + 133 Jobboom + 12 Remotive).
+    - Doublons inter-sources fusionnés : **6 doublons fusionnés** (détection d'annonces rediffusées sur plusieurs plateformes, ex. Guichet et Jobboom via Jobillico / Québec emploi).
+    - Offres uniques consolidées : **343 offres**.
+    - Détections de stages : **6 stages confirmés** (`confirmed_stage`), 337 contrats réguliers.
+    - Top technologies : vérifier l'absence des faux positifs `C` et `Vue` et le palmarès (SQL, Python, JavaScript, C#, Agile, Linux, Git, Azure, Java, React).
+  - **Fichier JSON unifié :** [`data/offres_unifiees.json`](data/offres_unifiees.json) fait environ **924 Ko**, contient 343 enregistrements valides Pydantic, encodé en UTF-8 indenté.
+  - **Fichier CSV unifié :** [`data/offres_unifiees.csv`](data/offres_unifiees.csv) fait environ **789 Ko**, encodé en `utf-8-sig` (avec BOM `\xef\xbb\xbf` pour Microsoft Excel Windows) avec délimiteur `;` et sauts de ligne nettoyés.
+  - **Vérification Excel Windows :** Le fichier CSV doit s'ouvrir sous Excel sans texte tronqué ni caractères d'accents corrompus (`é`, `è`, `à`, `ô`).
+
+#### Étape 5 — Validation finale de la non-régression
+Pour conclure, relancer la suite complète de tests unitaires :
+```powershell
+python -m unittest discover -s . -p "test_*.py" -v
+```
+- **Quoi vérifier :**
+  - 110 tests unitaires exécutés (24 Guichet, 23 Jobboom, 34 Remotive, 29 Pipeline).
+  - Résultat : `OK` (0 échec, 0 erreur).
+  - Durée totale : < 1,5 seconde.
+
+---
+
+## 3. Scripts Python : guide d'utilisation, entrées, sorties et configuration détaillée
 
 ### A. Script de démonstration et test en direct (`run_demo_guichet.py`)
 
@@ -67,17 +174,18 @@ Interroge Guichet-Emplois Canada en direct pour effectuer une recherche selon le
 
 ### B. Générateur du jeu d'essai standardisé (`generate_dataset.py`)
 
-Normalise, nettoie et consolide les données réelles issues des POCs précédents dans le schéma pivot `JobOffer`.
+Normalise, nettoie et consolide les données réelles issues des POCs précédents et du cache de recherche dans le schéma pivot `JobOffer`.
 
 - **Fichier** : `generate_dataset.py`
 - **Configuration** :
   - Dictionnaire de normalisation canonique des technologies (`TECH_CANONICAL`).
   - Filtrage strict éliminant les faux positifs récurrents en français (`C` isolé, `VUE`).
 - **Entrées** :
-  - Données sources Hugo : `../../hugo/02-preuve-de-concept-scraping/data/offres_emploi_canada.json`
-  - Données sources Kandet : `../../kandet/02-preuve-de-concept-scraping/echantillon.json`
+  - Données sources Hugo : `../../hugo/02-preuve-de-concept-scraping/data/offres_emploi_canada.json` (87 offres).
+  - Données sources Kandet : `../../kandet/02-preuve-de-concept-scraping/echantillon.json` (10 offres).
+  - Cache de recherche et fiches détaillées Guichet-Emplois : `cache/guichet_emplois/` (107 offres supplémentaires enrichies).
 - **Sorties** :
-  - Fichier JSON structuré : `data/offres_guichet_emplois.json` (97 offres TI québécoises validées par Pydantic).
+  - Fichier JSON structuré : `data/offres_guichet_emplois.json` (204 offres TI québécoises validées par Pydantic).
 - **Exemple de commande** :
   ```powershell
   python generate_dataset.py
@@ -135,15 +243,15 @@ Interroge le portail Jobboom Québec en direct ou depuis le cache pour collecter
 
 ### E. Générateur du jeu d'essai Jobboom (`generate_jobboom_dataset.py`)
 
-Consolide les contributions d'Elvira (5 offres) et Mamadou (3 offres) avec une collecte paginée sur 2 pages du connecteur Jobboom fiabilisé.
+Consolide les contributions d'Elvira (5 offres) et Mamadou (8 offres v1/v2) avec une collecte paginée exhaustive sur l'ensemble de la catégorie TI du connecteur Jobboom fiabilisé.
 
 - **Fichier** : `generate_jobboom_dataset.py`
 - **Entrées** :
   - Données sources Elvira : `../../elvira/02-preuve-de-concept-scraping/offres_jobboom.json`
-  - Données sources Mamadou : `../../mamadou/02-preuve-de-concept-scraping/sample_scraped_jobs.json`
-  - Collecte en direct/cache sur la catégorie `_i10lfr`
+  - Données sources Mamadou : `../../mamadou/02-preuve-de-concept-scraping/sample_scraped_jobs.json` et `../../mamadou/03-amelioration-preuve-de-concept/echantillon_v2.json`
+  - Collecte en direct/cache sur la catégorie `_i10lfr` via `JobboomScraper` (131 fiches complètes analysées)
 - **Sorties** :
-  - Fichier JSON structuré : `data/offres_jobboom.json` (31 offres TI québécoises validées par Pydantic).
+  - Fichier JSON structuré : `data/offres_jobboom.json` (133 offres TI québécoises validées par Pydantic).
 - **Exemple de commande** :
   ```powershell
   python generate_jobboom_dataset.py
@@ -242,9 +350,9 @@ Orchestre la collecte ciblée ou complète des trois sources (Guichet-Emplois, J
   - `--output-csv CHEMIN` : Destination de l'export CSV (défaut : `data/offres_unifiees.csv`).
   - `--verbose` : Affiche les journaux d'exécution détaillés.
 - **Sorties** :
-  - Fichier JSON unifié : `data/offres_unifiees.json` (140 offres structurées, indentées, 269,8 Ko).
-  - Fichier CSV unifié : `data/offres_unifiees.csv` (140 offres, encodage `utf-8-sig`, délimiteur `;`, 213,2 Ko).
-  - Console : Rapport statistique de synthèse (répartition par source, stages, top technologies).
+  - Fichier JSON unifié : `data/offres_unifiees.json` (343 offres consolidées, 923.8 Ko, structurées et indentées).
+  - Fichier CSV unifié : `data/offres_unifiees.csv` (343 offres consolidées, 788.5 Ko, encodage `utf-8-sig`, délimiteur `;`).
+  - Console : Rapport statistique de synthèse (349 annonces en entrée, 6 doublons inter-sources fusionnés, 343 uniques, 6 stages confirmés, top technologies).
 - **Exemples de commandes** :
   ```powershell
   # 1. Exécution par défaut (unification instantanée des jeux d'essai)
@@ -287,7 +395,7 @@ Valide l'ensemble des règles de normalisation, de déduplication, de fusion et 
   - Préservation des descriptions, compétences, salaires et partenaires.
   - Priorisation des stages et enrichissement du type de poste.
   - Conformité des exports JSON et CSV (`utf-8-sig`, BOM Excel, délimiteur `;`).
-  - Validation de bout en bout sur batch synthétique et sur les 140 offres réelles de `data/`.
+  - Validation de bout en bout sur batch synthétique et sur les jeux d'essai réels consolidés sous `data/`.
 - **Sorties** : 29 tests validés en ~0,68 s.
 - **Exemple de commande** :
   ```powershell
@@ -307,7 +415,7 @@ python -m unittest discover -s . -p "test_*.py" -v
 
 ---
 
-## 3. Schéma de données unifié (`models.py`)
+## 4. Schéma de données unifié (`models.py`)
 
 Chaque offre est représentée par la classe Pydantic `JobOffer` :
 

@@ -44,6 +44,21 @@ def normalize(value: str) -> str:
     return "".join(char for char in decomposed if not unicodedata.combining(char))
 
 
+MONTH_NAMES = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août",
+               "septembre", "octobre", "novembre", "décembre"]
+
+
+def french_date(value: str) -> str:
+    """« 2026-11-20 » ou « 2026-11-17T13:53:04+00:00 » -> « 20 novembre 2026 » (heure locale)."""
+    try:
+        moment = datetime.fromisoformat(value)
+    except (TypeError, ValueError):
+        return value
+    if moment.tzinfo is not None:
+        moment = moment.astimezone()
+    return f"{moment.day} {MONTH_NAMES[moment.month - 1]} {moment.year}"
+
+
 def parse_display_date(value: str) -> str:
     """Convertit « 12 novembre 2026 » ou « November 12, 2026 » en 2026-11-12.
 

@@ -101,3 +101,5 @@ class AggregatedOffer:
     experience_years_min: float | None = None
     level: str = ""  # débutant, intermédiaire, avancé
     summary: str = ""
+    # Vrai si l'offre n'était pas dans la collecte précédente (historique.py)
+    new_since_previous: bool = False
