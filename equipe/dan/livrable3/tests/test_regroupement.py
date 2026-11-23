@@ -191,6 +191,15 @@ class TestMain(unittest.TestCase):
         self.assertEqual(guichet.appels, [])
         self.assertEqual(talent.appels, [(1, 5)])                           # valeurs par défaut
 
+    def test_robots_txt_desactive_par_defaut_et_option(self):
+        talent = FauxScraper("talent", [tc(2)])
+        for arguments, attendu in (([], False), (["--respecter-robots"], True)):
+            with self.subTest(arguments=arguments), tempfile.TemporaryDirectory() as dossier, \
+                 mock.patch.dict(main.SOURCES, {"talent": ("Talent.com", talent)}, clear=True), \
+                 mock.patch.object(main, "Client") as faux_client, redirect_stdout(StringIO()):
+                main.main(arguments + ["--dossier", dossier])
+            self.assertIs(faux_client.call_args.kwargs["respecter_robots"], attendu)
+
     def test_bout_en_bout_avec_les_vrais_scrapers(self):
         """Les 3 vrais scrapers lisent les fixtures des lots 3 à 5 servies par un faux client."""
         from scrapers import guichet_emplois, jobboom, talent
@@ -218,6 +227,10 @@ class TestMain(unittest.TestCase):
         self.assertEqual(unifie["nombre"], 3 + 2 + 1)        # Guichet 3, Jobboom 2, Talent 1 (l'autre sans titre)
         self.assertEqual({o["source"] for o in unifie["offres"]}, {"guichet-emplois", "jobboom", "talent"})
         self.assertIn("6 offres reçues, 0 doublons fusionnés", sortie.getvalue())
+        competences = {o["id"]: o["competences"] for o in unifie["offres"]}
+        self.assertTrue(all(isinstance(c, list) for c in competences.values()))
+        self.assertTrue(any(competences.values()))           # repérées dans les fiches lues
+        self.assertIn("Compétences repérées dans", sortie.getvalue())
 
     def test_aucune_offre_code_1(self):
         vide = FauxScraper("talent", [])

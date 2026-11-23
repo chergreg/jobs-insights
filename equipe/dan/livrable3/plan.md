@@ -4,7 +4,7 @@
 > On travaille **par lot** : 1 lot = 1 conversation = 1 commit.
 > **Dossier de travail :** `equipe/dan/livrable3/`
 > **Début d'une conversation :** lire ce plan, puis travailler seulement sur le lot indiqué « ⏳ Prochain lot ».
-> **État (2026-11-18) :** les 7 lots sont terminés côté code ; il reste l'exécution réelle par Dan (voir « Livrable 3 terminé » en fin de plan).
+> **État (2026-11-23) :** les 7 lots sont terminés et publiés (44 offres réelles dans `data/`). Lot 8 : `robots.txt` rendu optionnel à la demande du prof.
 
 ---
 
@@ -175,16 +175,35 @@ equipe/dan/livrable3/
 - [x] Vérifications : 107 tests OK, 55 liens relatifs vérifiés (0 cassé), README final (lien vers le compte rendu, Python 3.12+).
 - [ ] **À faire par Dan** : lancer `python main.py --pages 1 --fiches 5 --csv`, remplir la section 6.4 et la ligne « Offres » de la section 7, puis ajouter le lien du commit en haut du compte rendu.
 
+### Lot 8 — `robots.txt` optionnel *(✅ Terminé, 2026-11-23)*
+Remarque du prof : la vérification de `robots.txt` n'est pas nécessaire. Option A retenue : la garder, mais désactivée par défaut.
+- [x] `outils.py` : `Client(respecter_robots=False)` par défaut ; plus aucune requête vers `robots.txt` sans l'option.
+- [x] Délais fixes par site : `DELAIS_PAR_SITE` (Guichet-Emplois 5 s, valeur de son `Crawl-delay` ; Jobboom et Talent.com 2 s), argument `delais=` de `Client`.
+- [x] Gardés dans les deux modes : `User-Agent` honnête, cache 24 h, arrêt propre sur 401/403/429.
+- [x] Option `--respecter-robots` dans `main.py` et les 3 scrapers : réactive la classe `Robots` (RFC 9309) et le `Crawl-delay` s'il est plus grand.
+- [x] Tests : 114 OK (`test_outils` 31, `test_talent` 16, `test_regroupement` 21) ; les tests `robots.txt` passent en mode `respecter_robots=True`.
+- [x] README (section `outils.py` et options), compte rendu (sections 4, 6.1, 7, 9) mis à jour.
+
+### Lot 9 — Bug « `, QC` » et résultats réels *(✅ Terminé, 2026-11-23)*
+- [x] `guichet_emplois.lire_fiche` : région nettoyée (« `, QC` » → `QC`) avec `jsonld.province` ; texte non reconnu → `None`. 1 test (4 cas).
+- [x] Compte rendu : section 6.4 (exécution du 2026-11-18 : 25 + 15 + 5 = 44 uniques, 1 doublon), section 7, limites, lien du commit `ba6f982`.
+- [ ] **À faire par Dan** : relancer `python main.py --pages 1 --fiches 5 --csv` pour corriger la province dans `data/` ; vérifier 2 offres par site.
+
+### Lot 10 — Compétences et format commun *(✅ Terminé, 2026-11-23)*
+- [x] [`competences.py`](competences.py) : `detecter_competences` (motifs de Hugo et du prof, 2 faux positifs hérités corrigés, ajouts support TI) et `statut_stage` (3 valeurs du prof). `main.py` remplit `competences` et l'affiche dans le résumé. 12 tests.
+- [x] [`../format-commun/convertir.py`](../format-commun/convertir.py) : `offres_unifiees.json` → `JobOffer` du prof (18 champs, rien de deviné, province nettoyée). 10 tests, dont la validation par le vrai modèle `JobOffer`.
+- [x] Sur les vraies données : 10 offres avec compétences (sur 14 avec description), 1 stage possible ; 44/44 offres validées par `JobOffer`.
+- [x] README (2 nouvelles sections), compte rendu (sections 4, 6.1, 6.4, 7, 8).
+
 ---
 
 ## Livrable 3 terminé (côté code)
 
 **Reste à faire par Dan, dans cet ordre :**
-1. Publier le dossier `equipe/dan/` (sans fichier `.patch`).
-2. Lancer `python main.py --pages 1 --fiches 5 --csv` depuis `equipe/dan/livrable3/`.
-3. Coller le résumé dans la section 6.4 du compte rendu, vérifier 2 offres par site et 1 doublon.
-4. Noter les `robots.txt` de Jobboom et de Talent.com ; si Talent.com refuse → demander le plan B (Remotive).
-5. Ajouter le lien du commit en haut du compte rendu, puis publier.
+1. Remplacer le dossier `equipe/dan/` par la nouvelle version (lots 8 à 10), lancer les tests (127 OK dans `livrable3/`, 10 OK dans `format-commun/`).
+2. Relancer `python main.py --pages 1 --fiches 5 --csv` depuis `equipe/dan/livrable3/` (province corrigée et compétences dans `data/`), puis `python convertir.py --csv --echantillon 5` depuis `equipe/dan/format-commun/`.
+3. Vérifier 2 offres par site à la main ; si Talent.com refuse (403/429) → demander le plan B (Remotive).
+4. Commit et push.
 
 ---
 
@@ -199,6 +218,9 @@ equipe/dan/livrable3/
 | 5 — Talent.com / Remotive | ✅ (essai réel à faire) | `scrapers/talent.py`, `scrapers/jsonld.py` | 87 OK au total (0,11 s) |
 | 6 — Regroupement | ✅ (exécution réelle à faire) | `main.py`, `regroupement.py` | 107 OK au total (0,12 s) |
 | 7 — Compte rendu | ✅ (résultats réels à compléter) | `compte-rendu.md` | 107 OK, 55 liens OK |
+| 8 — `robots.txt` optionnel | ✅ | `outils.py`, `main.py`, 3 scrapers | 114 OK au total |
+| 9 — Bug « `, QC` », résultats réels | ✅ | `scrapers/guichet_emplois.py`, `compte-rendu.md` | 115 OK au total |
+| 10 — Compétences, format commun | ✅ | `competences.py`, `../format-commun/` | 127 + 10 OK |
 
 ---
 

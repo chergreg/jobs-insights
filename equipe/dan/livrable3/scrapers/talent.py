@@ -7,8 +7,8 @@ Code et observations repris de Mamadou (L3, ``poc_guichet_cnp_v2.py``, essai ré
   région en anglais (« Quebec »), ville « Québec City ».
 
 Bonifications :
-- **porte d'entrée** : ``outils.Client`` lit d'abord robots.txt ; si la page est interdite ou si le serveur
-  répond 401/403/429, la collecte s'arrête proprement (message clair, aucun contournement) ;
+- **porte d'entrée** : si le serveur répond 401/403/429 à la 1re page (ou, avec ``--respecter-robots``,
+  si robots.txt l'interdit), la collecte s'arrête proprement (message clair, aucun contournement) ;
 - aucune valeur devinée (Mamadou mettait « QC » et « Temps plein » par défaut) ; ``id`` = ``tc-<numéro>``
   seulement si l'URL contient ``id=`` (pas d'identifiant fabriqué avec ``hash()``) ;
 - lecture JSON-LD partagée avec Jobboom (``scrapers/jsonld.py``).
@@ -115,7 +115,8 @@ def collecter(client: Client, pages: int = 1, fiches: int = 10,
               mot_cle: str = MOT_CLE, lieu: str = LIEU) -> list[Offre]:
     """Lit jusqu'à ``pages`` pages de résultats, puis les ``fiches`` premières fiches.
 
-    La 1re requête sert de porte d'entrée : si Talent.com refuse (robots.txt, 401, 403, 429),
+    La 1re requête sert de porte d'entrée : si Talent.com refuse (401, 403, 429,
+    ou robots.txt avec ``respecter_robots``),
     on affiche le refus et on rend une liste vide, sans réessayer autrement.
     """
     offres: list[Offre] = []
@@ -156,9 +157,11 @@ def main(arguments: list[str] | None = None) -> None:
     analyseur.add_argument("--sortie", type=Path, default=SORTIE_JSON, help="fichier JSON produit")
     analyseur.add_argument("--csv", action="store_true", help="écrire aussi un CSV à côté du JSON")
     analyseur.add_argument("--sans-cache", action="store_true", help="ignorer le cache disque")
+    analyseur.add_argument("--respecter-robots", action="store_true",
+                           help="lire et appliquer robots.txt (désactivé par défaut)")
     args = analyseur.parse_args(arguments)
 
-    client = Client(cache_dossier=None) if args.sans_cache else Client()
+    client = Client(respecter_robots=args.respecter_robots, **({"cache_dossier": None} if args.sans_cache else {}))
     offres = collecter(client, pages=args.pages, fiches=args.fiches, mot_cle=args.mot_cle, lieu=args.lieu)
 
     chemin = exporter_json(offres, args.sortie)

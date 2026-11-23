@@ -8,6 +8,7 @@ Daniel
 | 1 — Inventaire des sites | [`01-inventaire-des-sites/`](01-inventaire-des-sites/sites.md) |
 | 2 — Preuve de concept | [`02-preuve-de-concept-scraping/`](02-preuve-de-concept-scraping/compte-rendu.md) |
 | 3 — Amélioration (3 sites, doublons) | [`livrable3/compte-rendu.md`](livrable3/compte-rendu.md) · [plan par lots](livrable3/plan.md) |
+| Format commun de la classe (`JobOffer`) | [`format-commun/`](format-commun/convertir.py) |
 
 ## Scripts Python
 
@@ -27,13 +28,14 @@ pip install -r requirements.txt
 | [`livrable3/main.py`](livrable3/main.py) | **Lance les 3 sites, retire les doublons, exporte le fichier unifié** | `python main.py --pages 1 --fiches 5` |
 | [`livrable3/regroupement.py`](livrable3/regroupement.py) | Détection et fusion des doublons entre sources | Module importé par `main.py` |
 | [`livrable3/modele.py`](livrable3/modele.py) | Modèle `Offre` + exports JSON / CSV | Module importé par les scrapers |
-| [`livrable3/outils.py`](livrable3/outils.py) | robots.txt, délai, cache 24 h, arrêt sur 401/403/429 | Module importé par les scrapers |
+| [`livrable3/outils.py`](livrable3/outils.py) | Délai par site, cache 24 h, arrêt sur 401/403/429 ; `robots.txt` en option | Module importé par les scrapers |
 | [`livrable3/scrapers/guichet_emplois.py`](livrable3/scrapers/guichet_emplois.py) | Guichet-Emplois : offres TI au Québec, plusieurs pages + fiches | `python -m scrapers.guichet_emplois --pages 2 --fiches 5` |
 | [`livrable3/scrapers/jobboom.py`](livrable3/scrapers/jobboom.py) | Jobboom : catégorie TI, plusieurs pages + fiches JSON-LD | `python -m scrapers.jobboom --pages 2 --fiches 10` |
 | [`livrable3/scrapers/talent.py`](livrable3/scrapers/talent.py) | Talent.com : recherche TI au Québec + fiches JSON-LD | `python -m scrapers.talent --pages 1 --fiches 10` |
+| [`livrable3/competences.py`](livrable3/competences.py) | Compétences TI et statut de stage lus dans le titre et la description | Module importé par `main.py` et `convertir.py` |
+| [`format-commun/convertir.py`](format-commun/convertir.py) | **Convertit `offres_unifiees.json` au format commun `JobOffer` du prof** | `python convertir.py --csv` |
 | [`livrable3/scrapers/commun.py`](livrable3/scrapers/commun.py) | Fonctions de texte partagées (dates, HTML → texte, stage, montants) | Module importé par les scrapers |
 | [`livrable3/scrapers/jsonld.py`](livrable3/scrapers/jsonld.py) | Lecture JSON-LD `JobPosting` partagée (Jobboom, Talent.com) | Module importé par les scrapers |
-| Autres scrapers du livrable 3 | Ajoutés lot par lot | Voir [`livrable3/plan.md`](livrable3/plan.md) |
 
 ### Tests (livrable 3)
 
@@ -42,6 +44,8 @@ Hors ligne, aucun appel réseau. Depuis la racine du dépôt :
 ```bash
 python -m unittest discover -s equipe/dan/livrable3 -p "test_*.py" -v
 ```
+
+Format commun (depuis `equipe/dan/format-commun/`) : `python -m unittest test_convertir -v`.
 
 ### `poc_guichetemplois.py` (livrable 2)
 
@@ -112,6 +116,7 @@ python main.py --sites guichet talent --sans-cache
 | `--fiches N` | `5` | Fiches ouvertes par source |
 | `--csv` | non | Écrit aussi un CSV par source |
 | `--sans-cache` | non | Retélécharge tout |
+| `--respecter-robots` | non | Lit et applique `robots.txt` (désactivé par défaut, voir `outils.py`) |
 | `--dossier CHEMIN` | `livrable3/data/` | Dossier des fichiers produits |
 
 **Sortie** (dans `data/`)
@@ -136,7 +141,7 @@ Regroupement : 40 offres reçues, 2 doublons fusionnés (0 même id, 2 même tit
 ```
 *(chiffres d'exemple)*
 
-**Robustesse :** une source refusée (robots.txt, 401, 403, 429) ou en erreur n'arrête pas les autres : son statut apparaît dans le résumé. Code de sortie `1` si aucune source n'a donné d'offre, sinon `0`.
+**Robustesse :** une source refusée (401, 403, 429, ou `robots.txt` avec `--respecter-robots`) ou en erreur n'arrête pas les autres : son statut apparaît dans le résumé. Code de sortie `1` si aucune source n'a donné d'offre, sinon `0`.
 
 **Configuration :** `SOURCES` (en haut de `main.py`) donne les sources et leur ordre : la première rencontrée d'une offre en double passe devant à égalité.
 
@@ -208,17 +213,17 @@ except AccesRefuse as refus:
 
 - Le texte de la page (`str`).
 - Ou l'exception `AccesRefuse`, sans contournement, si :
-  - `robots.txt` interdit l'URL ;
   - le serveur répond 401 (connexion), 403 (ex. Cloudflare) ou 429 (trop de requêtes, avec `Retry-After`) ;
-  - `robots.txt` lui-même est refusé (401/403/429) ou en erreur (5xx).
+  - seulement avec `respecter_robots=True` : `robots.txt` interdit l'URL, ou `robots.txt` lui-même est refusé (401/403/429) ou en erreur (5xx).
 - Fichiers de cache dans `livrable3/cache/` (ignoré par Git).
 
 **Ce que fait `telecharger`, dans l'ordre**
 
 1. Cherche la page dans le cache (moins de 24 h) : si elle y est, aucune requête.
-2. Lit `robots.txt` du site une seule fois : groupe qui nomme notre robot, sinon `*` ; règle la plus longue gagne ; `*` et `$` compris ; `Crawl-delay` lu.
-3. Attend le délai du site : le plus grand entre 2 s et le `Crawl-delay`.
-4. Envoie la requête avec notre `User-Agent`, puis met la page en cache.
+2. Attend le délai du site : le plus grand entre `DELAI_MIN` (2 s) et la valeur de `DELAIS_PAR_SITE` (5 s pour le Guichet-Emplois).
+3. Envoie la requête avec notre `User-Agent`, puis met la page en cache.
+
+**`robots.txt` (optionnel) :** à la demande du prof, il n'est plus lu par défaut. Avec `Client(respecter_robots=True)` (option `--respecter-robots` de chaque script), `telecharger` lit aussi `robots.txt` une fois par site (groupe qui nomme notre robot, sinon `*` ; règle la plus longue gagne ; `*` et `$` compris), refuse les adresses interdites et applique le `Crawl-delay` s'il est plus grand que le délai fixe. Le `User-Agent` honnête et l'arrêt sur 401/403/429 restent actifs dans les deux modes.
 
 **Configuration** (constantes en haut du module, ou arguments de `Client`)
 
@@ -226,6 +231,8 @@ except AccesRefuse as refus:
 | --- | --- | --- |
 | `USER_AGENT` | `jobs-insights-dan/0.3 (…)` | Identification honnête |
 | `DELAI_MIN` | `2.0` | Délai minimal entre deux requêtes au même site (s) |
+| `DELAIS_PAR_SITE` | Guichet-Emplois `5`, Jobboom `2`, Talent.com `2` | Délai fixe par site (s) ; argument `delais=` de `Client` |
+| — | `respecter_robots=False` | Argument de `Client` : `True` réactive `robots.txt` |
 | `CACHE_DOSSIER` | `livrable3/cache/` | Dossier du cache (`None` = pas de cache) |
 | `CACHE_DUREE` | `86400` | Durée de validité du cache (s) |
 | `TIMEOUT` | `20` | Délai maximal d'une requête (s) |
@@ -252,6 +259,7 @@ python -m scrapers.guichet_emplois --mot-cle stage --pages 1 --fiches 10
 | `--sortie CHEMIN` | `data/offres_guichet_emplois.json` | Fichier JSON produit |
 | `--csv` | non | Écrit aussi un CSV à côté du JSON |
 | `--sans-cache` | non | Retélécharge tout, sans lire ni écrire le cache |
+| `--respecter-robots` | non | Lit et applique `robots.txt` (désactivé par défaut, voir `outils.py`) |
 
 La recherche est toujours filtrée sur le **Québec** (`fprov=QC`), les **14 codes CNP TI** (`fn21`) et triée de la plus récente à la plus ancienne (`sort=D`).
 
@@ -277,7 +285,7 @@ Un champ que le site ne donne pas reste `None` : rien n'est deviné.
 **Arrêts**
 
 - La collecte s'arrête au total annoncé par le site, sur une page vide ou après `--pages` pages.
-- Si le site refuse (robots.txt, 401, 403, 429), le message s'affiche et ce qui est déjà lu est quand même enregistré.
+- Si le site refuse (401, 403, 429, ou `robots.txt` avec `--respecter-robots`), le message s'affiche et ce qui est déjà lu est quand même enregistré.
 - Une fiche illisible est ignorée ; les autres continuent.
 
 **Configuration** (constantes en haut du module)
@@ -289,7 +297,7 @@ Un champ que le site ne donne pas reste `None` : rien n'est deviné.
 | `SORTIE_JSON` | `data/offres_guichet_emplois.json` | Sortie par défaut |
 | `MODALITES`, `UNITES_SALAIRE` | dictionnaires | Textes reconnus et mis en forme |
 
-**Durée :** le Guichet-Emplois impose `Crawl-delay: 5`, lu dans son `robots.txt`. Comptez environ 5 s par page et par fiche : `--pages 2 --fiches 20` ≈ 2 minutes au premier lancement, quelques secondes ensuite grâce au cache.
+**Durée :** le Guichet-Emplois demande `Crawl-delay: 5` dans son `robots.txt` ; ce délai de 5 s est écrit dans `outils.DELAIS_PAR_SITE`. Comptez environ 5 s par page et par fiche : `--pages 2 --fiches 20` ≈ 2 minutes au premier lancement, quelques secondes ensuite grâce au cache.
 
 ### `livrable3/scrapers/jobboom.py`
 
@@ -310,6 +318,7 @@ python -m scrapers.jobboom --pages 3 --fiches 30 --csv
 | `--sortie CHEMIN` | `data/offres_jobboom.json` | Fichier JSON produit |
 | `--csv` | non | Écrit aussi un CSV à côté du JSON |
 | `--sans-cache` | non | Retélécharge tout, sans lire ni écrire le cache |
+| `--respecter-robots` | non | Lit et applique `robots.txt` (désactivé par défaut, voir `outils.py`) |
 
 Page lue : catégorie **Technologies et médias numériques** (`/fr/technologies-medias-numeriques/_i10lfr?sortBy=date&page=N`), offres les plus récentes d'abord.
 
@@ -341,7 +350,7 @@ Une offre dont la fiche n'est pas ouverte garde seulement `id`, `url` et `titre`
 - Les doublons (même numéro) et les liens sans numéro `_p<chiffres>` : aucun identifiant n'est inventé.
 - Les offres sans titre, ni sur la carte ni dans la fiche.
 
-**Arrêts :** au total annoncé (« 1 - 15 de 131 résultats »), sur une page vide ou après `--pages`. Si le site refuse (robots.txt, 401, 403, 429), le message s'affiche et ce qui est déjà lu est enregistré.
+**Arrêts :** au total annoncé (« 1 - 15 de 131 résultats »), sur une page vide ou après `--pages`. Si le site refuse (401, 403, 429, ou `robots.txt` avec `--respecter-robots`), le message s'affiche et ce qui est déjà lu est enregistré.
 
 **Configuration** (constantes en haut du module)
 
@@ -352,7 +361,7 @@ Une offre dont la fiche n'est pas ouverte garde seulement `id`, `url` et `titre`
 
 La traduction de `employmentType` (`TYPES_POSTE`) et des provinces est dans `scrapers/jsonld.py`.
 
-**Durée :** délai de 2 s entre deux requêtes (minimum de `outils.py`), ou plus si le `robots.txt` de Jobboom fixe un `Crawl-delay`.
+**Durée :** délai de 2 s entre deux requêtes (`outils.DELAIS_PAR_SITE`), ou plus avec `--respecter-robots` si le `robots.txt` de Jobboom fixe un `Crawl-delay`.
 
 ### `livrable3/scrapers/talent.py`
 
@@ -376,6 +385,7 @@ python -m scrapers.talent --lieu "Montréal, QC" --pages 2
 | `--sortie CHEMIN` | `data/offres_talent.json` | Fichier JSON produit |
 | `--csv` | non | Écrit aussi un CSV à côté du JSON |
 | `--sans-cache` | non | Retélécharge tout, sans lire ni écrire le cache |
+| `--respecter-robots` | non | Lit et applique `robots.txt` (désactivé par défaut, voir `outils.py`) |
 
 **Sortie**
 
@@ -383,7 +393,7 @@ python -m scrapers.talent --lieu "Montréal, QC" --pages 2
 - Les offres viennent du JSON-LD `ItemList` de la page de résultats ; leurs champs viennent du JSON-LD `JobPosting` de la fiche, avec les mêmes règles que Jobboom (tableau plus haut). Particularités observées : région en anglais (`Quebec` → `QC`), ville `Québec City` gardée telle quelle.
 - Une offre sans titre (ni dans la liste ni dans sa fiche) est retirée.
 
-**Porte d'entrée :** la 1re requête vérifie `robots.txt`. Si Talent.com interdit la recherche ou répond 401/403/429, le script affiche le refus, conseille le **plan B (Remotive)** et rend 0 offre, sans autre tentative.
+**Porte d'entrée :** la 1re requête sert de test. Si Talent.com répond 401/403/429 (ou, avec `--respecter-robots`, si son `robots.txt` interdit la recherche), le script affiche le refus, conseille le **plan B (Remotive)** et rend 0 offre, sans autre tentative.
 
 **Configuration** (constantes en haut du module)
 
@@ -416,3 +426,55 @@ Fonctions de texte sans réseau, utilisées par les scrapers (aucune configurati
 | `date_iso(texte)` | `Publiée le 16 novembre 2026`, `2026-11-10T08:30` → `2026-11-16`, `2026-11-10` |
 | `est_un_stage(*textes)` | `True` si « stage », « stagiaire », « intern », « co-op »… ; sinon `None` |
 | `montant(valeur)` | `52000` → `52 000`, `22.5` → `22,50` |
+
+### `livrable3/competences.py`
+
+Sans réseau, aucune configuration à part les listes de motifs en haut du module.
+
+| Fonction | Entrée → sortie |
+| --- | --- |
+| `detecter_competences(*textes)` | Titre, description… → compétences triées, ex. `["Docker", "Python", "SQL"]` ; aucun texte → `[]` (inconnu) |
+| `statut_stage(titre, description, est_stage)` | `confirmed_stage` (stage dans le titre), `possible_stage` (« statut : stage », « être inscrit… » dans la description) ou `not_indicated` |
+
+- Motifs repris de Hugo et du prof, « sans faux positifs » : « vue d'ensemble » n'est pas Vue.js, « Node.js » ne compte pas pour JavaScript, « agile » seul (adjectif) n'est pas la méthode Agile.
+- Ajouts pour le support TI : Windows, Active Directory, Microsoft 365, TCP/IP, HTML, CSS, .NET, Power BI.
+- `main.py` remplit le champ `competences` de chaque offre ; le résumé affiche « Compétences repérées dans N offres sur M ».
+- Une offre sans description donne souvent `[]` : ça veut dire « on ne sait pas », pas « aucune compétence demandée ».
+
+### `format-commun/convertir.py`
+
+Convertit mes offres vers le **format commun de la classe** : le modèle `JobOffer` du prof (`equipe/gregory/livrable3/models.py`, 18 champs). Même démarche que Kandet et Ferdinand : rien ne change dans `livrable3/`.
+
+```bash
+cd equipe/dan/format-commun
+python convertir.py                      # offres_format_commun.json
+python convertir.py --csv --echantillon 5
+```
+
+**Entrée :** `../livrable3/data/offres_unifiees.json` (option `--entree` pour un autre fichier, ex. `offres_jobboom.json`).
+
+**Sortie**
+
+| Fichier | Contenu |
+| --- | --- |
+| `offres_format_commun.json` | Liste d'offres avec les 18 champs de `JobOffer`, dans le même ordre |
+| `offres_format_commun.csv` | Avec `--csv` : pour Excel (`utf-8-sig`, `;`), compétences séparées par des virgules, `est_stage` oui/non |
+| `echantillon_format_commun.json` | Avec `--echantillon N` : les N premières offres |
+
+Console : `44 offres converties : 10 avec compétences, 0 stages confirmés, 1 stages possibles`.
+
+**Correspondance des champs**
+
+| Format commun | Vient de | Si absent |
+| --- | --- | --- |
+| `id`, `titre`, `url`, `source`, `source_partenaire`, `date_publication`, `modalite`, `description`, `salaire` | Même champ | `None` |
+| `entreprise`, `lieu` | Même champ | « Non spécifié » (pas de valeur inventée) |
+| `province` | Même champ, nettoyé (« , QC » → `QC`) | « Non spécifié » (pas « QC » par défaut) |
+| `pays` | « Canada » si la province est un code canadien | « Non spécifié » |
+| `type_poste` | Même champ | `None` (pas « Temps plein » par défaut) |
+| `statut_stage`, `est_stage` | `competences.statut_stage` ; `est_stage` = stage confirmé ou possible | `not_indicated`, `False` |
+| `competences_cles` | Champ `competences`, sinon détection dans le titre et la description | `[]` |
+| `date_extraction` | `date_export` du fichier d'entrée | — |
+
+Mes champs en plus (`latitude`, `longitude`, `doublons`) restent dans `livrable3/data/`. Un test valide les offres converties avec le vrai modèle `JobOffer` du prof (si `pydantic` est installé).
+

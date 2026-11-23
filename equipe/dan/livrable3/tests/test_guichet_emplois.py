@@ -123,6 +123,18 @@ class TestPetitsOutils(unittest.TestCase):
         self.assertIsNone(ge.date_iso("bientôt"))
         self.assertIsNone(ge.date_iso(None))
 
+    def test_region_de_la_fiche_nettoyee(self):
+        """Vu le 2026-11-23 (ge-50753589, « Différentes régions ») : addressRegion = « , QC »."""
+        modele = ('<div><span property="addressLocality">{v}</span>'
+                  '<span property="addressRegion">{r}</span></div>')
+        cas = [(", QC", "QC", "Québec (QC)"), ("QC", "QC", "Québec (QC)"), ("Quebec", "QC", "Québec (QC)"),
+               ("Région inconnue", None, "Québec")]
+        for brute, attendue, lieu in cas:
+            with self.subTest(region=brute):
+                fiche = ge.lire_fiche(modele.format(v="Québec", r=brute))
+                self.assertEqual(fiche.get("province"), attendue)
+                self.assertEqual(fiche.get("lieu"), lieu)
+
     def test_province(self):
         self.assertEqual(ge.province_de("Québec (QC)"), "QC")
         self.assertIsNone(ge.province_de("Télétravail"))

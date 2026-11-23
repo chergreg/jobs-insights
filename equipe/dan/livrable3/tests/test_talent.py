@@ -135,12 +135,23 @@ class TestCollecter(unittest.TestCase):
         self.assertIn("Cloudflare", sortie)
         self.assertIn("plan B (Remotive)", sortie)
 
-    def test_porte_d_entree_robots_txt_avec_le_vrai_client(self):
-        """robots.txt interdit /fr/jobs : outils.Client refuse avant toute requête vers la recherche."""
+    def test_porte_d_entree_403_avec_le_vrai_client_sans_robots(self):
+        """Par défaut, robots.txt n'est pas lu : seul le refus du serveur (403) arrête la collecte."""
+        session = FausseSession({tc.url_recherche(1): FausseReponse(403, "", {"Server": "cloudflare"})})
+        horloge = FausseHorloge()
+        client = Client(session=session, attendre=horloge.attendre, horloge=horloge, cache_dossier=None)
+        offres, sortie = self.collecter(client, pages=2, fiches=1)
+        self.assertEqual(offres, [])
+        self.assertEqual([u for u, _ in session.appels], [tc.url_recherche(1)])
+        self.assertIn("plan B (Remotive)", sortie)
+
+    def test_porte_d_entree_robots_txt_avec_respecter_robots(self):
+        """--respecter-robots : robots.txt interdit /fr/jobs, refus avant toute requête vers la recherche."""
         session = FausseSession({tc.BASE_URL + "/robots.txt":
                                  FausseReponse(200, "User-agent: *\nDisallow: /fr/jobs\n")})
         horloge = FausseHorloge()
-        client = Client(session=session, attendre=horloge.attendre, horloge=horloge, cache_dossier=None)
+        client = Client(session=session, attendre=horloge.attendre, horloge=horloge, cache_dossier=None,
+                        respecter_robots=True)
         offres, sortie = self.collecter(client, pages=1, fiches=1)
         self.assertEqual(offres, [])
         self.assertEqual([u for u, _ in session.appels], [tc.BASE_URL + "/robots.txt"])

@@ -10,8 +10,8 @@ Code et observations repris :
 Bonifications par rapport aux versions précédentes :
 - aucune valeur devinée : un champ absent reste ``None`` (pas de « Non spécifié »,
   pas de « Québec (QC) » ni de « Temps plein » par défaut) ;
-- réseau délégué à ``outils.Client`` : robots.txt complet, ``Crawl-delay: 5`` lu dans le fichier,
-  cache 24 h, arrêt propre sur 401/403/429 ;
+- réseau délégué à ``outils.Client`` : délai fixe de 5 s (valeur du ``Crawl-delay`` du site),
+  cache 24 h, arrêt propre sur 401/403/429 ; robots.txt vérifié seulement avec ``--respecter-robots`` ;
 - description en texte propre qui garde les paragraphes et les puces (une ligne par élément).
 
 Usage (depuis equipe/dan/livrable3) :
@@ -34,6 +34,7 @@ if __package__ in (None, ""):                       # lancé comme « python scr
 
 from modele import Offre, exporter_csv, exporter_json
 from outils import AccesRefuse, Client
+from scrapers.jsonld import province
 from scrapers.commun import (UNITES_SALAIRE, date_iso, espaces, est_un_stage,
                              texte_multiligne)
 
@@ -211,7 +212,10 @@ def lire_fiche(html: str) -> dict:
     organisation = prop("hiringOrganization")
     entreprise = texte_visible(organisation.find(attrs={"property": "name"}) if organisation else None)
     ville = texte_visible(prop("addressLocality"))
-    region = texte_visible(prop("addressRegion"))
+    # Le site écrit parfois la région « , QC » (offre « Différentes régions ») : on la nettoie,
+    # et un texte qui n'est pas une province reconnue donne None (rien d'inventé).
+    region_brute = texte_visible(prop("addressRegion"))
+    region = province(region_brute.strip(" ,;")) if region_brute else None
     type_poste = prop("employmentType")
     valeurs = {
         "entreprise": entreprise,
@@ -298,9 +302,11 @@ def main(arguments: list[str] | None = None) -> None:
     analyseur.add_argument("--sortie", type=Path, default=SORTIE_JSON, help="fichier JSON produit")
     analyseur.add_argument("--csv", action="store_true", help="écrire aussi un CSV à côté du JSON")
     analyseur.add_argument("--sans-cache", action="store_true", help="ignorer le cache disque")
+    analyseur.add_argument("--respecter-robots", action="store_true",
+                           help="lire et appliquer robots.txt (désactivé par défaut)")
     args = analyseur.parse_args(arguments)
 
-    client = Client(cache_dossier=None) if args.sans_cache else Client()
+    client = Client(respecter_robots=args.respecter_robots, **({"cache_dossier": None} if args.sans_cache else {}))
     offres = collecter(client, pages=args.pages, fiches=args.fiches, mot_cle=args.mot_cle)
 
     chemin = exporter_json(offres, args.sortie)
