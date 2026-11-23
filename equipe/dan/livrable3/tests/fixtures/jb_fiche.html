@@ -1,0 +1,18 @@
+<!-- Fiche Jobboom : JSON-LD JobPosting précédé d'un bloc Organization (structure relevée par Elvira).
+     Un bloc JSON invalide est ajouté pour tester la robustesse. Données fictives. -->
+<html><head>
+<script type="application/ld+json">{ ceci n'est pas du JSON }</script>
+<script type="application/ld+json">{"@context":"http://schema.org","@type":"Organization","name":"Jobboom"}</script>
+<script type="application/ld+json">
+{"@context":"http://schema.org/","@type":"JobPosting",
+ "title":"Technicien informatique",
+ "description":"<p>Vous aimez résoudre des problèmes et offrir un service de qualité.</p><ul><li>Soutien Windows et Azure</li><li>Gestion des tickets Jira</li></ul>",
+ "datePosted":"2026-09-30","validThrough":"2026-12-01",
+ "employmentType":["PERMANENT","FULL_TIME"],
+ "jobLocationType":"TELECOMMUTE",
+ "hiringOrganization":{"@type":"Organization","name":"InnovMetric Logiciels Inc.","logo":"https://images.jobboom.com/logo/test.jpg"},
+ "jobLocation":[{"@type":"Place","address":{"@type":"PostalAddress","addressLocality":"Québec","addressRegion":"QC","addressCountry":"CA","postalCode":"G1N4N6"},
+                 "geo":{"@type":"GeoCoordinates","latitude":"46.817136","longitude":"-71.312079"}}],
+ "baseSalary":{"@type":"MonetaryAmount","currency":"CAD","value":{"@type":"QuantitativeValue","minValue":52000,"maxValue":60000,"unitText":"YEAR"}}}
+</script>
+</head><body><h1>Technicien informatique</h1></body></html>

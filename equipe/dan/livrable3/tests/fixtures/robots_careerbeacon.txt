@@ -1,0 +1,73 @@
+User-agent: *
+User-agent: Googlebot
+User-agent: Bingbot
+User-agent: OAI-SearchBot
+User-agent: GPTBot
+User-agent: Google-Extended
+User-agent: ClaudeBot
+User-agent: Claude-Web
+User-agent: Claude-User
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /uikit
+Disallow: /change_language
+Disallow: /404_override
+Disallow: /mettez-a-jour-votre-navigateur
+Disallow: /job_board_core/
+Disallow: /job_board_feed/
+Disallow: /job_board_cron/
+Disallow: /rss/
+Disallow: /admin/
+Disallow: /stats/
+Disallow: /backend/
+Disallow: /autocomplete/
+Disallow: /beta/
+Disallow: /company/
+Disallow: /cron/
+Disallow: /ecommerce/
+Disallow: /employers/
+Disallow: /engine/
+Disallow: /export/
+Disallow: /facebook/
+Disallow: /feed/
+Disallow: /home/
+Disallow: /invoice/
+Disallow: /irving/
+Disallow: /job_processing/
+Disallow: /jobs/
+Disallow: /linkedin_import/
+Disallow: /login/
+Disallow: /logout/
+Disallow: /message/
+Disallow: /partner/
+Disallow: /profile/
+Disallow: /sales/
+Disallow: /seo/
+Disallow: /signup/
+Disallow: /skills/
+Disallow: /solr/
+Disallow: /survey/
+Disallow: /trackingpixel/
+Disallow: /webhooks/
+Disallow: /widgets/
+Disallow: /en/apply
+Disallow: /fr/appliquer
+Disallow: /*filter-est_salary_min=
+Disallow: /*filter-est_salary_max=
+Disallow: /*filter-salary_min=
+Disallow: /*filter-salary_max=
+
+# AdSense crawler must see every page that shows ads
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: ia_archiver
+Disallow: /
+
+User-Agent: OmniExplorer_Bot
+Disallow: /
+
+User-agent: Baiduspider
+Disallow: /
+
+Sitemap: https://www.careerbeacon.com/sitemap-index.xml

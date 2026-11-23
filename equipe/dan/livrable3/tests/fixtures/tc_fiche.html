@@ -1,0 +1,16 @@
+<!-- Fiche Talent.com : JSON-LD JobPosting dans un @graph. Valeurs reprises de l'échantillon réel de Mamadou
+     (ville « Québec City », région en anglais « Quebec », GPS en texte, employmentType en texte). Description abrégée. -->
+<html><head>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[
+  {"@type":"Organization","name":"Talent.com"},
+  {"@type":"JobPosting","title":"Analyste en informatique",
+   "description":"<p>Informations de base</p><p>Lieu de travail : Centre administratif</p><ul><li>Soutien <strong>Azure</strong> et Linux</li><li>Scripts Python</li></ul>",
+   "datePosted":"2026-10-10","employmentType":"FULL_TIME",
+   "hiringOrganization":{"@type":"Organization","name":"Chu De Quebec - Universite Laval"},
+   "jobLocation":{"@type":"Place",
+     "address":{"@type":"PostalAddress","addressLocality":"Québec City","addressRegion":"Quebec","addressCountry":"CA"},
+     "geo":{"@type":"GeoCoordinates","latitude":"46.8130816","longitude":"-71.2074596"}}}
+]}
+</script>
+</head><body></body></html>
