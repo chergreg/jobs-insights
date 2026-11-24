@@ -8,7 +8,7 @@
       "entreprise": "Entreprise fictive",
       "localisation": "Canada",
       "date_publication": "2026-01-01T12:00:00",
-      "description": "<p>Offre fictive pour le test.</p>",
+      "description": "Offre fictive pour le test.",
       "salaire": "50 000 CAD par an",
       "url_originale": "https://example.invalid/offre/1"
     },

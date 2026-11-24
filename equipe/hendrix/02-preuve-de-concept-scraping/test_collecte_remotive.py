@@ -23,7 +23,7 @@ class TestCollecteRemotive(unittest.TestCase):
             "entreprise": "Entreprise fictive",
             "localisation": "Canada",
             "date_publication": "2026-01-01T12:00:00",
-            "description": "<p>Offre fictive pour le test.</p>",
+            "description": "Offre fictive pour le test.",
             "salaire": "50 000 CAD par an",
             "url_originale": "https://example.invalid/offre/1",
         })
@@ -76,6 +76,23 @@ class TestCollecteRemotive(unittest.TestCase):
                         self.assertEqual(script.main(), 1)
                     self.assertFalse(sortie.exists())
                     ouvrir.assert_called_once()
+
+    
+    def test_nettoyage_html(self):
+        html = """
+        <style>body { color: red; }</style>
+        <p>Bonjour <strong>Hendrix</strong> !</p>
+        <script>alert('test')</script>
+        <p>Python &amp; SQL</p>
+        """
+
+        resultat = script.nettoyer_description(html)
+
+        self.assertEqual(
+            resultat,
+            "Bonjour Hendrix ! Python & SQL"
+        )
+
 
 
 if __name__ == "__main__":

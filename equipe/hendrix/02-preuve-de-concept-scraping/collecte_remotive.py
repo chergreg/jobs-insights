@@ -14,6 +14,39 @@ API_URL = "https://remotive.com/api/remote-jobs"
 DOSSIER = Path(__file__).resolve().parent
 
 
+from html.parser import HTMLParser
+
+
+class NettoyeurHTML(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.textes = []
+        self.ignorer = 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag in ("script", "style"):
+            self.ignorer += 1
+
+    def handle_endtag(self, tag):
+        if tag in ("script", "style"):
+            self.ignorer = max(0, self.ignorer - 1)
+
+    def handle_data(self, texte):
+        if self.ignorer == 0:
+            self.textes.append(texte)
+
+
+def nettoyer_description(html):
+    if not html:
+        return None
+
+    nettoyeur = NettoyeurHTML()
+    nettoyeur.feed(html)
+    texte = " ".join(" ".join(nettoyeur.textes).split())
+
+    return texte or None
+
+
 class Offre(TypedDict):
     titre: str | None
     entreprise: str | None
@@ -45,6 +78,7 @@ def extraire_offres(reponse: object, limite: int) -> list[Offre]:
     if not isinstance(reponse, dict) or not isinstance(reponse.get("jobs"), list):
         raise ValueError("La réponse doit contenir une liste 'jobs'.")
 
+        
     offres = []
     for offre in reponse["jobs"][:limite]:
         if not isinstance(offre, dict):
@@ -54,7 +88,7 @@ def extraire_offres(reponse: object, limite: int) -> list[Offre]:
             entreprise=champ(offre, "company_name"),
             localisation=champ(offre, "candidate_required_location"),
             date_publication=champ(offre, "publication_date"),
-            description=champ(offre, "description"),
+            description=nettoyer_description(champ(offre, "description")),
             salaire=champ(offre, "salary"),
             url_originale=champ(offre, "url"),
         ))
