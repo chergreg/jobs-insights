@@ -124,6 +124,18 @@ Cette amélioration a été vérifiée par des tests automatisés couvrant plusi
 
 La classification est indicative : elle ne confirme ni la localisation physique du poste ni l'admissibilité d'un candidat à l'offre.
 
+### Amélioration : suppression des doublons
+
+J'ai ajouté un mécanisme de détection des doublons afin d'éviter l'exportation répétée d'une même offre.
+
+Le programme mémorise les URL des offres déjà rencontrées. Lorsqu'une URL apparaît plusieurs fois, seule la première offre correspondante est conservée.
+
+Les offres dont l'URL est absente restent conservées, car il n'est pas possible de confirmer qu'elles sont identiques.
+
+Un nouveau test automatisé vérifie cette fonctionnalité. Le prototype comporte désormais neuf tests automatisés réussis.
+
+Cette méthode possède une limite : deux offres identiques utilisant des URL différentes ne seront pas détectées comme doublons.
+
 ## 5. Conclusion
 
 Ce Livrable 2 m'a permis d'expérimenter la collecte automatique de données depuis une source d'offres d'emploi.

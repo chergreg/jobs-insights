@@ -118,15 +118,24 @@ def champ(offre: dict, cle: str) -> str | None:
 
 
 
+
+
 def extraire_offres(reponse: object, limite: int) -> list[Offre]:
     if not isinstance(reponse, dict) or not isinstance(reponse.get("jobs"), list):
         raise ValueError("La réponse doit contenir une liste 'jobs'.")
 
     offres = []
+    urls_vues = set()
 
     for offre in reponse["jobs"][:limite]:
         if not isinstance(offre, dict):
             raise ValueError("Chaque élément de 'jobs' doit être un objet.")
+
+        url = champ(offre, "url")
+
+        # Une URL déjà rencontrée signifie que l'offre est en double.
+        if url is not None and url in urls_vues:
+            continue
 
         localisation = champ(offre, "candidate_required_location")
 
@@ -138,27 +147,13 @@ def extraire_offres(reponse: object, limite: int) -> list[Offre]:
             date_publication=champ(offre, "publication_date"),
             description=nettoyer_description(champ(offre, "description")),
             salaire=champ(offre, "salary"),
-            url_originale=champ(offre, "url"),
+            url_originale=url,
         ))
 
-    return offres
+        # Enregistrer l'URL après avoir ajouté l'offre.
+        if url is not None:
+            urls_vues.add(url)
 
-
-        
-    offres = []
-    for offre in reponse["jobs"][:limite]:
-        if not isinstance(offre, dict):
-            raise ValueError("Chaque élément de 'jobs' doit être un objet.")
-        offres.append(Offre(
-            titre=champ(offre, "title"),
-            entreprise=champ(offre, "company_name"),
-            localisation=localisation,
-            categorie_localisation=classifier_localisation(localisation),
-            date_publication=champ(offre, "publication_date"),
-            description=nettoyer_description(champ(offre, "description")),
-            salaire=champ(offre, "salary"),
-            url_originale=champ(offre, "url"),
-        ))
     return offres
 
 

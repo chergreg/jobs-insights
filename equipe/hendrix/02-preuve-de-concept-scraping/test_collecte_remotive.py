@@ -42,6 +42,32 @@ class TestCollecteRemotive(unittest.TestCase):
             with self.subTest(reponse=reponse), self.assertRaises(ValueError):
                 script.extraire_offres(reponse, 3)
 
+    
+    def test_suppression_doublons(self):
+        premiere = self.reponse["jobs"][0]
+
+        doublon = dict(premiere)
+        doublon["title"] = "Titre modifié"
+
+        sans_url = {"title": "Offre sans URL"}
+
+        reponse = {
+            "jobs": [
+                premiere,
+                doublon,
+                sans_url,
+                dict(sans_url),
+            ]
+        }
+
+        offres = script.extraire_offres(reponse, 4)
+
+        self.assertEqual(len(offres), 3)
+        self.assertEqual(offres[0]["titre"], "Développeur junior")
+        self.assertIsNone(offres[1]["url_originale"])
+        self.assertIsNone(offres[2]["url_originale"])
+
+
     @patch("collecte_remotive.urlopen")
     def test_requete(self, ouvrir):
         ouvrir.return_value.__enter__.return_value = io.BytesIO(
