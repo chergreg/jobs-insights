@@ -59,7 +59,7 @@ python collecte_remotive.py --reel --limite 1 --sortie remotive-local.json
 | Localisation | USA |
 | Date de publication | 19 novembre 2026 |
 | Rémunération affichée | 14 USD/heure |
-| Description | Texte HTML récupéré |
+| Description | Description récupérée, puis nettoyée en texte |
 | Source | Remotive |
 
 [Lien vers l'annonce originale](https://remotive.com/remote-jobs/all-others/content-reviewer-united-states-2091177)
@@ -88,11 +88,13 @@ Lors de la première tentative, la résolution DNS du domaine Remotive a échou�
 
 Une nouvelle exécution sur mon ordinateur a permis de récupérer une offre réelle avec succès.
 
-### Description au format HTML
+### Nettoyage des descriptions HTML
 
-Le champ `description` contient du HTML, notamment des balises et des attributs de mise en forme.
+Lors de la collecte réelle, les descriptions contenaient des balises HTML et de nombreux attributs CSS.
 
-Une amélioration possible serait de nettoyer ce contenu pour obtenir un texte plus facile à lire et à analyser.
+J'ai amélioré le collecteur avec `HTMLParser`, une classe de la bibliothèque standard Python, afin de convertir ces descriptions en texte lisible.
+
+Cette amélioration a été validée par un test automatisé. Les sept tests du prototype passent avec succès.
 
 ### Informations sur la rémunération
 
@@ -118,6 +120,6 @@ J'ai développé un prototype Python capable d'interroger une API publique, de r
 
 Les tests simulés et la collecte réelle montrent que cette approche fonctionne.
 
-Les principales améliorations possibles concernent le nettoyage des descriptions HTML, le filtrage géographique et l'exploitation des données récupérées.
+Les principales améliorations possibles concernent le filtrage géographique et l'exploitation des données récupérées.
 
 Ce prototype constitue une première étape vers un système de collecte et de normalisation d'offres d'emploi.
