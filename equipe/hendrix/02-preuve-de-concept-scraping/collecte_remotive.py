@@ -8,13 +8,14 @@ from typing import TypedDict
 from urllib.error import HTTPError
 from urllib.parse import urlencode
 from urllib.request import Request, urlopen
+from html.parser import HTMLParser
+import re
+import unicodedata
 
 
 API_URL = "https://remotive.com/api/remote-jobs"
 DOSSIER = Path(__file__).resolve().parent
 
-
-from html.parser import HTMLParser
 
 
 class NettoyeurHTML(HTMLParser):
@@ -47,10 +48,52 @@ def nettoyer_description(html):
     return texte or None
 
 
+def classifier_localisation(localisation: str | None) -> str:
+    """Classe la zone indiquée par Remotive, sans inventer de lieu."""
+    if not localisation or not localisation.strip():
+        return "inconnue"
+
+    texte = unicodedata.normalize("NFKD", localisation.casefold())
+    texte = "".join(
+        caractere for caractere in texte
+        if not unicodedata.combining(caractere)
+    )
+    texte = " ".join(texte.split())
+
+    usa = bool(re.search(
+        r"\b(?:usa|us|united states|etats[- ]unis)\b", texte
+    ))
+    canada = bool(re.search(r"\bcanada\b", texte))
+
+    if re.search(r"\b(?:worldwide|anywhere|global)\b", texte):
+        return "mondiale"
+
+    if (
+        re.search(r"\b(?:north america|amerique du nord|americas)\b", texte)
+        or (canada and usa)
+    ):
+        return "amerique_du_nord"
+
+    if re.search(
+        r"\b(?:quebec|montreal|laval|gatineau|sherbrooke|qc)\b",
+        texte
+    ):
+        return "quebec"
+
+    if canada:
+        return "canada"
+
+    if usa:
+        return "etats_unis"
+
+    return "autre"
+
+
 class Offre(TypedDict):
     titre: str | None
     entreprise: str | None
     localisation: str | None
+    categorie_localisation: str
     date_publication: str | None
     description: str | None
     salaire: str | None
@@ -74,9 +117,32 @@ def champ(offre: dict, cle: str) -> str | None:
     raise ValueError(f"Le champ {cle} doit contenir du texte ou être absent.")
 
 
+
 def extraire_offres(reponse: object, limite: int) -> list[Offre]:
     if not isinstance(reponse, dict) or not isinstance(reponse.get("jobs"), list):
         raise ValueError("La réponse doit contenir une liste 'jobs'.")
+
+    offres = []
+
+    for offre in reponse["jobs"][:limite]:
+        if not isinstance(offre, dict):
+            raise ValueError("Chaque élément de 'jobs' doit être un objet.")
+
+        localisation = champ(offre, "candidate_required_location")
+
+        offres.append(Offre(
+            titre=champ(offre, "title"),
+            entreprise=champ(offre, "company_name"),
+            localisation=localisation,
+            categorie_localisation=classifier_localisation(localisation),
+            date_publication=champ(offre, "publication_date"),
+            description=nettoyer_description(champ(offre, "description")),
+            salaire=champ(offre, "salary"),
+            url_originale=champ(offre, "url"),
+        ))
+
+    return offres
+
 
         
     offres = []
@@ -86,7 +152,8 @@ def extraire_offres(reponse: object, limite: int) -> list[Offre]:
         offres.append(Offre(
             titre=champ(offre, "title"),
             entreprise=champ(offre, "company_name"),
-            localisation=champ(offre, "candidate_required_location"),
+            localisation=localisation,
+            categorie_localisation=classifier_localisation(localisation),
             date_publication=champ(offre, "publication_date"),
             description=nettoyer_description(champ(offre, "description")),
             salaire=champ(offre, "salary"),

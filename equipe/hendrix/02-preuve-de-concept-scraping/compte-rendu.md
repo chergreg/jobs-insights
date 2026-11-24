@@ -112,6 +112,18 @@ Le prototype ne filtre pas encore les offres selon leur admissibilité au Canada
 
 Le prototype limite volontairement la récupération à un maximum de dix offres par exécution afin de rester adapté à une démonstration pédagogique.
 
+### Amélioration de la classification géographique
+
+J'ai ajouté une fonction `classifier_localisation()` pour classer les indications géographiques fournies par Remotive.
+
+Le programme distingue notamment le Canada, le Québec, les États-Unis, les offres mondiales, l'Amérique du Nord et les localisations inconnues.
+
+La localisation originale est conservée dans le JSON et une nouvelle propriété `categorie_localisation` est ajoutée.
+
+Cette amélioration a été vérifiée par des tests automatisés couvrant plusieurs cas géographiques. Les huit tests du prototype passent.
+
+La classification est indicative : elle ne confirme ni la localisation physique du poste ni l'admissibilité d'un candidat à l'offre.
+
 ## 5. Conclusion
 
 Ce Livrable 2 m'a permis d'expérimenter la collecte automatique de données depuis une source d'offres d'emploi.

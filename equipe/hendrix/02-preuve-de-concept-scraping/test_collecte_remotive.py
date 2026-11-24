@@ -26,10 +26,12 @@ class TestCollecteRemotive(unittest.TestCase):
             "description": "Offre fictive pour le test.",
             "salaire": "50 000 CAD par an",
             "url_originale": "https://example.invalid/offre/1",
+            "categorie_localisation": "canada",
         })
         self.assertIsNone(incomplete["salaire"])
         self.assertIsNone(incomplete["entreprise"])
         self.assertIsNone(incomplete["url_originale"])
+        self.assertEqual(incomplete["categorie_localisation"], "inconnue")
 
     def test_limite_et_liste_vide(self):
         self.assertEqual(len(script.extraire_offres(self.reponse, 1)), 1)
@@ -92,6 +94,31 @@ class TestCollecteRemotive(unittest.TestCase):
             resultat,
             "Bonjour Hendrix ! Python & SQL"
         )
+
+
+    def test_classification_localisation(self):
+        cas = {
+            "Canada": "canada",
+            "Québec": "quebec",
+            "Montréal, Canada": "quebec",
+            "USA": "etats_unis",
+            "United States": "etats_unis",
+            "Worldwide": "mondiale",
+            "Anywhere": "mondiale",
+            "North America": "amerique_du_nord",
+            "Canada, USA": "amerique_du_nord",
+            "France": "autre",
+            "": "inconnue",
+            None: "inconnue",
+        }
+
+        for localisation, categorie_attendue in cas.items():
+            with self.subTest(localisation=localisation):
+                self.assertEqual(
+                    script.classifier_localisation(localisation),
+                    categorie_attendue
+                )
+
 
 
 
