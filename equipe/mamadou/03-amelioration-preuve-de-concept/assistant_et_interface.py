@@ -501,31 +501,128 @@ def audit_cover_letter(
 # ==============================================================================
 # 5. Convertisseur vers le Format Commun de la Classe (`JobOffer` de Grégory)
 # ==============================================================================
+COMMON_FORMAT_FIELDS: tuple[str, ...] = (
+    "id",
+    "titre",
+    "entreprise",
+    "lieu",
+    "province",
+    "pays",
+    "url",
+    "source",
+    "source_partenaire",
+    "date_publication",
+    "type_poste",
+    "modalite",
+    "est_stage",
+    "statut_stage",
+    "description",
+    "competences_cles",
+    "salaire",
+    "date_extraction",
+)
+VALID_STAGE_STATUSES: frozenset[str] = frozenset({"confirmed_stage", "possible_stage", "not_indicated"})
+
+
 def convert_to_common_format_dict(offer: JobBankOffer) -> dict[str, Any]:
     """
-    Convertit un `JobBankOffer` (36 champs) vers les 17 champs exacts du modèle pivot
+    Convertit un `JobBankOffer` vers les 18 champs exacts du modèle pivot
     `JobOffer` de Grégory (`equipe/gregory/livrable3/models.py`), sans aucune donnée devinée.
+    Conventions alignées avec `equipe/kandet/format-commun/` et `equipe/dan/format-commun/` :
+    - `None` (jamais `""`) pour les champs optionnels absents (`source_partenaire`, `date_publication`,
+      `type_poste`, `modalite`, `description`, `salaire`) ;
+    - `date_publication` au format ISO `AAAA-MM-JJ` ou `None` ;
+    - `est_stage` cohérent avec `statut_stage` (`confirmed_stage` / `possible_stage` -> `True`).
     """
+    statut = offer.statut_stage if offer.statut_stage in VALID_STAGE_STATUSES else "not_indicated"
+    est_stage = (statut != "not_indicated") or bool(offer.est_stage)
+    if est_stage and statut == "not_indicated":
+        statut = "possible_stage"
+    pub_date = (offer.date_publication or "").strip()[:10] or None
+
     return {
         "id": offer.id,
         "titre": offer.titre_employeur or offer.titre or "Non spécifié",
         "entreprise": offer.entreprise or "Non spécifié",
         "lieu": offer.lieu or "Non spécifié",
         "province": offer.province or "Non spécifié",
-        "pays": offer.pays or "Canada",
+        "pays": offer.pays or "Non spécifié",
         "url": offer.url,
         "source": offer.source,
-        "source_partenaire": offer.source_partenaire,
-        "date_publication": offer.date_publication,
-        "type_poste": offer.type_poste,
-        "modalite": offer.modalite,
-        "est_stage": bool(offer.est_stage),
-        "statut_stage": offer.statut_stage,
-        "description": offer.description,
+        "source_partenaire": offer.source_partenaire or None,
+        "date_publication": pub_date,
+        "type_poste": offer.type_poste or None,
+        "modalite": offer.modalite or None,
+        "est_stage": est_stage,
+        "statut_stage": statut,
+        "description": offer.description or None,
         "competences_cles": list(offer.competences_cles or []),
-        "salaire": offer.salaire,
+        "salaire": offer.salaire or None,
         "date_extraction": offer.date_extraction,
     }
+
+
+def validate_common_format_records(
+    records: Any,
+    gregory_models_path: Optional[Path] = None,
+) -> tuple[bool, str]:
+    """
+    Valide qu'une liste d'offres au format commun respecte exactement les 18 champs,
+    types et conventions du modèle `JobOffer` (`equipe/gregory/livrable3/models.py`).
+    """
+    if not isinstance(records, list) or not records:
+        return False, "offres_format_commun.json est vide ou n'est pas une liste JSON"
+
+    expected_keys = set(COMMON_FORMAT_FIELDS)
+    iso_date_re = re.compile(r"^\d{4}-\d{2}-\d{2}$")
+    nullable_str_fields = ("source_partenaire", "date_publication", "type_poste", "modalite", "description", "salaire")
+    required_str_fields = ("id", "titre", "entreprise", "lieu", "province", "pays", "url", "source", "date_extraction")
+
+    for idx, item in enumerate(records):
+        if not isinstance(item, dict):
+            return False, f"Entrée #{idx} n'est pas un objet JSON"
+        keys = set(item.keys())
+        if keys != expected_keys:
+            missing = sorted(expected_keys - keys)
+            extra = sorted(keys - expected_keys)
+            return False, f"Entrée #{idx} ({item.get('id', '?')}) : clés invalides (manquantes={missing}, en trop={extra})"
+        for f_name in required_str_fields:
+            if not isinstance(item[f_name], str) or not item[f_name].strip():
+                return False, f"Entrée #{idx} ({item.get('id', '?')}) : champ requis '{f_name}' vide ou non-str"
+        for f_name in nullable_str_fields:
+            val = item[f_name]
+            if val is not None and (not isinstance(val, str) or val == ""):
+                return False, f"Entrée #{idx} ({item.get('id', '?')}) : '{f_name}' doit être None ou str non vide"
+        if item["date_publication"] is not None and not iso_date_re.match(item["date_publication"]):
+            return False, f"Entrée #{idx} ({item.get('id', '?')}) : date_publication '{item['date_publication']}' non ISO AAAA-MM-JJ"
+        if not isinstance(item["est_stage"], bool):
+            return False, f"Entrée #{idx} ({item.get('id', '?')}) : est_stage doit être bool"
+        if item["statut_stage"] not in VALID_STAGE_STATUSES:
+            return False, f"Entrée #{idx} ({item.get('id', '?')}) : statut_stage invalide '{item['statut_stage']}'"
+        if not isinstance(item["competences_cles"], list) or not all(isinstance(c, str) for c in item["competences_cles"]):
+            return False, f"Entrée #{idx} ({item.get('id', '?')}) : competences_cles doit être list[str]"
+
+    models_file = gregory_models_path or (Path(__file__).resolve().parents[2] / "gregory" / "livrable3" / "models.py")
+    if models_file.is_file():
+        import importlib.util
+        import sys
+
+        try:
+            spec = importlib.util.spec_from_file_location("_gregory_livrable3_models", models_file)
+            if spec and spec.loader:
+                mod = importlib.util.module_from_spec(spec)
+                sys.modules[spec.name] = mod
+                spec.loader.exec_module(mod)
+                job_offer_cls = getattr(mod, "JobOffer", None)
+                if job_offer_cls is not None:
+                    if set(job_offer_cls.model_fields.keys()) != expected_keys:
+                        return False, "Divergence entre COMMON_FORMAT_FIELDS et JobOffer.model_fields"
+                    for idx, item in enumerate(records):
+                        job_offer_cls(**item)
+        except Exception as exc:
+            return False, f"Validation Pydantic JobOffer échouée : {exc}"
+
+    return True, f"Format commun valide ({len(records)} offres, 18 champs exacts conformes à JobOffer)"
 
 
 def export_common_format_json(offers: list[JobBankOffer], output_path: Path) -> Path:
@@ -565,12 +662,18 @@ def format_filtered_offers_summary(offers: list[JobBankOffer], limit: int = 15) 
         skills_str = ", ".join((o.competences_cles or [])[:6]) or "Aucune détectée"
         sal_str = f" | {o.salaire}" if o.salaire else ""
         stage_str = " | [STAGE]" if o.est_stage else ""
+        also_parts: list[str] = []
+        if getattr(o, "source_partenaire", None):
+            also_parts.append(str(o.source_partenaire))
+        if getattr(o, "doublons", None):
+            also_parts.extend(o.doublons)
+        also_line = f"\n     Aussi publié sur : {', '.join(also_parts)}" if also_parts else ""
         lines.append(
             f" {idx:2d}. [{o.id} | CNP {o.code_cnp} | {o.domaine_ti}] {title}\n"
             f"     Employeur : {o.entreprise or 'Non spécifié'} — {o.ville or o.lieu or 'Québec'} ({o.region_administrative or 'QC'})"
             f"{sal_str}{stage_str} | Pertinence DEC : {o.score_pertinence_dec}/100\n"
             f"     Technos   : {skills_str}\n"
-            f"     Lien      : {o.url}"
+            f"     Lien      : {o.url}{also_line}"
         )
     if len(offers) > limit:
         lines.append(f"\n ... et {len(offers) - limit} autre(s) offre(s) (utilisez --html pour tout explorer).")
@@ -599,6 +702,12 @@ def format_cv_matching_report(
         title = o.titre_employeur or o.titre or "Sans titre"
         shared_str = ", ".join(m.competences_communes) if m.competences_communes else "Aucune en commun"
         missing_str = ", ".join(m.competences_manquantes[:6]) if m.competences_manquantes else "Aucune compétence manquante (100 % couvert !)"
+        also_parts: list[str] = []
+        if getattr(o, "source_partenaire", None):
+            also_parts.append(str(o.source_partenaire))
+        if getattr(o, "doublons", None):
+            also_parts.extend(o.doublons)
+        also_line = f"\n    Aussi publié sur : {', '.join(also_parts)}" if also_parts else ""
         lines.append(
             f"\n #{rank} — SCORE ATS : {m.score_ats}/100 | [{o.id}] {title}\n"
             f"    Employeur       : {o.entreprise or 'Non spécifié'} ({o.ville or o.lieu or 'QC'} — {o.region_administrative or 'QC'})\n"
@@ -606,7 +715,7 @@ def format_cv_matching_report(
             f"    ✓ Maîtrisées    : {shared_str}\n"
             f"    ✗ À travailler  : {missing_str}\n"
             f"    Conseil CV      : {m.suggestions_adaptation_cv[0] if m.suggestions_adaptation_cv else ''}\n"
-            f"    Lien            : {o.url}"
+            f"    Lien            : {o.url}{also_line}"
         )
     return "\n".join(lines)
 

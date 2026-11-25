@@ -1,13 +1,23 @@
 {
-  "date_generation": "2026-11-25T04:24:50.533418+00:00",
+  "date_generation": "2026-11-25T05:05:32.633176+00:00",
   "auteur": "Mamadou (Livrable 3 - Lot 4 final)",
-  "total_offres_unifiees_ti": 369,
+  "total_offres_unifiees_ti": 365,
   "deduplication": {
-    "total_entree": 377,
+    "total_entree": 374,
     "doublons_intra_fusionnes": 0,
-    "doublons_inter_fusionnes": 8,
-    "total_unifie": 369
+    "doublons_inter_fusionnes": 9,
+    "total_unifie": 365
   },
+  "doublons_exemples": [
+    "ge-50742748 (aussi publié sur : jb-3724199)",
+    "ge-50723310 (aussi publié sur : tc-645973583362529600, tc-645977969677830674)",
+    "ge-50689517 (aussi publié sur : ji-17686197)",
+    "ge-50667748 (aussi publié sur : jb-3716077)",
+    "ge-50621998 (aussi publié sur : jb-3716076)",
+    "ge-50612654 (aussi publié sur : jb-3712337)",
+    "ge-50609307 (aussi publié sur : ji-17549103)",
+    "jb-3701613 (aussi publié sur : ji-17568534)"
+  ],
   "collecte_par_source": {
     "guichet-emplois": {
       "brutes_lues": 188,
@@ -22,8 +32,8 @@
       "rejetees_pre_2026": 0
     },
     "talent-canada": {
-      "brutes_lues": 54,
-      "retenues_ti_cnp": 54,
+      "brutes_lues": 51,
+      "retenues_ti_cnp": 51,
       "rejetees_hors_ti": 0,
       "rejetees_pre_2026": 0
     },
@@ -43,19 +53,19 @@
   "repartition_sources_unifiees": {
     "guichet-emplois": 188,
     "jobboom": 82,
-    "talent-canada": 53,
+    "talent-canada": 49,
     "jobillico": 40,
     "remotive": 6
   },
   "repartition_codes_cnp_2021": {
     "21232 - Développeurs et programmeurs de logiciels": 60,
-    "21222 - Spécialistes en informatique": 49,
-    "22221 - Agents de soutien aux utilisateurs": 48,
+    "21222 - Spécialistes en informatique": 48,
     "22220 - Techniciens de réseaux informatiques": 47,
-    "21231 - Ingénieurs et concepteurs en logiciel": 32,
-    "21220 - Spécialistes en cybersécurité": 28,
-    "21211 - Spécialistes des données": 27,
-    "21221 - Spécialistes des systèmes d'affaires": 25,
+    "22221 - Agents de soutien aux utilisateurs": 47,
+    "21231 - Ingénieurs et concepteurs en logiciel": 31,
+    "21220 - Spécialistes en cybersécurité": 29,
+    "21211 - Spécialistes des données": 26,
+    "21221 - Spécialistes des systèmes d'affaires": 24,
     "21234 - Développeurs et programmeurs Web": 17,
     "20012 - Gestionnaires des systèmes informatiques": 12,
     "22222 - Évaluateurs de systèmes informatiques": 10,
@@ -64,17 +74,17 @@
     "21230 - Développeurs de systèmes informatiques et programmeurs": 2
   },
   "repartition_domaines_ti": {
-    "tech_backend": 145,
-    "tech_support": 108,
-    "data_ia": 42,
-    "devops_cloud": 36,
-    "cybersecurite": 28,
+    "tech_backend": 144,
+    "tech_support": 107,
+    "data_ia": 40,
+    "devops_cloud": 35,
+    "cybersecurite": 29,
     "tech_frontend": 10
   },
   "repartition_regions_administratives_qc": {
-    "Montréal": 149,
-    "Capitale-Nationale": 65,
-    "Montérégie": 63,
+    "Montréal": 147,
+    "Capitale-Nationale": 64,
+    "Montérégie": 62,
     "Hors QC / Télétravail": 22,
     "Estrie": 19,
     "Chaudière-Appalaches": 15,
@@ -90,41 +100,41 @@
     "Côte-Nord": 1
   },
   "repartition_niveaux_seniorite": {
-    "Intermédiaire": 185,
-    "Senior": 138,
+    "Intermédiaire": 182,
+    "Senior": 137,
     "Junior / DEC": 41,
     "Étudiant / Stage": 5
   },
   "repartition_statuts_stage": {
-    "not_indicated": 364,
+    "not_indicated": 360,
     "confirmed_stage": 5
   },
   "repartition_modalites": {
-    "Sur place": 166,
-    "Hybride": 81,
+    "Sur place": 165,
+    "Hybride": 79,
     "Non spécifié": 66,
-    "Télétravail": 50,
+    "Télétravail": 49,
     "À distance": 3,
     "Sur la route": 3
   },
   "top_technologies_ti": {
-    "SQL": 167,
-    "Windows Server": 126,
-    "Réseaux (TCP/IP, VLAN, VPN)": 78,
-    "Git": 77,
-    "IA / Machine Learning": 72,
-    "CI/CD": 69,
-    "Soutien TI / Helpdesk": 68,
-    "Agile / Scrum": 60,
-    "Azure": 59,
-    "Microsoft 365 / SharePoint": 52,
-    "ServiceNow / Jira / ITIL": 52,
-    "Cybersécurité (SIEM / SOC)": 49,
-    "Python": 46,
+    "SQL": 165,
+    "Windows Server": 125,
+    "Réseaux (TCP/IP, VLAN, VPN)": 77,
+    "Git": 76,
+    "IA / Machine Learning": 71,
+    "CI/CD": 68,
+    "Soutien TI / Helpdesk": 67,
+    "Agile / Scrum": 59,
+    "Azure": 58,
+    "Microsoft 365 / SharePoint": 51,
+    "ServiceNow / Jira / ITIL": 50,
+    "Cybersécurité (SIEM / SOC)": 50,
+    "Python": 44,
     "SQL Server / Oracle": 44,
     "JavaScript": 43,
-    "SAP / ERP": 40,
-    "Linux": 37,
+    "SAP / ERP": 39,
+    "Linux": 36,
     "C#": 31,
     "AWS": 31,
     "HTML/CSS": 29,
@@ -139,8 +149,15 @@
     "QA / Tests": 17,
     "C++": 15
   },
-  "score_pertinence_dec_moyen": 61.5,
-  "offres_avec_coordonnees_gps": 54,
+  "score_pertinence_dec_moyen": 61.4,
+  "offres_avec_coordonnees_gps": 50,
   "offres_avec_salaire_chiffre": 205,
-  "offres_avec_description_complete": 369
+  "offres_avec_description_complete": 365,
+  "changements_depuis_precedente": {
+    "total_precedent": 365,
+    "nb_nouvelles": 0,
+    "nb_gardees": 365,
+    "nb_disparues": 0,
+    "disparues": []
+  }
 }

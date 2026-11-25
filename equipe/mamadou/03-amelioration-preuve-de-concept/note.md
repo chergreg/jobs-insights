@@ -12,15 +12,15 @@ Notre collecteur ([`poc_guichet_cnp_v2.py --collecte-complete`](poc_guichet_cnp_
 
 | # | Source | Fichier JSON dédié | Offres TI 2026 retenues | Descriptions complètes | `competences_cles` | Hors-TI / pré-2026 filtrées |
 | :-: | --- | --- | :-: | :-: | :-: | :-: |
-| **1** | **Guichet-Emplois Canada** | [`data/offres_guichet_emplois.json`](data/offres_guichet_emplois.json) | **194** | **194 / 194 (100 %)** | **194 / 194 (100 %)** | 0 |
-| **2** | **Jobboom Québec** | [`data/offres_jobboom.json`](data/offres_jobboom.json) | **91** | **91 / 91 (100 %)** | **91 / 91 (100 %)** | 41 (25 hors-TI + 16 pré-2026) |
-| **3** | **Talent.com Canada** | [`data/offres_talent.json`](data/offres_talent.json) | **49** | **49 / 49 (100 %)** | **49 / 49 (100 %)** | 53 |
-| **4** | **Jobillico Québec** | [`data/offres_jobillico.json`](data/offres_jobillico.json) | **42** | **42 / 42 (100 %)** | **42 / 42 (100 %)** | 14 |
-| **5** | **Remotive** | [`data/offres_remotive.json`](data/offres_remotive.json) | **6** | **6 / 6 (100 %)** | **6 / 6 (100 %)** | 40 |
+| **1** | **Guichet-Emplois Canada** | [`data/offres_guichet_emplois.json`](data/offres_guichet_emplois.json) | **188** | **188 / 188 (100 %)** | **188 / 188 (100 %)** | 0 |
+| **2** | **Jobboom Québec** | [`data/offres_jobboom.json`](data/offres_jobboom.json) | **86** | **86 / 86 (100 %)** | **86 / 86 (100 %)** | 41 (25 hors-TI + 16 pré-2026) |
+| **3** | **Talent.com Canada** | [`data/offres_talent.json`](data/offres_talent.json) | **51** | **51 / 51 (100 %)** | **51 / 51 (100 %)** | 56 |
+| **4** | **Jobillico Québec** | [`data/offres_jobillico.json`](data/offres_jobillico.json) | **43** | **43 / 43 (100 %)** | **43 / 43 (100 %)** | 15 |
+| **5** | **Remotive** | [`data/offres_remotive.json`](data/offres_remotive.json) | **6** | **6 / 6 (100 %)** | **6 / 6 (100 %)** | 36 |
 
-- **Jeu global unifié :** [`data/offres_unifiees.json`](data/offres_unifiees.json) et [`data/offres_unifiees.csv`](data/offres_unifiees.csv) (`utf-8-sig`, séparateur `;`) rassemblent **372 offres TI 2026 réelles uniques** (**100 % collectées par notre système**, **372 / 372 avec description complète et compétences clés**, après fusion sans perte de 18 doublons intra-source et 10 doublons inter-sources).
-- **Format commun de la classe (`JobOffer` — 17 champs) :** [`data/offres_format_commun.json`](data/offres_format_commun.json) exporte les 372 offres dans le schéma pivot de 17 champs adopté par Grégory et la classe.
-- **Portail Web interactif autonome (`--html`) :** [`data/portail_ti_jobtailor.html`](data/portail_ti_jobtailor.html) embarque les 372 offres avec filtres par source, code CNP 2021, sous-domaine TI, région du Québec, technologie, séniorité, comparateur de CV par Score ATS en direct et vérificateur de lettre de motivation.
+- **Jeu global unifié :** [`data/offres_unifiees.json`](data/offres_unifiees.json) et [`data/offres_unifiees.csv`](data/offres_unifiees.csv) (`utf-8-sig`, séparateur `;`) rassemblent **365 offres TI 2026 réelles uniques** (**100 % collectées par notre système**, **365 / 365 avec description complète et compétences clés**, après fusion sans perte de 18 doublons intra-source et 9 doublons inter-sources avec champ `doublons` et suivi `nouvelle` + `data/historique-collectes.csv`).
+- **Format commun de la classe (`JobOffer` — 18 champs) :** [`data/offres_format_commun.json`](data/offres_format_commun.json) exporte les 365 offres dans le schéma pivot de 18 champs adopté par Grégory (`equipe/gregory/livrable3/models.py`), validé automatiquement par `--verifier`.
+- **Portail Web interactif autonome (`--html`) :** [`data/portail_ti_jobtailor.html`](data/portail_ti_jobtailor.html) embarque les 365 offres avec filtres par source, code CNP 2021, sous-domaine TI, région du Québec, technologie, séniorité, comparateur de CV par Score ATS en direct et vérificateur de lettre de motivation.
 - **Rapport statistique :** [`data/rapport_collecte.json`](data/rapport_collecte.json) détaille la répartition par code CNP, sous-domaine TI, région administrative du Québec, niveau de séniorité et top 30 des technologies.
 
 ---
@@ -42,7 +42,7 @@ Notre collecteur ([`poc_guichet_cnp_v2.py --collecte-complete`](poc_guichet_cnp_
 ```powershell
 pip install -r .\equipe\mamadou\03-amelioration-preuve-de-concept\requirements.txt
 
-# 1. Exécuter les 21 tests unitaires 100 % hors ligne (0,20 s)
+# 1. Exécuter les 25 tests unitaires 100 % hors ligne (0,29 s)
 python -m unittest discover -s .\equipe\mamadou\03-amelioration-preuve-de-concept -p "test_*.py" -v
 
 # 2. Exécuter la collecte autonome complète par notre système sur les 5 plateformes (avec cache disque 24 h)
@@ -63,11 +63,11 @@ python .\equipe\mamadou\03-amelioration-preuve-de-concept\poc_guichet_cnp_v2.py 
 | Indicateur | Livrable 2 (v1) | Livrable 3 (Lot 2-3) | Livrable 3 Final (Lot 4 + Pistes 3 & 4) |
 | --- | :-: | :-: | :-: |
 | **Sources actives collectées par le script** | 4 (schémas séparés) | 5 | **5 sources (1 JSON dédié/source + unifié + format commun)** |
-| **Offres TI 2026 uniques collectées** | 10 | 22 | **372 offres TI 2026 uniques (`data/offres_unifiees.json`)** |
-| **Offres avec description complète** | Partielle | 22 / 22 | **372 / 372 (100 %)** |
-| **Offres avec `competences_cles`** | 0 | 18 / 22 | **372 / 372 (100 % — 48 technos + repli CNP)** |
+| **Offres TI 2026 uniques collectées** | 10 | 22 | **365 offres TI 2026 uniques (`data/offres_unifiees.json`)** |
+| **Offres avec description complète** | Partielle | 22 / 22 | **365 / 365 (100 %)** |
+| **Offres avec `competences_cles`** | 0 | 18 / 22 | **365 / 365 (100 % — 48 technos + repli CNP)** |
 | **Offres hors TI ou pré-2026 filtrées** | 0 | 0 | **148 offres rejetées (132 hors-TI + 16 pré-2026, 0 faux positif)** |
-| **Classification 14 codes CNP 2021** | 0 | 1 source | **5 / 5 sources (100 % des 372 offres)** |
-| **Champs par offre (`JobBankOffer`)** | 10 | 21 | **36 champs + export `JobOffer` (17 champs communs)** |
-| **Interfaces & Assistant Candidature** | Aucun | CLI collecte | **`--filtrer`, `--html` (`portail_ti_jobtailor.html`), `--cv`, `--lettre`** |
-| **Tests unitaires hors ligne** | 0 | 10 (`0,04 s`) | **21 tests (`OK` en `0,20 s`)** |
+| **Classification 14 codes CNP 2021** | 0 | 1 source | **5 / 5 sources (100 % des 365 offres)** |
+| **Champs par offre (`JobBankOffer`)** | 10 | 21 | **38 champs (`doublons`, `nouvelle`) + export `JobOffer` (18 champs communs validés)** |
+| **Interfaces & Assistant Candidature** | Aucun | CLI collecte | **`--filtrer`, `--nouveautes`, `--nettoyer-cache`, `--html`, `--cv`, `--lettre`, `--verifier`** |
+| **Tests unitaires hors ligne** | 0 | 10 (`0,04 s`) | **25 tests (`OK` en `0,29 s`)** |

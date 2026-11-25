@@ -14,10 +14,12 @@ from assistant_et_interface import (
     convert_to_common_format_dict,
     export_common_format_json,
     filter_offers,
+    format_filtered_offers_summary,
     generate_interactive_html_portal,
     is_recent_and_valid_offer,
     match_cv_against_offers,
     read_cv_document,
+    validate_common_format_records,
 )
 from poc_guichet_cnp_v2 import (
     CNP_2021_TI_DICT,
@@ -28,6 +30,7 @@ from poc_guichet_cnp_v2 import (
     build_collection_report,
     build_jobboom_listing_url,
     classify_cnp_2021,
+    clean_cache,
     collect_guichet_paginated_offers,
     collect_jobboom_paginated_urls,
     compute_content_hash,
@@ -41,6 +44,7 @@ from poc_guichet_cnp_v2 import (
     extract_experience_and_seniority,
     extract_key_missions,
     extract_tech_skills,
+    format_changes_report,
     get_cached_or_fetch,
     normalize_job_url,
     parse_iso_date,
@@ -51,6 +55,7 @@ from poc_guichet_cnp_v2 import (
     parse_salary_details,
     parse_search_results_html,
     parse_talent_job_detail_html,
+    purge_generated_outputs,
     resolve_quebec_location,
     split_recent_offers,
     unify_and_deduplicate_offers,
@@ -726,6 +731,280 @@ class TestPocGuichetCnpV2(unittest.TestCase):
             html_text = html_path.read_text(encoding="utf-8")
             self.assertNotIn("</script><script>alert(1)", html_text)
             self.assertIn("<\\/script>", html_text)
+
+    def test_nouveautes_disparues_historique_et_purge_garder_historique(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            d_dir = Path(tmp_dir) / "data"
+            c_dir = Path(tmp_dir) / "cache"
+            d_dir.mkdir(parents=True, exist_ok=True)
+            c_dir.mkdir(parents=True, exist_ok=True)
+
+            # Collecte 1 : offres ge-100 et jb-200
+            (d_dir / "offres_guichet_emplois.json").write_text(
+                json.dumps(
+                    [
+                        {
+                            "id": "ge-100",
+                            "source_id": "100",
+                            "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/100",
+                            "titre": "Développeur Python",
+                            "entreprise": "Alpha TI",
+                            "lieu": "Québec (QC)",
+                            "date_publication": "2026-11-10",
+                            "description": "Développement Python et SQL.",
+                        }
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            (d_dir / "offres_jobboom.json").write_text(
+                json.dumps(
+                    [
+                        {
+                            "id": "jb-200",
+                            "source_id": "200",
+                            "url": "https://www.jobboom.com/fr/offre-emploi/dev_p200",
+                            "titre": "Analyste programmeur Java",
+                            "entreprise": "Beta TI",
+                            "lieu": "Montréal (QC)",
+                            "date_publication": "2026-11-11",
+                            "description": "Développement Java et Spring.",
+                        }
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            consolidate_data_directory(d_dir)
+
+            # Collecte 2 : jb-200 disparaît, ge-100 reste, ge-300 apparaît
+            (d_dir / "offres_jobboom.json").write_text("[]", encoding="utf-8")
+            (d_dir / "offres_guichet_emplois.json").write_text(
+                json.dumps(
+                    [
+                        {
+                            "id": "ge-100",
+                            "source_id": "100",
+                            "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/100",
+                            "titre": "Développeur Python",
+                            "entreprise": "Alpha TI",
+                            "lieu": "Québec (QC)",
+                            "date_publication": "2026-11-10",
+                            "description": "Développement Python et SQL.",
+                        },
+                        {
+                            "id": "ge-300",
+                            "source_id": "300",
+                            "url": "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/300",
+                            "titre": "Administrateur système Linux",
+                            "entreprise": "Gamma TI",
+                            "lieu": "Lévis (QC)",
+                            "date_publication": "2026-11-20",
+                            "description": "Administration Linux et Docker.",
+                        },
+                    ],
+                    ensure_ascii=False,
+                ),
+                encoding="utf-8",
+            )
+            rep2 = consolidate_data_directory(d_dir)
+
+            unified = json.loads((d_dir / "offres_unifiees.json").read_text(encoding="utf-8"))
+            by_id = {o["id"]: o for o in unified}
+            self.assertFalse(by_id["ge-100"]["nouvelle"])
+            self.assertTrue(by_id["ge-300"]["nouvelle"])
+            self.assertEqual(rep2["changements_depuis_precedente"]["nb_nouvelles"], 1)
+            self.assertEqual(rep2["changements_depuis_precedente"]["nb_disparues"], 1)
+            self.assertEqual(rep2["changements_depuis_precedente"]["disparues"][0]["titre"], "Analyste programmeur Java")
+
+            hist_path = d_dir / "historique-collectes.csv"
+            self.assertTrue(hist_path.is_file())
+            self.assertTrue(hist_path.read_bytes().startswith(b"\xef\xbb\xbf"))
+            with hist_path.open(encoding="utf-8-sig", newline="") as f:
+                hist_rows = list(csv.DictReader(f, delimiter=";"))
+            self.assertEqual(len(hist_rows), 2)
+            self.assertEqual(hist_rows[1]["nouvelles"], "1")
+            self.assertEqual(hist_rows[1]["disparues"], "1")
+
+            changes_txt = format_changes_report(d_dir)
+            self.assertIn("ge-300", changes_txt)
+            self.assertIn("Analyste programmeur Java", changes_txt)
+
+            # --purger --garder-historique conserve historique-collectes.csv
+            purge_generated_outputs(d_dir, c_dir, purge_cache=True, keep_history=True)
+            self.assertTrue(hist_path.is_file())
+            self.assertFalse((d_dir / "offres_unifiees.json").is_file())
+
+            # --purger sans --garder-historique supprime tout
+            purge_generated_outputs(d_dir, c_dir, purge_cache=True, keep_history=False)
+            self.assertFalse(hist_path.is_file())
+
+    def test_regle_fusion_offre_la_plus_complete_doublons_et_meme_site_distincts(self) -> None:
+        # 1. Même poste sur deux sites différents : la 2e offre est plus complète -> elle devient principale
+        courte_ge = enrich_offer_metadata(
+            JobBankOffer(
+                id="ge-111",
+                source_id="111",
+                url="https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/111",
+                titre="Développeur React",
+                entreprise="Studio Web Inc.",
+                lieu="Québec (QC)",
+                source="guichet-emplois",
+                source_partenaire="Talent.com",
+                description="Courte annonce.",
+            )
+        )
+        riche_tc = enrich_offer_metadata(
+            JobBankOffer(
+                id="tc-222",
+                source_id="222",
+                url="https://ca.talent.com/fr/view?id=222",
+                titre="Développeur React",
+                entreprise="Studio Web",
+                lieu="Québec City (QC)",
+                source="talent-canada",
+                salaire="40 $ / heure",
+                modalite="Hybride",
+                niveau_etudes="DEC en informatique",
+                latitude=46.81,
+                longitude=-71.21,
+                competences_cles=["React", "TypeScript", "Docker"],
+                description="Description détaillée du poste Développeur React avec TypeScript et Docker.",
+            )
+        )
+        # 2. Deux annonces du MÊME site (jobboom) avec des numéros différents -> on garde les deux
+        jb_1 = enrich_offer_metadata(
+            JobBankOffer(
+                id="jb-301",
+                source_id="301",
+                url="https://www.jobboom.com/fr/offre-emploi/dev_p301",
+                titre="Technicien informatique",
+                entreprise="Collège ABC",
+                lieu="Montréal (QC)",
+                source="jobboom",
+                description="Poste 1 support technique.",
+            )
+        )
+        jb_2 = enrich_offer_metadata(
+            JobBankOffer(
+                id="jb-302",
+                source_id="302",
+                url="https://www.jobboom.com/fr/offre-emploi/dev_p302",
+                titre="Technicien informatique",
+                entreprise="Collège ABC",
+                lieu="Montréal (QC)",
+                source="jobboom",
+                description="Poste 2 support technique.",
+            )
+        )
+
+        unified, stats = unify_and_deduplicate_offers([courte_ge, riche_tc, jb_1, jb_2])
+        self.assertEqual(stats["doublons_inter_fusionnes"], 1)
+        self.assertEqual(len(unified), 3)
+
+        merged_react = next(o for o in unified if o.id == "tc-222")
+        self.assertEqual(merged_react.doublons, ["ge-111"])
+        self.assertEqual(merged_react.url_partenaire, "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/111")
+        self.assertIn("Aussi publié sur : guichet-emplois, ge-111", format_filtered_offers_summary([merged_react]))
+
+        jb_ids = {o.id for o in unified if o.source == "jobboom"}
+        self.assertEqual(jb_ids, {"jb-301", "jb-302"})
+
+    def test_compatibilite_format_commun_avec_modele_joboffer_gregory(self) -> None:
+        offre = enrich_offer_metadata(
+            JobBankOffer(
+                id="ge-888",
+                source_id="888",
+                url="https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/888",
+                titre="Stagiaire développeur Python",
+                entreprise="Tech Québec",
+                lieu="Québec (QC)",
+                source="guichet-emplois",
+                source_partenaire="",
+                date_publication="2026-11-18T12:00:00Z",
+                type_poste="",
+                modalite="",
+                salaire="",
+                description="Stage Python et SQL.",
+                competences_cles=["Python", "SQL"],
+            )
+        )
+        common = convert_to_common_format_dict(offre)
+        self.assertEqual(len(common), 18)
+        self.assertIsNone(common["source_partenaire"])
+        self.assertEqual(common["type_poste"], "Stage")
+        self.assertIsNone(common["modalite"])
+        self.assertIsNone(common["salaire"])
+        self.assertEqual(common["date_publication"], "2026-11-18")
+        self.assertTrue(common["est_stage"])
+        self.assertEqual(common["statut_stage"], "confirmed_stage")
+
+        offre_sans_type = JobBankOffer(
+            id="jb-889",
+            source_id="889",
+            url="https://www.jobboom.com/fr/offre-emploi/dev_p889",
+            titre="Développeur Python",
+            entreprise="Tech Québec",
+            lieu="Québec (QC)",
+            source="jobboom",
+            type_poste="",
+            description="Poste Python.",
+        )
+        common_sans_type = convert_to_common_format_dict(offre_sans_type)
+        self.assertIsNone(common_sans_type["type_poste"])
+
+        ok, msg = validate_common_format_records([common, common_sans_type])
+        self.assertTrue(ok, msg)
+
+    def test_nettoyer_cache_supprime_disparues_et_expirees(self) -> None:
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            d_dir = Path(tmp_dir) / "data"
+            c_dir = Path(tmp_dir) / "cache"
+            d_dir.mkdir(parents=True, exist_ok=True)
+            c_dir.mkdir(parents=True, exist_ok=True)
+            now = 1_700_000_000.0
+
+            active_url = "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/100"
+            gone_url = "https://www.guichetemplois.gc.ca/rechercheemplois/offredemploi/200"
+            expired_url = "https://www.jobboom.com/fr/offre-emploi/dev_p300"
+            search_url = "https://www.guichetemplois.gc.ca/jobsearch/rechercheemplois?fn21=21232&page=1"
+
+            (d_dir / "offres_unifiees.json").write_text(
+                json.dumps([{"id": "ge-100", "source": "guichet-emplois", "source_id": "100", "url": active_url}]),
+                encoding="utf-8",
+            )
+            (d_dir / "rapport_collecte.json").write_text(
+                json.dumps({"changements_depuis_precedente": {"disparues": [{"url": gone_url}]}}),
+                encoding="utf-8",
+            )
+
+            _cache_file_for_url(active_url, c_dir).write_text(
+                json.dumps({"url": active_url, "fetched_at": now - 60, "content": "ok"}),
+                encoding="utf-8",
+            )
+            _cache_file_for_url(gone_url, c_dir).write_text(
+                json.dumps({"url": gone_url, "fetched_at": now - 60, "content": "gone"}),
+                encoding="utf-8",
+            )
+            _cache_file_for_url(expired_url, c_dir).write_text(
+                json.dumps({"url": expired_url, "fetched_at": now - 90000, "content": "old"}),
+                encoding="utf-8",
+            )
+            _cache_file_for_url(search_url, c_dir).write_text(
+                json.dumps({"url": search_url, "fetched_at": now - 60, "content": "search"}),
+                encoding="utf-8",
+            )
+
+            stats = clean_cache(cache_dir=c_dir, data_dir=d_dir, ttl_seconds=86400, now=now)
+            self.assertEqual(stats["pages_supprimees"], 2)
+            self.assertEqual(stats["disparues"], 1)
+            self.assertEqual(stats["expirees"], 1)
+            self.assertGreater(stats["octets_liberes"], 0)
+            self.assertTrue(_cache_file_for_url(active_url, c_dir).exists())
+            self.assertTrue(_cache_file_for_url(search_url, c_dir).exists())
+            self.assertFalse(_cache_file_for_url(gone_url, c_dir).exists())
+            self.assertFalse(_cache_file_for_url(expired_url, c_dir).exists())
 
 
 if __name__ == "__main__":

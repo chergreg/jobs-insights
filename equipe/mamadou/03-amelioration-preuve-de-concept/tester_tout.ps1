@@ -21,11 +21,11 @@ Verifie $LASTEXITCODE "tests unitaires"
 
 if ($Complet) {
     Etape "2/5 PURGE + collecte live sur les 5 sources (sans cache)"
-    & $py -u poc_guichet_cnp_v2.py --purger --collecte-complete --sans-cache --html --format-commun
+    & $py -u poc_guichet_cnp_v2.py --purger --collecte-complete --sans-cache --html --format-commun --nouveautes
     Verifie $LASTEXITCODE "purge + collecte live"
 } else {
-    Etape "2/5 Consolidation hors ligne des 5 fichiers data/ (aucune purge)"
-    & $py -u poc_guichet_cnp_v2.py --consolider-data --html --format-commun
+    Etape "2/5 Consolidation hors ligne + nouveautes + nettoyage cache (aucune purge)"
+    & $py -u poc_guichet_cnp_v2.py --consolider-data --html --format-commun --nouveautes --nettoyer-cache
     Verifie $LASTEXITCODE "consolidation"
 }
 

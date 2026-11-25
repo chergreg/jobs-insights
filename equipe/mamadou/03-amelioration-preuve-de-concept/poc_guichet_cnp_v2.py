@@ -408,6 +408,8 @@ class JobBankOffer:
     http_status: int = 200
     content_hash: Optional[str] = None
     description: Optional[str] = None
+    doublons: list[str] = field(default_factory=list)
+    nouvelle: bool = False
     date_extraction: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     # Alias de compatibilité avec les tests unitaires existants
@@ -2357,74 +2359,98 @@ def is_cross_source_duplicate(a: JobBankOffer, b: JobBankOffer) -> bool:
     return city_a == city_b or city_a in city_b or city_b in city_a or "teletravail" in (city_a, city_b)
 
 
+def _count_filled_fields(offer: JobBankOffer) -> int:
+    """Compte les champs métier renseignés pour choisir l'offre la plus complète lors d'une fusion."""
+    ignored = {"doublons", "nouvelle", "date_extraction", "http_status", "score_pertinence_dec", "content_hash"}
+    count = 0
+    for f_name in JobBankOffer.__dataclass_fields__:
+        if f_name in ignored:
+            continue
+        val = getattr(offer, f_name)
+        if val not in (None, "", [], "Non spécifié"):
+            count += 1
+    return count
+
+
 def merge_two_offers(base: JobBankOffer, other: JobBankOffer) -> JobBankOffer:
     """
-    Fusionne deux offres redondantes en préservant la richesse maximale sans aucune perte :
+    Fusionne deux offres redondantes en gardant l'offre la plus complète (à égalité, `base` gagne)
+    et en ne comblant que les champs vides :
     - Description la plus détaillée
     - Union sans doublon de `competences_cles` et `missions_cles`
-    - Conservation des coordonnées GPS (`latitude`, `longitude`), du salaire, du code postal et de `url_partenaire`
+    - Conservation des coordonnées GPS (`latitude`, `longitude`), du salaire, du code postal,
+      de `url_partenaire` et de la liste des identifiants fusionnés dans `doublons`
     - Priorité au statut de stage le plus élevé (`confirmed_stage` > `possible_stage` > `not_indicated`).
     """
-    desc_base = base.description or ""
-    desc_other = other.description or ""
-    best_desc = desc_base if len(desc_base) >= len(desc_other) else desc_other
+    primary, secondary = (base, other) if _count_filled_fields(base) >= _count_filled_fields(other) else (other, base)
 
-    merged_skills = sorted(list({*(base.competences_cles or []), *(other.competences_cles or [])}))
+    desc_primary = primary.description or ""
+    desc_secondary = secondary.description or ""
+    best_desc = desc_primary if len(desc_primary) >= len(desc_secondary) else desc_secondary
+
+    merged_skills = sorted(list({*(primary.competences_cles or []), *(secondary.competences_cles or [])}))
 
     missions_seen: set[str] = set()
     merged_missions: list[str] = []
-    for m in (base.missions_cles or []) + (other.missions_cles or []):
+    for m in (primary.missions_cles or []) + (secondary.missions_cles or []):
         k = _normalize_for_match(m)
         if k and k not in missions_seen:
             missions_seen.add(k)
             merged_missions.append(m)
 
-    st_base = STAGE_PRIORITY.get(base.statut_stage, 0)
-    st_other = STAGE_PRIORITY.get(other.statut_stage, 0)
-    best_stage_status = other.statut_stage if st_other > st_base else base.statut_stage
-    best_est_stage = (best_stage_status != "not_indicated") or base.est_stage or other.est_stage
+    st_primary = STAGE_PRIORITY.get(primary.statut_stage, 0)
+    st_secondary = STAGE_PRIORITY.get(secondary.statut_stage, 0)
+    best_stage_status = secondary.statut_stage if st_secondary > st_primary else primary.statut_stage
+    best_est_stage = (best_stage_status != "not_indicated") or primary.est_stage or secondary.est_stage
+
+    merged_doublons: list[str] = []
+    for ident in [*(primary.doublons or []), secondary.id, *(secondary.doublons or [])]:
+        if ident and ident != primary.id and ident not in merged_doublons:
+            merged_doublons.append(ident)
 
     merged = JobBankOffer(
-        id=base.id,
-        source_id=base.source_id,
-        url=base.url,
-        titre=base.titre or other.titre,
-        titre_employeur=base.titre_employeur or other.titre_employeur,
-        code_cnp=base.code_cnp or other.code_cnp,
-        cnp_title=base.cnp_title or other.cnp_title,
-        domaine_ti=base.domaine_ti or other.domaine_ti,
-        entreprise=base.entreprise if base.entreprise not in (None, "", "Non spécifié") else other.entreprise,
-        lieu=base.lieu if base.lieu not in (None, "", "Non spécifié") else other.lieu,
-        ville=base.ville or other.ville,
-        region_administrative=base.region_administrative or other.region_administrative,
-        code_postal=base.code_postal or other.code_postal,
-        province=base.province or other.province or "QC",
-        pays=base.pays or other.pays or "Canada",
-        source=base.source,
-        source_partenaire=base.source_partenaire or (other.source if other.source != base.source else other.source_partenaire),
-        url_partenaire=base.url_partenaire or (other.url if other.source != base.source else other.url_partenaire),
-        date_publication=min(base.date_publication, other.date_publication)
-        if (base.date_publication and other.date_publication)
-        else (base.date_publication or other.date_publication),
-        date_fin=base.date_fin or other.date_fin,
-        type_poste="Stage" if best_est_stage and base.type_poste != "Stage" else (base.type_poste or other.type_poste),
-        modalite=base.modalite or other.modalite,
-        niveau_etudes=base.niveau_etudes or other.niveau_etudes,
-        experience_requise=base.experience_requise or other.experience_requise,
-        niveau_seniorite=base.niveau_seniorite or other.niveau_seniorite,
-        salaire=base.salaire or other.salaire,
-        salaire_min=base.salaire_min if base.salaire_min is not None else other.salaire_min,
-        salaire_max=base.salaire_max if base.salaire_max is not None else other.salaire_max,
-        unite_salaire=base.unite_salaire or other.unite_salaire,
+        id=primary.id,
+        source_id=primary.source_id,
+        url=primary.url,
+        titre=primary.titre or secondary.titre,
+        titre_employeur=primary.titre_employeur or secondary.titre_employeur,
+        code_cnp=primary.code_cnp or secondary.code_cnp,
+        cnp_title=primary.cnp_title or secondary.cnp_title,
+        domaine_ti=primary.domaine_ti or secondary.domaine_ti,
+        entreprise=primary.entreprise if primary.entreprise not in (None, "", "Non spécifié") else secondary.entreprise,
+        lieu=primary.lieu if primary.lieu not in (None, "", "Non spécifié") else secondary.lieu,
+        ville=primary.ville or secondary.ville,
+        region_administrative=primary.region_administrative or secondary.region_administrative,
+        code_postal=primary.code_postal or secondary.code_postal,
+        province=primary.province or secondary.province or "QC",
+        pays=primary.pays or secondary.pays or "Canada",
+        source=primary.source,
+        source_partenaire=primary.source_partenaire or (secondary.source if secondary.source != primary.source else secondary.source_partenaire),
+        url_partenaire=primary.url_partenaire or (secondary.url if secondary.source != primary.source else secondary.url_partenaire),
+        date_publication=min(primary.date_publication, secondary.date_publication)
+        if (primary.date_publication and secondary.date_publication)
+        else (primary.date_publication or secondary.date_publication),
+        date_fin=primary.date_fin or secondary.date_fin,
+        type_poste="Stage" if best_est_stage and primary.type_poste != "Stage" else (primary.type_poste or secondary.type_poste),
+        modalite=primary.modalite or secondary.modalite,
+        niveau_etudes=primary.niveau_etudes or secondary.niveau_etudes,
+        experience_requise=primary.experience_requise or secondary.experience_requise,
+        niveau_seniorite=primary.niveau_seniorite or secondary.niveau_seniorite,
+        salaire=primary.salaire or secondary.salaire,
+        salaire_min=primary.salaire_min if primary.salaire_min is not None else secondary.salaire_min,
+        salaire_max=primary.salaire_max if primary.salaire_max is not None else secondary.salaire_max,
+        unite_salaire=primary.unite_salaire or secondary.unite_salaire,
         est_stage=best_est_stage,
         statut_stage=best_stage_status,
         competences_cles=merged_skills,
         missions_cles=merged_missions[:6],
-        latitude=base.latitude if base.latitude is not None else other.latitude,
-        longitude=base.longitude if base.longitude is not None else other.longitude,
-        http_status=base.http_status or 200,
+        latitude=primary.latitude if primary.latitude is not None else secondary.latitude,
+        longitude=primary.longitude if primary.longitude is not None else secondary.longitude,
+        http_status=primary.http_status or 200,
         description=best_desc or None,
-        date_extraction=base.date_extraction,
+        doublons=merged_doublons,
+        nouvelle=primary.nouvelle or secondary.nouvelle,
+        date_extraction=primary.date_extraction,
     )
     return enrich_offer_metadata(merged)
 
@@ -2512,6 +2538,8 @@ def export_offers_to_csv(
         "missions_cles",
         "url",
         "url_partenaire",
+        "doublons",
+        "nouvelle",
         "http_status",
         "content_hash",
         "date_extraction",
@@ -2559,6 +2587,8 @@ def export_offers_to_csv(
                 "missions_cles": " | ".join(off.missions_cles or []),
                 "url": off.url,
                 "url_partenaire": off.url_partenaire or "",
+                "doublons": ", ".join(off.doublons or []),
+                "nouvelle": "True" if off.nouvelle else "False",
                 "http_status": off.http_status,
                 "content_hash": off.content_hash or "",
                 "date_extraction": off.date_extraction,
@@ -2600,11 +2630,18 @@ def build_collection_report(
     scores = [o.score_pertinence_dec for o in unified_offers]
     avg_dec_score = round(sum(scores) / len(scores), 1) if scores else 0.0
 
-    return {
+    merged_examples = [
+        f"{o.id} (aussi publié sur : {', '.join(o.doublons)})"
+        for o in unified_offers
+        if o.doublons
+    ][:10]
+
+    report: dict[str, Any] = {
         "date_generation": datetime.now(timezone.utc).isoformat(),
         "auteur": "Mamadou (Livrable 3 - Lot 4 final)",
         "total_offres_unifiees_ti": len(unified_offers),
         "deduplication": dedup_stats,
+        "doublons_exemples": merged_examples,
         "collecte_par_source": per_source_counts,
         "repartition_sources_unifiees": dict(by_source.most_common()),
         "repartition_codes_cnp_2021": dict(by_cnp.most_common()),
@@ -2619,6 +2656,195 @@ def build_collection_report(
         "offres_avec_salaire_chiffre": sum(1 for o in unified_offers if o.salaire_min is not None),
         "offres_avec_description_complete": sum(1 for o in unified_offers if o.description),
     }
+    return report
+
+
+# ==============================================================================
+# Suivi des nouveautés, offres disparues et historique des collectes
+# ==============================================================================
+HISTORY_COLUMNS: list[str] = [
+    "date",
+    "total",
+    "nouvelles",
+    "disparues",
+    "guichet-emplois",
+    "jobboom",
+    "talent-canada",
+    "jobillico",
+    "remotive",
+]
+
+
+def load_previous_unified_offers(data_dir: Path = DATA_DIR) -> Optional[list[dict[str, Any]]]:
+    """Charge `data/offres_unifiees.json` avant son remplacement, ou `None` s'il n'existe pas."""
+    unified_path = data_dir / "offres_unifiees.json"
+    if not unified_path.is_file():
+        return None
+    try:
+        data = json.loads(unified_path.read_text(encoding="utf-8"))
+        return data if isinstance(data, list) else None
+    except (OSError, ValueError, json.JSONDecodeError):
+        return None
+
+
+def compare_with_previous_offers(
+    previous: Optional[list[dict[str, Any]]],
+    current: list[JobBankOffer],
+) -> Optional[dict[str, Any]]:
+    """
+    Compare la nouvelle collecte à l'ancienne par clé `(source, source_id)`.
+    Marque `offer.nouvelle = True/False` et retourne le bilan des nouvelles et disparues.
+    """
+    if previous is None:
+        for off in current:
+            off.nouvelle = False
+        return None
+
+    prev_keys: set[tuple[str, str]] = {
+        (str(item.get("source", "")), str(item.get("source_id", "")))
+        for item in previous
+        if isinstance(item, dict)
+    }
+    current_keys: set[tuple[str, str]] = set()
+    new_count = 0
+    for off in current:
+        key = (str(off.source), str(off.source_id))
+        current_keys.add(key)
+        off.nouvelle = key not in prev_keys
+        if off.nouvelle:
+            new_count += 1
+
+    disparues: list[dict[str, str]] = []
+    for prev in previous:
+        if not isinstance(prev, dict):
+            continue
+        pkey = (str(prev.get("source", "")), str(prev.get("source_id", "")))
+        if pkey not in current_keys:
+            disparues.append(
+                {
+                    "id": str(prev.get("id") or ""),
+                    "source": str(prev.get("source") or ""),
+                    "source_id": str(prev.get("source_id") or ""),
+                    "titre": str(prev.get("titre_employeur") or prev.get("titre") or "Sans titre"),
+                    "entreprise": str(prev.get("entreprise") or "Non spécifié"),
+                    "url": str(prev.get("url") or ""),
+                }
+            )
+
+    return {
+        "total_precedent": len(previous),
+        "nb_nouvelles": new_count,
+        "nb_gardees": len(current) - new_count,
+        "nb_disparues": len(disparues),
+        "disparues": disparues,
+    }
+
+
+def append_collection_history(
+    history_path: Path,
+    total: int,
+    changes: Optional[dict[str, Any]],
+    by_source: dict[str, int],
+    when: Optional[datetime] = None,
+) -> Path:
+    """Ajoute une ligne par collecte dans `data/historique-collectes.csv` (utf-8-sig, séparateur `;`)."""
+    when = when or datetime.now()
+    history_path.parent.mkdir(parents=True, exist_ok=True)
+    new_file = not history_path.exists() or history_path.stat().st_size == 0
+    with history_path.open("a", encoding="utf-8-sig" if new_file else "utf-8", newline="") as f:
+        writer = csv.writer(f, delimiter=";")
+        if new_file:
+            writer.writerow(HISTORY_COLUMNS)
+        writer.writerow(
+            [
+                when.strftime("%Y-%m-%d %H:%M"),
+                total,
+                "" if changes is None else changes["nb_nouvelles"],
+                "" if changes is None else changes["nb_disparues"],
+                by_source.get("guichet-emplois", 0),
+                by_source.get("jobboom", 0),
+                by_source.get("talent-canada", 0),
+                by_source.get("jobillico", 0),
+                by_source.get("remotive", 0),
+            ]
+        )
+    return history_path
+
+
+def save_unified_outputs(
+    data_dir: Path,
+    unified: list[JobBankOffer],
+    per_source_counts: dict[str, dict[str, int]],
+    dedup_stats: dict[str, int],
+) -> dict[str, Any]:
+    """
+    Compare avec l'ancien `offres_unifiees.json`, écrit `offres_unifiees.json`, `.csv`,
+    `rapport_collecte.json` et ajoute une ligne dans `historique-collectes.csv`.
+    """
+    data_dir.mkdir(parents=True, exist_ok=True)
+    previous = load_previous_unified_offers(data_dir)
+    changes = compare_with_previous_offers(previous, unified)
+
+    (data_dir / "offres_unifiees.json").write_text(
+        json.dumps([asdict(o) for o in unified], indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    export_offers_to_csv(unified, data_dir / "offres_unifiees.csv")
+    report = build_collection_report(per_source_counts, dedup_stats, unified)
+    if changes is not None:
+        report["changements_depuis_precedente"] = changes
+    (data_dir / "rapport_collecte.json").write_text(
+        json.dumps(report, indent=2, ensure_ascii=False) + "\n",
+        encoding="utf-8",
+    )
+    by_source = Counter(o.source for o in unified)
+    append_collection_history(data_dir / "historique-collectes.csv", len(unified), changes, dict(by_source))
+    return report
+
+
+def format_changes_report(data_dir: Path = DATA_DIR, limit: int = 30) -> str:
+    """Formate le rapport terminal des offres nouvelles et disparues depuis la collecte précédente."""
+    unified_path = data_dir / "offres_unifiees.json"
+    if not unified_path.is_file():
+        return "Aucune collecte trouvée (data/offres_unifiees.json absent)."
+
+    unified = json.loads(unified_path.read_text(encoding="utf-8"))
+    nouvelles = [o for o in unified if o.get("nouvelle")]
+
+    disparues: list[dict[str, Any]] = []
+    report_path = data_dir / "rapport_collecte.json"
+    if report_path.is_file():
+        rep = json.loads(report_path.read_text(encoding="utf-8"))
+        changements = rep.get("changements_depuis_precedente") or {}
+        disparues = list(changements.get("disparues") or [])
+
+    lines = [
+        "\n================================================================================",
+        " NOUVEAUTÉS ET OFFRES DISPARUES DEPUIS LA COLLECTE PRÉCÉDENTE",
+        "================================================================================",
+        f" • Offres nouvelles  : {len(nouvelles)}",
+        f" • Offres disparues  : {len(disparues)}",
+    ]
+
+    if nouvelles:
+        lines.append("\n --- OFFRES NOUVELLES ---")
+        for idx, o in enumerate(nouvelles[:limit], start=1):
+            titre = o.get("titre_employeur") or o.get("titre") or "Sans titre"
+            emp = o.get("entreprise") or "Non spécifié"
+            lines.append(f"  {idx:2d}. [{o.get('id')}] {titre} — {emp} ({o.get('url')})")
+        if len(nouvelles) > limit:
+            lines.append(f"  ... et {len(nouvelles) - limit} autre(s) offre(s) nouvelle(s).")
+
+    if disparues:
+        lines.append("\n --- OFFRES DISPARUES ---")
+        for idx, d in enumerate(disparues[:limit], start=1):
+            lines.append(f"  {idx:2d}. {d.get('titre', 'Sans titre')} — {d.get('entreprise', 'Non spécifié')} ({d.get('url', '')})")
+        if len(disparues) > limit:
+            lines.append(f"  ... et {len(disparues) - limit} autre(s) offre(s) disparue(s).")
+
+    if not nouvelles and not disparues:
+        lines.append("\n Aucun changement détecté par rapport à la collecte précédente.")
+    return "\n".join(lines)
 
 
 # ==============================================================================
@@ -2871,18 +3097,7 @@ def consolidate_data_directory(data_dir: Path = DATA_DIR) -> dict[str, Any]:
         }
 
     unified, dedup_stats = unify_and_deduplicate_offers(all_offers)
-    data_dir.mkdir(parents=True, exist_ok=True)
-    (data_dir / "offres_unifiees.json").write_text(
-        json.dumps([asdict(o) for o in unified], indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    export_offers_to_csv(unified, data_dir / "offres_unifiees.csv")
-    report = build_collection_report(per_source_counts, dedup_stats, unified)
-    (data_dir / "rapport_collecte.json").write_text(
-        json.dumps(report, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    return report
+    return save_unified_outputs(data_dir, unified, per_source_counts, dedup_stats)
 
 
 def run_autonomous_full_collection(
@@ -3176,17 +3391,7 @@ def run_autonomous_full_collection(
         "total_unifie": len(unified),
     }
 
-    (data_dir / "offres_unifiees.json").write_text(
-        json.dumps([asdict(o) for o in unified], indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    export_offers_to_csv(unified, data_dir / "offres_unifiees.csv")
-    report = build_collection_report(per_source_counts, dedup_stats, unified)
-    (data_dir / "rapport_collecte.json").write_text(
-        json.dumps(report, indent=2, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-    return report
+    return save_unified_outputs(data_dir, unified, per_source_counts, dedup_stats)
 
 
 def from_cache_check(url: str, cache_dir: Path = CACHE_DIR, ttl_seconds: int = DEFAULT_CACHE_TTL_SECONDS) -> bool:
@@ -3201,10 +3406,125 @@ def from_cache_check(url: str, cache_dir: Path = CACHE_DIR, ttl_seconds: int = D
         return False
 
 
-def purge_generated_outputs(data_dir: Path = DATA_DIR, cache_dir: Path = CACHE_DIR, purge_cache: bool = True) -> list[str]:
+def _is_offer_detail_url(url: str) -> bool:
+    """Indique si une URL correspond à une fiche d'offre individuelle (et non à une page de recherche)."""
+    u = (url or "").lower()
+    if any(
+        marker in u
+        for marker in (
+            "/jobsearch/rechercheemplois",
+            "_i10lfr",
+            "/fr/jobs?",
+            "/recherche-emploi?",
+            "remotive.com/api/remote-jobs",
+        )
+    ):
+        return False
+    return any(
+        marker in u
+        for marker in ("/offredemploi/", "/offre-emploi/", "/view?id=", "/job/", "/voir-offre/", "/emplois/", "remotive.com/")
+    )
+
+
+def clean_cache(
+    cache_dir: Path = CACHE_DIR,
+    data_dir: Path = DATA_DIR,
+    ttl_seconds: int = DEFAULT_CACHE_TTL_SECONDS,
+    now: Optional[float] = None,
+) -> dict[str, Any]:
     """
-    Supprime tous les résultats générés précédemment (data/*.json, .csv, .html et, au choix, le cache HTTP)
-    afin de repartir d'une feuille blanche : aucune ancienne offre ne peut survivre à la purge.
+    Supprime de `cache/` les pages expirées (> 24 h) et les pages des offres qui ne sont plus
+    en ligne (disparues ou absentes d'offres_unifiees.json). Retourne les statistiques libérées.
+    """
+    if not cache_dir.is_dir():
+        return {"pages_supprimees": 0, "disparues": 0, "expirees": 0, "octets_liberes": 0, "mo_liberes": 0.0}
+
+    current_time = time.time() if now is None else now
+    active_urls: set[str] = set()
+    active_urls_loaded = False
+    unified_path = data_dir / "offres_unifiees.json"
+    if unified_path.is_file():
+        try:
+            unified_items = json.loads(unified_path.read_text(encoding="utf-8"))
+            if isinstance(unified_items, list):
+                active_urls_loaded = True
+                for item in unified_items:
+                    if not isinstance(item, dict):
+                        continue
+                    for key in ("url", "url_partenaire"):
+                        val = item.get(key)
+                        if isinstance(val, str) and val.strip():
+                            active_urls.add(val.strip())
+                            active_urls.add(normalize_job_url(val))
+        except (OSError, ValueError, json.JSONDecodeError):
+            pass
+
+    disparues_urls: set[str] = set()
+    report_path = data_dir / "rapport_collecte.json"
+    if report_path.is_file():
+        try:
+            rep = json.loads(report_path.read_text(encoding="utf-8"))
+            changements = rep.get("changements_depuis_precedente") or {}
+            for disp in changements.get("disparues") or []:
+                u = disp.get("url") if isinstance(disp, dict) else None
+                if isinstance(u, str) and u.strip():
+                    disparues_urls.add(u.strip())
+                    disparues_urls.add(normalize_job_url(u))
+        except (OSError, ValueError, json.JSONDecodeError):
+            pass
+
+    removed_disparues = 0
+    removed_expirees = 0
+    freed_bytes = 0
+
+    for path in cache_dir.glob("*.json"):
+        try:
+            file_size = path.stat().st_size
+            payload = json.loads(path.read_text(encoding="utf-8"))
+            url = str(payload.get("url") or "").strip()
+            fetched_at = float(payload.get("fetched_at", 0.0))
+        except (OSError, ValueError, TypeError, json.JSONDecodeError):
+            file_size = path.stat().st_size if path.exists() else 0
+            path.unlink(missing_ok=True)
+            removed_expirees += 1
+            freed_bytes += file_size
+            continue
+
+        norm_url = normalize_job_url(url) if url else ""
+        is_expired = (current_time - fetched_at) >= ttl_seconds
+        is_disappeared = bool(url) and (
+            url in disparues_urls
+            or norm_url in disparues_urls
+            or (active_urls_loaded and _is_offer_detail_url(url) and url not in active_urls and norm_url not in active_urls)
+        )
+
+        if is_expired or is_disappeared:
+            path.unlink(missing_ok=True)
+            freed_bytes += file_size
+            if is_expired:
+                removed_expirees += 1
+            else:
+                removed_disparues += 1
+
+    total_removed = removed_disparues + removed_expirees
+    return {
+        "pages_supprimees": total_removed,
+        "disparues": removed_disparues,
+        "expirees": removed_expirees,
+        "octets_liberes": freed_bytes,
+        "mo_liberes": round(freed_bytes / (1024 * 1024), 2),
+    }
+
+
+def purge_generated_outputs(
+    data_dir: Path = DATA_DIR,
+    cache_dir: Path = CACHE_DIR,
+    purge_cache: bool = True,
+    keep_history: bool = False,
+) -> list[str]:
+    """
+    Supprime tous les résultats générés précédemment (data/*.json, .csv, .html et, au choix,
+    le cache HTTP ainsi que historique-collectes.csv sauf si `keep_history=True`).
     """
     import shutil
 
@@ -3214,6 +3534,11 @@ def purge_generated_outputs(data_dir: Path = DATA_DIR, cache_dir: Path = CACHE_D
             for f in data_dir.glob(pattern):
                 f.unlink()
                 removed.append(f"data/{f.name}")
+        if not keep_history:
+            hist_path = data_dir / "historique-collectes.csv"
+            if hist_path.is_file():
+                hist_path.unlink()
+                removed.append("data/historique-collectes.csv")
     if purge_cache and cache_dir.is_dir():
         nb = sum(1 for _ in cache_dir.iterdir())
         shutil.rmtree(cache_dir, ignore_errors=True)
@@ -3225,7 +3550,7 @@ def verify_generated_dataset(data_dir: Path = DATA_DIR) -> tuple[list[tuple[bool
     """
     Contrôle automatique des résultats générés (affiche PASS/FAIL dans le terminal) :
     5 sources présentes, 100 % TI (code CNP valide), 100 % 2026, aucun doublon d'id/URL,
-    descriptions et compétences complètes, CSV Excel (BOM) et rapport cohérents.
+    descriptions et compétences complètes, CSV Excel (BOM), historique et format commun JobOffer.
     """
     checks: list[tuple[bool, str]] = []
 
@@ -3255,6 +3580,8 @@ def verify_generated_dataset(data_dir: Path = DATA_DIR) -> tuple[list[tuple[bool
     add(all(0 <= int(o.get("score_pertinence_dec", -1)) <= 100 for o in unified), "score_pertinence_dec entre 0 et 100")
     csv_path = data_dir / "offres_unifiees.csv"
     add(csv_path.is_file() and csv_path.read_bytes().startswith(b"\xef\xbb\xbf"), "CSV Excel en utf-8-sig (BOM présent)")
+    hist_path = data_dir / "historique-collectes.csv"
+    add(hist_path.is_file() and hist_path.read_bytes().startswith(b"\xef\xbb\xbf"), "historique-collectes.csv présent en utf-8-sig")
     report_path = data_dir / "rapport_collecte.json"
     if report_path.is_file():
         rep = json.loads(report_path.read_text(encoding="utf-8"))
@@ -3263,6 +3590,16 @@ def verify_generated_dataset(data_dir: Path = DATA_DIR) -> tuple[list[tuple[bool
         add(False, "rapport_collecte.json existe")
     for fname in ("offres_guichet_emplois.json", "offres_jobboom.json", "offres_talent.json", "offres_jobillico.json", "offres_remotive.json"):
         add((data_dir / fname).is_file(), f"data/{fname} existe")
+
+    common_path = data_dir / "offres_format_commun.json"
+    if common_path.is_file():
+        from assistant_et_interface import validate_common_format_records
+
+        common_records = json.loads(common_path.read_text(encoding="utf-8"))
+        common_ok, common_msg = validate_common_format_records(common_records)
+        add(common_ok, common_msg)
+    else:
+        add(False, "data/offres_format_commun.json existe (ajouter --format-commun)")
 
     return checks, all(ok for ok, _ in checks)
 
@@ -3301,25 +3638,49 @@ def main() -> None:
     parser.add_argument("--lettre", type=str, default=None, help="Piste 4 (JobTailor) : Auditer une lettre de motivation (.txt, .md, .docx) selon la méthode Vous/Moi/Nous")
     parser.add_argument("--id-offre", type=str, default=None, help="Identifiant de l'offre ciblée pour --lettre (ex: ge-50711091, tc-999)")
     parser.add_argument("--html", action="store_true", help="Générer le portail Web interactif autonome data/portail_ti_jobtailor.html")
-    parser.add_argument("--format-commun", action="store_true", help="Exporter data/offres_format_commun.json compatible avec le modèle JobOffer (17 champs) de la classe")
+    parser.add_argument("--format-commun", action="store_true", help="Exporter data/offres_format_commun.json compatible avec le modèle JobOffer (18 champs) de la classe")
     parser.add_argument("--sortie", type=str, default="echantillon_v2.json", help="Fichier JSON de sortie")
     parser.add_argument("--purger", action="store_true", help="Supprimer d'abord TOUS les anciens résultats (data/*.json, .csv, .html) ET le cache HTTP cache/ avant de continuer")
-    parser.add_argument("--verifier", action="store_true", help="Contrôler automatiquement les résultats générés (PASS/FAIL : 5 sources, 100 %% TI, 100 %% 2026, 0 doublon...)")
+    parser.add_argument("--garder-historique", action="store_true", help="Avec --purger, conserve data/historique-collectes.csv")
+    parser.add_argument("--nouveautes", action="store_true", help="Afficher dans le terminal les offres nouvelles et disparues depuis la collecte précédente")
+    parser.add_argument("--nettoyer-cache", action="store_true", help="Supprimer de cache/ les pages d'offres disparues et les pages expirées (> 24 h)")
+    parser.add_argument("--verifier", action="store_true", help="Contrôler automatiquement les résultats générés (PASS/FAIL : 5 sources, 100 %% TI, 100 %% 2026, 0 doublon, format commun...)")
     args = parser.parse_args()
 
     if args.purger:
-        removed = purge_generated_outputs(DATA_DIR, CACHE_DIR, purge_cache=True)
+        removed = purge_generated_outputs(DATA_DIR, CACHE_DIR, purge_cache=True, keep_history=args.garder_historique)
         print("\n=== PURGE : anciens résultats supprimés ===")
         for r in removed:
             print(f"  - {r}")
         print(f"  => {len(removed)} élément(s) supprimé(s). Repart de zéro.")
         if not (args.collecte_complete or args.consolider_data):
-            if args.verifier or args.html or args.format_commun or args.cv or args.lettre or args.filtrer:
+            if args.verifier or args.html or args.format_commun or args.cv or args.lettre or args.filtrer or args.nouveautes:
                 print("  ! Rien à analyser : ajoutez --collecte-complete pour refaire la collecte.")
             return
 
+    if args.nettoyer_cache:
+        stats_cache = clean_cache(CACHE_DIR, DATA_DIR)
+        print(
+            f"\n=== NETTOYAGE DU CACHE ===\n"
+            f"  Pages supprimées : {stats_cache['pages_supprimees']} "
+            f"({stats_cache['disparues']} disparue(s), {stats_cache['expirees']} expirée(s))\n"
+            f"  Espace libéré    : {stats_cache['mo_liberes']:.2f} Mo ({stats_cache['octets_liberes']} octets)"
+        )
+        if not (
+            args.collecte_complete
+            or args.consolider_data
+            or args.nouveautes
+            or args.verifier
+            or args.html
+            or args.format_commun
+            or args.cv
+            or args.lettre
+            or args.filtrer
+        ):
+            return
+
     post_actions = bool(
-        args.html or args.format_commun or args.cv or args.lettre or args.filtrer or args.verifier
+        args.html or args.format_commun or args.cv or args.lettre or args.filtrer or args.verifier or args.nouveautes
     )
 
     if args.collecte_complete:
@@ -3345,6 +3706,11 @@ def main() -> None:
             f"inter: {report['deduplication']['doublons_inter_fusionnes']}) dans data/offres_unifiees.json et .csv"
         )
         if not post_actions:
+            return
+
+    if args.nouveautes:
+        print(format_changes_report(DATA_DIR))
+        if not (args.html or args.format_commun or args.cv or args.lettre or args.filtrer or args.verifier):
             return
 
     if args.verifier:
