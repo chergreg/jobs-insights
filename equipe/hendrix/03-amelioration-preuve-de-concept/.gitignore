@@ -1,0 +1,4 @@
+# Donnees generees localement. Ne pas commiter les cache et offres reelles.
+remotive-cache.json
+remotive-local.json
+demo-local.json
