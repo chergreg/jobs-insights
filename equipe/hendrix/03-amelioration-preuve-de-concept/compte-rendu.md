@@ -75,3 +75,25 @@ Aucune collecte réelle vers Remotive n'a été effectuée pour cette dernière 
 ## 6. Documentation de la source
 
 [Remotive — documentation officielle de l'API publique](https://github.com/remotive-com/remote-jobs-api).
+
+## 7. Vérification avec les données réelles de Remotive
+
+Une collecte réelle a été effectuée avec la commande :
+
+`python collecte_remotive.py --reel --limite 10 --sortie remotive-local.json`
+
+**Résultats obtenus :**
+- 10 offres d'emploi récupérées.
+- 10 offres possèdent une URL originale.
+- 7 offres possèdent un salaire renseigné.
+- 4 offres classées « Amérique du Nord ».
+- 3 offres classées « Mondiale ».
+- 3 offres classées « États-Unis ».
+
+La collecte a confirmé que le programme extrait les informations de Remotive et conserve les données manquantes sous la valeur `null`.
+
+La classification géographique n'a attribué aucune province canadienne sans indication précise dans les données.
+
+**Limite observée :** certaines offres couvrant plusieurs régions du monde sont classées « Amérique du Nord ». Cette classification pourrait être améliorée ultérieurement.
+
+Cette vérification complète les tests unitaires effectués hors ligne.
