@@ -1,0 +1,27 @@
+{
+  "source": "Remotive",
+  "mode": "simule",
+  "nombre_offres": 2,
+  "offres": [
+    {
+      "titre": "Développeur junior",
+      "entreprise": "Entreprise fictive",
+      "localisation": "Canada",
+      "categorie_localisation": "canada",
+      "date_publication": "2026-01-01T12:00:00",
+      "description": "Offre fictive pour le test.",
+      "salaire": "50 000 CAD par an",
+      "url_originale": "https://example.invalid/offre/1"
+    },
+    {
+      "titre": "Stage en informatique",
+      "entreprise": null,
+      "localisation": null,
+      "categorie_localisation": "inconnue",
+      "date_publication": null,
+      "description": null,
+      "salaire": null,
+      "url_originale": null
+    }
+  ]
+}
