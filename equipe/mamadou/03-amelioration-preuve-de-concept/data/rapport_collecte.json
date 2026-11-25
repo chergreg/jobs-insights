@@ -1,42 +1,42 @@
 {
-  "date_generation": "2026-11-22T19:45:44.649914+00:00",
+  "date_generation": "2026-11-25T03:59:05.611895+00:00",
   "auteur": "Mamadou (Livrable 3 - Lot 4 final)",
   "total_offres_unifiees_ti": 372,
   "deduplication": {
-    "total_entree": 400,
-    "doublons_intra_fusionnes": 18,
+    "total_entree": 382,
+    "doublons_intra_fusionnes": 0,
     "doublons_inter_fusionnes": 10,
     "total_unifie": 372
   },
   "collecte_par_source": {
     "guichet-emplois": {
-      "brutes_lues": 195,
+      "brutes_lues": 194,
       "retenues_ti_cnp": 194,
       "rejetees_hors_ti": 0,
       "rejetees_pre_2026": 0
     },
     "jobboom": {
-      "brutes_lues": 132,
+      "brutes_lues": 91,
       "retenues_ti_cnp": 91,
-      "rejetees_hors_ti": 25,
-      "rejetees_pre_2026": 16
+      "rejetees_hors_ti": 0,
+      "rejetees_pre_2026": 0
     },
     "talent-canada": {
-      "brutes_lues": 102,
+      "brutes_lues": 49,
       "retenues_ti_cnp": 49,
-      "rejetees_hors_ti": 53,
+      "rejetees_hors_ti": 0,
       "rejetees_pre_2026": 0
     },
     "jobillico": {
-      "brutes_lues": 56,
+      "brutes_lues": 42,
       "retenues_ti_cnp": 42,
-      "rejetees_hors_ti": 14,
+      "rejetees_hors_ti": 0,
       "rejetees_pre_2026": 0
     },
     "remotive": {
-      "brutes_lues": 64,
+      "brutes_lues": 6,
       "retenues_ti_cnp": 6,
-      "rejetees_hors_ti": 40,
+      "rejetees_hors_ti": 0,
       "rejetees_pre_2026": 0
     }
   },
@@ -108,7 +108,7 @@
     "À distance": 1
   },
   "top_technologies_ti": {
-    "SQL": 170,
+    "SQL": 171,
     "Windows Server": 121,
     "Git": 79,
     "IA / Machine Learning": 79,
