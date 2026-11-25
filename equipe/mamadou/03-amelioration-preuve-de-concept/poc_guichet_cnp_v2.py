@@ -3529,15 +3529,23 @@ def purge_generated_outputs(
     import shutil
 
     removed: list[str] = []
+
+    def _safe_unlink(target: Path) -> bool:
+        try:
+            target.unlink()
+            return True
+        except PermissionError:
+            print(f"  ! Fichier verrouillé (fermez Excel ou l'application qui l'utilise) : data/{target.name}")
+            return False
+
     if data_dir.is_dir():
         for pattern in ("offres_*.json", "offres_*.csv", "rapport_collecte.json", "portail_ti_jobtailor.html"):
             for f in data_dir.glob(pattern):
-                f.unlink()
-                removed.append(f"data/{f.name}")
+                if _safe_unlink(f):
+                    removed.append(f"data/{f.name}")
         if not keep_history:
             hist_path = data_dir / "historique-collectes.csv"
-            if hist_path.is_file():
-                hist_path.unlink()
+            if hist_path.is_file() and _safe_unlink(hist_path):
                 removed.append("data/historique-collectes.csv")
     if purge_cache and cache_dir.is_dir():
         nb = sum(1 for _ in cache_dir.iterdir())

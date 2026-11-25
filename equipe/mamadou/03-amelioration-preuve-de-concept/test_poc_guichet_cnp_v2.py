@@ -840,6 +840,13 @@ class TestPocGuichetCnpV2(unittest.TestCase):
             purge_generated_outputs(d_dir, c_dir, purge_cache=True, keep_history=False)
             self.assertFalse(hist_path.is_file())
 
+            # --purger avec un fichier verrouillé (PermissionError sous Windows, ex. Excel ouvert) ne plante pas
+            locked_csv = d_dir / "offres_unifiees.csv"
+            locked_csv.write_text("id;titre\n", encoding="utf-8-sig")
+            with patch.object(Path, "unlink", side_effect=PermissionError("locked by Excel")):
+                removed_locked = purge_generated_outputs(d_dir, c_dir, purge_cache=False, keep_history=True)
+            self.assertEqual(removed_locked, [])
+
     def test_regle_fusion_offre_la_plus_complete_doublons_et_meme_site_distincts(self) -> None:
         # 1. Même poste sur deux sites différents : la 2e offre est plus complète -> elle devient principale
         courte_ge = enrich_offer_metadata(
