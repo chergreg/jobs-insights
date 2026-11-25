@@ -68,3 +68,29 @@ python poc_guichet_cnp_v2.py --lettre lettre_motivation_exemple.txt --id-offre g
 # 6. Exécuter les 21 tests unitaires 100 % hors ligne
 python -m unittest discover -s . -p "test_*.py" -v
 ```
+
+---
+
+## 4. Tester en UNE commande (sans `Invoke-Item`, sans serveur)
+
+Les chiffres changent légèrement à chaque collecte live (les sites publient et retirent des offres chaque jour : ex. 372 le 22 nov., 369 le 24 nov.). Le contrôle `--verifier` valide les **règles** (> 350 offres, 5 sources, 100 % TI, 100 % 2026, 0 doublon) et non un nombre figé.
+
+```powershell
+# Mode RAPIDE (~10 s, sans Internet) : tests + consolidation + verification + filtres + CV + lettre
+.\tester_tout.ps1
+
+# Mode COMPLET (~5-10 min) : PURGE totale (data/ + cache/) puis recollecte live sur les 5 sites + tout verifier
+.\tester_tout.ps1 -Complet
+```
+
+Si PowerShell refuse d'exécuter le script : `powershell -ExecutionPolicy Bypass -File .\tester_tout.ps1`.
+
+Options CLI associées :
+- `--purger` : supprime **tous** les anciens résultats (`data/*.json`, `.csv`, `.html`) **et** le cache `cache/` avant de continuer.
+- `--verifier` : contrôle automatique `[PASS]/[FAIL]` des résultats générés (code de sortie 1 si échec).
+- `--sans-cache` : ignore le cache 24 h et re-télécharge toutes les pages.
+
+```powershell
+# Equivalent manuel du mode complet
+python poc_guichet_cnp_v2.py --purger --collecte-complete --sans-cache --html --format-commun --verifier
+```

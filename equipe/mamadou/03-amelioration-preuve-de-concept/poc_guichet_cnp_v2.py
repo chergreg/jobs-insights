@@ -3201,6 +3201,72 @@ def from_cache_check(url: str, cache_dir: Path = CACHE_DIR, ttl_seconds: int = D
         return False
 
 
+def purge_generated_outputs(data_dir: Path = DATA_DIR, cache_dir: Path = CACHE_DIR, purge_cache: bool = True) -> list[str]:
+    """
+    Supprime tous les résultats générés précédemment (data/*.json, .csv, .html et, au choix, le cache HTTP)
+    afin de repartir d'une feuille blanche : aucune ancienne offre ne peut survivre à la purge.
+    """
+    import shutil
+
+    removed: list[str] = []
+    if data_dir.is_dir():
+        for pattern in ("offres_*.json", "offres_*.csv", "rapport_collecte.json", "portail_ti_jobtailor.html"):
+            for f in data_dir.glob(pattern):
+                f.unlink()
+                removed.append(f"data/{f.name}")
+    if purge_cache and cache_dir.is_dir():
+        nb = sum(1 for _ in cache_dir.iterdir())
+        shutil.rmtree(cache_dir, ignore_errors=True)
+        removed.append(f"cache/ ({nb} pages en cache)")
+    return removed
+
+
+def verify_generated_dataset(data_dir: Path = DATA_DIR) -> tuple[list[tuple[bool, str]], bool]:
+    """
+    Contrôle automatique des résultats générés (affiche PASS/FAIL dans le terminal) :
+    5 sources présentes, 100 % TI (code CNP valide), 100 % 2026, aucun doublon d'id/URL,
+    descriptions et compétences complètes, CSV Excel (BOM) et rapport cohérents.
+    """
+    checks: list[tuple[bool, str]] = []
+
+    def add(ok: bool, label: str) -> None:
+        checks.append((bool(ok), label))
+
+    unified_path = data_dir / "offres_unifiees.json"
+    if not unified_path.is_file():
+        add(False, "data/offres_unifiees.json existe (lancer d'abord --collecte-complete)")
+        return checks, False
+
+    unified = json.loads(unified_path.read_text(encoding="utf-8"))
+    n = len(unified)
+    add(n > 350, f"Plus de 350 offres TI uniques : {n}")
+    sources = Counter(o.get("source") for o in unified)
+    expected = {"guichet-emplois", "jobboom", "talent-canada", "jobillico", "remotive"}
+    add(expected.issubset(sources), f"5 sources présentes : {dict(sources)}")
+    add(all(o.get("code_cnp") in CNP_2021_TI_DICT for o in unified), "100 % des offres ont un code CNP 2021 TI valide (0 hors TI)")
+    old = [o for o in unified if (o.get("date_publication") or "9999") < "2026"]
+    add(not old, f"0 offre publiée avant 2026 ({len(old)} trouvée(s))")
+    add(len({o.get("id") for o in unified}) == n, "Aucun identifiant en double")
+    urls = [o.get("url") for o in unified]
+    add(len(set(urls)) == n, "Aucune URL en double")
+    add(all(o.get("description") for o in unified), "100 % des offres ont une description")
+    add(all(o.get("competences_cles") for o in unified), "100 % des offres ont des compétences clés")
+    add(all(o.get("content_hash") for o in unified), "100 % des offres ont un content_hash")
+    add(all(0 <= int(o.get("score_pertinence_dec", -1)) <= 100 for o in unified), "score_pertinence_dec entre 0 et 100")
+    csv_path = data_dir / "offres_unifiees.csv"
+    add(csv_path.is_file() and csv_path.read_bytes().startswith(b"\xef\xbb\xbf"), "CSV Excel en utf-8-sig (BOM présent)")
+    report_path = data_dir / "rapport_collecte.json"
+    if report_path.is_file():
+        rep = json.loads(report_path.read_text(encoding="utf-8"))
+        add(rep.get("total_offres_unifiees_ti") == n, "rapport_collecte.json cohérent avec offres_unifiees.json")
+    else:
+        add(False, "rapport_collecte.json existe")
+    for fname in ("offres_guichet_emplois.json", "offres_jobboom.json", "offres_talent.json", "offres_jobillico.json", "offres_remotive.json"):
+        add((data_dir / fname).is_file(), f"data/{fname} existe")
+
+    return checks, all(ok for ok, _ in checks)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
@@ -3237,7 +3303,24 @@ def main() -> None:
     parser.add_argument("--html", action="store_true", help="Générer le portail Web interactif autonome data/portail_ti_jobtailor.html")
     parser.add_argument("--format-commun", action="store_true", help="Exporter data/offres_format_commun.json compatible avec le modèle JobOffer (17 champs) de la classe")
     parser.add_argument("--sortie", type=str, default="echantillon_v2.json", help="Fichier JSON de sortie")
+    parser.add_argument("--purger", action="store_true", help="Supprimer d'abord TOUS les anciens résultats (data/*.json, .csv, .html) ET le cache HTTP cache/ avant de continuer")
+    parser.add_argument("--verifier", action="store_true", help="Contrôler automatiquement les résultats générés (PASS/FAIL : 5 sources, 100 %% TI, 100 %% 2026, 0 doublon...)")
     args = parser.parse_args()
+
+    if args.purger:
+        removed = purge_generated_outputs(DATA_DIR, CACHE_DIR, purge_cache=True)
+        print("\n=== PURGE : anciens résultats supprimés ===")
+        for r in removed:
+            print(f"  - {r}")
+        print(f"  => {len(removed)} élément(s) supprimé(s). Repart de zéro.")
+        if not (args.collecte_complete or args.consolider_data):
+            if args.verifier or args.html or args.format_commun or args.cv or args.lettre or args.filtrer:
+                print("  ! Rien à analyser : ajoutez --collecte-complete pour refaire la collecte.")
+            return
+
+    post_actions = bool(
+        args.html or args.format_commun or args.cv or args.lettre or args.filtrer or args.verifier
+    )
 
     if args.collecte_complete:
         report = run_autonomous_full_collection(
@@ -3251,7 +3334,7 @@ def main() -> None:
             f"(descriptions: {report['offres_avec_description_complete']}/{report['total_offres_unifiees_ti']}) "
             f"enregistrées sous data/"
         )
-        if not (args.html or args.format_commun or args.cv or args.lettre or args.filtrer):
+        if not post_actions:
             return
 
     if args.consolider_data:
@@ -3261,8 +3344,17 @@ def main() -> None:
             f"(intra: {report['deduplication']['doublons_intra_fusionnes']}, "
             f"inter: {report['deduplication']['doublons_inter_fusionnes']}) dans data/offres_unifiees.json et .csv"
         )
-        if not (args.html or args.format_commun or args.cv or args.lettre or args.filtrer):
+        if not post_actions:
             return
+
+    if args.verifier:
+        checks, all_ok = verify_generated_dataset(DATA_DIR)
+        print("\n=== VÉRIFICATION AUTOMATIQUE DES RÉSULTATS ===")
+        for ok, label in checks:
+            print(f"  [{'PASS' if ok else 'FAIL'}] {label}")
+        print(f"  => {'TOUT EST OK' if all_ok else 'DES VÉRIFICATIONS ONT ÉCHOUÉ'} ({sum(1 for ok, _ in checks if ok)}/{len(checks)})")
+        if not (args.html or args.format_commun or args.cv or args.lettre or args.filtrer):
+            raise SystemExit(0 if all_ok else 1)
 
     has_filter_criteria = any(
         [
